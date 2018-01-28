@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Timataka.Web.Models;
+using Timataka.Core.Models;
 
-namespace Timataka.Web.Data
+namespace Timataka.Core.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

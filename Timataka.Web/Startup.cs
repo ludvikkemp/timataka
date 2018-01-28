@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Timataka.Web.Data;
-using Timataka.Web.Models;
+using Timataka.Core.Models;
 using Timataka.Web.Services;
 
 namespace Timataka.Web

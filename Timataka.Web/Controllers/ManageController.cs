@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Timataka.Web.Models;
+using Timataka.Core.Models;
 using Timataka.Web.Models.ManageViewModels;
 using Timataka.Web.Services;
 
