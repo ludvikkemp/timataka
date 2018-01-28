@@ -1,0 +1,54 @@
+Notendahópar
+
+x Superadmin
+  - Búa til admin
+
+x Admin
+  - 
+
+x Starfsmenn (tímatöku)
+  - Geta breytt tímum á keppendum
+
+x Dómari
+  - Sett inn athugasemdir um keppendur
+  - Dæmt úr leik t.d.
+
+x Mótshaldari
+  - Gæti búið til mót og allt sem því fylgir
+
+x Starfsmenn móts (afh. gagna)
+  - Taka á móti keppendum
+  - Breytt upplýsingum um keppendum
+
+x Fjölmiðlar
+  - senda fyrirspurnir í grunninn
+
+x keppandi
+  - skoðað og breytt sínum persónuupplýsingum
+  - Skráð sig í mót
+
+
+Tegundir af keppnum
+
+x Hjól
+  - Götuhjól
+  - Time Trial
+  - Cyclo Cross
+  - Cross Country
+  - Down Hill
+  - Enduro
+
+x Hlaup
+  - Götuhlaup
+    + 5k, 10k, 21k, 42k, 100k
+  - Fjallahlaup
+  - Utanvegahlaup
+  - Ultra
+
+x Þríþraut
+x Tvíþraut
+x Sund
+x Hundasleðar
+x Gönguskíði
+  - Frjáls aðferð
+  - Classic
