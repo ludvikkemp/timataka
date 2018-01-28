@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Timataka.Domain\Timataka.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

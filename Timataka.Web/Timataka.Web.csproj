@@ -18,4 +18,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Timataka.Data\Timataka.Data.csproj" />
+    <ProjectReference Include="..\Timataka.Domain\Timataka.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
