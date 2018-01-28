@@ -19,8 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Timataka.Data\Timataka.Data.csproj" />
-    <ProjectReference Include="..\Timataka.Domain\Timataka.Domain.csproj" />
+    <ProjectReference Include="..\Timataka.Core\Timataka.Core.csproj" />
   </ItemGroup>
 
 </Project>
