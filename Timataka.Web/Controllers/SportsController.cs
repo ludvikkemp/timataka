@@ -30,7 +30,7 @@ namespace Timataka.Web.Controllers
         // GET: Sports/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var sport = _repo.GetByIdAsync(id);
+            var sport = await _repo.GetByIdAsync(id);
             if (sport == null)
             {
                 return NotFound();
