@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Timataka.Core.Data;
+using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models;
 using Timataka.Web.Services;
 
@@ -32,6 +33,9 @@ namespace Timataka.Web
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            // DI for Repositores
+            services.AddTransient<ISportsRepository, SportsRepository>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
