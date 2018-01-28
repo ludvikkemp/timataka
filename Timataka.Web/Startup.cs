@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Timataka.Web.Data;
+using Timataka.Core.Data;
 using Timataka.Core.Models;
 using Timataka.Web.Services;
 
