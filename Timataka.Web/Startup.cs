@@ -115,6 +115,7 @@ namespace Timataka.Web
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var superAdminEmail = "super@admin.com";
+
             Task<bool> hasSuperAdminRole = roleManager.RoleExistsAsync("Superadmin");
             hasSuperAdminRole.Wait();
 
@@ -138,7 +139,7 @@ namespace Timataka.Web
 
                 if (newSuperAdminResult.Result.Succeeded)
                 {
-                    Task<IdentityResult> newUserRole = userManager.AddToRoleAsync(newSuperAdmin, "SuperAdmin");
+                    Task<IdentityResult> newUserRole = userManager.AddToRoleAsync(newSuperAdmin, "Superadmin");
                     newUserRole.Wait();
                 }
             }
