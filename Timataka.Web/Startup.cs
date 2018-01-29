@@ -36,6 +36,40 @@ namespace Timataka.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // (timataka)
+            // This is where password rules are modified
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 6;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
+
+            // (timataka)
+            // This is where cookies settings are modified
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Expiration = TimeSpan.FromDays(150);
+                options.LoginPath = "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
+                options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
+                options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
+                options.SlidingExpiration = true;
+            });
+
             // DI for Repositores
             services.AddTransient<ISportsRepository, SportsRepository>();
 
@@ -46,7 +80,7 @@ namespace Timataka.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -63,12 +97,51 @@ namespace Timataka.Web
 
             app.UseAuthentication();
 
+            createSuperAdmin(serviceProvider);
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        // (timataka)
+        // Here Superadmin is created if hef does not already exist
+        // There is only one superAdmin in this application
+        private void createSuperAdmin(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var superAdminEmail = "super@admin.com";
+            Task<bool> hasSuperAdminRole = roleManager.RoleExistsAsync("Superadmin");
+            hasSuperAdminRole.Wait();
+
+            if (!hasSuperAdminRole.Result)
+            {
+                Task roleResult = roleManager.CreateAsync(new IdentityRole("Superadmin"));
+                roleResult.Wait();
+            }
+
+            Task<ApplicationUser> superAdmin = userManager.FindByEmailAsync(superAdminEmail);
+            superAdmin.Wait();
+
+            if (superAdmin.Result == null)
+            {
+                ApplicationUser newSuperAdmin = new ApplicationUser();
+                newSuperAdmin.Email = superAdminEmail;
+                newSuperAdmin.UserName = superAdminEmail;
+
+                Task<IdentityResult> newSuperAdminResult = userManager.CreateAsync(newSuperAdmin, "Super#123");
+                newSuperAdminResult.Wait();
+
+                if (newSuperAdminResult.Result.Succeeded)
+                {
+                    Task<IdentityResult> newUserRole = userManager.AddToRoleAsync(newSuperAdmin, "SuperAdmin");
+                    newUserRole.Wait();
+                }
+            }
         }
     }
 }
