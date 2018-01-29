@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Timataka.Core.Data;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models;
+using Timataka.Core.Models.Entities;
 using Timataka.Web.Services;
 
 namespace Timataka.Web

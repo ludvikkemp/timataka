@@ -1,0 +1,38 @@
+
+
+Web
+	References both Core
+
+Core
+	References domain project
+
+API:
+
+
+
+Installed in Core project:
+
+Microsoft.EntityFrameworkCore.SqlServer
+Microsoft.EntityFrameworkCore.SqlServer.Design
+Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+
+Resharper:
+
+CTRL+B = Go to declaration
+
+CTRL+SHIFT+N = Find any file
+
+Add Migrations:
+
+Be in Timataka.Core directory
+
+ dotnet ef migrations add "Sport_Migration" -c ApplicationDbContext -s ../Timataka.Web
+ dotnet ef database update -c ApplicationDbContext -s ../Timataka.Web
+
+
+Azure:
+database server: timatakadb.database.windows.net
+
+admin: timataka_admin
+pass: 
