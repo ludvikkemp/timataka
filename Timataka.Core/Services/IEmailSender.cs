@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Timataka.Web.Services
+namespace Timataka.Core.Services
 {
     public interface IEmailSender
     {

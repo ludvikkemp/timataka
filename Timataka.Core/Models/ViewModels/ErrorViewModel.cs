@@ -1,6 +1,6 @@
 using System;
 
-namespace Timataka.Web.Models
+namespace Timataka.Core.Models.ViewModels
 {
     public class ErrorViewModel
     {

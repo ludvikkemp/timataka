@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Timataka.Core.Services;
 using Timataka.Web.Services;
 
 namespace Timataka.Web.Services

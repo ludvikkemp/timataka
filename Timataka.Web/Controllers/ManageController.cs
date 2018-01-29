@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Timataka.Core.Models.Entities;
-using Timataka.Web.Models.ManageViewModels;
+using Timataka.Core.Models.ViewModels.ManageViewModels;
+using Timataka.Core.Services;
 using Timataka.Web.Services;
 
 namespace Timataka.Web.Controllers

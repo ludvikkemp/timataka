@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Timataka.Core.Models.Entities;
-using Timataka.Web.Models.AccountViewModels;
+using Timataka.Core.Models.ViewModels.AccountViewModels;
+using Timataka.Core.Services;
 using Timataka.Web.Services;
 
 namespace Timataka.Web.Controllers

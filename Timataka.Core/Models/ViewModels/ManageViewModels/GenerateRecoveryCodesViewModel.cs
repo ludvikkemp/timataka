@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Timataka.Web.Models.ManageViewModels
+namespace Timataka.Core.Models.ViewModels.ManageViewModels
 {
     public class GenerateRecoveryCodesViewModel
     {

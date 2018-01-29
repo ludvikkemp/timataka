@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace Timataka.Web.Models.ManageViewModels
+namespace Timataka.Core.Models.ViewModels.ManageViewModels
 {
     public class ExternalLoginsViewModel
     {
