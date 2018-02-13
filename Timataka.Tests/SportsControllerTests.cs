@@ -31,7 +31,7 @@ namespace Timataka.Tests
             var result = controller.Index();
 
             // Assert
-            ViewResult viewResult = Assert.IsType<ViewResult>(result);
+            Assert.IsType<ViewResult>(result);
 
         }
     }
