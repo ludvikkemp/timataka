@@ -72,6 +72,9 @@ namespace Timataka.Web
 
             // DI for Repositores
             services.AddTransient<ISportsRepository, SportsRepository>();
+            services.AddTransient<IAdminRepository, AdminRepository>();
+
+            services.AddTransient<IAdminService, AdminService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
