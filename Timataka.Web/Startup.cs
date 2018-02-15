@@ -87,7 +87,7 @@ namespace Timataka.Web
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
-                //CreateSuperAdmin(serviceProvider);
+                //CreateFirstRolesAndUser(serviceProvider);
             }
             else
             {
@@ -110,39 +110,45 @@ namespace Timataka.Web
         // (timataka)
         // Here Superadmin is created if hef does not already exist
         // There is only one superAdmin in this application
-        private static void CreateSuperAdmin(IServiceProvider serviceProvider)
+        private static void CreateFirstRolesAndUser(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            const string superAdminEmail = "super@admin.com";
+            const string adminEmail = "admin@admin.com";
 
-            var hasSuperAdminRole = roleManager.RoleExistsAsync("Superadmin");
-            hasSuperAdminRole.Wait();
+            var hasAdminRole = roleManager.RoleExistsAsync("Admin");
+            var hasAthleteRole = roleManager.RoleExistsAsync("Athlete");
+            hasAdminRole.Wait();
+            hasAthleteRole.Wait();
 
-            if (!hasSuperAdminRole.Result)
+            if (!hasAdminRole.Result)
             {
-                Task roleResult = roleManager.CreateAsync(new IdentityRole("Superadmin"));
+                Task roleResult = roleManager.CreateAsync(new IdentityRole("Admin"));
+                roleResult.Wait();
+            }
+            if (!hasAthleteRole.Result)
+            {
+                Task roleResult = roleManager.CreateAsync(new IdentityRole("Athlete"));
                 roleResult.Wait();
             }
 
-            var superAdmin = userManager.FindByEmailAsync(superAdminEmail);
+            var superAdmin = userManager.FindByEmailAsync(adminEmail);
             superAdmin.Wait();
 
             if (superAdmin.Result != null) return;
-
-            var newSuperAdmin = new ApplicationUser
+            var newAdmin = new ApplicationUser
             {
-                Email = superAdminEmail,
-                UserName = superAdminEmail
+                Email = adminEmail,
+                UserName = adminEmail
             };
 
-            var newSuperAdminResult = userManager.CreateAsync(newSuperAdmin, "Super#123");
+            var newSuperAdminResult = userManager.CreateAsync(newAdmin, "Admin#123");
             newSuperAdminResult.Wait();
 
             if (!newSuperAdminResult.Result.Succeeded) return;
-
-            var newUserRole = userManager.AddToRoleAsync(newSuperAdmin, "Superadmin");
+            var newUserRole = userManager.AddToRoleAsync(newAdmin, "Admin");
             newUserRole.Wait();
+
         }
     }
 }
