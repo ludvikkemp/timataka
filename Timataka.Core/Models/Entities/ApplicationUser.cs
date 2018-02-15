@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace Timataka.Core.Models.Entities
 {
@@ -8,5 +9,14 @@ namespace Timataka.Core.Models.Entities
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public string Ssn { get; set; }
+        public string Phone { get; set; }
+        public string Nationality { get; set; }
+        public string Country { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Gender { get; set; }
+
     }
+
+
 }
