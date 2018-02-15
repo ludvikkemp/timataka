@@ -16,7 +16,7 @@ namespace Timataka.Web.Controllers
         {
 
         }
-        [Authorize(Roles = "Admin, Superadmin")]
+        
         public IActionResult Index()
         {
             return View();
