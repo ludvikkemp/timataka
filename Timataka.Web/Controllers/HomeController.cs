@@ -4,7 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Timataka.Web.Models;
+using Timataka.Core.Models;
+using Timataka.Core.Models.ViewModels;
 
 namespace Timataka.Web.Controllers
 {

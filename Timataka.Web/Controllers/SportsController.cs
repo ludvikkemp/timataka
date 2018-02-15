@@ -141,5 +141,9 @@ namespace Timataka.Web.Controllers
         //{
         //    return _context.Sports.Any(e => e.Id == id);
         //}
+        public IActionResult Delete()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

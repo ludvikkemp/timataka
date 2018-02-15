@@ -11,7 +11,7 @@ namespace Timataka.Core.Data.Repositories
     
     public class SportsRepository : ISportsRepository
     {
-        private bool disposed = false;
+        private bool _disposed = false;
         private readonly ApplicationDbContext _context;
 
         public SportsRepository(ApplicationDbContext context)
@@ -46,13 +46,9 @@ namespace Timataka.Core.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-       
-       
-
-
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!this._disposed)
             {
                 if (disposing)
                 {
@@ -60,7 +56,7 @@ namespace Timataka.Core.Data.Repositories
                 }
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
         public void Dispose()
