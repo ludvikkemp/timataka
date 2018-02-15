@@ -12,7 +12,5 @@ namespace Timataka.Core.Data.Repositories
         {
             _db = db;
         }
-
-        
     }
 }
