@@ -40,7 +40,6 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         public IActionResult CreateRole()
         {
-            
             return null;
         }
     }

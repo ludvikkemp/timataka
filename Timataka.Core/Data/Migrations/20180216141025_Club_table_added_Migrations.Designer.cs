@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using Timataka.Core.Data;
-using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180216141025_Club_table_added_Migrations")]
+    partial class Club_table_added_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,25 +270,6 @@ namespace Timataka.Core.Data.Migrations
                     b.ToTable("Sports");
                 });
 
-            modelBuilder.Entity("Timataka.Core.Models.Entities.UserInClub", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("SportId");
-
-                    b.Property<int>("ClubId");
-
-                    b.Property<int>("Role");
-
-                    b.HasKey("UserId", "SportId");
-
-                    b.HasAlternateKey("SportId", "UserId");
-
-                    b.HasIndex("ClubId");
-
-                    b.ToTable("UsersInClubs");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -350,24 +331,6 @@ namespace Timataka.Core.Data.Migrations
                     b.HasOne("Timataka.Core.Models.Entities.Sport", "ApplicationSportId")
                         .WithMany()
                         .HasForeignKey("SportId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Timataka.Core.Models.Entities.UserInClub", b =>
-                {
-                    b.HasOne("Timataka.Core.Models.Entities.Sport", "ApplicationClubId")
-                        .WithMany()
-                        .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Timataka.Core.Models.Entities.Sport", "ApplicationSportId")
-                        .WithMany()
-                        .HasForeignKey("SportId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Timataka.Core.Models.Entities.ApplicationUser", "ApplicationUserId")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

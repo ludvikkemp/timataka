@@ -5,11 +5,13 @@ using System.Text;
 
 namespace Timataka.Core.Models.Entities
 {
-    class Dicipline
+    public class Dicipline
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        [ForeignKey("Sport")]
+        
         public int SportId { get; set; }
+        [ForeignKey(nameof(SportId))]
+        public virtual Sport ApplicationSportId { get; set; } 
     }
 }
