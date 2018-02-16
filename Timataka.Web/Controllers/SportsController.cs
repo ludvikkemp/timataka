@@ -20,6 +20,7 @@ namespace Timataka.Web.Controllers
             _repo = repo;
         }
 
+
         // GET: Sports
         public IActionResult Index()
         {
