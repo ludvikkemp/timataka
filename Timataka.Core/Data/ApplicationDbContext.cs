@@ -13,6 +13,10 @@ namespace Timataka.Core.Data
         }
 
         public DbSet<Sport> Sports { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Dicipline> Diciplines { get; set; }
+        public DbSet<Club> Clubs { get; set; }
+        public DbSet<UserInClub> UsersInClubs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -20,6 +24,8 @@ namespace Timataka.Core.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+            builder.Entity<UserInClub>()
+                .HasKey(c => new { c.UserId, c.SportId });
         }
     }
 }

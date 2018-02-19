@@ -1,13 +1,16 @@
-﻿
+﻿@model object
+
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Users";
+    ViewBag.SubTitle = "Manage users";
+    Layout = "_AdminLayout";
 }
+
 
 <section class="content grid-page">
     <div class="title-block">
-        <h3 class="title"> Grid </h3>
-        <p class="title-description"> Grid elements </p>
+        <h3 class="title">@ViewBag.Title</h3>
+        <p class="title-description">@ViewBag.SubTitle</p>
     </div>
     <section class="section">
         <div class="row sameheight-container">
@@ -31,9 +34,3 @@
     </section>
 
 </section>
-
-
-
-
-
-

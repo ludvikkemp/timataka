@@ -7,6 +7,7 @@ using Moq;
 using Timataka.Core.Data;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Services;
 using Timataka.Web.Controllers;
 using Xunit;
 
@@ -18,8 +19,8 @@ namespace Timataka.Tests
         public void GetSportsIndex()
         {
             // Arrange
-            var serviceMock = new Mock<ISportsRepository>();
-            serviceMock.Setup(x => x.Get()).Returns(() => new List<Sport>()
+            var serviceMock = new Mock<ISportsService>();
+            serviceMock.Setup(x => x.GetAllSports()).Returns(() => new List<Sport>()
             {
                 new Sport {Id = 1, Name = "Running"},
                 new Sport {Id = 2, Name = "Swimming"},
@@ -31,7 +32,7 @@ namespace Timataka.Tests
             var result = controller.Index();
 
             // Assert
-            ViewResult viewResult = Assert.IsType<ViewResult>(result);
+            Assert.IsType<ViewResult>(result);
 
         }
     }
