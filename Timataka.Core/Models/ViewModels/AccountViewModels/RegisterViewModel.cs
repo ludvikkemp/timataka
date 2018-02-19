@@ -21,7 +21,7 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
@@ -29,11 +29,11 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
         [Display(Name = "Given Name")]
         public string FirstName { get; set; }
 
-        [Display(Name = "Middle Name")]
+        [Display(Name = "Middle Name (Not Required)")]
         public string MiddleName { get; set; }
 
         [Required]
-        [Display(Name = "Surename")]
+        [Display(Name = "Surname")]
         public string LastName { get; set; }
 
         [Required]
@@ -44,8 +44,14 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
         [Display(Name = "Social Security Number")]
         public string Ssn { get; set; }
 
+        [Required]
+        [Display(Name = "Date of Birth")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime DateOfBirth { get; set; }
+
         [Required] [Display(Name = "Country")]
-        public List<SelectListItem> Country { get; set; }
+        public SelectListItem Country { get; set; }
        
     }
 }

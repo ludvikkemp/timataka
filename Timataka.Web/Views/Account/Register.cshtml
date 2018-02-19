@@ -29,14 +29,54 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Country"></label>
-                <select asp-for="Country" asp-items="@ViewBag.Nations" class="custom-select"></select>
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            
+            <div class="form-group">
+                <label asp-for="MiddleName"></label>
+                <input asp-for="MiddleName" class="form-control" />
+                <span asp-validation-for="MiddleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+                <select name="Country" class="form-control">
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country"></label>
+                <select name="Country" class="form-control">
+                    @foreach (var item in ViewBag.Nations)
+                    {
+                    <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Ssn"></label>
+                <input asp-for="Ssn" class="form-control" />
+                <span asp-validation-for="Ssn" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DateOfBirth"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
 </div>
+
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
