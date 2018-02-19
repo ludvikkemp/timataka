@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Timataka.Core.Models.Entities
+namespace Timataka.Core.Data.Repositories
 {
-    class Gender
+    public interface IAdminRepository
     {
+
     }
 }
