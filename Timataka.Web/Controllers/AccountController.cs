@@ -225,7 +225,35 @@ namespace Timataka.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                
+                var countryId = int.Parse(model.Country.Value);
+                /*
+                if (countryId == 353)
+                {
+                    // Þá þarf að ná í SSN og setja í dateOfBirth
+                    var day = model.Ssn[0] + model.Ssn[1];
+                    var month = model.Ssn[2] + model.Ssn[3];
+                    var year = model.Ssn[4];
+                    if (year < 4)
+                    {
+
+                    }
+                    var dateOfBirth = new DateTime(2009, 02, 27);
+                }
+                */
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    MiddleName = model.MiddleName,
+                    LastName = model.LastName,
+                    Ssn = model.Ssn,
+                    Gender = model.Gender,
+                    Phone = model.Phone,
+                    CountryId = countryId,
+                    Deleted = false,
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -40,7 +40,12 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
         [Display(Name = "Gender")]
         public string Gender { get; set; }
 
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Phone Number (Example: 354-5555555)")]
+        public string Phone { get; set; }
+
         [Required]
+        [StringLength(10, ErrorMessage = "SSN Must Contain 10 Characters", MinimumLength = 10)]
         [Display(Name = "Social Security Number")]
         public string Ssn { get; set; }
 
