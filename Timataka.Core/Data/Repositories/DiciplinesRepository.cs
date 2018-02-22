@@ -9,12 +9,12 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Repositories
 {
     
-    public class DiceplineRepository : IDiciplineRepository
+    public class DiceplinesRepository : IDiciplinesRepository
     {
         private bool _disposed = false;
         private readonly ApplicationDbContext _context;
 
-        public DiceplineRepository(ApplicationDbContext context)
+        public DiceplinesRepository(ApplicationDbContext context)
         {
             _context = context;
         }

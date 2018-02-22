@@ -13,9 +13,9 @@ namespace Timataka.Web.Controllers
 {
     public class DiciplineController : Controller
     {
-        private readonly IDiciplineRepository _repo;
+        private readonly IDiciplinesRepository _repo;
 
-        public DiciplineController(IDiciplineRepository repo)
+        public DiciplineController(IDiciplinesRepository repo)
         {
             _repo = repo;
         }

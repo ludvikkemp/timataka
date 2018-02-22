@@ -6,7 +6,7 @@ using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Data.Repositories
 {
-    public interface IDiciplineRepository : IDisposable
+    public interface IDiciplinesRepository : IDisposable
     {
         void Insert(Dicipline entity);
         Task InsertAsync(Dicipline entity);
