@@ -57,6 +57,5 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
 
         [Required] [Display(Name = "Country")]
         public SelectListItem Country { get; set; }
-       
     }
 }
