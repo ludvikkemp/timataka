@@ -21,10 +21,10 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="s"></param>
         /// <returns>ID of sport added</returns>
-        public async Task<int> Add(Sport s)
+        public async Task<Sport> Add(Sport s)
         {
             await _repo.InsertAsync(s);
-            return s.Id;
+            return s;
         }
 
         /// <summary>
@@ -32,9 +32,10 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="s"></param>
         /// <returns>Id of the sport edited</returns>
-        public Task<int> Edit(Sport s)
+        public Sport Edit(Sport s)
         {
-            throw new NotImplementedException();
+            _repo.Edit(s);
+            return s;
         }
 
         /// <summary>
@@ -67,7 +68,5 @@ namespace Timataka.Core.Services
             Sport s = await _repo.GetByIdAsync(SportId);
             return s;
         }
-
-
     }
 }

@@ -46,6 +46,12 @@ namespace Timataka.Core.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public void Edit(Sport entity)
+        {
+            _context.Sports.Update(entity);
+            _context.SaveChanges();
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this._disposed)
