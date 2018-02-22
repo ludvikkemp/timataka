@@ -32,9 +32,10 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="s"></param>
         /// <returns>Id of the sport edited</returns>
-        public Task<int> Edit(Sport s)
+        public Sport Edit(Sport s)
         {
-            throw new NotImplementedException();
+            _repo.Edit(s);
+            return s;
         }
 
         /// <summary>
@@ -67,7 +68,5 @@ namespace Timataka.Core.Services
             Sport s = await _repo.GetByIdAsync(SportId);
             return s;
         }
-
-
     }
 }

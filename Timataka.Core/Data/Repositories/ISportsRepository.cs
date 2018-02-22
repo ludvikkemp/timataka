@@ -15,5 +15,7 @@ namespace Timataka.Core.Data.Repositories
         Sport GetById(int id);
         Task<Sport> GetByIdAsync(int id);
 
+        void Edit(Sport entity);
+
     }
 }
