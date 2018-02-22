@@ -15,6 +15,7 @@ namespace Timataka.Core.Models.Entities
         public string Phone { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Gender { get; set; }
+        public bool Deleted { get; set; } = false;
 
         public int? CountryId { get; set; }
         [ForeignKey(nameof(CountryId))]

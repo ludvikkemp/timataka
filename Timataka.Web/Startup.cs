@@ -73,8 +73,10 @@ namespace Timataka.Web
             // DI for Repositores
             services.AddTransient<ISportsRepository, SportsRepository>();
             services.AddTransient<IAdminRepository, AdminRepository>();
+            services.AddTransient<IAccountRepository, AccountRepository>();
 
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IAccountService, AccountService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -91,6 +93,7 @@ namespace Timataka.Web
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
                 //CreateFirstRolesAndUser(serviceProvider);
+                CreateRoles(serviceProvider);
             }
             else
             {
@@ -108,6 +111,29 @@ namespace Timataka.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private static void CreateRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var hasAdminRole = roleManager.RoleExistsAsync("Admin");
+            var hasUserRole = roleManager.RoleExistsAsync("User");
+
+            hasAdminRole.Wait();
+            hasUserRole.Wait();
+
+            if (!hasAdminRole.Result)
+            {
+                Task roleResult = roleManager.CreateAsync(new IdentityRole("Admin"));
+                roleResult.Wait();
+            }
+
+            if (!hasUserRole.Result)
+            {
+                Task roleResult = roleManager.CreateAsync(new IdentityRole("User"));
+                roleResult.Wait();
+            }
         }
 
         // (timataka)

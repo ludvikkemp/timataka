@@ -25,17 +25,20 @@ namespace Timataka.Web.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IAccountService _accountService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IAccountService accountService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _accountService = accountService;
         }
 
         [TempData]
@@ -210,6 +213,7 @@ namespace Timataka.Web.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewBag.Nations = _accountService.GetNationsListItems();
             return View();
         }
 
@@ -221,7 +225,36 @@ namespace Timataka.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Name, Email = model.Email };
+                
+                var countryId = int.Parse(model.Country.Value);
+                /*
+                if (countryId == 353)
+                {
+                    // Þá þarf að ná í SSN og setja í dateOfBirth
+                    var day = model.Ssn[0] + model.Ssn[1];
+                    var month = model.Ssn[2] + model.Ssn[3];
+                    var year = model.Ssn[4];
+                    if (year < 4)
+                    {
+
+                    }
+                    var dateOfBirth = new DateTime(2009, 02, 27);
+                }
+                */
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    MiddleName = model.MiddleName,
+                    LastName = model.LastName,
+                    Ssn = model.Ssn,
+                    Gender = model.Gender,
+                    Phone = model.Phone,
+                    CountryId = countryId,
+                    Deleted = false,
+                };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
