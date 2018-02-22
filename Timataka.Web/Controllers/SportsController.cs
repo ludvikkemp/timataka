@@ -24,7 +24,7 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: Sports/Details/5
-        IActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             var sport = _sportsService.GetSportById(id);
             if (sport == null)

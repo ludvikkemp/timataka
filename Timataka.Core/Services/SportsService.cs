@@ -21,10 +21,10 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="s"></param>
         /// <returns>ID of sport added</returns>
-        public async Task<int> Add(Sport s)
+        public async Task<Sport> Add(Sport s)
         {
             await _repo.InsertAsync(s);
-            return s.Id;
+            return s;
         }
 
         /// <summary>
