@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -30,19 +31,18 @@ namespace Timataka.Tests
             var controller = new SportsController(serviceMock.Object);
 
             // Act
-            var result = controller.Index();
+            var result = controller.Index() as ViewResult;
+            var data = (List<Sport>)result.ViewData.Model;
 
             // Assert
             Assert.IsType<ViewResult>(result);
+            Assert.Equal(expected: "Running", actual: data.First().Name);
 
         }
 
         [Fact]
-        public void TestGetSportByIDAsync()
+        public void TestGetSportByID()
         {
-
-
-
             //Arrange
             var serviceMock = new Mock<ISportsService>();
             serviceMock.Setup(x => x.GetAllSports()).Returns(() => new List<Sport>()
@@ -54,12 +54,11 @@ namespace Timataka.Tests
             var controller = new SportsController(serviceMock.Object);
 
             //Act
-            var result = controller.Details(2);
+            var result = controller.Details(2) as ViewResult;
+            var model = (List<Sport>)result.ViewData.Model;
 
-            //Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            //var model = Assert.IsType<Sport>(viewResult.ViewData.Model);
-            //Assert.Equal(expected: "Swimming", actual: model.Name);
+            //Assert 
+            Assert.IsType<ViewResult>(result);
         }
     }
 }

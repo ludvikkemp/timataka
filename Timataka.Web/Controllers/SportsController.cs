@@ -27,11 +27,10 @@ namespace Timataka.Web.Controllers
         public IActionResult Details(int id)
         {
             var sport = _sportsService.GetSportById(id);
-            if (sport == null)
+            //if (sport == null)
             {
-                return NotFound();
+                //return NotFound();
             }
-
             return View(sport);
         }
 

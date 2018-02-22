@@ -7,9 +7,9 @@ namespace Timataka.Core.Services
     public interface ISportsService
     {
         Task<Sport> Add(Sport s);
-        Sport Edit(Sport s);
-        Task<int> Remove(int SportId);
+        Task<Sport> Edit(Sport s);
+        int Remove(int SportId);
         IEnumerable<Sport> GetAllSports();
-        Task<Sport> GetSportById(int SportId);
+        Sport GetSportById(int SportId);
     }
 }
