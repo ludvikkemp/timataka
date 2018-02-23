@@ -45,11 +45,11 @@ namespace Timataka.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add([Bind("Id,Name")] Sport sport)
+        public async Task<IActionResult> Add([Bind("Id,Name")] Sport sport)
         {
             if (ModelState.IsValid && sport.Name != null)
             {
-                _sportsService.Add(sport);                
+                await _sportsService.Add(sport);                
                 return RedirectToAction(nameof(Index));
             }
             return View(sport);

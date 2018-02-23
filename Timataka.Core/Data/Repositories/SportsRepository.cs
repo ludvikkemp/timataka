@@ -42,7 +42,7 @@ namespace Timataka.Core.Data.Repositories
 
         public async Task InsertAsync(Sport entity)
         {
-            _context.Sports.Add(entity);
+            await _context.Sports.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
