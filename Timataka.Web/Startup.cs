@@ -77,7 +77,11 @@ namespace Timataka.Web
             services.AddTransient<IAccountRepository, AccountRepository>();
 
             services.AddTransient<IAdminService, AdminService>();
+
+            services.AddTransient<ISportsService, SportsService>();
+
             services.AddTransient<IAccountService, AccountService>();
+
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

@@ -1,42 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Timataka.Core.Data;
-using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
 {
     public class SportsController : Controller
     {
-        private readonly ISportsRepository _repo;
+        private readonly ISportsService _sportsService;
 
-        public SportsController(ISportsRepository repo)
+        public SportsController(ISportsService sportsService)
         {
-            _repo = repo;
+            _sportsService = sportsService;
         }
 
 
         // GET: Sports
         public IActionResult Index()
         {
-            var sports = _repo.Get();
+            var sports = _sportsService.GetAllSports();
             return View(sports);
         }
 
         // GET: Sports/Details/5
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
-            var sport = await _repo.GetByIdAsync(id);
+            var sport = _sportsService.GetSportById(id);
             if (sport == null)
             {
-                return NotFound();
+                //return NotFound();
             }
-
             return View(sport);
         }
 
@@ -51,20 +45,20 @@ namespace Timataka.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Sport sport)
+        public IActionResult Add([Bind("Id,Name")] Sport sport)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && sport.Name != null)
             {
-                await _repo.InsertAsync(sport);                
+                _sportsService.Add(sport);                
                 return RedirectToAction(nameof(Index));
             }
             return View(sport);
         }
 
         // GET: Sports/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
-            var sport = await _repo.GetByIdAsync(id);
+            var sport = _sportsService.GetSportById(id);
             if (sport == null)
             {
                 return NotFound();

@@ -46,6 +46,20 @@ namespace Timataka.Core.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public void Edit(Sport entity)
+        {
+            _context.Sports.Update(entity);
+            _context.SaveChanges();
+        }
+
+        public async Task EditAsync(Sport entity)
+        {
+            _context.Sports.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this._disposed)
@@ -63,6 +77,18 @@ namespace Timataka.Core.Data.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void Remove(Sport entity)
+        {
+            //TODO:Mark as removed, not delete compleatly
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveAsync(Task<Sport> entity)
+        {
+            //TODO:Mark as removed, not delete compleatly
+            throw new NotImplementedException();
         }
     }
 }
