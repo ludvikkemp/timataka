@@ -44,7 +44,6 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
         [Display(Name = "Phone Number (Example: 354-5555555)")]
         public string Phone { get; set; }
 
-        [Required]
         [StringLength(10, ErrorMessage = "SSN Must Contain 10 Characters", MinimumLength = 10)]
         [Display(Name = "Social Security Number")]
         public string Ssn { get; set; }
@@ -55,7 +54,8 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
 
-        [Required] [Display(Name = "Country")]
-        public SelectListItem Country { get; set; }
+        [Required]
+        [Display(Name = "Country")]
+        public string Country { get; set; }
     }
 }

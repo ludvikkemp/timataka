@@ -225,26 +225,7 @@ namespace Timataka.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                
-                var countryId = int.Parse(model.Country.Value);
-                
-                if (countryId == 353)
-                {
-                    // Þá þarf að ná í SSN og setja í dateOfBirth
-                    var day = model.Ssn[0].ToString() + model.Ssn[1].ToString();
-                    var month = model.Ssn[2].ToString() + model.Ssn[3].ToString();
-                    var year = model.Ssn[3].ToString() + model.Ssn[4].ToString();
-
-                    var yearNow = DateTime.UtcNow.Year;
-
-                    if (int.Parse(year) >= 0)
-                    {
-                        string isoTime = "2002-02-10";
-                        var time = DateTime.Parse(isoTime);
-                    }
-                    var dateOfBirth = new DateTime(2009, 02, 27);
-                }
-                
+                var countryId = int.Parse(model.Country);
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -256,7 +237,8 @@ namespace Timataka.Web.Controllers
                     Gender = model.Gender,
                     Phone = model.Phone,
                     CountryId = countryId,
-                    Deleted = false,
+                    DateOfBirth = model.DateOfBirth,
+                    Deleted = false
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -269,6 +251,8 @@ namespace Timataka.Web.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRoleAsync(user, "User");
+
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
