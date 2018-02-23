@@ -227,20 +227,24 @@ namespace Timataka.Web.Controllers
             {
                 
                 var countryId = int.Parse(model.Country.Value);
-                /*
+                
                 if (countryId == 353)
                 {
                     // Þá þarf að ná í SSN og setja í dateOfBirth
-                    var day = model.Ssn[0] + model.Ssn[1];
-                    var month = model.Ssn[2] + model.Ssn[3];
-                    var year = model.Ssn[4];
-                    if (year < 4)
-                    {
+                    var day = model.Ssn[0].ToString() + model.Ssn[1].ToString();
+                    var month = model.Ssn[2].ToString() + model.Ssn[3].ToString();
+                    var year = model.Ssn[3].ToString() + model.Ssn[4].ToString();
 
+                    var yearNow = DateTime.UtcNow.Year;
+
+                    if (int.Parse(year) >= 0)
+                    {
+                        string isoTime = "2002-02-10";
+                        var time = DateTime.Parse(isoTime);
                     }
                     var dateOfBirth = new DateTime(2009, 02, 27);
                 }
-                */
+                
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
