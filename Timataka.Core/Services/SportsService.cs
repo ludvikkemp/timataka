@@ -16,6 +16,11 @@ namespace Timataka.Core.Services
             _repo = repo;
         }
 
+        public SportsService()
+        {
+            //To be able to create instance in unit tests
+        }
+
         /// <summary>
         /// Function to add a sport.
         /// </summary>
@@ -66,7 +71,7 @@ namespace Timataka.Core.Services
         /// <returns>Sport with a given ID.</returns>
         public Sport GetSportById(int SportId)
         {
-            Sport s = _repo.GetById(SportId);
+            var s = _repo.GetById(SportId);
             return s;
         }
     }
