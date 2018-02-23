@@ -71,7 +71,7 @@ namespace Timataka.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name")] Sport sport)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Sport sport)
         {
             if (id != sport.Id)
             {
@@ -80,7 +80,7 @@ namespace Timataka.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                _sportsService.Edit(sport);
+                await _sportsService.Edit(sport);
                 return RedirectToAction(nameof(Index));
             }
             return View(sport);
