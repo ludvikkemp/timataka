@@ -18,26 +18,25 @@ namespace Timataka.Web.Controllers
             _adminService = adminService;
         }
         
+        [Authorize(Roles = "Superadmin, Admin")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
-        [Route("Dashboard")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Dashboard()
         {
             return View();
         }
 
-        [HttpGet]
-        [Route("Users")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Users()
         {
             return View();
         }
 
-        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateRole()
         {
             return null;

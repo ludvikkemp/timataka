@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Timataka.Core.Models.Entities
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager;
+@inject SignInManager<ApplicationUser> SignInManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -55,152 +60,69 @@
                     </div>
                     <nav class="menu">
                         <ul class="sidebar-menu metismenu" id="sidebar-menu">
+
                             <li>
                                 <a asp-area="" asp-controller="Admin" asp-action="Dashboard">
                                     <i class="fa fa-home"></i> Dashboard
                                 </a>
                             </li>
+                            @if (User.IsInRole("Superadmin"))
+                            {
                             <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Users">
-                                    <i class="fa fa-users"></i> Users
-                                   
-                                </a>
-                                
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Roles">
-                                    <i class="fa fa-lock"></i> Charts
+                                <a asp-area="" asp-controller="Admin" asp-action="">
+                                    <i class="fa fa-lock"></i> Roles
                                     <i class="fa arrow"></i>
                                 </a>
                                 <ul class="sidebar-nav">
                                     <li>
-                                        <a href="charts-flot.html"> Flot Charts </a>
+                                        <a asp-area="" asp-controller="Admin" asp-action=""> All Roles </a>
                                     </li>
                                     <li>
-                                        <a href="charts-morris.html"> Morris Charts </a>
+                                        <a asp-area="" asp-controller="Admin" asp-action=""> Add Role </a>
                                     </li>
                                 </ul>
                             </li>
+                            }
+
                             <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Sports">
+                                <a href="#">
+                                    <i class="fa fa-users"></i> Users
+                                    <i class="fa arrow"></i>
+                                </a>
+                                <ul class="sidebar-nav">
+                                    <li>
+                                        <a asp-area="" asp-controller="Admin" asp-action=""> All Users </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="Admin" asp-action=""> Add User </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="">
                                     <i class="fa fa-table"></i> Sports
                                     <i class="fa arrow"></i>
                                 </a>
                                 <ul class="sidebar-nav">
                                     <li>
-                                        <a href="static-tables.html"> Static Tables </a>
+                                        <a asp-area="" asp-controller="Admin" asp-action=""> All Sports </a>
                                     </li>
                                     <li>
-                                        <a href="responsive-tables.html"> Responsive Tables </a>
+                                        <a asp-area="" asp-controller="Admin" asp-action=""> Add Sport </a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                     </nav>
                 </div>
-                <footer class="sidebar-footer">
-                    <ul class="sidebar-menu metismenu" id="customize-menu">
-                        <li>
-                            <ul>
-                                <li class="customize">
-                                    <div class="customize-item">
-                                        <div class="row customize-header">
-                                            <div class="col-4"> </div>
-                                            <div class="col-4">
-                                                <label class="title">fixed</label>
-                                            </div>
-                                            <div class="col-4">
-                                                <label class="title">static</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <label class="title">Sidebar:</label>
-                                            </div>
-                                            <div class="col-4">
-                                                <label>
-                                                    <input class="radio" type="radio" name="sidebarPosition" value="sidebar-fixed">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="col-4">
-                                                <label>
-                                                    <input class="radio" type="radio" name="sidebarPosition" value="">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <label class="title">Header:</label>
-                                            </div>
-                                            <div class="col-4">
-                                                <label>
-                                                    <input class="radio" type="radio" name="headerPosition" value="header-fixed">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="col-4">
-                                                <label>
-                                                    <input class="radio" type="radio" name="headerPosition" value="">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <label class="title">Footer:</label>
-                                            </div>
-                                            <div class="col-4">
-                                                <label>
-                                                    <input class="radio" type="radio" name="footerPosition" value="footer-fixed">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="col-4">
-                                                <label>
-                                                    <input class="radio" type="radio" name="footerPosition" value="">
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="customize-item">
-                                        <ul class="customize-colors">
-                                            <li>
-                                                <span class="color-item color-red" data-theme="red"></span>
-                                            </li>
-                                            <li>
-                                                <span class="color-item color-orange" data-theme="orange"></span>
-                                            </li>
-                                            <li>
-                                                <span class="color-item color-green active" data-theme=""></span>
-                                            </li>
-                                            <li>
-                                                <span class="color-item color-seagreen" data-theme="seagreen"></span>
-                                            </li>
-                                            <li>
-                                                <span class="color-item color-blue" data-theme="blue"></span>
-                                            </li>
-                                            <li>
-                                                <span class="color-item color-purple" data-theme="purple"></span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                            <a href="">
-                                <i class="fa fa-cog"></i> Customize
-                            </a>
-                        </li>
-                    </ul>
-                </footer>
+                <footer class="sidebar-footer"></footer>
             </aside>
             <div class="sidebar-overlay" id="sidebar-overlay"></div>
             <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
             <div class="mobile-menu-handle"></div>
             @RenderBody()
-           
+
             <footer class="footer">
                 <div class="footer-block buttons">
                     <iframe class="footer-github-btn" src="https://ghbtns.com/github-btn.html?user=modularcode&repo=modular-admin-html&type=star&count=true" frameborder="0" scrolling="0" width="140px" height="20px"></iframe>
