@@ -11,11 +11,11 @@ using Timataka.Core.Models.Entities;
 
 namespace Timataka.Web.Controllers
 {
-    public class DiciplineController : Controller
+    public class DisciplineController : Controller
     {
-        private readonly IDiciplinesRepository _repo;
+        private readonly IDisciplineRepository _repo;
 
-        public DiciplineController(IDiciplinesRepository repo)
+        public DisciplineController(IDisciplineRepository repo)
         {
             _repo = repo;
         }
@@ -36,7 +36,7 @@ namespace Timataka.Web.Controllers
         //POST: Dicipline/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Dicipline dicipline)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Discipline dicipline)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace Timataka.Web.Controllers
         //POST: Dicipline/Edit/1
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name")] Dicipline dicipline)
+        public IActionResult Edit(int id, [Bind("Id,Name")] Discipline dicipline)
         {
             if (id != dicipline.Id)
             {

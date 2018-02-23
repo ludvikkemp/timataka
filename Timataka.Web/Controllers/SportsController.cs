@@ -8,9 +8,9 @@ namespace Timataka.Web.Controllers
 {
     public class SportsController : Controller
     {
-        private readonly ISportsService _sportsService;
+        private readonly ISportService _sportsService;
 
-        public SportsController(ISportsService sportsService)
+        public SportsController(ISportService sportsService)
         {
             _sportsService = sportsService;
         }
@@ -100,7 +100,6 @@ namespace Timataka.Web.Controllers
             //}
             return View(sport);
 
-            return View();
         }
 
         // GET: Sports/Delete/5

@@ -71,14 +71,14 @@ namespace Timataka.Web
             });
 
             // DI for Repositores
-            services.AddTransient<ISportsRepository, SportsRepository>();
-            services.AddTransient<IDiciplinesRepository, DiceplinesRepository>();
+            services.AddTransient<ISportRepository, SportRepository>();
+            services.AddTransient<IDisciplineRepository, DisciplineRepository>();
             services.AddTransient<IAdminRepository, AdminRepository>();
             services.AddTransient<IAccountRepository, AccountRepository>();
 
             services.AddTransient<IAdminService, AdminService>();
 
-            services.AddTransient<ISportsService, SportsService>();
+            services.AddTransient<ISportService, SportService>();
 
             services.AddTransient<IAccountService, AccountService>();
 

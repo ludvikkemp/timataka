@@ -5,7 +5,7 @@ using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Data.Repositories
 {
-    public interface ISportsRepository : IDisposable
+    public interface ISportRepository : IDisposable
     {
         void Insert(Sport entity);
         Task InsertAsync(Sport entity);
