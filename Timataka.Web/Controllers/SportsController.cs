@@ -27,9 +27,9 @@ namespace Timataka.Web.Controllers
         public IActionResult Details(int id)
         {
             var sport = _sportsService.GetSportById(id);
-            //if (sport == null)
+            if (sport == null)
             {
-                //return NotFound();
+                return NotFound();
             }
             return View(sport);
         }
@@ -56,7 +56,7 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: Sports/Edit/5
-        IActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             var sport = _sportsService.GetSportById(id);
             if (sport == null)
