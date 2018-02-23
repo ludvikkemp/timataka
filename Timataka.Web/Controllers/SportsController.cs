@@ -78,29 +78,12 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        _context.Update(sport);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!SportExists(sport.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //return View(sport);
-
-            return View();
+            if (ModelState.IsValid)
+            {
+                _sportsService.Edit(sport);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(sport);
         }
 
         // GET: Sports/Delete/5

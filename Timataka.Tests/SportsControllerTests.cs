@@ -47,14 +47,14 @@ namespace Timataka.Tests
         public void TestGetSportByID()
         {
             // Arrange
-            int SportID = 2;
+            int SportId = 2;
             var mockService = new Mock<ISportsService>();
-            mockService.Setup(x => x.GetSportById(SportID))
+            mockService.Setup(x => x.GetSportById(SportId))
                 .Returns(((Sport)new Sport { Id = 2, Name = "Swimming" }));
             var controller = new SportsController(mockService.Object);
 
             // Act
-            var result = controller.Details(SportID) as ViewResult;
+            var result = controller.Details(SportId) as ViewResult;
             var model = (Sport)result.ViewData.Model;
 
             // Assert
