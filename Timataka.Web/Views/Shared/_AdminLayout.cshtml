@@ -8,21 +8,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Timataka</title>
+    <title>Timataka.net</title>
+    <link rel="icon" href="~/images/timatakaLogo.png">
 
     <environment include="Development">
         <link rel="stylesheet" href="~/css/admin/vendor.css" />
-        <script>
-            var themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) :
-                {};
-            var themeName = themeSettings.themeName || '';
-            if (themeName) {
-                document.write('<link rel="stylesheet" id="theme-style" href="css/admin/app-' + themeName + '.css">');
-            }
-            else {
-                document.write('<link rel="stylesheet" id="theme-style" href="css/admin/app.css">');
-            }
-        </script>
+        <link rel="stylesheet" href="~/css/admin/app-blue.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/admin/vendor.css" />
@@ -55,7 +46,7 @@
                     <div class="sidebar-header">
                         <div class="brand">
                             <div class="timataka-logo">
-                            </div> Timataka Admin
+                            </div> Admin Dashboard
                         </div>
                     </div>
                     <nav class="menu">
