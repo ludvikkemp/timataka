@@ -1,2 +1,2 @@
 # timataka
-Final Project 2018 - Reykjavik University
+Final Project 2018 - Reykjavik University.

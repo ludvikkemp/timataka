@@ -25,17 +25,20 @@ namespace Timataka.Web.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IAccountService _accountService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IAccountService accountService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _accountService = accountService;
         }
 
         [TempData]
@@ -210,6 +213,7 @@ namespace Timataka.Web.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewBag.Nations = _accountService.GetNationsListItems();
             return View();
         }
 
@@ -221,7 +225,22 @@ namespace Timataka.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var countryId = int.Parse(model.Country);
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    MiddleName = model.MiddleName,
+                    LastName = model.LastName,
+                    Ssn = model.Ssn,
+                    Gender = model.Gender,
+                    Phone = model.Phone,
+                    CountryId = countryId,
+                    DateOfBirth = model.DateOfBirth,
+                    Deleted = false
+                };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -233,6 +252,8 @@ namespace Timataka.Web.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRoleAsync(user, "User");
+
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

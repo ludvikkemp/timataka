@@ -13,7 +13,5 @@ namespace Timataka.Core.Services
         {
             _repo = repo;
         }
-
-
     }
 }
