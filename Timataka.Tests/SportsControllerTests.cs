@@ -44,7 +44,7 @@ namespace Timataka.Tests
         }
 
         [Fact]
-        public void TestGetSportByID()
+        public void TestGetSportById()
         {
             // Arrange
             int SportID = 2;

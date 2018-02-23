@@ -98,7 +98,7 @@ namespace Timataka.Web.Controllers
             //    }
             //    return RedirectToAction(nameof(Index));
             //}
-            //return View(sport);
+            return View(sport);
 
             return View();
         }
