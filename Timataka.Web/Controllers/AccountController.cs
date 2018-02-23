@@ -240,6 +240,7 @@ namespace Timataka.Web.Controllers
                     DateOfBirth = model.DateOfBirth,
                     Deleted = false
                 };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
