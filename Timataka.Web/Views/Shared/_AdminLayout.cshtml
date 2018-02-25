@@ -29,7 +29,9 @@
                         <i class="fa fa-bars"></i>
                     </button>
                 </div>
-                <div class="header-block header-block-search">
+                
+                <div class="header-block">
+                    <!--
                     <form role="search">
                         <div class="input-container">
                             <i class="fa fa-search"></i>
@@ -37,15 +39,16 @@
                             <div class="underline"></div>
                         </div>
                     </form>
+                    -->
                 </div>
-
+                
                 @await Html.PartialAsync("_AdminLoginPartial")
             </header>
             <aside class="sidebar">
                 <div class="sidebar-container">
                     <div class="sidebar-header">
                         <div class="brand">
-                            <div class="timataka-logo">
+                            <div>
                             </div> Admin Dashboard
                         </div>
                     </div>
@@ -53,7 +56,7 @@
                         <ul class="sidebar-menu metismenu" id="sidebar-menu">
 
                             <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Dashboard">
+                                <a asp-area="" asp-controller="Admin" asp-action="Index">
                                     <i class="fa fa-home"></i> Dashboard
                                 </a>
                             </li>

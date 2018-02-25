@@ -25,21 +25,15 @@ namespace Timataka.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
         public IActionResult Users()
         {
             return View();
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateRole()
+        public IActionResult Roles()
         {
-            return null;
+            return View();
         }
     }
 }
