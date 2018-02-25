@@ -63,18 +63,9 @@
                             @if (User.IsInRole("Superadmin"))
                             {
                             <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="">
+                                <a asp-area="" asp-controller="Admin" asp-action="Roles">
                                     <i class="fa fa-lock"></i> Roles
-                                    <i class="fa arrow"></i>
                                 </a>
-                                <ul class="sidebar-nav">
-                                    <li>
-                                        <a asp-area="" asp-controller="Admin" asp-action=""> All Roles </a>
-                                    </li>
-                                    <li>
-                                        <a asp-area="" asp-controller="Admin" asp-action=""> Add Role </a>
-                                    </li>
-                                </ul>
                             </li>
                             }
 
