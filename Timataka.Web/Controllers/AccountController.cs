@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Timataka.Core.Models.Entities;
@@ -26,19 +27,22 @@ namespace Timataka.Web.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly IAccountService _accountService;
+        private readonly IMemoryCache _cache;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
-            IAccountService accountService)
+            IAccountService accountService,
+            IMemoryCache cache)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _accountService = accountService;
+            _cache = cache;
         }
 
         [TempData]
@@ -253,6 +257,7 @@ namespace Timataka.Web.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
                     await _userManager.AddToRoleAsync(user, "User");
+                    _cache.Remove("listOfUsers");
 
                     return RedirectToLocal(returnUrl);
                 }
