@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Timataka.Core.Data.Repositories;
+using Timataka.Core.Models.Dto.AdminDTO;
 
 namespace Timataka.Core.Services
 {
@@ -12,6 +13,11 @@ namespace Timataka.Core.Services
         public AdminService(IAdminRepository repo)
         {
             _repo = repo;
+        }
+
+        public IEnumerable<UserDto> GetUsers()
+        {
+            return _repo.GetUsers();
         }
     }
 }

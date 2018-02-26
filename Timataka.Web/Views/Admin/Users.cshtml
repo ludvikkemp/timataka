@@ -1,4 +1,5 @@
-﻿@model object
+﻿@using Timataka.Core.Models.Dto.AdminDTO
+@model IEnumerable<Timataka.Core.Models.Dto.AdminDTO.UserDto> 
 
 @{
     ViewBag.Title = "Users";
@@ -52,8 +53,8 @@
                                                     <th>Date of Birth</th>
                                                     <th>SSN</th>
                                                     <th>Phone</th>
-                                                    <th>Country</th>
-                                                    <th>Nationality</th>
+                                                    <th>CountryId</th>
+                                                    <th>NationalityId</th>
                                                     <th>Gender</th>
                                                     <th>Deleted</th>
                                                     <th>Roles</th>
@@ -61,57 +62,30 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Jon Jonsson</td>
-                                                    <td>jon@gmail.com</td>
-                                                    <td>jon@gmail.com</td>
-                                                    <td>15/12/1999</td>
-                                                    <td>0304878879</td>
-                                                    <td>354-5555555</td>
-                                                    <td>Iceland</td>
-                                                    <td>Iceland</td>
-                                                    <td>Male</td>
-                                                    <td>False</td>
-                                                    <td>Admin</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-warning btn-sm">Edit</button>
-                                                        <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Johanna Sigurðardóttir</td>
-                                                    <td>johanna@gmail.com</td>
-                                                    <td>johanna@gmail.com</td>
-                                                    <td>05/10/1989</td>
-                                                    <td>0304878879</td>
-                                                    <td>354-5455454</td>
-                                                    <td>Iceland</td>
-                                                    <td>Iceland</td>
-                                                    <td>Female</td>
-                                                    <td>False</td>
-                                                    <td></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-warning btn-sm">Edit</button>
-                                                        <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Johanna Sigurðardóttir</td>
-                                                    <td>johanna@gmail.com</td>
-                                                    <td>johanna@gmail.com</td>
-                                                    <td>05/10/1989</td>
-                                                    <td>0304878879</td>
-                                                    <td>354-5455454</td>
-                                                    <td>Iceland</td>
-                                                    <td>Iceland</td>
-                                                    <td>Female</td>
-                                                    <td>True</td>
-                                                    <td></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-warning btn-sm">Edit</button>
-                                                        <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                                                    </td>
-                                                </tr>
+                                                @foreach (var user in Model)
+                                                {
+                                                    <tr>
+                                                        <td>@user.Name</td>
+                                                        <td>@user.Username</td>
+                                                        <td>@user.Email</td>
+                                                        <td>@user.DateOfBirth</td>
+                                                        <td>@user.Ssn</td>
+                                                        <td>@user.Phone</td>
+                                                        <td>@user.CountryId</td>
+                                                        <td>@user.NationalityId</td>
+                                                        <td>@user.Gender</td>
+                                                        <td>@user.Deleted</td>
+                                                        <td>@foreach (var role in user.Roles)
+                                                            {
+                                                                @role.Name
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-warning btn-sm">Edit</button>
+                                                            <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
