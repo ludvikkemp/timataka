@@ -43,67 +43,67 @@
                     <div class="sidebar-header">
                         <div class="brand">
                             <div>
-                            </div> Admin Dashboard
+                            </div> MySite
                         </div>
                     </div>
                     <nav class="menu">
                         <ul class="sidebar-menu metismenu" id="sidebar-menu">
 
                             <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Index">
-                                    <i class="fa fa-home"></i> Dashboard
+                                <a asp-area="" asp-controller="" asp-action="">
+                                    <i class="fa fa-home"></i> Competitions
                                 </a>
                             </li>
                             @if (User.IsInRole("Superadmin"))
                             {
                             <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Roles">
-                                    <i class="fa fa-lock"></i> Roles
+                                <a asp-area="" asp-controller="" asp-action="">
+                                    <i class="fa fa-lock"></i> Something
                                 </a>
                             </li>
                             }
 
                             <li>
                                 <a href="#">
-                                    <i class="fa fa-users"></i> Users
+                                    <i class="fa fa-users"></i> Something Else
                                     <i class="fa arrow"></i>
                                 </a>
                                 <ul class="sidebar-nav">
                                     <li>
-                                        <a asp-area="" asp-controller="Admin" asp-action="Users"> All Users </a>
+                                        <a asp-area="" asp-controller="" asp-action=""> Something More </a>
                                     </li>
                                     <li>
-                                        <a asp-area="" asp-controller="Admin" asp-action=""> Add User </a>
+                                        <a asp-area="" asp-controller="" asp-action=""> Something Even More </a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="">
-                                    <i class="fa fa-table"></i> Sports
+                                <a asp-area="" asp-controller="" asp-action="">
+                                    <i class="fa fa-table"></i> I don't know
                                     <i class="fa arrow"></i>
                                 </a>
                                 <ul class="sidebar-nav">
                                     <li>
-                                        <a asp-area="" asp-controller="Admin" asp-action=""> All Sports </a>
+                                        <a asp-area="" asp-controller="" asp-action=""> I'm Lost </a>
                                     </li>
                                     <li>
-                                        <a asp-area="" asp-controller="Admin" asp-action=""> Add Sport </a>
+                                        <a asp-area="" asp-controller="" asp-action=""> Down a Rabithole </a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                     </nav>
                 </div>
-                <footer class="sidebar-footer"></footer>
+                <footer class=""></footer>
             </aside>
             <div class="sidebar-overlay" id="sidebar-overlay"></div>
             <div class="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
-            <div class="mobile-menu-handle"></div>
+            
             @RenderBody()
 
             <footer class="footer">
-                <div class="footer-block buttons">
+                <div class="footer-block">
                     <iframe class="footer-github-btn" src="https://ghbtns.com/github-btn.html?user=modularcode&repo=modular-admin-html&type=star&count=true" frameborder="0" scrolling="0" width="140px" height="20px"></iframe>
                 </div>
                 <div class="footer-block author">
