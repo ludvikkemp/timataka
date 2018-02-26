@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Timataka.Tests
 {
-    public class SportsControllerTests
+    public class SportControllerTests
     {
         //SportsService sportsService = new SportsService();
 
@@ -23,7 +23,7 @@ namespace Timataka.Tests
         public void GetSportsIndex()
         {
             // Arrange
-            var serviceMock = new Mock<ISportsService>();
+            var serviceMock = new Mock<ISportService>();
             serviceMock.Setup(x => x.GetAllSports()).Returns(() => new List<Sport>()
             {
                 new Sport {Id = 1, Name = "Running"},
@@ -44,11 +44,11 @@ namespace Timataka.Tests
         }
 
         [Fact]
-        public void TestGetSportByID()
+        public void TestGetSportById()
         {
             // Arrange
             int SportID = 2;
-            var mockService = new Mock<ISportsService>();
+            var mockService = new Mock<ISportService>();
             mockService.Setup(x => x.GetSportById(SportID))
                 .Returns(((Sport)new Sport { Id = 2, Name = "Swimming" }));
             var controller = new SportsController(mockService.Object);
@@ -66,7 +66,7 @@ namespace Timataka.Tests
         public void TestAddSportWithValidModel()
         {
             //Arrange
-            var serviceMock = new Mock<ISportsService>();
+            var serviceMock = new Mock<ISportService>();
             Sport newSport = new Sport { Id = 4, Name = "Rowing" };
             serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult((Sport)newSport));
             var controller = new SportsController(serviceMock.Object);
@@ -82,7 +82,7 @@ namespace Timataka.Tests
         public void TestAddSportWithInValidModel()
         {
             //Arrange
-            var serviceMock = new Mock<ISportsService>();
+            var serviceMock = new Mock<ISportService>();
             Sport newSport = new Sport { Id = 8 };
             serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult((Sport)newSport));
             var controller = new SportsController(serviceMock.Object);

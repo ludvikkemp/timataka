@@ -8,25 +8,25 @@ namespace Timataka.Web.Controllers
 {
     public class SportsController : Controller
     {
-        private readonly ISportsService _sportsService;
+        private readonly ISportService _sportService;
 
-        public SportsController(ISportsService sportsService)
+        public SportsController(ISportService sportService)
         {
-            _sportsService = sportsService;
+            _sportService = sportService;
         }
 
 
         // GET: Sports
         public IActionResult Index()
         {
-            var sports = _sportsService.GetAllSports();
+            var sports = _sportService.GetAllSports();
             return View(sports);
         }
 
         // GET: Sports/Details/5
         public IActionResult Details(int id)
         {
-            var sport = _sportsService.GetSportById(id);
+            var sport = _sportService.GetSportById(id);
             if (sport == null)
             {
                 //return NotFound();
@@ -49,7 +49,7 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid && sport.Name != null)
             {
-                _sportsService.Add(sport);                
+                _sportService.Add(sport);                
                 return RedirectToAction(nameof(Index));
             }
             return View(sport);
@@ -58,7 +58,7 @@ namespace Timataka.Web.Controllers
         // GET: Sports/Edit/5
         public IActionResult Edit(int id)
         {
-            var sport = _sportsService.GetSportById(id);
+            var sport = _sportService.GetSportById(id);
             if (sport == null)
             {
                 return NotFound();
@@ -98,9 +98,8 @@ namespace Timataka.Web.Controllers
             //    }
             //    return RedirectToAction(nameof(Index));
             //}
-            //return View(sport);
+            return View(sport);
 
-            return View();
         }
 
         // GET: Sports/Delete/5
