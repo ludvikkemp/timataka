@@ -19,5 +19,10 @@ namespace Timataka.Core.Services
         {
             return _repo.GetUsers();
         }
+
+        public UserDto GetUserByUsername(string username)
+        {
+            return _repo.GetUserByUsername(username);
+        }
     }
 }

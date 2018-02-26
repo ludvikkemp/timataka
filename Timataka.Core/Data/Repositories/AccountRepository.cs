@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Data.Repositories
@@ -20,5 +21,6 @@ namespace Timataka.Core.Data.Repositories
         {
             return _db.Countries.OrderBy(x => x.Name).ToList();
         }
+
     }
 }

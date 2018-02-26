@@ -8,5 +8,6 @@ namespace Timataka.Core.Services
     public interface IAdminService
     {
         IEnumerable<UserDto> GetUsers();
+        UserDto GetUserByUsername(string username);
     }
 }

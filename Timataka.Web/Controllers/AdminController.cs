@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection.Emit;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Timataka.Core.Models.Dto.AdminDTO;
+using Timataka.Core.Models.ViewModels.AccountViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -32,9 +34,8 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Users()
         {
-            IEnumerable<UserDto> listOfUsers;
 
-            if (!_cache.TryGetValue("listOfUsers", out listOfUsers))
+            if (!_cache.TryGetValue("listOfUsers", out IEnumerable<UserDto> listOfUsers))
             {
                 listOfUsers = _adminService.GetUsers();
 
@@ -43,8 +44,26 @@ namespace Timataka.Web.Controllers
 
                 _cache.Set("listOfUsers", listOfUsers, cacheEntryOptions);
             }
-            
+
             return View(listOfUsers);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public ActionResult EditUser(string username)
+        {
+            if (username == null)
+            {
+                return new BadRequestObjectResult(null);
+            }
+
+            var userDto = _adminService.GetUserByUsername(username);
+
+            if (userDto == null)
+            {
+                return new BadRequestResult();
+            }
+            return View(userDto);
         }
 
         [Authorize(Roles = "Admin")]

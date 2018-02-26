@@ -8,5 +8,6 @@ namespace Timataka.Core.Data.Repositories
     public interface IAdminRepository
     {
         IEnumerable<UserDto> GetUsers();
+        UserDto GetUserByUsername(string username);
     }
 }

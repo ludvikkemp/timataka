@@ -44,5 +44,34 @@ namespace Timataka.Core.Data.Repositories
                 }).ToList();
             return users;
         }
+
+        public UserDto GetUserByUsername(string username)
+        {
+            var user = (from u in _db.Users
+                        where u.UserName == username
+                        select new UserDto
+                        {
+                            Name = u.FirstName + " " + u.LastName,
+                            Email = u.Email,
+                            Username = u.UserName,
+                            Ssn = u.Ssn,
+                            Phone = u.Phone,
+                            DateOfBirth = u.DateOfBirth,
+                            Gender = u.Gender,
+                            CountryId = u.CountryId,
+                            NationalityId = u.NationalityId,
+                            Deleted = u.Deleted,
+                            Roles = (from ur in _db.UserRoles
+                                join r in _db.Roles
+                                    on ur.RoleId equals r.Id
+                                where u.Id == ur.UserId
+                                select new RolesDto
+                                {
+                                    Id = ur.RoleId,
+                                    Name = r.Name
+                                }).ToList()
+                        }).SingleOrDefault();
+            return user;
+        }
     }
 }
