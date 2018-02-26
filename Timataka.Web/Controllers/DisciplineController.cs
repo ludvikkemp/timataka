@@ -8,16 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Data;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
 {
-    public class DiciplineController : Controller
+    public class DisciplineController : Controller
     {
-        private readonly IDiciplinesRepository _repo;
+        private readonly IDisciplineService _disciplineService;
 
-        public DiciplineController(IDiciplinesRepository repo)
+        public DisciplineController(IDisciplineService disciplineService)
         {
-            _repo = repo;
+            _disciplineService = disciplineService;
         }
 
         //GET: Dicipline
