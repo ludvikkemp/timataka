@@ -48,9 +48,10 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="SportId"></param>
         /// <returns>Id of the sport removed</returns>
-        public int Remove(int SportId)
+        public async Task<int> Remove(int SportId)
         {
-            _repo.Remove(GetSportById(SportId));
+            var s = await GetSportById(SportId);
+            await _repo.RemoveAsync(s);
             return SportId;
         }
 
@@ -69,10 +70,11 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="SportId"></param>
         /// <returns>Sport with a given ID.</returns>
-        public Sport GetSportById(int SportId)
+        public async Task<Sport> GetSportById(int SportId)
         {
-            var s = _repo.GetById(SportId);
+            var s = await _repo.GetByIdAsync(SportId);
             return s;
         }
+
     }
 }

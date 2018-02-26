@@ -24,9 +24,9 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: Sports/Details/5
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var sport = _sportsService.GetSportById(id);
+            var sport = await _sportsService.GetSportById(id);
             if (sport == null)
             {
                 //return NotFound();
@@ -87,41 +87,29 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: Sports/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var sport = await _context.Sports
-        //        .SingleOrDefaultAsync(m => m.Id == id);
-        //    if (sport == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(sport);
-        //}
-
-        //// POST: Sports/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var sport = await _context.Sports.SingleOrDefaultAsync(m => m.Id == id);
-        //    _context.Sports.Remove(sport);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool SportExists(int id)
-        //{
-        //    return _context.Sports.Any(e => e.Id == id);
-        //}
-        public IActionResult Delete()
+        public IActionResult Delete(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var sport = _sportsService.GetSportById((int)id);
+            if (sport == null)
+            {
+                return NotFound();
+            }
+
+            return View(sport);
+        }
+
+        // POST: Sports/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var sport = _sportsService.Remove((int)id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

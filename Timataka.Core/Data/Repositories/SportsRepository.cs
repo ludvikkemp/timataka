@@ -85,7 +85,7 @@ namespace Timataka.Core.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task RemoveAsync(Task<Sport> entity)
+        public Task RemoveAsync(Sport entity)
         {
             //TODO:Mark as removed, not delete compleatly
             throw new NotImplementedException();

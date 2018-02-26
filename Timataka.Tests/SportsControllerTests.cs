@@ -44,17 +44,17 @@ namespace Timataka.Tests
         }
 
         [Fact]
-        public void TestGetSportByID()
+        public async void TestGetSportByID()
         {
             // Arrange
             int SportId = 2;
             var mockService = new Mock<ISportsService>();
             mockService.Setup(x => x.GetSportById(SportId))
-                .Returns(((Sport)new Sport { Id = 2, Name = "Swimming" }));
+                .Returns(Task.FromResult(new Sport { Id = 2, Name = "Swimming" }));
             var controller = new SportsController(mockService.Object);
 
             // Act
-            var result = controller.Details(SportId) as ViewResult;
+            var result = await controller.Details(SportId) as ViewResult;
             var model = (Sport)result.ViewData.Model;
 
             // Assert
@@ -63,23 +63,23 @@ namespace Timataka.Tests
         }
 
         [Fact]
-        public void TestAddSportWithValidModel()
+        public async void TestAddSportWithValidModel()
         {
             //Arrange
             var serviceMock = new Mock<ISportsService>();
             Sport newSport = new Sport { Id = 4, Name = "Rowing" };
-            serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult((Sport)newSport));
+            serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult(newSport));
             var controller = new SportsController(serviceMock.Object);
 
             //Act
-            var result = controller.Add(newSport) as RedirectToActionResult;
+            var result = await controller.Add(newSport) as RedirectToActionResult;
 
             //Assert 
             Assert.Equal(expected: "Index", actual: result.ActionName);
         }
 
         [Fact]
-        public void TestAddSportWithInValidModel()
+        public async void TestAddSportWithInValidModel()
         {
             //Arrange
             var serviceMock = new Mock<ISportsService>();
@@ -88,7 +88,7 @@ namespace Timataka.Tests
             var controller = new SportsController(serviceMock.Object);
 
             //Act
-            var result = controller.Add(newSport) as ViewResult;
+            var result = await controller.Add(newSport) as ViewResult;
             var model = (Sport)result.ViewData.Model;
 
             //Assert 
