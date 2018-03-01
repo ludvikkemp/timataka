@@ -50816,7 +50816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            "font-weight": 400,
 	            gradient: 0,
 	            height: 0,
-	            href: "http://raphaeljs.com/",
+	            href: "https://raphaeljs.com/",
 	            "letter-spacing": 0,
 	            opacity: 1,
 	            path: "M0,0",
@@ -50957,7 +50957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     **
 	     * Can be “SVG”, “VML” or empty, depending on browser support.
 	    \*/
-	    R.type = (g.win.SVGAngle || g.doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ? "SVG" : "VML");
+	    R.type = (g.win.SVGAngle || g.doc.implementation.hasFeature("https://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ? "SVG" : "VML");
 	    if (R.type == "VML") {
 	        var d = g.doc.createElement("div"),
 	            b;

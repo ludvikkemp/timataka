@@ -3,8 +3,7 @@
 @{
     ViewBag.Title = "Edit User";
     Layout = "_AdminLayout";
-    var dateOfBirth = Convert.ToDateTime(Model.DateOfBirth);
-    
+    var dateOfBirth = DateTime.ParseExact(Model.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
 }
 
 
