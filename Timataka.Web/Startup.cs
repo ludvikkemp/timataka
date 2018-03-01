@@ -79,6 +79,7 @@ namespace Timataka.Web
             services.AddTransient<IAdminService, AdminService>();
 
             services.AddTransient<ISportService, SportService>();
+            services.AddTransient<IDisciplineService, DisciplineService>();
 
             services.AddTransient<IAccountService, AccountService>();
 

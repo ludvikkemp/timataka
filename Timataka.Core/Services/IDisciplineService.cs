@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Timataka.Core.Services
 {
@@ -11,5 +12,7 @@ namespace Timataka.Core.Services
         int Remove(int DisciplineId);
         IEnumerable<Discipline> GetAllDisciplines();
         Discipline GetDisciplineById(int DisciplineId);
+        List<SelectListItem> GetSportsListItems();
+        int GetNextId();
     }
 }

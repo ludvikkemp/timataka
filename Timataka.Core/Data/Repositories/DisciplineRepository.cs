@@ -46,6 +46,18 @@ namespace Timataka.Core.Data.Repositories
             await _db.SaveChangesAsync();
         }
 
+        public void Edit(Discipline entity)
+        {
+            _db.Disciplines.Update(entity);
+            _db.SaveChanges();
+        }
+
+        public async Task EditAsync(Discipline entity)
+        {
+            _db.Disciplines.Update(entity);
+            await _db.SaveChangesAsync();
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this._disposed)
@@ -63,6 +75,23 @@ namespace Timataka.Core.Data.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void Remove(Discipline entity)
+        {
+            //TODO:Mark as removed, not delete compleatly
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveAsync(Task<Discipline> entity)
+        {
+            //TODO:Mark as removed, not delete compleatly
+            throw new NotImplementedException();
+        }
+
+        public List<Sport> GetSports()
+        {
+            return _db.Sports.OrderBy(x => x.Name).ToList();
         }
     }
 }

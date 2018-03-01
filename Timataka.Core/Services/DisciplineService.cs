@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Timataka.Core.Services
 {
@@ -73,6 +74,42 @@ namespace Timataka.Core.Services
         {
             var d = _repo.GetById(DisciplineId);
             return d;
+        }
+
+        public List<SelectListItem> GetSportsListItems()
+        {
+            List<SelectListItem> selectSportsListItems =
+                new List<SelectListItem>();
+
+            var listOfSports = _repo.GetSports();
+
+            foreach (var item in listOfSports)
+            {
+                selectSportsListItems.Add(
+                    new SelectListItem
+                    {
+                        Text = item.Name,
+                        Value = item.Id.ToString()
+                    });
+            }
+
+            return selectSportsListItems;
+        }
+
+        public int GetNextId()
+        {
+            int maxId = -1;
+            var disciplines = _repo.Get();
+
+            foreach(var discipline in disciplines)
+            {
+                if(discipline.Id > maxId)
+                {
+                    maxId = discipline.Id;
+                }
+            }
+
+            return maxId + 1;
         }
     }
 }
