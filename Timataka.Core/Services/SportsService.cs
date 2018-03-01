@@ -28,6 +28,10 @@ namespace Timataka.Core.Services
         /// <returns>ID of sport added</returns>
         public async Task<Sport> Add(Sport s)
         {
+            if(GetSportByName(s.Name) != null)
+            {
+                throw new Exception("Sport already exists");
+            }
             await _repo.InsertAsync(s);
             return s;
         }
@@ -73,6 +77,17 @@ namespace Timataka.Core.Services
         public async Task<Sport> GetSportById(int SportId)
         {
             var s = await _repo.GetByIdAsync(SportId);
+            return s;
+        }
+
+        /// <summary>
+        /// Get a sport by its Name
+        /// </summary>
+        /// <param name="SportName"></param>
+        /// <returns></returns>
+        public async Task<Sport> GetSportByName(string SportName)
+        {
+            var s = await _repo.GetSportByNameAsync(SportName);
             return s;
         }
 

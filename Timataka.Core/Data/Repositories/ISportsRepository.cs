@@ -21,5 +21,6 @@ namespace Timataka.Core.Data.Repositories
         void Remove(Sport entity);
         Task RemoveAsync(Sport entity);
 
+        Task<Sport> GetSportByNameAsync(string sportName);
     }
 }

@@ -49,7 +49,14 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid && sport.Name != null)
             {
-                await _sportsService.Add(sport);                
+                try
+                {
+                    await _sportsService.Add(sport);
+                }
+                catch (Exception e)
+                {
+                    //Todo: return some error view
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(sport);
@@ -87,14 +94,14 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: Sports/Delete/5
-        public IActionResult Delete(int? id)
+        public async Task <IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var sport = _sportsService.GetSportById((int)id);
+            var sport = await _sportsService.GetSportById((int)id);
             if (sport == null)
             {
                 return NotFound();
@@ -106,9 +113,9 @@ namespace Timataka.Web.Controllers
         // POST: Sports/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sport = _sportsService.Remove((int)id);
+            var sport = await _sportsService.Remove((int)id);
             return RedirectToAction(nameof(Index));
         }
     }

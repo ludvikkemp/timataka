@@ -90,5 +90,11 @@ namespace Timataka.Core.Data.Repositories
             //TODO:Mark as removed, not delete compleatly
             throw new NotImplementedException();
         }
+
+        public Task<Sport> GetSportByNameAsync(string sportName)
+        {
+            var s = _context.Sports.SingleOrDefaultAsync(x => x.Name == sportName);
+            return s;
+        }
     }
 }
