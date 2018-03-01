@@ -8,81 +8,97 @@ using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Data;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Services;
+using Timataka.Core.Models.ViewModels.DisciplineViewModels;
 
 namespace Timataka.Web.Controllers
 {
     public class DisciplineController : Controller
     {
-        private readonly IDisciplineRepository _repo;
+        private readonly IDisciplineService _disciplineService;
+        private readonly ISportService _sportService;
 
-        public DisciplineController(IDisciplineRepository repo)
+        public DisciplineController(IDisciplineService disciplineService)
         {
-            _repo = repo;
+            _disciplineService = disciplineService;
         }
 
         //GET: Dicipline
         public IActionResult Index()
         {
-            var diciplines = _repo.Get();
-            return View(diciplines);
+            var disciplines = _disciplineService.GetAllDisciplines();
+            return View(disciplines);
         }
 
         //GET: Dicipline/Create
         public IActionResult Create()
         {
+            ViewBag.Sports = _disciplineService.GetSportsListItems();
             return View();
         }
 
         //POST: Dicipline/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Discipline dicipline)
+        public async Task<IActionResult> Create(CreateViewModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model.Name != null)
             {
-                await _repo.InsertAsync(dicipline);
-                return RedirectToAction(nameof(Index));
+                //var sportId = int.Parse(model.SportId);
+                var disciplineId = _disciplineService.GetNextId();
+                var sportId = int.Parse(model.SportId);
+                //var sport = _sportService.GetSportById(sportId);
+
+                var newDiscipline = new Discipline
+                {
+                    Id = disciplineId,
+                    Name = model.Name,
+                    SportId = sportId  
+                };
+                
+                await _disciplineService.Add(newDiscipline);
+
             }
-            return View(dicipline);
+            return RedirectToAction(nameof(Index));
         }
 
         //GET: Dicipline/Details/1
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
-            var dicipline = await _repo.GetByIdAsync(id);
-            if (dicipline == null)
+            var discipline = _disciplineService.GetDisciplineById(id);
+            if (discipline == null)
             {
                 return NotFound();
             }
 
-            return View(dicipline);
+            return View(discipline);
         }
 
         //GET: Dicipline/Edit/1
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
-            var dicipline = await _repo.GetByIdAsync(id);
-            if (dicipline == null)
+            var discipline = _disciplineService.GetDisciplineById(id);
+            if (discipline == null)
             {
                 return NotFound();
             }
-            return View(dicipline);
+            return View(discipline);
         }
 
         //TODO
         //POST: Dicipline/Edit/1
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name")] Discipline dicipline)
+        public IActionResult Edit(int id, [Bind("Id,Name")] Discipline discipline)
         {
-            if (id != dicipline.Id)
+            if (id != discipline.Id)
             {
                 return NotFound();
             }
 
             //TODO
 
-            return View();
+            return View(discipline);
         }
 
         //TODO

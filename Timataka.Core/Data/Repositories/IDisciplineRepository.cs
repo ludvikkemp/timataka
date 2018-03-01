@@ -16,5 +16,12 @@ namespace Timataka.Core.Data.Repositories
         Discipline GetById(int id);
         Task<Discipline> GetByIdAsync(int id);
 
+        void Edit(Discipline entity);
+        Task EditAsync(Discipline entity);
+
+        void Remove(Discipline entity);
+        Task RemoveAsync(Task<Discipline> entity);
+
+        List<Sport> GetSports();
     }
 }
