@@ -24,5 +24,6 @@ namespace Timataka.Core.Services
         {
             return _repo.GetUserByUsername(username);
         }
+
     }
 }

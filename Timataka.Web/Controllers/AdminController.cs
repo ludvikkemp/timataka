@@ -17,12 +17,16 @@ namespace Timataka.Web.Controllers
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
+        private readonly IAccountService _accountService;
         private readonly IMemoryCache _cache;
 
-        public AdminController(IAdminService adminService, IMemoryCache cache)
+        public AdminController(IAdminService adminService, 
+                                IAccountService accountService,
+                                IMemoryCache cache)
         {
             _adminService = adminService;
             _cache = cache;
+            _accountService = accountService;
         }
         
         [Authorize(Roles = "Superadmin, Admin")]
@@ -58,6 +62,7 @@ namespace Timataka.Web.Controllers
             }
 
             var userDto = _adminService.GetUserByUsername(username);
+            ViewBag.Nations = _accountService.GetNationsListItems();
 
             if (userDto == null)
             {

@@ -22,12 +22,14 @@ namespace Timataka.Core.Data.Repositories
                 select new UserDto
                 {
                     Id = u.Id,
-                    Name = u.FirstName + " " + u.LastName,
+                    FirstName = u.FirstName,
+                    Middlename = u.MiddleName,
+                    LastName = u.LastName,
                     Email = u.Email,
                     Username = u.UserName,
                     Ssn = u.Ssn,
                     Phone = u.Phone,
-                    DateOfBirth = u.DateOfBirth,
+                    DateOfBirth = u.DateOfBirth.ToString("dd/MM/yyyy"),
                     Gender = u.Gender,
                     CountryId = u.CountryId,
                     NationalityId = u.NationalityId,
@@ -51,12 +53,14 @@ namespace Timataka.Core.Data.Repositories
                         where u.UserName == username
                         select new UserDto
                         {
-                            Name = u.FirstName + " " + u.LastName,
+                            FirstName = u.FirstName,
+                            Middlename = u.MiddleName,
+                            LastName = u.LastName,
                             Email = u.Email,
                             Username = u.UserName,
                             Ssn = u.Ssn,
                             Phone = u.Phone,
-                            DateOfBirth = u.DateOfBirth,
+                            DateOfBirth = u.DateOfBirth.ToString("dd/MM/yyyy"),
                             Gender = u.Gender,
                             CountryId = u.CountryId,
                             NationalityId = u.NationalityId,

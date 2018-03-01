@@ -35,7 +35,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-block">
                     <section class="section">
                         <div class="col-md-12">
                             <div class="card">
@@ -50,11 +49,11 @@
                                                     <th>Name</th>
                                                     <th>Username</th>
                                                     <th>Email</th>
-                                                    <th>Date of Birth</th>
+                                                    <th>DOB</th>
                                                     <th>SSN</th>
                                                     <th>Phone</th>
                                                     <th>CountryId</th>
-                                                    <th>NationalityId</th>
+                                                    <th>NationId</th>
                                                     <th>Gender</th>
                                                     <th>Deleted</th>
                                                     <th>Roles</th>
@@ -65,7 +64,7 @@
                                                 @foreach (var user in Model)
                                                 {
                                                     <tr>
-                                                        <td>@user.Name</td>
+                                                        <td>@user.FirstName @user.Middlename @user.LastName</td>
                                                         <td>@user.Username</td>
                                                         <td>@user.Email</td>
                                                         <td>@user.DateOfBirth</td>
@@ -77,7 +76,7 @@
                                                         <td>@user.Deleted</td>
                                                         <td>@foreach (var role in user.Roles)
                                                             {
-                                                                @role.Name
+                                                                @role.Name <br/>
                                                             }
                                                         </td>
                                                         <td>
@@ -97,6 +96,6 @@
                 </div>
             </div>
         </div>
-    </div>
+
 
 </section>

@@ -29801,13 +29801,13 @@ document.addEventListener("DOMContentLoaded", function () {
  * Diff Match and Patch
  *
  * Copyright 2006 Google Inc.
- * http://code.google.com/p/google-diff-match-patch/
+ * https://code.google.com/p/google-diff-match-patch/
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *   https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41946,7 +41946,7 @@ function __guardMethod__(obj, methodName, transform) {
  *					- changed handler signatures so one handler can be used for multiple events
  * $Date: 2011-23-02 (Wed, 23 Feb 2011) $
  * $version: 1.2.0 	- added click handler. This is fired if the user simply clicks and does not swipe. The event object and click target are passed to handler.
- *					- If you use the http://code.google.com/p/jquery-ui-for-ipad-and-iphone/ plugin, you can also assign jQuery mouse events to children of a touchSwipe object.
+ *					- If you use the https://code.google.com/p/jquery-ui-for-ipad-and-iphone/ plugin, you can also assign jQuery mouse events to children of a touchSwipe object.
  * $version: 1.2.1 	- removed console log!
  *
  * $version: 1.2.2 	- Fixed bug where scope was not preserved in callback methods.
@@ -42053,18 +42053,18 @@ function __guardMethod__(obj, methodName, transform) {
  */
 
 /**
- * See (http://jquery.com/).
+ * See (https://jquery.com/).
  * @name $
  * @class
- * See the jQuery Library  (http://jquery.com/) for full details.  This just
+ * See the jQuery Library  (https://jquery.com/) for full details.  This just
  * documents the function and classes that are added to jQuery by this plug-in.
  */
 
 /**
- * See (http://jquery.com/)
+ * See (https://jquery.com/)
  * @name fn
  * @class
- * See the jQuery Library  (http://jquery.com/) for full details.  This just
+ * See the jQuery Library  (https://jquery.com/) for full details.  This just
  * documents the function and classes that are added to jQuery by this plug-in.
  * @memberOf $
  */
@@ -44035,7 +44035,7 @@ function __guardMethod__(obj, methodName, transform) {
  * https://github.com/gabceb/jquery-browser-plugin
  *
  * Original jquery-browser code Copyright 2005, 2015 jQuery Foundation, Inc. and other contributors
- * http://jquery.org/license
+ * https://jquery.org/license
  *
  * Modifications Copyright 2015 Gabriel Cebrian
  * https://github.com/gabceb
