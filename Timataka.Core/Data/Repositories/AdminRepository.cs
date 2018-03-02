@@ -29,16 +29,19 @@ namespace Timataka.Core.Data.Repositories
                     Username = u.UserName,
                     Ssn = u.Ssn,
                     Phone = u.Phone,
-                    DateOfBirth = u.DateOfBirth.ToString("dd/MM/yyyy"),
+                    DateOfBirth = u.DateOfBirth,
                     Gender = u.Gender,
                     CountryId = u.CountryId,
+                    Country = (from c in _db.Countries
+                               where c.Id == u.CountryId
+                               select c.Name).FirstOrDefault(),
                     NationalityId = u.NationalityId,
                     Deleted = u.Deleted,
                     Roles = (from ur in _db.UserRoles
                              join r in _db.Roles 
                              on ur.RoleId equals r.Id
                              where u.Id == ur.UserId
-                             select new RolesDto
+                             select new UserRolesDto
                              {
                                  Id = ur.RoleId,
                                  Name = r.Name
@@ -60,7 +63,7 @@ namespace Timataka.Core.Data.Repositories
                             Username = u.UserName,
                             Ssn = u.Ssn,
                             Phone = u.Phone,
-                            DateOfBirth = u.DateOfBirth.ToString("dd/MM/yyyy"),
+                            DateOfBirth = u.DateOfBirth,
                             Gender = u.Gender,
                             CountryId = u.CountryId,
                             NationalityId = u.NationalityId,
@@ -69,7 +72,7 @@ namespace Timataka.Core.Data.Repositories
                                 join r in _db.Roles
                                     on ur.RoleId equals r.Id
                                 where u.Id == ur.UserId
-                                select new RolesDto
+                                select new UserRolesDto
                                 {
                                     Id = ur.RoleId,
                                     Name = r.Name

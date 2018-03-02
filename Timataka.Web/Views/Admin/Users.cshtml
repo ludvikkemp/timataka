@@ -52,7 +52,7 @@
                                                     <th>DOB</th>
                                                     <th>SSN</th>
                                                     <th>Phone</th>
-                                                    <th>CountryId</th>
+                                                    <th>Country</th>
                                                     <th>NationId</th>
                                                     <th>Gender</th>
                                                     <th>Deleted</th>
@@ -67,10 +67,10 @@
                                                         <td>@user.FirstName @user.Middlename @user.LastName</td>
                                                         <td>@user.Username</td>
                                                         <td>@user.Email</td>
-                                                        <td>@user.DateOfBirth</td>
+                                                        <td>@user.DateOfBirth.ToString("dd MMMM, yyyy")</td>
                                                         <td>@user.Ssn</td>
                                                         <td>@user.Phone</td>
-                                                        <td>@user.CountryId</td>
+                                                        <td>@user.Country</td>
                                                         <td>@user.NationalityId</td>
                                                         <td>@user.Gender</td>
                                                         <td>@user.Deleted</td>

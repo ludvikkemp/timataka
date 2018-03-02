@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Edit User";
     Layout = "_AdminLayout";
-    var dateOfBirth = DateTime.ParseExact(Model.DateOfBirth, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
 }
 
 
@@ -65,7 +64,7 @@
 
                 <div class="form-group" id="dateOfBirth-display">
                     <label asp-for="DateOfBirth"></label>
-                    <input asp-for="@dateOfBirth" class="form-control" />
+                    <input asp-for="DateOfBirth" class="form-control" />
                     <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                 </div>
 

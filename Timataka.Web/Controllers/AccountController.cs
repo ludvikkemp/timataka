@@ -229,7 +229,6 @@ namespace Timataka.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var countryId = int.Parse(model.Country);
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -240,7 +239,7 @@ namespace Timataka.Web.Controllers
                     Ssn = model.Ssn,
                     Gender = model.Gender,
                     Phone = model.Phone,
-                    CountryId = countryId,
+                    CountryId = model.Country,
                     DateOfBirth = model.DateOfBirth,
                     Deleted = false
                 };
