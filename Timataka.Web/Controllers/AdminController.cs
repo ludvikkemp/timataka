@@ -72,10 +72,13 @@ namespace Timataka.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut]
-        public ActionResult EditUser()
+        [HttpPost]
+        public ActionResult EditUser(UserDto model)
         {
-            return View("Users");
+            // TODO: Hér þarf að útfæra PUT request á User
+
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            return View(model);
         }
 
         [Authorize(Roles = "Admin")]
