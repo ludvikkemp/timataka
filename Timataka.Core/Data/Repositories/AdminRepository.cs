@@ -66,6 +66,9 @@ namespace Timataka.Core.Data.Repositories
                             DateOfBirth = u.DateOfBirth,
                             Gender = u.Gender,
                             CountryId = u.CountryId,
+                            Country = (from c in _db.Countries
+                                where c.Id == u.CountryId
+                                select c.Name).FirstOrDefault(),
                             NationalityId = u.NationalityId,
                             Deleted = u.Deleted,
                             Roles = (from ur in _db.UserRoles

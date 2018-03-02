@@ -72,6 +72,13 @@ namespace Timataka.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpPut]
+        public ActionResult EditUser()
+        {
+            return View("Users");
+        }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Roles()
         {
             return View();
