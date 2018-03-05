@@ -1,4 +1,5 @@
-﻿@model object
+﻿@using Timataka.Core.Models.Dto.AdminDTO
+@model IEnumerable<Timataka.Core.Models.Dto.AdminDTO.UserDto> 
 
 @{
     ViewBag.Title = "Users";
@@ -7,30 +8,95 @@
 }
 
 
-<section class="content grid-page">
-    <div class="title-block">
-        <h3 class="title">@ViewBag.Title</h3>
-        <p class="title-description">@ViewBag.SubTitle</p>
-    </div>
-    <section class="section">
-        <div class="row sameheight-container">
-            <div class="col-md-12">
-                <div class="card sameheight-item">
-                    <div class="card-block">
-                        <div class="card-title-block">
-                            <h3 class="title"> Example: Stacked-to-horizontal </h3>
-                        </div>
-                        <section class="section">
-                            <p>
-                                Using a single set of <code>.col-md-*</code> grid classes, you can create a default grid system that starts out stacked on mobile devices and tablet devices (the extra small to small range) before becoming horizontal
-                                on desktop (medium) devices. Place grid columns in any <code>.row</code>.
-                            </p>
+<section class="content">
 
-                        </section>
-                    </div>
+    <div class="title-block">
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> Users </span>
+                <a href="#" class="btn btn-primary btn-sm rounded-s"> Add New </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="items-search">
+        <form class="form-inline">
+            <div class="input-group">
+                <input type="text" class="form-control boxed rounded-s" placeholder="Search for...">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary rounded-s btn-lg" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-block">
+                    <section class="section">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-block">
+                                    <h3 class="title"> All Users </h3>
+                                </div>
+                                <section class="example">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Username</th>
+                                                    <th>Email</th>
+                                                    <th>Date of Birth</th>
+                                                    <th>SSN</th>
+                                                    <th>Phone</th>
+                                                    <th>CountryId</th>
+                                                    <th>NationalityId</th>
+                                                    <th>Gender</th>
+                                                    <th>Deleted</th>
+                                                    <th>Roles</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var user in Model)
+                                                {
+                                                    <tr>
+                                                        <td>@user.Name</td>
+                                                        <td>@user.Username</td>
+                                                        <td>@user.Email</td>
+                                                        <td>@user.DateOfBirth</td>
+                                                        <td>@user.Ssn</td>
+                                                        <td>@user.Phone</td>
+                                                        <td>@user.CountryId</td>
+                                                        <td>@user.NationalityId</td>
+                                                        <td>@user.Gender</td>
+                                                        <td>@user.Deleted</td>
+                                                        <td>@foreach (var role in user.Roles)
+                                                            {
+                                                                @role.Name
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <a asp-action="EditUser" asp-route-id="" asp-route-username="@user.Username" class="btn btn-warning btn-sm">Edit</a>
+                                                            <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
 </section>

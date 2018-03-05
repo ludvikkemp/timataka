@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Timataka.Core.Models.Entities
 {
-    public class Dicipline
+    public class Discipline
     {
         public int Id { get; set; }
         public string Name { get; set; }

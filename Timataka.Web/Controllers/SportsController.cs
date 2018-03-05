@@ -8,25 +8,26 @@ namespace Timataka.Web.Controllers
 {
     public class SportsController : Controller
     {
-        private readonly ISportsService _sportsService;
+        private readonly ISportService _sportService;
 
-        public SportsController(ISportsService sportsService)
+        public SportsController(ISportService sportService)
         {
-            _sportsService = sportsService;
+            _sportService = sportService;
         }
 
 
         // GET: Sports
         public IActionResult Index()
         {
-            var sports = _sportsService.GetAllSports();
+            var sports = _sportService.GetAllSports();
             return View(sports);
         }
 
         // GET: Sports/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var sport = await _sportsService.GetSportById(id);
+            var sport = await _sportService.GetSportById(id);
+
             if (sport == null)
             {
                 return NotFound();
@@ -51,7 +52,7 @@ namespace Timataka.Web.Controllers
             {
                 try
                 {
-                    await _sportsService.Add(sport);
+                    await _sportService.Add(sport);
                 }
                 catch (Exception e)
                 {
@@ -65,7 +66,7 @@ namespace Timataka.Web.Controllers
         // GET: Sports/Edit/5
         public IActionResult Edit(int id)
         {
-            var sport = _sportsService.GetSportById(id);
+            var sport = _sportService.GetSportById(id);
             if (sport == null)
             {
                 return NotFound();
@@ -87,10 +88,11 @@ namespace Timataka.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                await _sportsService.Edit(sport);
+                await _sportService.Edit(sport);
                 return RedirectToAction(nameof(Index));
             }
             return View(sport);
+
         }
 
         // GET: Sports/Delete/5
@@ -101,7 +103,7 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var sport = await _sportsService.GetSportById((int)id);
+            var sport = await _sportService.GetSportById((int)id);
             if (sport == null)
             {
                 return NotFound();
@@ -115,7 +117,7 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sport = await _sportsService.Remove((int)id);
+            var sport = await _sportService.Remove((int)id);
             return RedirectToAction(nameof(Index));
         }
     }

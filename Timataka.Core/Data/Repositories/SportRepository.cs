@@ -9,12 +9,12 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Repositories
 {
     
-    public class SportsRepository : ISportsRepository
+    public class SportRepository : ISportRepository
     {
         private bool _disposed = false;
         private readonly ApplicationDbContext _context;
 
-        public SportsRepository(ApplicationDbContext context)
+        public SportRepository(ApplicationDbContext context)
         {
             _context = context;
         }

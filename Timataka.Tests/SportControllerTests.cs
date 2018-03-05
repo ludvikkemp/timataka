@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Timataka.Tests
 {
-    public class SportsControllerTests
+    public class SportControllerTests
     {
         //SportsService sportsService = new SportsService();
 
@@ -23,7 +23,7 @@ namespace Timataka.Tests
         public void GetSportsIndex()
         {
             // Arrange
-            var serviceMock = new Mock<ISportsService>();
+            var serviceMock = new Mock<ISportService>();
             serviceMock.Setup(x => x.GetAllSports()).Returns(() => new List<Sport>()
             {
                 new Sport {Id = 1, Name = "Running"},
@@ -48,9 +48,10 @@ namespace Timataka.Tests
         {
             // Arrange
             int SportId = 2;
-            var mockService = new Mock<ISportsService>();
+            var mockService = new Mock<ISportService>();
             mockService.Setup(x => x.GetSportById(SportId))
                 .Returns(Task.FromResult(new Sport { Id = 2, Name = "Swimming" }));
+
             var controller = new SportsController(mockService.Object);
 
             // Act
@@ -66,7 +67,7 @@ namespace Timataka.Tests
         public async void TestAddSportWithValidModel()
         {
             //Arrange
-            var serviceMock = new Mock<ISportsService>();
+            var serviceMock = new Mock<ISportService>();
             Sport newSport = new Sport { Id = 4, Name = "Rowing" };
             serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult(newSport));
             var controller = new SportsController(serviceMock.Object);
@@ -82,7 +83,7 @@ namespace Timataka.Tests
         public async void TestAddSportWithInValidModel()
         {
             //Arrange
-            var serviceMock = new Mock<ISportsService>();
+            var serviceMock = new Mock<ISportService>();
             Sport newSport = new Sport { Id = 8 };
             serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult((Sport)newSport));
             var controller = new SportsController(serviceMock.Object);
@@ -99,7 +100,7 @@ namespace Timataka.Tests
         public async void TestDeleteSport()
         {
             //Arrange
-            var serviceMock = new Mock<ISportsService>();
+            var serviceMock = new Mock<ISportService>();
             var sport2Delete = new Sport { Id = 1, Name = "Sport" };
             serviceMock.Setup(x => x.Remove(sport2Delete.Id)).Returns(Task.FromResult(result: sport2Delete.Id));
             serviceMock.Setup(y => y.GetSportById(sport2Delete.Id)).

@@ -7,16 +7,16 @@ using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Services
 {
-    public class SportsService : ISportsService
+    public class SportService : ISportService
     {
-        private readonly ISportsRepository _repo;
+        private readonly ISportRepository _repo;
 
-        public SportsService(ISportsRepository repo)
+        public SportService(ISportRepository repo)
         {
             _repo = repo;
         }
 
-        public SportsService()
+        public SportService()
         {
             //To be able to create instance in unit tests
         }
@@ -50,7 +50,7 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Function to remove a given sport.
         /// </summary>
-        /// <param name="SportId"></param>
+        /// <param name="sportId"></param>
         /// <returns>Id of the sport removed</returns>
         public async Task<int> Remove(int SportId)
         {
@@ -63,10 +63,10 @@ namespace Timataka.Core.Services
         /// Get list of all sports.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<Sport> ISportsService.GetAllSports()
+        IEnumerable<Sport> ISportService.GetAllSports()
         {
-            var Sports = _repo.Get();
-            return Sports;
+            var sports = _repo.Get();
+            return sports;
         }
 
         /// <summary>
