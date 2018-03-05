@@ -19,7 +19,8 @@ namespace Timataka.Core.Data.Repositories
         Task EditAsync(Sport entity);
 
         void Remove(Sport entity);
-        Task RemoveAsync(Task<Sport> entity);
+        Task RemoveAsync(Sport entity);
 
+        Task<Sport> GetSportByNameAsync(string sportName);
     }
 }
