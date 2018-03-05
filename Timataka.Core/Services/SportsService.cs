@@ -25,7 +25,7 @@ namespace Timataka.Core.Services
         /// Function to add a sport.
         /// </summary>
         /// <param name="s"></param>
-        /// <returns>ID of sport added</returns>
+        /// <returns>ID of sport added or exception if sport exists</returns>
         public async Task<Sport> Add(Sport s)
         {
             if(GetSportByName(s.Name) != null)

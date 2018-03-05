@@ -94,5 +94,24 @@ namespace Timataka.Tests
             //Assert 
             Assert.Equal(expected: 8, actual: model.Id);
         }
+
+        [Fact]
+        public async void TestDeleteSport()
+        {
+            //Arrange
+            var serviceMock = new Mock<ISportsService>();
+            var sport2Delete = new Sport { Id = 1, Name = "Sport" };
+            serviceMock.Setup(x => x.Remove(sport2Delete.Id)).Returns(Task.FromResult(result: sport2Delete.Id));
+            serviceMock.Setup(y => y.GetSportById(sport2Delete.Id)).
+                Returns(Task.FromResult(sport2Delete));
+            var controller = new SportsController(serviceMock.Object);
+
+            //Act
+            var result = await controller.Delete(1) as ViewResult;
+            var model = (Sport)result.ViewData.Model;
+
+            //Assert
+            Assert.Equal(expected: 1, actual: model.Id);
+        }
     }
 }
