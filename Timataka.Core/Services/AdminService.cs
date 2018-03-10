@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Dto.AdminDTO;
@@ -24,6 +25,5 @@ namespace Timataka.Core.Services
         {
             return _repo.GetUserByUsername(username);
         }
-
     }
 }

@@ -36,9 +36,9 @@ namespace Timataka.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult Users()
+        public IActionResult Users(string search)
         {
-
+            ViewData["CurrentFilter"] = search;
             if (!_cache.TryGetValue("listOfUsers", out IEnumerable<UserDto> listOfUsers))
             {
                 listOfUsers = _adminService.GetUsers();
@@ -49,6 +49,26 @@ namespace Timataka.Web.Controllers
                 _cache.Set("listOfUsers", listOfUsers, cacheEntryOptions);
             }
 
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                listOfUsers = listOfUsers.Where(u => u.Username.ToUpper().Contains(searchToUpper) 
+                                                     || u.Email.ToUpper().Contains(searchToUpper)
+                                                     || u.FirstName.ToUpper().Contains(searchToUpper)
+                                                     || u.LastName.ToUpper().Contains(searchToUpper));
+            }
+
+            /*
+            if (!_cache.TryGetValue("listOfUsers", out IEnumerable<UserDto> listOfUsers))
+            {
+                listOfUsers = _adminService.GetUsers();
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromHours(8));
+
+                _cache.Set("listOfUsers", listOfUsers, cacheEntryOptions);
+            }
+            */
             return View(listOfUsers);
         }
 
