@@ -58,17 +58,6 @@ namespace Timataka.Web.Controllers
                                                      || u.LastName.ToUpper().Contains(searchToUpper));
             }
 
-            /*
-            if (!_cache.TryGetValue("listOfUsers", out IEnumerable<UserDto> listOfUsers))
-            {
-                listOfUsers = _adminService.GetUsers();
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromHours(8));
-
-                _cache.Set("listOfUsers", listOfUsers, cacheEntryOptions);
-            }
-            */
             return View(listOfUsers);
         }
 
