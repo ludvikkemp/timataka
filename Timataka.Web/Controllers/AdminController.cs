@@ -13,7 +13,6 @@ using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
 {
-    
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
