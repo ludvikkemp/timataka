@@ -5,9 +5,11 @@ using System.Net;
 using System.Reflection.Emit;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Timataka.Core.Models.Dto.AdminDTO;
+using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.AccountViewModels;
 using Timataka.Core.Services;
 
@@ -18,14 +20,17 @@ namespace Timataka.Web.Controllers
         private readonly IAdminService _adminService;
         private readonly IAccountService _accountService;
         private readonly IMemoryCache _cache;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public AdminController(IAdminService adminService, 
                                 IAccountService accountService,
-                                IMemoryCache cache)
+                                IMemoryCache cache,
+                                UserManager<ApplicationUser> userManager)
         {
             _adminService = adminService;
             _cache = cache;
             _accountService = accountService;
+            _userManager = userManager;
         }
         
         [Authorize(Roles = "Superadmin, Admin")]
@@ -81,10 +86,19 @@ namespace Timataka.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult EditUser(UserDto model)
+        public async Task<ActionResult> EditUser(UserDto model)
         {
-            // TODO: Hér þarf að útfæra PUT request á User
+            if (ModelState.IsValid)
+            {
+                var result = _adminService.UpdateUser(model);
+                if (result.Result)
+                {
+                    _cache.Remove("listOfUsers");
+                    return Redirect("~/admin/users");
+                }
+            }
 
+            // Something went wrong!
             ViewBag.Nations = _accountService.GetNationsListItems();
             return View(model);
         }
