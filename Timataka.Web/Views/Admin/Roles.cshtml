@@ -1,4 +1,4 @@
-﻿@model object
+﻿@model IEnumerable<Timataka.Core.Models.Dto.AdminDTO.UserRolesDto>
 
 @{
     ViewBag.Title = "title";
@@ -11,78 +11,47 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Roles </span>
-                <a href="#" class="btn btn-primary btn-sm rounded-s"> Add New </a>
+                <a asp-action="AddRole" class="btn btn-primary btn-sm rounded-s"> Add New </a>
             </div>
         </div>
-    </div>
-
-    <div class="items-search">
-        <form class="form-inline">
-            <div class="input-group">
-                <input type="text" class="form-control boxed rounded-s" placeholder="Search for...">
-                <span class="input-group-btn">
-                    <button class="btn btn-secondary rounded-s btn-lg" type="button">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </span>
-            </div>
-        </form>
     </div>
 
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-block">
-                    <section class="section">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-block">
-                                    <h3 class="title"> Edit Roles </h3>
-                                </div>
-                                <section class="example">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Role Name</th>
-                                                <th>Number Of Users</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Superadmin</td>
-                                                <td>1</td>
-                                                <th>
-                                                    <button type="button" class="btn btn-success btn-sm">Add User</button>
-                                                    <button type="button" class="btn btn-warning btn-sm">Edit</button>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <td>Admin</td>
-                                                <td>15</td>
-                                                <th>
-                                                    <button type="button" class="btn btn-success btn-sm">Add User</button>
-                                                    <button type="button" class="btn btn-warning btn-sm">Edit</button>
-                                                    <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <td>User</td>
-                                                <td>213</td>
-                                                <th>
-                                                    <button type="button" class="btn btn-success btn-sm">Add User</button>
-                                                    <button type="button" class="btn btn-warning btn-sm">Edit</button>
-                                                    <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                                                </th>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </section>
-
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <h3 class="title"> Roles </h3>
                             </div>
+                            <section class="example">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Role Name</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var role in Model)
+                                        {
+                                            <tr>
+                                                <td>@role.Name</td>
+                                                <th>
+                                                    <button type="button" class="btn btn-success btn-sm">Add User</button>
+                                                    <button type="button" class="btn btn-warning btn-sm">Edit</button>
+                                                </th>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </section>
+
                         </div>
-                    </section>
-                </div>
+                    </div>
+                </section>
             </div>
         </div>
     </div>

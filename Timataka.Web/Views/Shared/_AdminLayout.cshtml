@@ -30,10 +30,15 @@
                     </button>
                 </div>
                 
-                <div class="header-block">
-                    <!--
-                    HÉR ER HÆGT AÐ SETJA EITTHVAÐ COOL, TAKKA OR SOMETHING
-                    -->
+                <div class="header-block header-block-buttons">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-sm header-btn">
+                        <i class="fa fa-home"></i>
+                        <span>Home Page</span>
+                    </a>
+                    <a asp-area="" asp-controller="User" asp-action="Index" class="btn btn-sm header-btn">
+                        <i class="fa fa-user"></i>
+                        <span>User Page</span>
+                    </a>
                 </div>
                 
                 @await Html.PartialAsync("_AdminLoginPartial")

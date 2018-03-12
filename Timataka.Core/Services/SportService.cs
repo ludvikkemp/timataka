@@ -72,11 +72,11 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Get a sport by its ID.
         /// </summary>
-        /// <param name="SportId"></param>
+        /// <param name="sportId"></param>
         /// <returns>Sport with a given ID.</returns>
-        public async Task<Sport> GetSportById(int SportId)
+        public async Task<Sport> GetSportById(int sportId)
         {
-            var s = await _repo.GetByIdAsync(SportId);
+            var s = await _repo.GetByIdAsync(sportId);
             return s;
         }
 

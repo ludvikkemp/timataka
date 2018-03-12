@@ -5,9 +5,11 @@ using System.Net;
 using System.Reflection.Emit;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Timataka.Core.Models.Dto.AdminDTO;
+using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.AccountViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
 using Timataka.Core.Services;
@@ -21,21 +23,27 @@ namespace Timataka.Web.Controllers
         private readonly ISportService _sportService;
         private readonly IDisciplineService _disciplineService;
         private readonly IMemoryCache _cache;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AdminController(IAdminService adminService, 
                                 IAccountService accountService,
                                 IMemoryCache cache,
                                 ISportService sportService,
-                                IDisciplineService disciplineService)
+                                IDisciplineService disciplineService,
+                                UserManager<ApplicationUser> userManager,
+                                RoleManager<IdentityRole> roleManager)
         {
             _adminService = adminService;
             _cache = cache;
             _accountService = accountService;
             _sportService = sportService;
             _disciplineService = disciplineService;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
         
-        [Authorize(Roles = "Superadmin, Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
@@ -88,19 +96,37 @@ namespace Timataka.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult EditUser(UserDto model)
+        public async Task<ActionResult> EditUser(UserDto model)
         {
-            // TODO: Hér þarf að útfæra PUT request á User
+            if (ModelState.IsValid)
+            {
+                var result = await _adminService.UpdateUser(model);
+                if (result)
+                {
+                    _cache.Remove("listOfUsers");
+                    return Redirect("~/admin/users");
+                }
+            }
 
+            // Something went wrong!
             ViewBag.Nations = _accountService.GetNationsListItems();
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Superadmin, Admin")]
         public IActionResult Roles()
+        {
+            var roles = _adminService.GetRoles();
+            return View(roles);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult AddRole()
         {
             return View();
         }
+
 
         [Authorize(Roles = "Admin")]
         public IActionResult Sports()
@@ -142,6 +168,23 @@ namespace Timataka.Web.Controllers
             }
             return View(models);
 
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult AddRole(CreateRoleViewModel model)
+        {
+            /*
+            var role = _roleManager.FindByNameAsync(model.Name);
+            role.Wait();
+            if (!role.IsCompletedSuccessfully)
+            {
+                Task roleResult = _roleManager.CreateAsync(new IdentityRole(model.Name));
+                roleResult.Wait();
+                return Redirect("~/Admin/Roles");
+            }
+            */
+            return View(model);
         }
 
     }
