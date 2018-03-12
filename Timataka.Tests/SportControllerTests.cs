@@ -17,7 +17,6 @@ namespace Timataka.Tests
 {
     public class SportControllerTests
     {
-        //SportsService sportsService = new SportsService();
 
         [Fact]
         public void GetSportsIndex()
@@ -44,17 +43,18 @@ namespace Timataka.Tests
         }
 
         [Fact]
-        public void TestGetSportById()
+        public async void TestGetSportByID()
         {
             // Arrange
-            int SportID = 2;
+            int SportId = 2;
             var mockService = new Mock<ISportService>();
-            mockService.Setup(x => x.GetSportById(SportID))
-                .Returns(((Sport)new Sport { Id = 2, Name = "Swimming" }));
+            mockService.Setup(x => x.GetSportById(SportId))
+                .Returns(Task.FromResult(new Sport { Id = 2, Name = "Swimming" }));
+
             var controller = new SportsController(mockService.Object);
 
             // Act
-            var result = controller.Details(SportID) as ViewResult;
+            var result = await controller.Details(SportId) as ViewResult;
             var model = (Sport)result.ViewData.Model;
 
             // Assert
@@ -63,23 +63,23 @@ namespace Timataka.Tests
         }
 
         [Fact]
-        public void TestAddSportWithValidModel()
+        public async void TestAddSportWithValidModel()
         {
             //Arrange
             var serviceMock = new Mock<ISportService>();
             Sport newSport = new Sport { Id = 4, Name = "Rowing" };
-            serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult((Sport)newSport));
+            serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult(newSport));
             var controller = new SportsController(serviceMock.Object);
 
             //Act
-            var result = controller.Add(newSport) as RedirectToActionResult;
+            var result = await controller.Add(newSport) as RedirectToActionResult;
 
             //Assert 
             Assert.Equal(expected: "Index", actual: result.ActionName);
         }
 
         [Fact]
-        public void TestAddSportWithInValidModel()
+        public async void TestAddSportWithInValidModel()
         {
             //Arrange
             var serviceMock = new Mock<ISportService>();
@@ -88,11 +88,30 @@ namespace Timataka.Tests
             var controller = new SportsController(serviceMock.Object);
 
             //Act
-            var result = controller.Add(newSport) as ViewResult;
+            var result = await controller.Add(newSport) as ViewResult;
             var model = (Sport)result.ViewData.Model;
 
             //Assert 
             Assert.Equal(expected: 8, actual: model.Id);
+        }
+
+        [Fact]
+        public async void TestDeleteSport()
+        {
+            //Arrange
+            var serviceMock = new Mock<ISportService>();
+            var sport2Delete = new Sport { Id = 1, Name = "Sport" };
+            serviceMock.Setup(x => x.Remove(sport2Delete.Id)).Returns(Task.FromResult(result: sport2Delete.Id));
+            serviceMock.Setup(y => y.GetSportById(sport2Delete.Id)).
+                Returns(Task.FromResult(sport2Delete));
+            var controller = new SportsController(serviceMock.Object);
+
+            //Act
+            var result = await controller.Delete(1) as ViewResult;
+            var model = (Sport)result.ViewData.Model;
+
+            //Assert
+            Assert.Equal(expected: 1, actual: model.Id);
         }
     }
 }

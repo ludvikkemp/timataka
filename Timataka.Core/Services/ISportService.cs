@@ -8,8 +8,9 @@ namespace Timataka.Core.Services
     {
         Task<Sport> Add(Sport s);
         Task<Sport> Edit(Sport s);
-        int Remove(int sportId);
+        Task<int> Remove(int SportId);
         IEnumerable<Sport> GetAllSports();
-        Sport GetSportById(int sportId);
+        Task<Sport> GetSportById(int SportId);
+
     }
 }

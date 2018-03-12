@@ -21,5 +21,9 @@ namespace Timataka.Core.Models.ViewModels.ManageViewModels
         public string PhoneNumber { get; set; }
 
         public string StatusMessage { get; set; }
+
+        public string PasswordOld { get; set; }
+
+        public string PasswordNew { get; set; }
     }
 }

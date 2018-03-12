@@ -15,7 +15,6 @@ namespace Timataka.Web.Controllers
             _sportService = sportService;
         }
 
-
         // GET: Sports
         public IActionResult Index()
         {
@@ -24,12 +23,13 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: Sports/Details/5
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var sport = _sportService.GetSportById(id);
+            var sport = await _sportService.GetSportById(id);
+
             if (sport == null)
             {
-                //return NotFound();
+                return NotFound();
             }
             return View(sport);
         }
@@ -45,11 +45,18 @@ namespace Timataka.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add([Bind("Id,Name")] Sport sport)
+        public async Task<IActionResult> Add([Bind("Id,Name")] Sport sport)
         {
             if (ModelState.IsValid && sport.Name != null)
             {
-                _sportService.Add(sport);                
+                try
+                {
+                    await _sportService.Add(sport);
+                }
+                catch (Exception e)
+                {
+                    //Todo: return some error view
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(sport);
@@ -71,73 +78,46 @@ namespace Timataka.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name")] Sport sport)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Sport sport)
         {
             if (id != sport.Id)
             {
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        _context.Update(sport);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!SportExists(sport.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
+            if (ModelState.IsValid)
+            {
+                await _sportService.Edit(sport);
+                return RedirectToAction(nameof(Index));
+            }
             return View(sport);
 
         }
 
         // GET: Sports/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var sport = await _context.Sports
-        //        .SingleOrDefaultAsync(m => m.Id == id);
-        //    if (sport == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(sport);
-        //}
-
-        //// POST: Sports/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var sport = await _context.Sports.SingleOrDefaultAsync(m => m.Id == id);
-        //    _context.Sports.Remove(sport);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool SportExists(int id)
-        //{
-        //    return _context.Sports.Any(e => e.Id == id);
-        //}
-        public IActionResult Delete()
+        public async Task <IActionResult> Delete(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var sport = await _sportService.GetSportById((int)id);
+            if (sport == null)
+            {
+                return NotFound();
+            }
+
+            return View(sport);
+        }
+
+        // POST: Sports/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var sport = await _sportService.Remove((int)id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

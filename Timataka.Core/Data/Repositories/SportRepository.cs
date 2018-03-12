@@ -42,7 +42,7 @@ namespace Timataka.Core.Data.Repositories
 
         public async Task InsertAsync(Sport entity)
         {
-            _context.Sports.Add(entity);
+            await _context.Sports.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
@@ -85,10 +85,16 @@ namespace Timataka.Core.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task RemoveAsync(Task<Sport> entity)
+        public Task RemoveAsync(Sport entity)
         {
             //TODO:Mark as removed, not delete compleatly
             throw new NotImplementedException();
+        }
+
+        public Task<Sport> GetSportByNameAsync(string sportName)
+        {
+            var s = _context.Sports.SingleOrDefaultAsync(x => x.Name == sportName);
+            return s;
         }
     }
 }
