@@ -17,7 +17,6 @@ namespace Timataka.Tests
 {
     public class SportControllerTests
     {
-        //SportsService sportsService = new SportsService();
 
         [Fact]
         public void GetSportsIndex()
