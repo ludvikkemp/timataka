@@ -11,6 +11,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.AccountViewModels;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -21,19 +22,22 @@ namespace Timataka.Web.Controllers
         private readonly IAccountService _accountService;
         private readonly IMemoryCache _cache;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AdminController(IAdminService adminService, 
                                 IAccountService accountService,
                                 IMemoryCache cache,
-                                UserManager<ApplicationUser> userManager)
+                                UserManager<ApplicationUser> userManager,
+                                RoleManager<IdentityRole> roleManager)
         {
             _adminService = adminService;
             _cache = cache;
             _accountService = accountService;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         
-        [Authorize(Roles = "Superadmin, Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
@@ -90,8 +94,8 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = _adminService.UpdateUser(model);
-                if (result.Result)
+                var result = await _adminService.UpdateUser(model);
+                if (result)
                 {
                     _cache.Remove("listOfUsers");
                     return Redirect("~/admin/users");
@@ -103,12 +107,35 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Superadmin, Admin")]
         public IActionResult Roles()
         {
             var roles = _adminService.GetRoles();
             return View(roles);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult AddRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult AddRole(CreateRoleViewModel model)
+        {
+            /*
+            var role = _roleManager.FindByNameAsync(model.Name);
+            role.Wait();
+            if (!role.IsCompletedSuccessfully)
+            {
+                Task roleResult = _roleManager.CreateAsync(new IdentityRole(model.Name));
+                roleResult.Wait();
+                return Redirect("~/Admin/Roles");
+            }
+            */
+            return View(model);
+        }
     }
 }
