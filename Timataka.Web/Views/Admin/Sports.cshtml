@@ -5,8 +5,13 @@
     Layout = "_AdminLayout";
 }
 <section class="content">
-    
+
     <h2>Sports</h2>
+
+    <p>
+        <a asp-controller="Sports" asp-action="Create">New Sport</a> 
+        <a asp-controller="Discipline" asp-action="Create">New Discipline</a>
+    </p>
 
     <table class="table">
         <thead>
@@ -30,19 +35,27 @@
                     <tr>
                         <td>@item.SportName</td>
                         <td></td>
-                        <td>Details | Edit | Delete</td>
+                        <td>
+                            <a asp-controller="Sports" asp-action="Edit" asp-route-id="@item.SportId">Edit</a> |
+                            <a asp-controller="Sports" asp-action="Details" asp-route-id="@item.SportId">Details</a> |
+                            <a asp-controller="Sports" asp-action="Delete" asp-route-id="@item.SportId">Delete</a>
+                        </td>
                     </tr>
                 }
-                
-                @foreach (var disipline in Model)
+
+                @foreach (var discipline in Model)
                 {
-                    @if ((disipline.IsSport == false) && (disipline.SportId == item.SportId) && item.IsSport)
+                    @if ((discipline.IsSport == false) && (discipline.SportId == item.SportId) && item.IsSport)
                     {
-                         <tr>
-                             <td></td>
-                             <td>@disipline.DisciplineName</td>
-                             <td>Details | Edit | Delete</td>
-                         </tr>
+                        <tr>
+                            <td></td>
+                            <td>@discipline.DisciplineName</td>
+                            <td>
+                                <a asp-controller="Discipline" asp-action="Edit" asp-route-id="@discipline.DisciplineId">Edit</a> |
+                                <a asp-controller="Discipline" asp-action="Details" asp-route-id="@discipline.DisciplineId">Details</a> |
+                                <a asp-controller="Discipline" asp-action="Delete" asp-route-id="@discipline.DisciplineId">Delete</a>
+                            </td>
+                        </tr>
                     }
                 }
             }
