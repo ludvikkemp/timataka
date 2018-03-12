@@ -1,0 +1,51 @@
+﻿@model List<Timataka.Core.Models.ViewModels.AdminViewModels.SportsViewModel>
+
+@{
+    ViewData["Title"] = "Sports";
+    Layout = "_AdminLayout";
+}
+<section class="content">
+    
+    <h2>Sports</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Sport
+                </th>
+                <th>
+                    Discipline
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                @if (item.IsSport)
+                {
+                    <tr>
+                        <td>@item.SportName</td>
+                        <td></td>
+                        <td>Details | Edit | Delete</td>
+                    </tr>
+                }
+                
+                @foreach (var disipline in Model)
+                {
+                    @if ((disipline.IsSport == false) && (disipline.SportId == item.SportId) && item.IsSport)
+                    {
+                         <tr>
+                             <td></td>
+                             <td>@disipline.DisciplineName</td>
+                             <td>Details | Edit | Delete</td>
+                         </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</section>

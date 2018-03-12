@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.ViewModels.AccountViewModels;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -17,15 +18,21 @@ namespace Timataka.Web.Controllers
     {
         private readonly IAdminService _adminService;
         private readonly IAccountService _accountService;
+        private readonly ISportService _sportService;
+        private readonly IDisciplineService _disciplineService;
         private readonly IMemoryCache _cache;
 
         public AdminController(IAdminService adminService, 
                                 IAccountService accountService,
-                                IMemoryCache cache)
+                                IMemoryCache cache,
+                                ISportService sportService,
+                                IDisciplineService disciplineService)
         {
             _adminService = adminService;
             _cache = cache;
             _accountService = accountService;
+            _sportService = sportService;
+            _disciplineService = disciplineService;
         }
         
         [Authorize(Roles = "Superadmin, Admin")]
@@ -93,6 +100,48 @@ namespace Timataka.Web.Controllers
         public IActionResult Roles()
         {
             return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Sports()
+        {
+            var sports = _sportService.GetAllSports();
+            var disciplines = _disciplineService.GetAllDisciplines();
+
+            List<SportsViewModel> models = new List<SportsViewModel>();
+
+            //Collect all sports into viewModel
+            foreach (var sport in sports)
+            {
+                var model = new SportsViewModel
+                {
+                    IsSport = true,
+                    DisciplineId = 0,
+                    DisciplineName = "",
+                    SportId = sport.Id,
+                    SportName = sport.Name
+                };
+
+                models.Add(model);
+            }
+
+            //Collect all disciplines into viewModel
+            foreach (var discipline in disciplines)
+            {
+                var model = new SportsViewModel
+                {
+                    IsSport = false,
+                    DisciplineId = discipline.Id,
+                    DisciplineName = discipline.Name,
+                    SportId = discipline.SportId,
+                    SportName = ""
+                };
+
+                models.Add(model);
+                
+            }
+            return View(models);
+
         }
 
     }
