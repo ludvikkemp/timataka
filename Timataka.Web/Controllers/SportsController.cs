@@ -15,7 +15,6 @@ namespace Timataka.Web.Controllers
             _sportService = sportService;
         }
 
-
         // GET: Sports
         public IActionResult Index()
         {
