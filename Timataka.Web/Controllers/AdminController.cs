@@ -106,7 +106,8 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Roles()
         {
-            return View();
+            var roles = _adminService.GetRoles();
+            return View(roles);
         }
 
     }

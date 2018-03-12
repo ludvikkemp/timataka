@@ -57,5 +57,10 @@ namespace Timataka.Core.Services
             }
             return false;
         }
+
+        public object GetRoles()
+        {
+            return _repo.GetRoles();
+        }
     }
 }

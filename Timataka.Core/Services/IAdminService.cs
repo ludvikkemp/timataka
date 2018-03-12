@@ -11,5 +11,6 @@ namespace Timataka.Core.Services
         IEnumerable<UserDto> GetUsers();
         UserDto GetUserByUsername(string username);
         Task<bool> UpdateUser(UserDto model);
+        object GetRoles();
     }
 }

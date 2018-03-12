@@ -83,5 +83,16 @@ namespace Timataka.Core.Data.Repositories
                         }).SingleOrDefault();
             return user;
         }
+
+        public IEnumerable<UserRolesDto> GetRoles()
+        {
+            var roles = (from r in _db.Roles
+                select new UserRolesDto
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                }).ToList();
+            return roles;
+        }
     }
 }
