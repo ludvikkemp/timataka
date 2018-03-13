@@ -22,7 +22,9 @@ namespace Timataka.Core.Data.Repositories
                 select new UserDto
                 {
                     Id = u.Id,
-                    Name = u.FirstName + " " + u.LastName,
+                    FirstName = u.FirstName,
+                    Middlename = u.MiddleName,
+                    LastName = u.LastName,
                     Email = u.Email,
                     Username = u.UserName,
                     Ssn = u.Ssn,
@@ -30,13 +32,16 @@ namespace Timataka.Core.Data.Repositories
                     DateOfBirth = u.DateOfBirth,
                     Gender = u.Gender,
                     CountryId = u.CountryId,
+                    Country = (from c in _db.Countries
+                               where c.Id == u.CountryId
+                               select c.Name).FirstOrDefault(),
                     NationalityId = u.NationalityId,
                     Deleted = u.Deleted,
                     Roles = (from ur in _db.UserRoles
                              join r in _db.Roles 
                              on ur.RoleId equals r.Id
                              where u.Id == ur.UserId
-                             select new RolesDto
+                             select new UserRolesDto
                              {
                                  Id = ur.RoleId,
                                  Name = r.Name
@@ -51,7 +56,9 @@ namespace Timataka.Core.Data.Repositories
                         where u.UserName == username
                         select new UserDto
                         {
-                            Name = u.FirstName + " " + u.LastName,
+                            FirstName = u.FirstName,
+                            Middlename = u.MiddleName,
+                            LastName = u.LastName,
                             Email = u.Email,
                             Username = u.UserName,
                             Ssn = u.Ssn,
@@ -59,19 +66,33 @@ namespace Timataka.Core.Data.Repositories
                             DateOfBirth = u.DateOfBirth,
                             Gender = u.Gender,
                             CountryId = u.CountryId,
+                            Country = (from c in _db.Countries
+                                where c.Id == u.CountryId
+                                select c.Name).FirstOrDefault(),
                             NationalityId = u.NationalityId,
                             Deleted = u.Deleted,
                             Roles = (from ur in _db.UserRoles
                                 join r in _db.Roles
                                     on ur.RoleId equals r.Id
                                 where u.Id == ur.UserId
-                                select new RolesDto
+                                select new UserRolesDto
                                 {
                                     Id = ur.RoleId,
                                     Name = r.Name
                                 }).ToList()
                         }).SingleOrDefault();
             return user;
+        }
+
+        public IEnumerable<UserRolesDto> GetRoles()
+        {
+            var roles = (from r in _db.Roles
+                select new UserRolesDto
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                }).ToList();
+            return roles;
         }
     }
 }

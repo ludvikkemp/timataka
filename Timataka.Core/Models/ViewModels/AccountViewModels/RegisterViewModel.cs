@@ -56,6 +56,6 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
 
         [Required]
         [Display(Name = "Country")]
-        public string Country { get; set; }
+        public int Country { get; set; }
     }
 }
