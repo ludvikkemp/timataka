@@ -15,6 +15,6 @@ namespace Timataka.Core.Data.Repositories
         Task EditAsync(Event entity);
         void Remove(Event entity);
         Task RemoveAsync(Event entity);
-
+        IEnumerable<Event> Get();
     }
 }

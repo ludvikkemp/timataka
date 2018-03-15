@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
@@ -73,6 +74,10 @@ namespace Timataka.Core.Data.Repositories
         {
             //TODO:Mark as removed, not delete compleatly
             throw new NotImplementedException();
+        }
+        public IEnumerable<Event> Get()
+        {
+            return _context.Events.ToList();
         }
     }
 }

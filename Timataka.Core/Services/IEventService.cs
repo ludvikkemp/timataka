@@ -12,5 +12,6 @@ namespace Timataka.Core.Services
         Task<Event> GetEventById(int EventId);
         Task<Event> Edit(Event e);
         Task<int> Remove(int EventId);
+        IEnumerable<Event> GetAllEvents();
     }
 }

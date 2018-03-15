@@ -81,5 +81,14 @@ namespace Timataka.Core.Services
             return EventId;
         }
 
+        /// <summary>
+        /// Get list of all events.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Event> GetAllEvents()
+        {
+            var events = _repo.Get();
+            return events;
+        }
     }
 }
