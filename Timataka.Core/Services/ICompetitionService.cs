@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 
 namespace Timataka.Core.Services
 {
     public interface ICompetitionService
     {
-        Task<Competition> Add(Competition c);
+        Task<Competition> Add(CompetitionsViewModel c);
         Task<Competition> Edit(Competition c);
-        Task<int> Remove(int CompetitionId);
+        Task<int> Remove(int competitionId);
         IEnumerable<Competition> GetAllCompetitions();
-        Task<Competition> GetCompetitionById(int CompetitionId);
-        Task<Competition> GetCompetitionByName(string Name);
+        Task<Competition> GetCompetitionById(int competitionId);
 
         //CompetitionInstance
         Task<CompetitionInstance> AddInstance(CompetitionInstance c);
         Task<CompetitionInstance> EditInstance(CompetitionInstance c);
-        Task<int> RemoveInstance(int CompetitionInstanceId);
+        Task<int> RemoveInstance(int competitionInstanceId);
         IEnumerable<CompetitionInstance> GetAllCompetitionInstances();
-        IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int Id);
-        Task<CompetitionInstance> GetCompetitionInstanceById(int Id);
+        IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int id);
+        Task<CompetitionInstance> GetCompetitionInstanceById(int id);
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);
@@ -30,7 +30,7 @@ namespace Timataka.Core.Services
         IEnumerable<ManagesCompetition> GetAllRoles();
         IEnumerable<ManagesCompetition> GetAllRolesForCompetition(int Id);
         IEnumerable<ManagesCompetition> GetAllRolesForUser(int Id);
-        Role GetRole(int UserId, int CompetitionId);
+        Role GetRole(int userId, int competitionId);
 
     }
 }

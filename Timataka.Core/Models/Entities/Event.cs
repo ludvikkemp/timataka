@@ -9,6 +9,7 @@ namespace Timataka.Core.Models.Entities
     public enum Gender { Female = 0, Male = 1, Both = 2 }
     public class Event
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public int DisciplineId { get; set; }

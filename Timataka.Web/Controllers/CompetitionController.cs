@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -45,7 +46,7 @@ namespace Timataka.Web.Controllers
         //Post: Competitions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("Id,Name")] Competition c)
+        public async Task<IActionResult> Create(CompetitionsViewModel c)
         {
             if (ModelState.IsValid && c.Name != null)
             {
@@ -57,7 +58,7 @@ namespace Timataka.Web.Controllers
                 {
                     //Todo: return some error view
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Competitions","Admin");
             }
             return View(c);
         }

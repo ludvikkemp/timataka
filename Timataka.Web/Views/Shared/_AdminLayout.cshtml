@@ -60,25 +60,30 @@
                                 </a>
                             </li>
                             @if (User.IsInRole("Superadmin"))
-                            {
-                            <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Roles">
-                                    <i class="fa fa-lock"></i> Roles
-                                </a>
-                            </li>
-                            }
+    {
+                        <li>
+                            <a asp-area="" asp-controller="Admin" asp-action="Roles">
+                                <i class="fa fa-lock"></i> Roles
+                            </a>
+                        </li>
+}
 
                             <li>
-                                
-                                <li>
-                                    <a asp-area="" asp-controller="Admin" asp-action="Users">
-                                        <i class="fa fa-users"></i> Users
-                                    </a>
-                                </li>
+
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="Users">
+                                    <i class="fa fa-users"></i> Users
+                                </a>
+                            </li>
 
                             <li>
                                 <a asp-area="" asp-controller="Admin" asp-action="Sports">
                                     <i class="fa fa-table"></i> Sports
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="Competitions">
+                                    <i class="fa fa-trophy"></i> Competitions
                                 </a>
                             </li>
                         </ul>

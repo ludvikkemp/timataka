@@ -54,14 +54,14 @@ namespace Timataka.Core.Data.Repositories
             return _context.Competitions.ToList();
         }
 
-        public Competition GetById(int Id)
+        public Competition GetById(int id)
         {
-            return _context.Competitions.SingleOrDefault(x => x.Id == Id);
+            return _context.Competitions.SingleOrDefault(x => x.Id == id);
         }
 
-        public Task<Competition> GetByIdAsync(int Id)
+        public Task<Competition> GetByIdAsync(int id)
         {
-            return _context.Competitions.SingleOrDefaultAsync(x => x.Id == Id);
+            return _context.Competitions.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public void Edit(Competition c)

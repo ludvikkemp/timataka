@@ -23,8 +23,8 @@ namespace Timataka.Web.Controllers
         private readonly ISportService _sportService;
         private readonly IDisciplineService _disciplineService;
         private readonly IMemoryCache _cache;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ICompetitionService _competitionService;
 
         public AdminController(IAdminService adminService, 
                                 IAccountService accountService,
@@ -32,15 +32,16 @@ namespace Timataka.Web.Controllers
                                 ISportService sportService,
                                 IDisciplineService disciplineService,
                                 UserManager<ApplicationUser> userManager,
-                                RoleManager<IdentityRole> roleManager)
+                                RoleManager<IdentityRole> roleManager,
+                                ICompetitionService competitionService)
         {
             _adminService = adminService;
             _cache = cache;
             _accountService = accountService;
             _sportService = sportService;
             _disciplineService = disciplineService;
-            _userManager = userManager;
             _roleManager = roleManager;
+            _competitionService = competitionService;
         }
         
         [Authorize(Roles = "Admin")]
@@ -185,6 +186,22 @@ namespace Timataka.Web.Controllers
             
             return View(model);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Competitions()
+        {
+            var competitions = _competitionService.GetAllCompetitions();
+            var listompDto = new List<CompetitionDto>();
+
+            foreach (var item in competitions)
+            {
+                listompDto.Add(new CompetitionDto(){Competiton = item, Instances = _competitionService.GetAllInstancesOfCompetition(item.Id)});
+            }
+            return View(listompDto);
+        }
+
+
 
     }
 }

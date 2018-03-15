@@ -27,7 +27,7 @@ namespace Timataka.Core.Models.Entities
         public int? CountryId { get; set; }
         [ForeignKey(nameof(CountryId))]
         public virtual Country Country { get; set; }
-        public string CompetitionName { get; set; }
+        public string Name { get; set; }
         public Status Status { get; set; }
         public Boolean Deleted { get; set; }
 
