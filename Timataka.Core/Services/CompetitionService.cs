@@ -70,10 +70,24 @@ namespace Timataka.Core.Services
             return competitionId;
         }
 
-        public async Task<CompetitionInstance> AddInstance(CompetitionInstance c)
+        public async Task<CompetitionInstance> AddInstance(CompetitionsInstanceViewModel model)
         {
-            await _repo.InsertInstanceAsync(c);
-            return c;
+            // TODO: Villu checka, athuga hvort það sé til núþegar
+
+            var newInstance = new CompetitionInstance
+            {
+                CompetitionId = model.CompetitionId,
+                DateFrom = model.DateFrom,
+                DateTo = model.DateTo,
+                Location = model.Location,
+                CountryId = model.Country,
+                Name = model.Name,
+                Status = model.Status,
+                Deleted = false
+            };
+
+            await _repo.InsertInstanceAsync(newInstance);
+            return newInstance;
         }
 
         public async Task<CompetitionInstance> EditInstance(CompetitionInstance c)

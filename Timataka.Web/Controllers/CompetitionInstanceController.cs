@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -11,10 +12,13 @@ namespace Timataka.Web.Controllers
     public class CompetitionInstanceController : Controller
     {
         private readonly ICompetitionService _competitionService;
+        private readonly IAccountService _accountService;
 
-        public CompetitionInstanceController(ICompetitionService competitionService)
+        public CompetitionInstanceController(ICompetitionService competitionService, 
+                                             IAccountService accountService)
         {
             _competitionService = competitionService;
+            _accountService = accountService;
         }
 
         // Get: CompetitionInstances
@@ -25,9 +29,9 @@ namespace Timataka.Web.Controllers
         }
 
         // Get: CompetitionInstances/Details/3
-        public async Task<IActionResult> Details(int Id)
+        public async Task<IActionResult> Details(int id)
         {
-            var c = await _competitionService.GetCompetitionInstanceById(Id);
+            var c = await _competitionService.GetCompetitionInstanceById(id);
 
             if (c == null)
             {
@@ -39,27 +43,29 @@ namespace Timataka.Web.Controllers
         // Get: CompetitionInstances/Create
         public IActionResult Create()
         {
+            ViewBag.CompetitionIds = _competitionService.GetAllCompetitions();
+            ViewBag.Nations = _accountService.GetNationsListItems();
             return View();
         }
 
         // Post: CompetitionInstances/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(CompetitionInstance c)
+        public async Task<IActionResult> Create(CompetitionsInstanceViewModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _competitionService.AddInstance(c);
+                    await _competitionService.AddInstance(model);
                 }
                 catch (Exception e)
                 {
                     //Todo: return some error view
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Competitions","Admin");
             }
-            return View(c);
+            return View(model);
         }
 
         // Get: CompetitionInstances/Edit/3
@@ -76,9 +82,9 @@ namespace Timataka.Web.Controllers
         // Post: CompetitonInstances/Edit/3
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, CompetitionInstance c)
+        public async Task<IActionResult> Edit(int id, CompetitionInstance c)
         {
-            if (Id != c.Id)
+            if (id != c.Id)
             {
                 return NotFound();
             }

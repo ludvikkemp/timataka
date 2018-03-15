@@ -18,7 +18,7 @@ namespace Timataka.Core.Models.Entities
         public int Id { get; set; }
         public int CompetitionId { get; set; }
         [ForeignKey(nameof(CompetitionId))]
-        public virtual Discipline _CompetitonId { get; set; }
+        public virtual Competition Competiton { get; set; }
         //Start of first event
         public DateTime DateFrom { get; set; }
         //End of last event
