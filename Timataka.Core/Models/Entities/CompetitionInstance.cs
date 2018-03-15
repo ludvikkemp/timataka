@@ -16,6 +16,9 @@ namespace Timataka.Core.Models.Entities
     public class CompetitionInstance
     {
         public int Id { get; set; }
+        public int CompetitionId { get; set; }
+        [ForeignKey(nameof(CompetitionId))]
+        public virtual Discipline _CompetitonId { get; set; }
         //Start of first event
         public DateTime DateFrom { get; set; }
         //End of last event
@@ -26,6 +29,7 @@ namespace Timataka.Core.Models.Entities
         public virtual Country Country { get; set; }
         public string CompetitionName { get; set; }
         public Status Status { get; set; }
+        public Boolean Deleted { get; set; }
 
     }
 }

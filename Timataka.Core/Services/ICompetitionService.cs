@@ -13,5 +13,15 @@ namespace Timataka.Core.Services
         Task<int> Remove(int CompetitionId);
         IEnumerable<Competition> GetAllCompetitions();
         Task<Competition> GetCompetitionById(int CompetitionId);
+        Task<Competition> GetCompetitionByName(string Name);
+
+        //CompetitionInstance
+        Task<CompetitionInstance> AddInstance(CompetitionInstance c);
+        Task<CompetitionInstance> EditInstance(CompetitionInstance c);
+        Task<int> RemoveInstance(int CompetitionInstanceId);
+        IEnumerable<CompetitionInstance> GetAllCompetitionInstances();
+        IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int Id);
+        Task<CompetitionInstance> GetCompetitionInstanceById(int Id);
+
     }
 }

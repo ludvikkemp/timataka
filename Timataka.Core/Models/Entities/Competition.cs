@@ -13,5 +13,6 @@ namespace Timataka.Core.Models.Entities
         public string Phone { get; set; }
         public string Description { get; set; }
         public string Sponsor { get; set; }
+        public Boolean Deleted { get; set; }
     }
 }

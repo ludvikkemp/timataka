@@ -37,54 +37,126 @@ namespace Timataka.Core.Data.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public void Create(Competition c)
+        public void Insert(Competition c)
         {
-            throw new NotImplementedException();
+            _context.Competitions.Add(c);
+            _context.SaveChanges();
         }
 
-        public Task InsertAsync(Competition c)
+        public async Task InsertAsync(Competition c)
         {
-            throw new NotImplementedException();
+            await _context.Competitions.AddAsync(c);
+            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<Competition> Get()
         {
-            throw new NotImplementedException();
+            return _context.Competitions.ToList();
         }
 
         public Competition GetById(int Id)
         {
-            throw new NotImplementedException();
+            return _context.Competitions.SingleOrDefault(x => x.Id == Id);
         }
 
         public Task<Competition> GetByIdAsync(int Id)
         {
-            throw new NotImplementedException();
+            return _context.Competitions.SingleOrDefaultAsync(x => x.Id == Id);
         }
 
         public void Edit(Competition c)
         {
-            throw new NotImplementedException();
+            _context.Competitions.Update(c);
+            _context.SaveChanges();
         }
 
-        public Task EditAsync(Competition c)
+        public async Task EditAsync(Competition c)
         {
-            throw new NotImplementedException();
+            _context.Competitions.Update(c);
+            await _context.SaveChangesAsync();
         }
 
         public void Remove(Competition c)
         {
-            throw new NotImplementedException();
+            //TODO:Mark as removed, not delete compleatly
+            c.Deleted = true;
+            _context.Competitions.Update(c);
+            _context.SaveChanges();
         }
 
-        public Task RemoveAsync(Competition c)
+        public async Task RemoveAsync(Competition c)
         {
-            throw new NotImplementedException();
+            //TODO:Mark as removed, not delete compleatly
+            c.Deleted = true;
+            _context.Competitions.Update(c);
+            await _context.SaveChangesAsync();
         }
 
         public Task<Competition> GetCompetitionByNameAsync(string cName)
         {
-            throw new NotImplementedException();
+            var c = _context.Competitions.SingleOrDefaultAsync(x => x.Name == cName);
+            return c;
+        }
+
+        //CompetitionInstance
+
+        public void InsertInstance(CompetitionInstance c)
+        {
+            _context.CompetitionInstances.Add(c);
+            _context.SaveChanges();
+        }
+
+        public async Task InsertInstanceAsync(CompetitionInstance c)
+        {
+            await _context.CompetitionInstances.AddAsync(c);
+            await _context.SaveChangesAsync();
+        }
+
+        public IEnumerable<CompetitionInstance> GetInstances()
+        {
+            return _context.CompetitionInstances.ToList();
+        }
+
+        public IEnumerable<CompetitionInstance> GetInstancesForCompetition(int Id)
+        {
+            var Instances = _context.CompetitionInstances.Where(x => x.CompetitionId == Id).ToList();
+            return Instances;
+        }
+
+        public CompetitionInstance GetInstanceById(int Id)
+        {
+            return _context.CompetitionInstances.SingleOrDefault(x => x.Id == Id);
+        }
+
+        public Task<CompetitionInstance> GetInstanceByIdAsync(int Id)
+        {
+            return _context.CompetitionInstances.SingleOrDefaultAsync(x => x.Id == Id);
+        }
+
+        public void EditInstance(CompetitionInstance c)
+        {
+            _context.CompetitionInstances.Update(c);
+            _context.SaveChanges();
+        }
+
+        public async Task EditInstanceAsync(CompetitionInstance c)
+        {
+            _context.CompetitionInstances.Update(c);
+            await _context.SaveChangesAsync();
+        }
+
+        public void RemoveInstance(CompetitionInstance c)
+        {
+            c.Deleted = true;
+            _context.CompetitionInstances.Update(c);
+            _context.SaveChanges();
+        }
+
+        public async Task RemoveInstanceAsync(CompetitionInstance c)
+        {
+            c.Deleted = true;
+            _context.CompetitionInstances.Update(c);
+            await _context.SaveChangesAsync();
         }
     }
 }

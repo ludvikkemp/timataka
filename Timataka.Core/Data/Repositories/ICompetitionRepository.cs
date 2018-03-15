@@ -8,7 +8,7 @@ namespace Timataka.Core.Data.Repositories
 {
     public interface ICompetitionRepository : IDisposable
     {
-        void Create(Competition c);
+        void Insert(Competition c);
         Task InsertAsync(Competition c);
 
         IEnumerable<Competition> Get();
@@ -23,5 +23,23 @@ namespace Timataka.Core.Data.Repositories
         Task RemoveAsync(Competition c);
 
         Task<Competition> GetCompetitionByNameAsync(string cName);
+
+        //CompetitionInstance
+
+        void InsertInstance(CompetitionInstance c);
+        Task InsertInstanceAsync(CompetitionInstance c);
+
+        IEnumerable<CompetitionInstance> GetInstances();
+        IEnumerable<CompetitionInstance> GetInstancesForCompetition(int Id);
+
+        CompetitionInstance GetInstanceById(int Id);
+        Task<CompetitionInstance> GetInstanceByIdAsync(int Id);
+
+        void EditInstance(CompetitionInstance c);
+        Task EditInstanceAsync(CompetitionInstance c);
+
+        void RemoveInstance(CompetitionInstance c);
+        Task RemoveInstanceAsync(CompetitionInstance c);
+
     }
 }
