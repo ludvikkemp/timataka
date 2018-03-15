@@ -91,17 +91,21 @@ namespace Timataka.Web.Controllers
         }
 
         //ManagesCompetition
-        // Get Competitions/ManagesCompetition
-        [HttpGet]
-        public IActionResult GetRoles(int? CompetitionId)
+
+
+        // Get Competitions/ManagesCompetitions
+        [HttpGet("/Competitions/ManagesCompetitions/{CompetitionId}")]
+        public IActionResult GetRoles(int CompetitionId)
         {
-            var m = 1;
-            if(CompetitionId == null)
+            if(CompetitionId == 0)
             {
-                return View(m);
+                return View(_competitionService.GetAllRoles());
             }
-            return View(m);
+            return View(_competitionService.GetAllRolesForCompetition(CompetitionId));
         }
+
+        
+
             
     }
 }

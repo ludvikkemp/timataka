@@ -211,7 +211,7 @@ namespace Timataka.Core.Data.Repositories
             return m;
         }
 
-        public IEnumerable<ManagesCompetition> GetRolesForUser(int Id)
+        public IEnumerable<ManagesCompetition> GetRolesForUser(string Id)
         {
             var m = from x in _context.ManagesCompetitions
                     where x.UserId.Equals(Id)
