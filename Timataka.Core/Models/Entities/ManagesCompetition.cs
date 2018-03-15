@@ -14,7 +14,7 @@ namespace Timataka.Core.Models.Entities
 
     public class ManagesCompetition
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser ApplicationUserId { get; set; }
 
