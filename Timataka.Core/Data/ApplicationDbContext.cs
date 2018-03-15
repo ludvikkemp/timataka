@@ -17,6 +17,9 @@ namespace Timataka.Core.Data
         public DbSet<Discipline> Disciplines { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<UserInClub> UsersInClubs { get; set; }
+        public DbSet<Competition> Competitions { get; set; }
+        public DbSet<CompetitionInstance> CompetitionInstances { get; set; }
+        public DbSet<ManagesCompetition> ManagesCompetitions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
