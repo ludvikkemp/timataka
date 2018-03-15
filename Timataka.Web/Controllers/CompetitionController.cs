@@ -89,6 +89,19 @@ namespace Timataka.Web.Controllers
             }
             return View(c);
         }
+
+        //ManagesCompetition
+        // Get Competitions/ManagesCompetition
+        [HttpGet]
+        public IActionResult GetRoles(int? CompetitionId)
+        {
+            var m = 1;
+            if(CompetitionId == null)
+            {
+                return View(m);
+            }
+            return View(m);
+        }
             
     }
 }

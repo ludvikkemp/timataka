@@ -158,5 +158,65 @@ namespace Timataka.Core.Data.Repositories
             _context.CompetitionInstances.Update(c);
             await _context.SaveChangesAsync();
         }
+
+        //ManagesCompetition
+
+        public void AddRole(ManagesCompetition m)
+        {
+            _context.ManagesCompetitions.Add(m);
+            _context.SaveChanges();
+        }
+
+        public async Task AddRoleAsync(ManagesCompetition m)
+        {
+            await _context.ManagesCompetitions.AddAsync(m);
+            await _context.SaveChangesAsync();
+        }
+
+        public void EditRole(ManagesCompetition m)
+        {
+            _context.ManagesCompetitions.Update(m);
+            _context.SaveChanges();
+        }
+
+        public async Task EditRoleAsync(ManagesCompetition m)
+        {
+            _context.ManagesCompetitions.Update(m);
+            await _context.SaveChangesAsync();
+        }
+
+        public void RemoveRole(ManagesCompetition m)
+        {
+            _context.ManagesCompetitions.Remove(m);
+            _context.SaveChanges();
+        }
+
+        public async Task RemoveRoleAsync(ManagesCompetition m)
+        {
+            _context.ManagesCompetitions.Remove(m);
+            await _context.SaveChangesAsync();
+        }
+
+        public IEnumerable<ManagesCompetition> GetAllRoles()
+        {
+            var m = _context.ManagesCompetitions.ToList();
+            return m;
+        }
+
+        public IEnumerable<ManagesCompetition> GetRolesForCompetition(int Id)
+        {
+            var m = from x in _context.ManagesCompetitions
+                    where x.CompetitionId.Equals(Id)
+                    select x;
+            return m;
+        }
+
+        public IEnumerable<ManagesCompetition> GetRolesForUser(int Id)
+        {
+            var m = from x in _context.ManagesCompetitions
+                    where x.UserId.Equals(Id)
+                    select x;
+            return m;
+        }
     }
 }

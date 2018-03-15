@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
@@ -96,6 +97,51 @@ namespace Timataka.Core.Services
         public async Task<CompetitionInstance> GetCompetitionInstanceById(int Id)
         {
             return await _repo.GetInstanceByIdAsync(Id);
+        }
+
+        public async Task<ManagesCompetition> AddRole(ManagesCompetition m)
+        {
+            await _repo.AddRoleAsync(m);
+            return m;
+        }
+
+        public async Task<ManagesCompetition> EditRole(ManagesCompetition m)
+        {
+            await _repo.EditRoleAsync(m);
+            return m;
+        }
+
+        public async Task RemoveRole(ManagesCompetition m)
+        {
+            await _repo.RemoveRoleAsync(m);
+            return;
+        }
+
+        public IEnumerable<ManagesCompetition> GetAllRoles()
+        {
+            var m = GetAllRoles();
+            return m;
+        }
+
+        public IEnumerable<ManagesCompetition> GetAllRolesForCompetition(int Id)
+        {
+            var m = GetAllRolesForCompetition(Id);
+            return m;
+        }
+
+        public IEnumerable<ManagesCompetition> GetAllRolesForUser(int Id)
+        {
+            var m = GetAllRolesForUser(Id);
+            return m;
+        }
+
+        public Role GetRole(int UserId, int CompetitionId)
+        {
+            IEnumerable<ManagesCompetition> m = GetAllRolesForUser(UserId);
+            ManagesCompetition r = (from x in m
+                                    where x.CompetitionId.Equals(CompetitionId)
+                                    select x).SingleOrDefault();
+            return r.Role;
         }
     }
 }

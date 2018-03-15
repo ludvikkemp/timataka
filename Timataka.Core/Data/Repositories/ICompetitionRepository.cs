@@ -41,5 +41,20 @@ namespace Timataka.Core.Data.Repositories
         void RemoveInstance(CompetitionInstance c);
         Task RemoveInstanceAsync(CompetitionInstance c);
 
+        //ManagesCompetition
+
+        void AddRole(ManagesCompetition m);
+        Task AddRoleAsync(ManagesCompetition m);
+
+        void EditRole(ManagesCompetition m);
+        Task EditRoleAsync(ManagesCompetition m);
+
+        void RemoveRole(ManagesCompetition m);
+        Task RemoveRoleAsync(ManagesCompetition m);
+
+        IEnumerable<ManagesCompetition> GetAllRoles();
+        IEnumerable<ManagesCompetition> GetRolesForCompetition(int Id);
+        IEnumerable<ManagesCompetition> GetRolesForUser(int Id);
+
     }
 }
