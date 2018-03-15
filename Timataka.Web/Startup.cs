@@ -83,6 +83,7 @@ namespace Timataka.Web
 
             services.AddTransient<IAccountService, AccountService>();
 
+            services.AddTransient<IEventService, EventService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
