@@ -174,16 +174,15 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Superadmin, Admin")]
         public IActionResult AddRole(CreateRoleViewModel model)
         {
-            /*
             var role = _roleManager.FindByNameAsync(model.Name);
-            role.Wait();
-            if (!role.IsCompletedSuccessfully)
+            
+            if (role.Result == null)
             {
                 Task roleResult = _roleManager.CreateAsync(new IdentityRole(model.Name));
                 roleResult.Wait();
                 return Redirect("~/Admin/Roles");
             }
-            */
+            
             return View(model);
         }
 

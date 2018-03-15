@@ -20,6 +20,8 @@ namespace Timataka.Core.Data
         public DbSet<UserInClub> UsersInClubs { get; set; }
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<CompetitionInstance> CompetitionInstances { get; set; }
+        public DbSet<ManagesCompetition> ManagesCompetitions { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +31,9 @@ namespace Timataka.Core.Data
             // Add your customizations after calling base.OnModelCreating(builder);
             builder.Entity<UserInClub>()
                 .HasKey(c => new { c.UserId, c.SportId });
+
+            builder.Entity<ManagesCompetition>()
+                .HasKey(m => new {m.UserId, m.CompetitionId});
         }
     }
 }

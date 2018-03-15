@@ -30,19 +30,20 @@
                 <div class="form-group">
                     <label asp-for="Email">Email</label>
                     @if (Model.IsEmailConfirmed)
-                    {
-                    <div class="input-group">
-                        <input asp-for="Email" class="form-control" />
-                        <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
-                    </div>
-                    }
-                    else
-                    {
-                    <input asp-for="Email" class="form-control" />
-                    <button asp-action="SendVerificationEmail" class="btn btn-oval btn-primary btn-sm">Send verification email</button>
-                    }
+        {
+            <div class="input-group">
+                <input asp-for="Email" class="form-control" />
+                <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+            </div>
+}
+else
+{
+            <input asp-for="Email" class="form-control" />
+
+}
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
+                <button asp-action="SendVerificationEmail" class="btn btn-oval btn-info btn-sm">Send verification email</button>
                 <div class="form-group">
                     <label asp-for="PhoneNumber">Phone Number</label>
                     <input asp-for="PhoneNumber" class="form-control" />
@@ -65,7 +66,7 @@
                     <label asp-for="PasswordNew">New Password</label>
                     <input asp-for="PasswordNew" type="password" class="form-control" />
                 </div>
-                <button type="submit" class="btn btn-primary">Change</button>
+                <button type="submit" class="btn btn-oval btn-info btn-sm">Change</button>
             </form>
         </div>
     </div>
