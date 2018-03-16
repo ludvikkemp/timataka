@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Timataka.Core.Models.Dto.AdminDTO.CompetitionDto>
+﻿@model IEnumerable<Timataka.Core.Models.Entities.Competition>
 
 @{
     ViewBag.Title = "Competitions";
@@ -16,7 +16,6 @@
         <div class="row">
             <div class="col-md-12">
                 <a asp-controller="Competition" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Competitions </a>
-                <a asp-controller="CompetitionInstance" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Instance </a>
             </div>
         </div>
 
@@ -78,39 +77,24 @@
                                         <thead>
                                             <tr>
                                                 <th>Competition</th>
-                                                <th>Instance</th>
                                                 <th>Actions</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var comp in Model)
                                             {
                                                 <tr>
-                                                    <td>@comp.Competiton.Name</td>
-                                                    <td></td>
                                                     <td>
-                                                        <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Competiton.Id">Edit</a> |
-                                                        <a asp-controller="Competition" asp-action="Details" asp-route-id="@comp.Competiton.Id">Details</a> |
-                                                        <a asp-controller="Competition" asp-action="Delete" asp-route-id="@comp.Competiton.Id">Delete</a>
+                                                        <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Id">@comp.Name</a>
+                                                    </td>
+                                                    <td>
+                                                        <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a> 
+                                                        <a asp-controller="Competition" asp-action="Details" asp-route-id="@comp.Id" class="btn btn-success-outline btn-sm">Details</a> 
+                                                        <a asp-controller="Competition" asp-action="Delete" asp-route-id="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
                                                     </td>
                                                 </tr>
-                                                
-                                                foreach(var instance in comp.Instances)
-                                                {
-                                                <tr>
-                                                    <td></td>
-                                                    <td>@instance.Name</td>
-                                                    <td>
-                                                        <a asp-controller="CompetitionInstance" asp-action="Edit" asp-route-id="@instance.Id">Edit</a> |
-                                                        <a asp-controller="CompetitionInstance" asp-action="Details" asp-route-id="@instance.Id">Details</a> |
-                                                        <a asp-controller="CompetitionInstance" asp-action="Delete" asp-route-id="@instance.Id">Delete</a>
-                                                    </td>
-                                                </tr>
-                                                }
-                                                    
-                                                
-                                        }
+
+                                            }
                                         </tbody>
                                     </table>
                                 </div>

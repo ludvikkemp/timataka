@@ -26,9 +26,9 @@ namespace Timataka.Web.Controllers
         }
 
         // Get: Competitions/Details/3
-        public async Task<IActionResult> Details(int Id)
+        public async Task<IActionResult> Details(int id)
         {
-            var c = await _competitionService.GetCompetitionById(Id);
+            var c = await _competitionService.GetCompetitionById(id);
 
             if (c == null)
             {
@@ -64,9 +64,9 @@ namespace Timataka.Web.Controllers
         }
 
         // Get: Competitions/Edit/3
-        public async Task<IActionResult> Edit(int Id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var c = await _competitionService.GetCompetitionById(Id);
+            var c = await _competitionService.GetCompetitionById(id);
             if (c == null)
             {
                 return NotFound();
@@ -77,9 +77,9 @@ namespace Timataka.Web.Controllers
         // Post: Competitons/Edit/3
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, [Bind("Id,Name")] Competition c)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Competition c)
         {
-            if (Id != c.Id)
+            if (id != c.Id)
             {
                 return NotFound();
             }
@@ -92,14 +92,14 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: Competitons/Delete/5
-        public async Task<IActionResult> Delete(int? Id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (Id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var c = await _competitionService.GetCompetitionById((int)Id);
+            var c = await _competitionService.GetCompetitionById((int)id);
             if (c == null)
             {
                 return NotFound();
@@ -122,13 +122,13 @@ namespace Timataka.Web.Controllers
 
         // Get Competitions/ManagesCompetitions
         [HttpGet("/Competitions/ManagesCompetitions/{CompetitionId}")]
-        public IActionResult GetRoles(int CompetitionId)
+        public IActionResult GetRoles(int competitionId)
         {
-            if(CompetitionId == 0)
+            if(competitionId == 0)
             {
                 return View(_competitionService.GetAllRoles());
             }
-            return View(_competitionService.GetAllRolesForCompetition(CompetitionId));
+            return View(_competitionService.GetAllRolesForCompetition(competitionId));
         }
 
         // Get Competitons/ManagesCompetitions/Add

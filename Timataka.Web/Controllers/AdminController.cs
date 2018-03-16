@@ -192,13 +192,13 @@ namespace Timataka.Web.Controllers
         public IActionResult Competitions()
         {
             var competitions = _competitionService.GetAllCompetitions();
-            var listompDto = new List<CompetitionDto>();
-
+            /*
             foreach (var item in competitions)
             {
                 listompDto.Add(new CompetitionDto(){Competiton = item, Instances = _competitionService.GetAllInstancesOfCompetition(item.Id)});
             }
-            return View(listompDto);
+            */
+            return View(competitions);
         }
 
 
