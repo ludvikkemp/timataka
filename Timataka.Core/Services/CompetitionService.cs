@@ -150,13 +150,13 @@ namespace Timataka.Core.Services
             return m;
         }
 
-        public IEnumerable<ManagesCompetition> GetAllRolesForUser(int Id)
+        public IEnumerable<ManagesCompetition> GetAllRolesForUser(string Id)
         {
             var m = GetAllRolesForUser(Id);
             return m;
         }
 
-        public Role GetRole(int UserId, int CompetitionId)
+        public Role GetRole(string UserId, int CompetitionId)
         {
             IEnumerable<ManagesCompetition> m = GetAllRolesForUser(UserId);
             ManagesCompetition r = (from x in m

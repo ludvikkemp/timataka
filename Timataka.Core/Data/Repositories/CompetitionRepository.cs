@@ -209,10 +209,11 @@ namespace Timataka.Core.Data.Repositories
             return m;
         }
 
-        public IEnumerable<ManagesCompetition> GetRolesForUser(int id)
+        public IEnumerable<ManagesCompetition> GetRolesForUser(string Id)
+
         {
             var m = from x in _context.ManagesCompetitions
-                    where x.UserId.Equals(id)
+                    where x.UserId.Equals(Id)
                     select x;
             return m;
         }

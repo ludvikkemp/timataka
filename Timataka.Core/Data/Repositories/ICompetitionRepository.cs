@@ -54,7 +54,7 @@ namespace Timataka.Core.Data.Repositories
 
         IEnumerable<ManagesCompetition> GetAllRoles();
         IEnumerable<ManagesCompetition> GetRolesForCompetition(int Id);
-        IEnumerable<ManagesCompetition> GetRolesForUser(int Id);
+        IEnumerable<ManagesCompetition> GetRolesForUser(string Id);
 
     }
 }
