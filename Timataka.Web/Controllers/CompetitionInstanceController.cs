@@ -64,46 +64,52 @@ namespace Timataka.Web.Controllers
         // Get: CompetitionInstances/Edit/3
         public IActionResult Edit(int id)
         {
-            /*
+            //TODO: Lúlli er að vinna í þessu
+
             var result = _competitionService.GetCompetitionInstanceById(id);
             result.Wait();
             ViewBag.ListOfNations = _accountService.GetNationsListItems();
-            
-            if (result.Result.CountryId != null)
+
+            var model = new CompetitionsInstanceViewModel
             {
-                var countryId = (int) result.Result.CountryId;
-                var model = new CompetitionsInstanceViewModel
-                {
-                    Id = result.Result.Id,
-                    CompetitionId = result.Result.CompetitionId,
-                    Name = result.Result.Name,
-                    DateFrom = result.Result.DateFrom,
-                    DateTo = result.Result.DateTo,
-                    Location = result.Result.Location,
-                    Status = result.Result.Status,
-                    Country = countryId
-                };
-                return View(model);
-            }
-            */
-            return null;
+                Id = result.Result.Id,
+                CompetitionId = result.Result.CompetitionId,
+                Name = result.Result.Name,
+                DateFrom = result.Result.DateFrom,
+                DateTo = result.Result.DateTo,
+                Location = result.Result.Location,
+                Status = result.Result.Status,
+                Country = result.Result.CountryId
+                //CountryName = res
+            };
+
+            return View(model);
         }
 
         // Post: CompetitonInstances/Edit/3
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CompetitionInstance c)
+        public async Task<IActionResult> Edit(int id, CompetitionsInstanceViewModel model)
         {
-            if (id != c.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                await _competitionService.EditInstance(c);
-                return RedirectToAction("Competition", "Admin", c.CompetitionId);
+                var compInstance = await _competitionService.GetCompetitionInstanceById(model.Id);
+                compInstance.CountryId = model.Country;
+                compInstance.DateFrom = model.DateFrom;
+                compInstance.DateTo = model.DateTo;
+                compInstance.Location = model.Location;
+                compInstance.Name = model.Name;
+                compInstance.Status = model.Status;
+
+                await _competitionService.EditInstance(compInstance);
+
+                return RedirectToAction("Competition", "Admin", new { @id = compInstance.CompetitionId });
             }
-            return View(c);
+            return View(model);
         }
 
         // GET: CompetitonInstances/Delete/5

@@ -12,9 +12,10 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180316175835_Changing_CompetitionInstance_nullable_int_in_CountryId_taken_out_Migrations")]
+    partial class Changing_CompetitionInstance_nullable_int_in_CountryId_taken_out_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

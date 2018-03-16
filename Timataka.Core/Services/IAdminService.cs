@@ -12,5 +12,6 @@ namespace Timataka.Core.Services
         UserDto GetUserByUsername(string username);
         Task<bool> UpdateUser(UserDto model);
         object GetRoles();
+        string GetCountryNameById(int id);
     }
 }

@@ -10,5 +10,6 @@ namespace Timataka.Core.Data.Repositories
         IEnumerable<UserDto> GetUsers();
         UserDto GetUserByUsername(string username);
         IEnumerable<UserRolesDto> GetRoles();
+        string GetCountryNameById(int id);
     }
 }
