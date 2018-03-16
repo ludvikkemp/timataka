@@ -5,60 +5,124 @@
     Layout = "_AdminLayout";
 }
 <section class="content">
+    <div class="title-block">
 
-    <h2>Sports</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> Sports </span>
+            </div>
+        </div>
 
-    <p>
-        <a class="btn btn-primary btn-sm rounded-s" asp-controller="Sports" asp-action="Create">New Sport</a> 
-        <a class="btn btn-primary btn-sm rounded-s" asp-controller="Discipline" asp-action="Create">New Discipline</a>
-    </p>
+        <div class="row">
+            <div class="col-md-12">
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Sports" asp-action="Create">New Sport</a>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Discipline" asp-action="Create">New Discipline</a>
+            </div>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Sport
-                </th>
-                <th>
-                    Discipline
-                </th>
-                <th>
-                    Actions
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                @if (item.IsSport)
-                {
-                    <tr>
-                        <td>@item.SportName</td>
-                        <td></td>
-                        <td>
-                            <a class="btn btn-warning-outline btn-sm" asp-controller="Sports" asp-action="Edit" asp-route-id="@item.SportId">Edit</a> 
-                            <a class="btn btn-success-outline btn-sm" asp-controller="Sports" asp-action="Details" asp-route-id="@item.SportId">Details</a>
-                            <a class="btn btn-danger-outline btn-sm" asp-controller="Sports" asp-action="Delete" asp-route-id="@item.SportId">Delete</a>
-                        </td>
-                    </tr>
-                }
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="" method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
 
-                @foreach (var discipline in Model)
-                {
-                    @if ((discipline.IsSport == false) && (discipline.SportId == item.SportId) && item.IsSport)
-                    {
-                        <tr>
-                            <td></td>
-                            <td>@discipline.DisciplineName</td>
-                            <td>
-                                <a class="btn btn-warning-outline btn-sm" asp-controller="Discipline" asp-action="Edit" asp-route-id="@discipline.DisciplineId">Edit</a>
-                                <a class="btn btn-success-outline btn-sm" asp-controller="Discipline" asp-action="Details" asp-route-id="@discipline.DisciplineId">Details</a>
-                                <a class="btn btn-danger-outline btn-sm" asp-controller="Discipline" asp-action="Delete" asp-route-id="@discipline.DisciplineId">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                }
-            }
-        </tbody>
-    </table>
+        <nav class="text-right col-md-6">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href=""> Prev </a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href=""> 1 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 2 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 3 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 4 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 5 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> Next </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-block">
+                            <h3 class="title"> Competitions </h3>
+                        </div>
+                        <section class="example">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Sport</th>
+                                        <th>Discipline</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        @if (item.IsSport)
+                                         {
+                                             <tr>
+                                                 <td>@item.SportName</td>
+                                                 <td></td>
+                                                 <td>
+                                                     <a class="btn btn-warning-outline btn-sm" asp-controller="Sports" asp-action="Edit" asp-route-id="@item.SportId">Edit</a>
+                                                     <a class="btn btn-success-outline btn-sm" asp-controller="Sports" asp-action="Details" asp-route-id="@item.SportId">Details</a>
+                                                     <a class="btn btn-danger-outline btn-sm" asp-controller="Sports" asp-action="Delete" asp-route-id="@item.SportId">Delete</a>
+                                                 </td>
+                                             </tr>
+                                         }
+
+                                        @foreach (var discipline in Model)
+                                         {
+                                             @if ((discipline.IsSport == false) && (discipline.SportId == item.SportId) && item.IsSport)
+                                              {
+                                                  <tr>
+                                                      <td></td>
+                                                      <td>@discipline.DisciplineName</td>
+                                                      <td>
+                                                          <a class="btn btn-warning-outline btn-sm" asp-controller="Discipline" asp-action="Edit" asp-route-id="@discipline.DisciplineId">Edit</a>
+                                                          <a class="btn btn-success-outline btn-sm" asp-controller="Discipline" asp-action="Details" asp-route-id="@discipline.DisciplineId">Details</a>
+                                                          <a class="btn btn-danger-outline btn-sm" asp-controller="Discipline" asp-action="Delete" asp-route-id="@discipline.DisciplineId">Delete</a>
+                                                      </td>
+                                                  </tr>
+                                              }
+                                         }
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
 </section>
