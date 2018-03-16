@@ -118,7 +118,7 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sport = await _competitionService.RemoveInstance((int)id);
+            var c = await _competitionService.RemoveInstance((int)id);
             return RedirectToAction(nameof(Index));
         }
 
