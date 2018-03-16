@@ -26,14 +26,14 @@ namespace Timataka.Web.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ICompetitionService _competitionService;
 
-        public AdminController(IAdminService adminService, 
-                                IAccountService accountService,
-                                IMemoryCache cache,
-                                ISportService sportService,
-                                IDisciplineService disciplineService,
-                                UserManager<ApplicationUser> userManager,
-                                RoleManager<IdentityRole> roleManager,
-                                ICompetitionService competitionService)
+        public AdminController(IAdminService adminService,
+            IAccountService accountService,
+            IMemoryCache cache,
+            ISportService sportService,
+            IDisciplineService disciplineService,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            ICompetitionService competitionService)
         {
             _adminService = adminService;
             _cache = cache;
@@ -43,7 +43,7 @@ namespace Timataka.Web.Controllers
             _roleManager = roleManager;
             _competitionService = competitionService;
         }
-        
+
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
@@ -67,7 +67,7 @@ namespace Timataka.Web.Controllers
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
-                listOfUsers = listOfUsers.Where(u => u.Username.ToUpper().Contains(searchToUpper) 
+                listOfUsers = listOfUsers.Where(u => u.Username.ToUpper().Contains(searchToUpper)
                                                      || u.Email.ToUpper().Contains(searchToUpper)
                                                      || u.FirstName.ToUpper().Contains(searchToUpper)
                                                      || u.LastName.ToUpper().Contains(searchToUpper));
@@ -92,6 +92,7 @@ namespace Timataka.Web.Controllers
             {
                 return new BadRequestResult();
             }
+
             return View(userDto);
         }
 
@@ -165,8 +166,9 @@ namespace Timataka.Web.Controllers
                 };
 
                 models.Add(model);
-                
+
             }
+
             return View(models);
 
         }
@@ -176,14 +178,14 @@ namespace Timataka.Web.Controllers
         public IActionResult AddRole(CreateRoleViewModel model)
         {
             var role = _roleManager.FindByNameAsync(model.Name);
-            
+
             if (role.Result == null)
             {
                 Task roleResult = _roleManager.CreateAsync(new IdentityRole(model.Name));
                 roleResult.Wait();
                 return Redirect("~/Admin/Roles");
             }
-            
+
             return View(model);
         }
 
@@ -192,16 +194,24 @@ namespace Timataka.Web.Controllers
         public IActionResult Competitions()
         {
             var competitions = _competitionService.GetAllCompetitions();
-            /*
-            foreach (var item in competitions)
-            {
-                listompDto.Add(new CompetitionDto(){Competiton = item, Instances = _competitionService.GetAllInstancesOfCompetition(item.Id)});
-            }
-            */
             return View(competitions);
         }
 
+        [HttpGet]
+        [Route("Admin/Competition/{id}")]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Competition(int id)
+        {
+            var competition = _competitionService.GetCompetitionById(id);
+            competition.Wait();
+            var compDto = new CompetitionDto
+            {
+                Competiton = competition.Result,
+                Instances = _competitionService.GetAllInstancesOfCompetition(id)
+            };
 
+            return View(compDto);
 
+        }
     }
 }

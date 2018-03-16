@@ -8,6 +8,7 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
 {
     public class CompetitionsViewModel
     {
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Url]
@@ -22,6 +23,7 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
 
     public class CompetitionsInstanceViewModel
     {
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

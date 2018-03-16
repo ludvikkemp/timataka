@@ -1,0 +1,70 @@
+﻿@model Timataka.Core.Models.Entities.CompetitionInstance
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h2>Edit</h2>
+
+    <h4>Competition</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Location" class="control-label"></label>
+                    <input asp-for="Location" class="form-control" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateFrom" class="control-label"></label>
+                    <input asp-for="DateFrom" class="form-control" />
+                    <span asp-validation-for="DateFrom" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateTo" class="control-label"></label>
+                    <input asp-for="DateTo" class="form-control" />
+                    <span asp-validation-for="DateTo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Status"></label>
+                    <select name="Status" class="form-control">
+                        <option value="0">Pending</option>
+                        <option value="1">Open For Registration</option>
+                        <option value="2">On Going</option>
+                        <option value="3">Finished</option>
+                        <option value="4">Closed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Country"></label>
+                    <select name="Country" class="form-control">
+                        @foreach (var item in ViewBag.ListOfNations)
+                        {
+                            <option value="@item.Value" id="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-controller="Admin" asp-action="Competition" asp-route-id="Model.Id">Back to List</a>
+    </div>
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

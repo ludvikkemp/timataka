@@ -1,7 +1,6 @@
-﻿@model IEnumerable<Timataka.Core.Models.Entities.Competition>
+﻿@model Timataka.Core.Models.Dto.AdminDTO.CompetitionDto
 
 @{
-    ViewBag.Title = "Competitions";
     Layout = "_AdminLayout";
 }
 <section class="content">
@@ -9,13 +8,13 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> Competitions </span>
+                <span class="title"> @Model.Competiton.Name </span>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <a asp-controller="Competition" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Competitions </a>
+                <a asp-controller="CompetitionInstance" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Instance </a>
             </div>
         </div>
 
@@ -69,28 +68,32 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-block">
-                                <h3 class="title"> Competitions </h3>
+                                <h3 class="title"> Instances </h3>
                             </div>
                             <section class="example">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Competition</th>
+                                                <th>Name</th>
+                                                <th>Date</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var comp in Model)
+                                            @foreach (var item in Model.Instances)
                                             {
                                                 <tr>
                                                     <td>
-                                                        <a asp-controller="Admin" asp-action="Competition" asp-route-id="@comp.Id">@comp.Name</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Index" asp-route-id="@item.Id">@item.Name</a>
                                                     </td>
                                                     <td>
-                                                        <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a> 
-                                                        <a asp-controller="Competition" asp-action="Details" asp-route-id="@comp.Id" class="btn btn-success-outline btn-sm">Details</a> 
-                                                        <a asp-controller="Competition" asp-action="Delete" asp-route-id="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                        @item.DateFrom
+                                                    </td>
+                                                    <td>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success-outline btn-sm">Details</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
                                                     </td>
                                                 </tr>
 
@@ -109,3 +112,4 @@
 
 
 </section>
+

@@ -21,13 +21,6 @@ namespace Timataka.Web.Controllers
             _accountService = accountService;
         }
 
-        // Get: CompetitionInstances
-        public IActionResult Index()
-        {
-            var instances = _competitionService.GetAllCompetitionInstances();
-            return View(instances);
-        }
-
         // Get: CompetitionInstances/Details/3
         public async Task<IActionResult> Details(int id)
         {
@@ -71,12 +64,29 @@ namespace Timataka.Web.Controllers
         // Get: CompetitionInstances/Edit/3
         public IActionResult Edit(int id)
         {
-            var c = _competitionService.GetCompetitionInstanceById(id);
-            if (c == null)
+            /*
+            var result = _competitionService.GetCompetitionInstanceById(id);
+            result.Wait();
+            ViewBag.ListOfNations = _accountService.GetNationsListItems();
+            
+            if (result.Result.CountryId != null)
             {
-                return NotFound();
+                var countryId = (int) result.Result.CountryId;
+                var model = new CompetitionsInstanceViewModel
+                {
+                    Id = result.Result.Id,
+                    CompetitionId = result.Result.CompetitionId,
+                    Name = result.Result.Name,
+                    DateFrom = result.Result.DateFrom,
+                    DateTo = result.Result.DateTo,
+                    Location = result.Result.Location,
+                    Status = result.Result.Status,
+                    Country = countryId
+                };
+                return View(model);
             }
-            return View(c);
+            */
+            return null;
         }
 
         // Post: CompetitonInstances/Edit/3
@@ -91,7 +101,7 @@ namespace Timataka.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _competitionService.EditInstance(c);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Competition", "Admin", c.CompetitionId);
             }
             return View(c);
         }
@@ -118,8 +128,10 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sport = await _competitionService.RemoveInstance((int)id);
-            return RedirectToAction(nameof(Index));
+            var instance = _competitionService.GetCompetitionInstanceById(id);
+            var compId = instance.Result.CompetitionId;
+            await _competitionService.RemoveInstance((int)id);
+            return RedirectToAction("Competition", "Admin", compId);
         }
 
 
