@@ -24,8 +24,8 @@ namespace Timataka.Web.Controllers
         // Get: CompetitionInstances
         public IActionResult Index()
         {
-            var Instances = _competitionService.GetAllCompetitionInstances();
-            return View(Instances);
+            var instances = _competitionService.GetAllCompetitionInstances();
+            return View(instances);
         }
 
         // Get: CompetitionInstances/Details/3
@@ -69,9 +69,9 @@ namespace Timataka.Web.Controllers
         }
 
         // Get: CompetitionInstances/Edit/3
-        public IActionResult Edit(int Id)
+        public IActionResult Edit(int id)
         {
-            var c = _competitionService.GetCompetitionInstanceById(Id);
+            var c = _competitionService.GetCompetitionInstanceById(id);
             if (c == null)
             {
                 return NotFound();
@@ -97,14 +97,14 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: CompetitonInstances/Delete/5
-        public async Task<IActionResult> Delete(int? Id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (Id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var c = await _competitionService.GetCompetitionInstanceById((int)Id);
+            var c = await _competitionService.GetCompetitionInstanceById((int)id);
             if (c == null)
             {
                 return NotFound();

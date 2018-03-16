@@ -89,7 +89,11 @@
                                                 <tr>
                                                     <td>@comp.Competiton.Name</td>
                                                     <td></td>
-                                                    <td>Edit|Delete|Details</td>
+                                                    <td>
+                                                        <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Competiton.Id">Edit</a> |
+                                                        <a asp-controller="Competition" asp-action="Details" asp-route-id="@comp.Competiton.Id">Details</a> |
+                                                        <a asp-controller="Competition" asp-action="Delete" asp-route-id="@comp.Competiton.Id">Delete</a>
+                                                    </td>
                                                 </tr>
                                                 
                                                 foreach(var instance in comp.Instances)
@@ -97,7 +101,11 @@
                                                 <tr>
                                                     <td></td>
                                                     <td>@instance.Name</td>
-                                                    <td>Edit|Delete|Details</td>
+                                                    <td>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Edit" asp-route-id="@instance.Id">Edit</a> |
+                                                        <a asp-controller="CompetitionInstance" asp-action="Details" asp-route-id="@instance.Id">Details</a> |
+                                                        <a asp-controller="CompetitionInstance" asp-action="Delete" asp-route-id="@instance.Id">Delete</a>
+                                                    </td>
                                                 </tr>
                                                 }
                                                     
