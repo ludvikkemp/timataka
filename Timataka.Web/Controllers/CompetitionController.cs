@@ -91,6 +91,32 @@ namespace Timataka.Web.Controllers
             return View(c);
         }
 
+        // GET: Competitons/Delete/5
+        public async Task<IActionResult> Delete(int? Id)
+        {
+            if (Id == null)
+            {
+                return NotFound();
+            }
+
+            var c = await _competitionService.GetCompetitionById((int)Id);
+            if (c == null)
+            {
+                return NotFound();
+            }
+
+            return View(c);
+        }
+
+        // POST: Competitons/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var c = await _competitionService.Remove((int)id);
+            return RedirectToAction(nameof(Index));
+        }
+
         //ManagesCompetition
 
 
