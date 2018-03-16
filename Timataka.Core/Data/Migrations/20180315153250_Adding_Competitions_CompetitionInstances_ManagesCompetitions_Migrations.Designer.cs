@@ -12,9 +12,10 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180315153250_Adding_Competitions_CompetitionInstances_ManagesCompetitions_Migrations")]
+    partial class Adding_Competitions_CompetitionInstances_ManagesCompetitions_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,6 +256,8 @@ namespace Timataka.Core.Data.Migrations
 
                     b.Property<int>("CompetitionId");
 
+                    b.Property<string>("CompetitionName");
+
                     b.Property<int?>("CountryId");
 
                     b.Property<DateTime>("DateFrom");
@@ -264,8 +267,6 @@ namespace Timataka.Core.Data.Migrations
                     b.Property<bool>("Deleted");
 
                     b.Property<string>("Location");
-
-                    b.Property<string>("Name");
 
                     b.Property<int>("Status");
 
@@ -314,44 +315,6 @@ namespace Timataka.Core.Data.Migrations
                     b.ToTable("Disciplines");
                 });
 
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Event", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("ActiveChip");
-
-                    b.Property<int>("CompetitionInstanceId");
-
-                    b.Property<int>("CourseId");
-
-                    b.Property<DateTime>("DateFrom");
-
-                    b.Property<DateTime>("DateTo");
-
-                    b.Property<int>("DisciplineId");
-
-                    b.Property<int>("DistanceOffset");
-
-                    b.Property<int>("Gender");
-
-                    b.Property<int>("Laps");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("Splits");
-
-                    b.Property<int>("StartInterval");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompetitionInstanceId");
-
-                    b.HasIndex("DisciplineId");
-
-                    b.ToTable("Events");
-                });
-
             modelBuilder.Entity("Timataka.Core.Models.Entities.ManagesCompetition", b =>
                 {
                     b.Property<string>("UserId");
@@ -362,7 +325,7 @@ namespace Timataka.Core.Data.Migrations
 
                     b.HasKey("UserId", "CompetitionId");
 
-                    b.HasAlternateKey("CompetitionId", "UserId");
+                    b.HasIndex("CompetitionId");
 
                     b.ToTable("ManagesCompetitions");
                 });
@@ -456,7 +419,7 @@ namespace Timataka.Core.Data.Migrations
 
             modelBuilder.Entity("Timataka.Core.Models.Entities.CompetitionInstance", b =>
                 {
-                    b.HasOne("Timataka.Core.Models.Entities.Competition", "Competiton")
+                    b.HasOne("Timataka.Core.Models.Entities.Discipline", "_CompetitonId")
                         .WithMany()
                         .HasForeignKey("CompetitionId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -471,19 +434,6 @@ namespace Timataka.Core.Data.Migrations
                     b.HasOne("Timataka.Core.Models.Entities.Sport", "ApplicationSportId")
                         .WithMany()
                         .HasForeignKey("SportId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Event", b =>
-                {
-                    b.HasOne("Timataka.Core.Models.Entities.CompetitionInstance", "CompInstanceId")
-                        .WithMany()
-                        .HasForeignKey("CompetitionInstanceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Timataka.Core.Models.Entities.Discipline", "_DisciplineId")
-                        .WithMany()
-                        .HasForeignKey("DisciplineId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

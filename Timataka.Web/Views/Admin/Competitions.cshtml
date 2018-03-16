@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Timataka.Core.Models.Dto.AdminDTO.CompetitionDto>
+
+@{
+    ViewBag.Title = "Competitions";
+    Layout = "_AdminLayout";
+}
+
+
+<section class="content">
+
+    <div class="title-block">
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> Competitions </span>
+                <a asp-controller="Competition" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Competitions </a>
+                <a asp-controller="CompetitionInstance" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Instance </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Users" method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <nav class="text-right col-md-6">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href=""> Prev </a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href=""> 1 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 2 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 3 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 4 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 5 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> Next </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <h3 class="title"> Competitions </h3>
+                            </div>
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Competition</th>
+                                                <th>Instance</th>
+                                                <th>Actions</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var comp in Model)
+                                            {
+                                                <tr>
+                                                    <td>@comp.Competiton.Name</td>
+                                                    <td></td>
+                                                    <td>Edit|Delete|Details</td>
+                                                </tr>
+                                                
+                                                foreach(var instance in comp.Instances)
+                                                {
+                                                <tr>
+                                                    <td></td>
+                                                    <td>@instance.Name</td>
+                                                    <td>Edit|Delete|Details</td>
+                                                </tr>
+                                                }
+                                                    
+                                                
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+</section>

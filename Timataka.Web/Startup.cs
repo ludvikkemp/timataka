@@ -75,14 +75,15 @@ namespace Timataka.Web
             services.AddTransient<IDisciplineRepository, DisciplineRepository>();
             services.AddTransient<IAdminRepository, AdminRepository>();
             services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<ICompetitionRepository, CompetitionRepository>();
 
+            services.AddTransient<ICompetitionService, CompetitionService>();
             services.AddTransient<IAdminService, AdminService>();
-
             services.AddTransient<ISportService, SportService>();
             services.AddTransient<IDisciplineService, DisciplineService>();
-
             services.AddTransient<IAccountService, AccountService>();
 
+            services.AddTransient<IEventService, EventService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

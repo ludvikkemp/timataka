@@ -54,14 +54,14 @@ namespace Timataka.Core.Data.Repositories
             return _context.Competitions.ToList();
         }
 
-        public Competition GetById(int Id)
+        public Competition GetById(int id)
         {
-            return _context.Competitions.SingleOrDefault(x => x.Id == Id);
+            return _context.Competitions.SingleOrDefault(x => x.Id == id);
         }
 
-        public Task<Competition> GetByIdAsync(int Id)
+        public Task<Competition> GetByIdAsync(int id)
         {
-            return _context.Competitions.SingleOrDefaultAsync(x => x.Id == Id);
+            return _context.Competitions.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public void Edit(Competition c)
@@ -94,8 +94,7 @@ namespace Timataka.Core.Data.Repositories
 
         public Task<Competition> GetCompetitionByNameAsync(string cName)
         {
-            var c = _context.Competitions.SingleOrDefaultAsync(x => x.Name == cName);
-            return c;
+            return _context.Competitions.SingleOrDefaultAsync(x => x.Name == cName);
         }
 
         //CompetitionInstance
@@ -117,20 +116,19 @@ namespace Timataka.Core.Data.Repositories
             return _context.CompetitionInstances.ToList();
         }
 
-        public IEnumerable<CompetitionInstance> GetInstancesForCompetition(int Id)
+        public IEnumerable<CompetitionInstance> GetInstancesForCompetition(int id)
         {
-            var Instances = _context.CompetitionInstances.Where(x => x.CompetitionId == Id).ToList();
-            return Instances;
+            return _context.CompetitionInstances.Where(x => x.CompetitionId == id).ToList();
         }
 
-        public CompetitionInstance GetInstanceById(int Id)
+        public CompetitionInstance GetInstanceById(int id)
         {
-            return _context.CompetitionInstances.SingleOrDefault(x => x.Id == Id);
+            return _context.CompetitionInstances.SingleOrDefault(x => x.Id == id);
         }
 
-        public Task<CompetitionInstance> GetInstanceByIdAsync(int Id)
+        public Task<CompetitionInstance> GetInstanceByIdAsync(int id)
         {
-            return _context.CompetitionInstances.SingleOrDefaultAsync(x => x.Id == Id);
+            return _context.CompetitionInstances.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public void EditInstance(CompetitionInstance c)
@@ -203,15 +201,16 @@ namespace Timataka.Core.Data.Repositories
             return m;
         }
 
-        public IEnumerable<ManagesCompetition> GetRolesForCompetition(int Id)
+        public IEnumerable<ManagesCompetition> GetRolesForCompetition(int id)
         {
             var m = from x in _context.ManagesCompetitions
-                    where x.CompetitionId.Equals(Id)
+                    where x.CompetitionId.Equals(id)
                     select x;
             return m;
         }
 
         public IEnumerable<ManagesCompetition> GetRolesForUser(string Id)
+
         {
             var m = from x in _context.ManagesCompetitions
                     where x.UserId.Equals(Id)

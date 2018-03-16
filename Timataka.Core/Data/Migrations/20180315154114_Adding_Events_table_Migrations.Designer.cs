@@ -12,9 +12,10 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180315154114_Adding_Events_table_Migrations")]
+    partial class Adding_Events_table_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,6 +256,8 @@ namespace Timataka.Core.Data.Migrations
 
                     b.Property<int>("CompetitionId");
 
+                    b.Property<string>("CompetitionName");
+
                     b.Property<int?>("CountryId");
 
                     b.Property<DateTime>("DateFrom");
@@ -264,8 +267,6 @@ namespace Timataka.Core.Data.Migrations
                     b.Property<bool>("Deleted");
 
                     b.Property<string>("Location");
-
-                    b.Property<string>("Name");
 
                     b.Property<int>("Status");
 
@@ -362,7 +363,7 @@ namespace Timataka.Core.Data.Migrations
 
                     b.HasKey("UserId", "CompetitionId");
 
-                    b.HasAlternateKey("CompetitionId", "UserId");
+                    b.HasIndex("CompetitionId");
 
                     b.ToTable("ManagesCompetitions");
                 });
@@ -456,7 +457,7 @@ namespace Timataka.Core.Data.Migrations
 
             modelBuilder.Entity("Timataka.Core.Models.Entities.CompetitionInstance", b =>
                 {
-                    b.HasOne("Timataka.Core.Models.Entities.Competition", "Competiton")
+                    b.HasOne("Timataka.Core.Models.Entities.Discipline", "_CompetitonId")
                         .WithMany()
                         .HasForeignKey("CompetitionId")
                         .OnDelete(DeleteBehavior.Cascade);
