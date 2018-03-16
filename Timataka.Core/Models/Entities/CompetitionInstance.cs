@@ -24,7 +24,7 @@ namespace Timataka.Core.Models.Entities
         //End of last event
         public DateTime DateTo { get; set; }
         public String Location { get; set; }
-        public int? CountryId { get; set; }
+        public int CountryId { get; set; }
         [ForeignKey(nameof(CountryId))]
         public virtual Country Country { get; set; }
         public string Name { get; set; }

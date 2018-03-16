@@ -25,6 +25,7 @@ namespace Timataka.Web.Controllers
         private readonly IMemoryCache _cache;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ICompetitionService _competitionService;
+        private readonly IEventService _eventService;
 
         public AdminController(IAdminService adminService,
             IAccountService accountService,
@@ -33,7 +34,8 @@ namespace Timataka.Web.Controllers
             IDisciplineService disciplineService,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            ICompetitionService competitionService)
+            ICompetitionService competitionService,
+            IEventService eventService)
         {
             _adminService = adminService;
             _cache = cache;
@@ -42,6 +44,7 @@ namespace Timataka.Web.Controllers
             _disciplineService = disciplineService;
             _roleManager = roleManager;
             _competitionService = competitionService;
+            _eventService = eventService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -211,6 +214,39 @@ namespace Timataka.Web.Controllers
             };
 
             return View(compDto);
+
+        }
+
+        [HttpGet]
+        [Route("Admin/Instance/{id}")]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Instance(int id)
+        {
+            var instanceTask = _competitionService.GetCompetitionInstanceById(id);
+            instanceTask.Wait();
+
+            var instance = new CompetitionInstance
+            {
+                Id = instanceTask.Result.Id,
+                CompetitionId = instanceTask.Result.CompetitionId,
+                DateFrom = instanceTask.Result.DateFrom,
+                DateTo = instanceTask.Result.DateTo,
+                Location = instanceTask.Result.Location,
+                CountryId = instanceTask.Result.CountryId,
+                Name = instanceTask.Result.Name,
+                Status = instanceTask.Result.Status,
+                Deleted = instanceTask.Result.Deleted
+            };
+
+
+
+            var instanceDto = new CompetitionInstanceDTO
+            {
+                CompetitonInstance = instance,
+                Events = _eventService.GetAllEventsOfInstance(id)
+            };
+
+            return View(instanceDto);
 
         }
     }

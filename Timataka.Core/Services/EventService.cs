@@ -90,5 +90,11 @@ namespace Timataka.Core.Services
             var events = _repo.Get();
             return events;
         }
+
+        public IEnumerable<Event> GetAllEventsOfInstance(int Id)
+        {
+            var events = _repo.GetEventsForInstance(Id);
+            return events;
+        }
     }
 }

@@ -79,5 +79,10 @@ namespace Timataka.Core.Data.Repositories
         {
             return _context.Events.ToList();
         }
+
+        public IEnumerable<Event> GetEventsForInstance(int id)
+        {
+            return _context.Events.Where(x => x.CompetitionInstanceId == id).ToList();
+        }
     }
 }
