@@ -64,9 +64,9 @@ namespace Timataka.Web.Controllers
         }
 
         // Get: Competitions/Edit/3
-        public IActionResult Edit(int Id)
+        public async Task<IActionResult> Edit(int Id)
         {
-            var c = _competitionService.GetCompetitionById(Id);
+            var c = await _competitionService.GetCompetitionById(Id);
             if (c == null)
             {
                 return NotFound();
@@ -103,6 +103,26 @@ namespace Timataka.Web.Controllers
                 return View(_competitionService.GetAllRoles());
             }
             return View(_competitionService.GetAllRolesForCompetition(CompetitionId));
+        }
+
+        // Get Competitons/ManagesCompetitions/Add
+        [HttpGet("/Competitons/ManagesCompetitions/Add")]
+        public IActionResult AddRole(string UserId, int CompetitionId)
+        {
+            var m = new {  UserId,  CompetitionId };
+            return View(m);
+        }
+
+        // Post Competitons/ManagesCompetitions/Add
+        [HttpPost("/Competitions/ManagesCompetitions/Add")]
+        public IActionResult AddRole(ManagesCompetition m)
+        {
+            if(ModelState.IsValid)
+            {
+                _competitionService.AddRole(m);
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
         }
 
         
