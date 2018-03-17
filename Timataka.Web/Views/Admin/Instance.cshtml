@@ -14,7 +14,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <a asp-controller="Event" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Event </a>
+                <a asp-controller="Event" asp-action="Create" asp-route-instanceId ="@Model.CompetitonInstance.Id" class="btn btn-primary btn-sm rounded-s"> New Event </a>
             </div>
         </div>
 

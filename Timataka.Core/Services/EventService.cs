@@ -4,6 +4,7 @@ using System.Text;
 using Timataka.Core.Data.Repositories;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -26,14 +27,34 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="e"></param>
         /// <returns>ID of event added or exception if event exists</returns>
-        public async Task<Event> Add(Event e)
+        public async Task<Event> Add(EventViewModel e)
         {
+            /*
             if (GetEventByName(e.Name) != null)
             {
-                throw new Exception("Sport already exists");
+                throw new Exception("Event already exists");
             }
-            await _repo.InsertAsync(e);
-            return e;
+            */
+            var entity = new Event
+            {
+                ActiveChip = e.ActiveChip,
+                CompetitionInstanceId = e.CompetitionInstanceId,
+                DateFrom = e.DateFrom,
+                DateTo = e.DateTo,
+                CourseId = e.CourseId,
+                DisciplineId = e.DisciplineId,
+                DistanceOffset = e.DistanceOffset,
+                Gender = e.Gender,
+                Id = e.Id,
+                Laps = e.Laps,
+                Name = e.Name,
+                Splits = e.Splits,
+                StartInterval = e.StartInterval
+            };
+
+            await _repo.InsertAsync(entity);
+            
+            return entity;
         }
 
         /// <summary>
