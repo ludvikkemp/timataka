@@ -22,6 +22,7 @@ namespace Timataka.Core.Data
         public DbSet<CompetitionInstance> CompetitionInstances { get; set; }
         public DbSet<ManagesCompetition> ManagesCompetitions { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Heat> Heats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
