@@ -5,12 +5,10 @@ using System.Text;
 
 namespace Timataka.Core.Models.ViewModels.HeatViewModels
 {
-    public class CreateViewModel
+    public class CreateHeatViewModel
     {
         [Required]
         public int EventId { get; set; }
 
-        [Required]
-        public int HeatNumber { get; set; }
     }
 }

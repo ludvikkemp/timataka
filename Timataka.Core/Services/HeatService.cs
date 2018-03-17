@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
@@ -19,35 +20,73 @@ namespace Timataka.Core.Services
 
         public async Task<Heat> AddAsync(CreateHeatViewModel h)
         {
+            IEnumerable<Heat> heats = GetHeatsForEvent(h.EventId);
+            int nextHeatNumber;
+            if(heats == null)
+            {
+                //For first heat
+                nextHeatNumber = 1;
+            }
+            else
+            {
+                nextHeatNumber = heats.Last().HeatNumber + 1;
+            }
+            
             Heat heat = new Heat
             {
-
-            }
+                HeatNumber = nextHeatNumber,
+                EventId = h.EventId,
+                Deleted = false
+            };
+            await _repo.InsertAsync(heat);
+            return heat;
         }
 
         public async Task<Heat> EditAsync(Heat h)
         {
-            throw new NotImplementedException();
+            await _repo.EditAsync(h);
+            return h;
         }
 
         public IEnumerable<Heat> GetAllHeats()
         {
-            throw new NotImplementedException();
+            var heats = _repo.Get();
+            return heats;
         }
 
         public async Task<Heat> GetHeatByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var heat = await _repo.GetByIdAsync(id);
+            return heat;
         }
 
         public IEnumerable<Heat> GetHeatsForEvent(int eventId)
         {
-            throw new NotImplementedException();
+            IEnumerable<Heat> heats = GetAllHeats();
+            var heatsInEvent = from x in heats
+                               where x.EventId.Equals(eventId)
+                               select x;
+            return heatsInEvent;  
         }
 
         public async Task<int> RemoveAsync(int heatId)
         {
-            throw new NotImplementedException();
+            var heat = await GetHeatByIdAsync(heatId);
+            await EditAsync(heat);
+            return heatId;
+        }
+
+        public async void ReorderHeats(int eventId)
+        {
+            IEnumerable<Heat> heats = GetHeatsForEvent(eventId);
+            int heatNumber = 1;
+            foreach (var item in heats)
+            {
+                item.HeatNumber = heatNumber;
+                await EditAsync(item);
+                heatNumber++;
+            }
+
         }
     }
 }
