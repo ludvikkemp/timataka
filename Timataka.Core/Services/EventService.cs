@@ -10,10 +10,12 @@ namespace Timataka.Core.Services
     public class EventService : IEventService
     {
         private readonly IEventRepository _repo;
+        private readonly IHeatService _heatService;
 
-        public EventService(IEventRepository repo)
+        public EventService(IEventRepository repo, IHeatService heatService)
         {
             _repo = repo;
+            _heatService = heatService;
         }
 
         public EventService()
@@ -30,9 +32,11 @@ namespace Timataka.Core.Services
         {
             if (GetEventByName(e.Name) != null)
             {
-                throw new Exception("Sport already exists");
+                throw new Exception("Event already exists");
             }
             await _repo.InsertAsync(e);
+            //Create one heat
+            await _heatService.AddAsync(e.Id);
             return e;
         }
 
