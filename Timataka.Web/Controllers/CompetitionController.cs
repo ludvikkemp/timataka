@@ -18,13 +18,6 @@ namespace Timataka.Web.Controllers
             _competitionService = competitionService;
         }
 
-        // Get: Competitions
-        public IActionResult Index()
-        {
-            var competitions = _competitionService.GetAllCompetitions();
-            return View(competitions);
-        }
-
         // Get: Competitions/Details/3
         public async Task<IActionResult> Details(int id)
         {
@@ -46,49 +39,47 @@ namespace Timataka.Web.Controllers
         //Post: Competitions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CompetitionsViewModel c)
+        public async Task<IActionResult> Create(CompetitionsViewModel model)
         {
-            if (ModelState.IsValid && c.Name != null)
+            if (ModelState.IsValid && model.Name != null)
             {
-                try
+                var exists = await _competitionService.CompetitionExists(model.Name);
+                if (!exists)
                 {
-                    await _competitionService.Add(c);
+                    await _competitionService.Add(model);
+                    return RedirectToAction("Competitions","Admin");
                 }
-                catch (Exception e)
-                {
-                    //Todo: return some error view
-                }
-                return RedirectToAction("Competitions","Admin");
             }
-            return View(c);
+            return View(model);
         }
 
         // Get: Competitions/Edit/3
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
-            var c = await _competitionService.GetCompetitionById(id);
-            if (c == null)
+            var model = _competitionService.GetCompetitionViewModelById(id);
+            if (model == null)
             {
                 return NotFound();
             }
-            return View(c);
+            return View(model);
         }
 
         // Post: Competitons/Edit/3
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Competition c)
+        public async Task<IActionResult> Edit(int id, CompetitionsViewModel model)
         {
-            if (id != c.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                await _competitionService.Edit(c);
-                return RedirectToAction(nameof(Index));
+                var instance = await _competitionService.GetCompetitionById(model.Id);
+                await _competitionService.Edit(instance, model);
+                return RedirectToAction("Competitions", "Admin");
             }
-            return View(c);
+            return View(model);
         }
 
         // GET: Competitons/Delete/5
@@ -113,8 +104,8 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var c = await _competitionService.Remove((int)id);
-            return RedirectToAction(nameof(Index));
+            var sport = await _competitionService.Remove((int)id);
+            return RedirectToAction("Competitions", "Admin");
         }
 
         //ManagesCompetition
@@ -133,9 +124,9 @@ namespace Timataka.Web.Controllers
 
         // Get Competitons/ManagesCompetitions/Add
         [HttpGet("/Competitons/ManagesCompetitions/Add")]
-        public IActionResult AddRole(string UserId, int CompetitionId)
+        public IActionResult AddRole(string userId, int competitionId)
         {
-            var m = new {  UserId,  CompetitionId };
+            var m = new {  userId,  competitionId };
             return View(m);
         }
 
@@ -146,13 +137,9 @@ namespace Timataka.Web.Controllers
             if(ModelState.IsValid)
             {
                 _competitionService.AddRole(m);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Competitions", "Admin");
             }
             return View();
-        }
-
-        
-
-            
+        }     
     }
 }

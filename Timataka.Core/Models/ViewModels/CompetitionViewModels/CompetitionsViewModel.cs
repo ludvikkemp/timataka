@@ -34,7 +34,9 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
         [Required]
         public DateTime DateTo { get; set; }
         public string Location { get; set; }
-        public int Country { get; set; }
+        [Display(Name = "Country")]
+        public int CountryId { get; set; }
+        public string CountryName { get; set; }
         public Status Status { get; set; }
     }
 }

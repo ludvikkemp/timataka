@@ -64,46 +64,27 @@ namespace Timataka.Web.Controllers
         // Get: CompetitionInstances/Edit/3
         public IActionResult Edit(int id)
         {
-            /*
-            var result = _competitionService.GetCompetitionInstanceById(id);
-            result.Wait();
+            var model = _competitionService.GetCompetitionInstanceViewModelById(id);
             ViewBag.ListOfNations = _accountService.GetNationsListItems();
-            
-            if (result.Result.CountryId != null)
-            {
-                var countryId = (int) result.Result.CountryId;
-                var model = new CompetitionsInstanceViewModel
-                {
-                    Id = result.Result.Id,
-                    CompetitionId = result.Result.CompetitionId,
-                    Name = result.Result.Name,
-                    DateFrom = result.Result.DateFrom,
-                    DateTo = result.Result.DateTo,
-                    Location = result.Result.Location,
-                    Status = result.Result.Status,
-                    Country = countryId
-                };
-                return View(model);
-            }
-            */
-            return null;
+            return View(model);
         }
 
         // Post: CompetitonInstances/Edit/3
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CompetitionInstance c)
+        public async Task<IActionResult> Edit(int id, CompetitionsInstanceViewModel model)
         {
-            if (id != c.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                await _competitionService.EditInstance(c);
-                return RedirectToAction("Competition", "Admin", c.CompetitionId);
+                var compInstance = await _competitionService.GetCompetitionInstanceById(model.Id);
+                await _competitionService.EditInstance(compInstance, model);
+                return RedirectToAction("Competition", "Admin", new { @id = compInstance.CompetitionId });
             }
-            return View(c);
+            return View(model);
         }
 
         // GET: CompetitonInstances/Delete/5
@@ -132,6 +113,7 @@ namespace Timataka.Web.Controllers
             var compId = instance.Result.CompetitionId;
             await _competitionService.RemoveInstance((int)id);
             return RedirectToAction("Competition", "Admin", compId);
+
         }
 
 

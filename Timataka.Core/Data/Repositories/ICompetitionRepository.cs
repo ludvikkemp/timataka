@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -23,6 +24,7 @@ namespace Timataka.Core.Data.Repositories
         Task RemoveAsync(Competition c);
 
         Task<Competition> GetCompetitionByNameAsync(string cName);
+        CompetitionsViewModel GetCompetitionById(int id);
 
         //CompetitionInstance
 
@@ -32,8 +34,10 @@ namespace Timataka.Core.Data.Repositories
         IEnumerable<CompetitionInstance> GetInstances();
         IEnumerable<CompetitionInstance> GetInstancesForCompetition(int Id);
 
-        CompetitionInstance GetInstanceById(int Id);
-        Task<CompetitionInstance> GetInstanceByIdAsync(int Id);
+        CompetitionInstance GetInstanceById(int id);
+        Task<CompetitionInstance> GetInstanceByIdAsync(int id);
+
+        CompetitionsInstanceViewModel GetCompetitionInstanceById(int id);
 
         void EditInstance(CompetitionInstance c);
         Task EditInstanceAsync(CompetitionInstance c);
@@ -53,8 +57,7 @@ namespace Timataka.Core.Data.Repositories
         Task RemoveRoleAsync(ManagesCompetition m);
 
         IEnumerable<ManagesCompetition> GetAllRoles();
-        IEnumerable<ManagesCompetition> GetRolesForCompetition(int Id);
-        IEnumerable<ManagesCompetition> GetRolesForUser(string Id);
-
+        IEnumerable<ManagesCompetition> GetRolesForCompetition(int id);
+        IEnumerable<ManagesCompetition> GetRolesForUser(string id);
     }
 }

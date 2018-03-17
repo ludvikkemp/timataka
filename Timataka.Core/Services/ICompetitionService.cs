@@ -10,18 +10,21 @@ namespace Timataka.Core.Services
     public interface ICompetitionService
     {
         Task<Competition> Add(CompetitionsViewModel c);
-        Task<Competition> Edit(Competition c);
+        Task<Competition> Edit(Competition c, CompetitionsViewModel m);
         Task<int> Remove(int competitionId);
         IEnumerable<Competition> GetAllCompetitions();
         Task<Competition> GetCompetitionById(int competitionId);
+        CompetitionsViewModel GetCompetitionViewModelById(int id);
+        Task<bool> CompetitionExists(string modelName);
 
         //CompetitionInstance
         Task<CompetitionInstance> AddInstance(CompetitionsInstanceViewModel model);
-        Task<CompetitionInstance> EditInstance(CompetitionInstance c);
+        Task<CompetitionInstance> EditInstance(CompetitionInstance c, CompetitionsInstanceViewModel model);
         Task<int> RemoveInstance(int competitionInstanceId);
         IEnumerable<CompetitionInstance> GetAllCompetitionInstances();
         IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int id);
         Task<CompetitionInstance> GetCompetitionInstanceById(int id);
+        CompetitionsInstanceViewModel GetCompetitionInstanceViewModelById(int id);
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);
@@ -30,8 +33,7 @@ namespace Timataka.Core.Services
         IEnumerable<ManagesCompetition> GetAllRoles();
         IEnumerable<ManagesCompetition> GetAllRolesForCompetition(int Id);
         IEnumerable<ManagesCompetition> GetAllRolesForUser(string Id);
-        Role GetRole(string UserId, int CompetitionId);
-
-
+        Role GetRole(string userId, int competitionId);
+        
     }
 }

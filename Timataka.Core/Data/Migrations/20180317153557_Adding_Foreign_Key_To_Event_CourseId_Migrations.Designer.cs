@@ -12,9 +12,10 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180317153557_Adding_Foreign_Key_To_Event_CourseId_Migrations")]
+    partial class Adding_Foreign_Key_To_Event_CourseId_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -350,8 +351,6 @@ namespace Timataka.Core.Data.Migrations
                     b.Property<DateTime>("DateFrom");
 
                     b.Property<DateTime>("DateTo");
-
-                    b.Property<bool>("Deleted");
 
                     b.Property<int>("DisciplineId");
 

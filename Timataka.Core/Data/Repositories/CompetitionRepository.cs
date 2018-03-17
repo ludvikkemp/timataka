@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -97,6 +98,23 @@ namespace Timataka.Core.Data.Repositories
             return _context.Competitions.SingleOrDefaultAsync(x => x.Name == cName);
         }
 
+        public CompetitionsViewModel GetCompetitionById(int id)
+        {
+            var model = (from c in _context.Competitions
+                where c.Id == id
+                select new CompetitionsViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Email = c.Email,
+                    WebPage = c.WebPage,
+                    Description = c.Description,
+                    PhoneNumber = c.Phone,
+                    Sponsor = c.Sponsor
+                }).SingleOrDefault();
+            return model;
+        }
+
         //CompetitionInstance
 
         public void InsertInstance(CompetitionInstance c)
@@ -129,6 +147,28 @@ namespace Timataka.Core.Data.Repositories
         public Task<CompetitionInstance> GetInstanceByIdAsync(int id)
         {
             return _context.CompetitionInstances.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public CompetitionsInstanceViewModel GetCompetitionInstanceById(int id)
+        {
+            var model = (from ci in _context.CompetitionInstances
+                where ci.Id == id
+                select new CompetitionsInstanceViewModel
+                {
+                    Id = ci.Id,
+                    Name = ci.Name,
+                    CompetitionId = ci.CompetitionId,
+                    DateFrom = ci.DateFrom,
+                    DateTo = ci.DateTo,
+                    Location = ci.Location,
+                    Status = ci.Status,
+                    CountryId = ci.CountryId,
+                    CountryName = (from n in _context.Countries
+                        where n.Id == ci.CountryId
+                        select n.Name).FirstOrDefault()
+                }).SingleOrDefault();
+
+            return model;
         }
 
         public void EditInstance(CompetitionInstance c)
