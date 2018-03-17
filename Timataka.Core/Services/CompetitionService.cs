@@ -80,7 +80,7 @@ namespace Timataka.Core.Services
                 DateFrom = model.DateFrom,
                 DateTo = model.DateTo,
                 Location = model.Location,
-                CountryId = model.Country,
+                CountryId = model.CountryId,
                 Name = model.Name,
                 Status = model.Status,
                 Deleted = false
@@ -105,19 +105,24 @@ namespace Timataka.Core.Services
 
         public IEnumerable<CompetitionInstance> GetAllCompetitionInstances()
         {
-            var Instances = _repo.GetInstances();
-            return Instances;
+            var instances = _repo.GetInstances();
+            return instances;
         }
 
-        public IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int Id)
+        public IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int id)
         {
-            var Instances = _repo.GetInstancesForCompetition(Id);
-            return Instances;
+            var instances = _repo.GetInstancesForCompetition(id);
+            return instances;
         }
 
-        public async Task<CompetitionInstance> GetCompetitionInstanceById(int Id)
+        public async Task<CompetitionInstance> GetCompetitionInstanceById(int id)
         {
-            return await _repo.GetInstanceByIdAsync(Id);
+            return await _repo.GetInstanceByIdAsync(id);
+        }
+
+        public CompetitionsInstanceViewModel GetCompetitionInstanceViewModelById(int id)
+        {
+            return _repo.GetCompetitionInstanceById(id);
         }
 
         public async Task<ManagesCompetition> AddRole(ManagesCompetition m)

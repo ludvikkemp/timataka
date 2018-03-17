@@ -22,6 +22,7 @@ namespace Timataka.Core.Services
         IEnumerable<CompetitionInstance> GetAllCompetitionInstances();
         IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int id);
         Task<CompetitionInstance> GetCompetitionInstanceById(int id);
+        CompetitionsInstanceViewModel GetCompetitionInstanceViewModelById(int id);
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);
@@ -33,5 +34,6 @@ namespace Timataka.Core.Services
         Role GetRole(string UserId, int CompetitionId);
 
 
+        
     }
 }
