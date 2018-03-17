@@ -4,24 +4,29 @@
     ViewBag.Title = "Competitions";
     Layout = "_AdminLayout";
 }
-
-
 <section class="content">
-
     <div class="title-block">
+
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Competitions </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
                 <a asp-controller="Competition" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Competitions </a>
                 <a asp-controller="CompetitionInstance" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Instance </a>
             </div>
         </div>
+
     </div>
+
     <div class="row">
         <div class="col-md-6">
-            <form asp-action="Users" method="get" class="form-inline">
+            <form asp-action="" method="get" class="form-inline">
                 <div class="input-group">
-                    <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s btn-lg" type="submit">
                             <i class="fa fa-search"></i>
