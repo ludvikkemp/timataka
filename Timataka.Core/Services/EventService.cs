@@ -24,7 +24,7 @@ namespace Timataka.Core.Services
         }
 
         /// <summary>
-        /// Function to add a Event.
+        /// Function to add a Event and create one Heat in that event.
         /// </summary>
         /// <param name="e"></param>
         /// <returns>ID of event added or exception if event exists</returns>

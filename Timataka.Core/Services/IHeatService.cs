@@ -15,7 +15,7 @@ namespace Timataka.Core.Services
         IEnumerable<Heat> GetAllHeats();
         IEnumerable<Heat> GetHeatsForEvent(int eventId);
         Task<Heat> GetHeatByIdAsync(int id);
-        void ReorderHeats(int eventId);
+        Task ReorderHeatsAsync(int eventId);
 
     }
 }
