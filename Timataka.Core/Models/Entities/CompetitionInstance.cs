@@ -30,6 +30,5 @@ namespace Timataka.Core.Models.Entities
         public string Name { get; set; }
         public Status Status { get; set; }
         public Boolean Deleted { get; set; }
-
     }
 }

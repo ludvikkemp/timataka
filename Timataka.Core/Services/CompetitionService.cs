@@ -25,11 +25,6 @@ namespace Timataka.Core.Services
 
         public async Task<Competition> Add(CompetitionsViewModel c)
         {
-            /*if (_repo.GetCompetitionByNameAsync(c.Name) != null)
-            {
-                throw new Exception("Competition already exists");
-            }
-            */
             var newComp = new Competition
             {
                 Name = c.Name,
@@ -40,7 +35,6 @@ namespace Timataka.Core.Services
                 Sponsor = c.Sponsor,
                 Deleted = false
             };
-            
             await _repo.InsertAsync(newComp);
             return newComp;
         }
@@ -72,6 +66,13 @@ namespace Timataka.Core.Services
         public CompetitionsViewModel GetCompetitionViewModelById(int id)
         {
             return _repo.GetCompetitionById(id);
+        }
+
+        public async Task<bool> CompetitionExists(string modelName)
+        {
+            var result = await _repo.GetCompetitionByNameAsync(modelName);
+            if (result != null) return false;
+            return true;
         }
 
         public async Task<int> Remove(int competitionId)

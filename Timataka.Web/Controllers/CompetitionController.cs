@@ -39,21 +39,18 @@ namespace Timataka.Web.Controllers
         //Post: Competitions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CompetitionsViewModel c)
+        public async Task<IActionResult> Create(CompetitionsViewModel model)
         {
-            if (ModelState.IsValid && c.Name != null)
+            if (ModelState.IsValid && model.Name != null)
             {
-                try
+                var exists = await _competitionService.CompetitionExists(model.Name);
+                if (!exists)
                 {
-                    await _competitionService.Add(c);
+                    await _competitionService.Add(model);
+                    return RedirectToAction("Competitions","Admin");
                 }
-                catch (Exception e)
-                {
-                    //Todo: return some error view
-                }
-                return RedirectToAction("Competitions","Admin");
             }
-            return View(c);
+            return View(model);
         }
 
         // Get: Competitions/Edit/3
