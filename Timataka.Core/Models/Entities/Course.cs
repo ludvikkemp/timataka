@@ -15,7 +15,7 @@ namespace Timataka.Core.Models.Entities
         public int Distance { get; set; }
         public int DisciplineId { get; set; }
         [ForeignKey(nameof(DisciplineId))]
-        public virtual Discipline _DisciplineId { get; set; }
-        public int ExternalCourseId { get; set; }
+        public virtual Discipline Discipline { get; set; }
+        public string ExternalCourseId { get; set; }
     }
 }

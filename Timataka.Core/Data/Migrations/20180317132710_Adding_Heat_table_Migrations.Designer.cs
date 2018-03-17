@@ -12,9 +12,10 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180317132710_Adding_Heat_table_Migrations")]
+    partial class Adding_Heat_table_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,28 +299,6 @@ namespace Timataka.Core.Data.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Course", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("DisciplineId");
-
-                    b.Property<int>("Distance");
-
-                    b.Property<string>("ExternalCourseId");
-
-                    b.Property<bool>("Lap");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DisciplineId");
-
-                    b.ToTable("Courses");
-                });
-
             modelBuilder.Entity("Timataka.Core.Models.Entities.Discipline", b =>
                 {
                     b.Property<int>("Id")
@@ -504,14 +483,6 @@ namespace Timataka.Core.Data.Migrations
                     b.HasOne("Timataka.Core.Models.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Course", b =>
-                {
-                    b.HasOne("Timataka.Core.Models.Entities.Discipline", "Discipline")
-                        .WithMany()
-                        .HasForeignKey("DisciplineId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
