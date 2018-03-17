@@ -39,5 +39,6 @@ namespace Timataka.Core.Models.Entities
         public Gender Gender { get; set; }
         //Set to 1 for active chips and 0 for passive chips
         public Boolean ActiveChip { get; set; }
+        public Boolean Deleted { get; set; }
     }
 }
