@@ -62,7 +62,7 @@
             <div class="card">
                 <section class="section">
                 <div class="col-md-12">
-                    <div class="card" style="margin-top:10px;">
+                    <div class="card" style="margin-top:15px;">
                         <section class="example">
                             <div class="table-responsive">
                                 <table class="table table-striped">
@@ -78,7 +78,7 @@
                                         if (item.IsSport)
                                          {
                                              <tr>
-                                                 <td>@item.SportName</td>
+                                                 <td><a asp-controller="Admin" asp-action="Sports" asp-route-id="@item.SportId">@item.SportName</a></td>
                                                  <td>
                                                      <a class="btn btn-warning-outline btn-sm" asp-controller="Sports" asp-action="Edit" asp-route-id="@item.SportId">Edit</a>
                                                      <a class="btn btn-success-outline btn-sm" asp-controller="Sports" asp-action="Details" asp-route-id="@item.SportId">Details</a>
