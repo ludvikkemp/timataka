@@ -12,15 +12,21 @@ namespace Timataka.Core.Models.Entities
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+
         public int DisciplineId { get; set; }
         [ForeignKey(nameof(DisciplineId))]
-        public virtual Discipline _DisciplineId { get; set; }
+        public virtual Discipline Discipline{ get; set; }
+
         public int CompetitionInstanceId { get; set; }
         [ForeignKey(nameof(CompetitionInstanceId))]
         public virtual CompetitionInstance CompInstanceId { get; set; }
+
+        public int CourseId { get; set; }
+        [ForeignKey(nameof(CourseId))]
+        public virtual Course Course { get; set; }
+
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public int CourseId { get; set; }
         //Number of laps, 0 if no laps
         public int Laps { get; set; }
         //Number of splits per lap
