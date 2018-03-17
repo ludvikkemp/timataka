@@ -65,10 +65,7 @@
             <div class="card">
                     <section class="section">
                         <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-block">
-                                    <h3 class="title"> All Users </h3>
-                                </div>
+                            <div class="card" style="margin-top:10px;">
                                 <section class="example">
                                     <div class="table-responsive">
                                         <table class="table table-striped">
@@ -76,15 +73,9 @@
                                                 <tr>
                                                     <th>Name</th>
                                                     <th>Username</th>
-                                                    <th>Email</th>
                                                     <th>DOB</th>
-                                                    <th>SSN</th>
-                                                    <th>Phone</th>
                                                     <th>Country</th>
-                                                    <th>NationId</th>
                                                     <th>Gender</th>
-                                                    <th>Deleted</th>
-                                                    <th>Roles</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -94,19 +85,9 @@
                                                     <tr>
                                                         <td>@user.FirstName @user.Middlename @user.LastName</td>
                                                         <td>@user.Username</td>
-                                                        <td>@user.Email</td>
                                                         <td>@user.DateOfBirth.ToString("dd MMMM, yyyy")</td>
-                                                        <td>@user.Ssn</td>
-                                                        <td>@user.Phone</td>
                                                         <td>@user.Country</td>
-                                                        <td>@user.NationalityId</td>
                                                         <td>@user.Gender</td>
-                                                        <td>@user.Deleted</td>
-                                                        <td>@foreach (var role in user.Roles)
-                                                            {
-                                                                @role.Name <br/>
-                                                            }
-                                                        </td>
                                                         <td>
                                                             <a asp-action="EditUser" asp-route-id="" asp-route-username="@user.Username" class="btn btn-warning-outline btn-sm">Edit</a>
                                                             <button type="button" class="btn btn-danger-outline btn-sm">Delete</button>

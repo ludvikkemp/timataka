@@ -68,9 +68,9 @@ namespace Timataka.Web.Controllers
             {
                 var searchToUpper = search.ToUpper();
                 listOfUsers = listOfUsers.Where(u => u.Username.ToUpper().Contains(searchToUpper)
-                                                     || u.Email.ToUpper().Contains(searchToUpper)
                                                      || u.FirstName.ToUpper().Contains(searchToUpper)
-                                                     || u.LastName.ToUpper().Contains(searchToUpper));
+                                                     || u.LastName.ToUpper().Contains(searchToUpper)
+                                                     || u.Country.ToUpper().Contains(searchToUpper));
             }
 
             return View(listOfUsers);
