@@ -24,6 +24,7 @@ namespace Timataka.Core.Data.Repositories
         Task RemoveAsync(Competition c);
 
         Task<Competition> GetCompetitionByNameAsync(string cName);
+        CompetitionsViewModel GetCompetitionById(int id);
 
         //CompetitionInstance
 
@@ -56,9 +57,7 @@ namespace Timataka.Core.Data.Repositories
         Task RemoveRoleAsync(ManagesCompetition m);
 
         IEnumerable<ManagesCompetition> GetAllRoles();
-        IEnumerable<ManagesCompetition> GetRolesForCompetition(int Id);
-        IEnumerable<ManagesCompetition> GetRolesForUser(string Id);
-
-        
+        IEnumerable<ManagesCompetition> GetRolesForCompetition(int id);
+        IEnumerable<ManagesCompetition> GetRolesForUser(string id);
     }
 }

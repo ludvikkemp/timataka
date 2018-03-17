@@ -98,6 +98,23 @@ namespace Timataka.Core.Data.Repositories
             return _context.Competitions.SingleOrDefaultAsync(x => x.Name == cName);
         }
 
+        public CompetitionsViewModel GetCompetitionById(int id)
+        {
+            var model = (from c in _context.Competitions
+                where c.Id == id
+                select new CompetitionsViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Email = c.Email,
+                    WebPage = c.WebPage,
+                    Description = c.Description,
+                    PhoneNumber = c.Phone,
+                    Sponsor = c.Sponsor
+                }).SingleOrDefault();
+            return model;
+        }
+
         //CompetitionInstance
 
         public void InsertInstance(CompetitionInstance c)

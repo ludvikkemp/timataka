@@ -45,8 +45,14 @@ namespace Timataka.Core.Services
             return newComp;
         }
 
-        public async Task<Competition> Edit(Competition c)
+        public async Task<Competition> Edit(Competition c, CompetitionsViewModel m)
         {
+            c.Description = m.Description;
+            c.Email = m.Description;
+            c.Name = m.Name;
+            c.Phone = m.PhoneNumber;
+            c.Sponsor = m.Sponsor;
+            c.WebPage = m.WebPage;
             await _repo.EditAsync(c);
             return c;
         }
@@ -61,6 +67,11 @@ namespace Timataka.Core.Services
         {
             var c = await _repo.GetByIdAsync(competitionId);
             return c;
+        }
+
+        public CompetitionsViewModel GetCompetitionViewModelById(int id)
+        {
+            return _repo.GetCompetitionById(id);
         }
 
         public async Task<int> Remove(int competitionId)
@@ -151,27 +162,27 @@ namespace Timataka.Core.Services
 
         public IEnumerable<ManagesCompetition> GetAllRoles()
         {
-            var m = GetAllRoles();
+            var m = _repo.GetAllRoles();
             return m;
         }
 
-        public IEnumerable<ManagesCompetition> GetAllRolesForCompetition(int Id)
+        public IEnumerable<ManagesCompetition> GetAllRolesForCompetition(int id)
         {
-            var m = GetAllRolesForCompetition(Id);
+            var m = _repo.GetRolesForCompetition(id);
             return m;
         }
 
-        public IEnumerable<ManagesCompetition> GetAllRolesForUser(string Id)
+        public IEnumerable<ManagesCompetition> GetAllRolesForUser(string id)
         {
-            var m = GetAllRolesForUser(Id);
+            var m = _repo.GetRolesForUser(id);
             return m;
         }
 
-        public Role GetRole(string UserId, int CompetitionId)
+        public Role GetRole(string userId, int competitionId)
         {
-            IEnumerable<ManagesCompetition> m = GetAllRolesForUser(UserId);
+            IEnumerable<ManagesCompetition> m = _repo.GetRolesForUser(userId);
             ManagesCompetition r = (from x in m
-                                    where x.CompetitionId.Equals(CompetitionId)
+                                    where x.CompetitionId.Equals(competitionId)
                                     select x).SingleOrDefault();
             return r.Role;
         }
