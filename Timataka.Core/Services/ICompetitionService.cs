@@ -17,7 +17,7 @@ namespace Timataka.Core.Services
 
         //CompetitionInstance
         Task<CompetitionInstance> AddInstance(CompetitionsInstanceViewModel model);
-        Task<CompetitionInstance> EditInstance(CompetitionInstance c);
+        Task<CompetitionInstance> EditInstance(CompetitionInstance c, CompetitionsInstanceViewModel model);
         Task<int> RemoveInstance(int competitionInstanceId);
         IEnumerable<CompetitionInstance> GetAllCompetitionInstances();
         IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int id);

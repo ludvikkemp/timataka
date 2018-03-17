@@ -90,10 +90,16 @@ namespace Timataka.Core.Services
             return newInstance;
         }
 
-        public async Task<CompetitionInstance> EditInstance(CompetitionInstance c)
+        public async Task<CompetitionInstance> EditInstance(CompetitionInstance compInstance, CompetitionsInstanceViewModel model)
         {
-            await _repo.EditInstanceAsync(c);
-            return c;
+            compInstance.CountryId = model.CountryId;
+            compInstance.DateFrom = model.DateFrom;
+            compInstance.DateTo = model.DateTo;
+            compInstance.Location = model.Location;
+            compInstance.Name = model.Name;
+            compInstance.Status = model.Status;
+            await _repo.EditInstanceAsync(compInstance);
+            return compInstance;
         }
 
         public async Task<int> RemoveInstance(int competitionInstanceId)

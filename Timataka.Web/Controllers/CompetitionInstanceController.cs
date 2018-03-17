@@ -64,25 +64,6 @@ namespace Timataka.Web.Controllers
         // Get: CompetitionInstances/Edit/3
         public IActionResult Edit(int id)
         {
-            //TODO: Lúlli er að vinna í þessu
-            /*
-            var result = _competitionService.GetCompetitionInstanceById(id);
-            result.Wait();
-            ViewBag.ListOfNations = _accountService.GetNationsListItems();
-
-            var model = new CompetitionsInstanceViewModel
-            {
-                Id = result.Result.Id,
-                CompetitionId = result.Result.CompetitionId,
-                Name = result.Result.Name,
-                DateFrom = result.Result.DateFrom,
-                DateTo = result.Result.DateTo,
-                Location = result.Result.Location,
-                Status = result.Result.Status,
-                Country = result.Result.CountryId
-                //CountryName = res
-            };
-            */
             var model = _competitionService.GetCompetitionInstanceViewModelById(id);
             ViewBag.ListOfNations = _accountService.GetNationsListItems();
             return View(model);
@@ -100,15 +81,7 @@ namespace Timataka.Web.Controllers
             if (ModelState.IsValid)
             {
                 var compInstance = await _competitionService.GetCompetitionInstanceById(model.Id);
-                compInstance.CountryId = model.CountryId;
-                compInstance.DateFrom = model.DateFrom;
-                compInstance.DateTo = model.DateTo;
-                compInstance.Location = model.Location;
-                compInstance.Name = model.Name;
-                compInstance.Status = model.Status;
-
-                await _competitionService.EditInstance(compInstance);
-
+                await _competitionService.EditInstance(compInstance, model);
                 return RedirectToAction("Competition", "Admin", new { @id = compInstance.CompetitionId });
             }
             return View(model);
