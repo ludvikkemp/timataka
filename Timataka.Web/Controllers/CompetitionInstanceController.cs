@@ -65,7 +65,7 @@ namespace Timataka.Web.Controllers
         public IActionResult Edit(int id)
         {
             //TODO: Lúlli er að vinna í þessu
-
+            /*
             var result = _competitionService.GetCompetitionInstanceById(id);
             result.Wait();
             ViewBag.ListOfNations = _accountService.GetNationsListItems();
@@ -82,7 +82,9 @@ namespace Timataka.Web.Controllers
                 Country = result.Result.CountryId
                 //CountryName = res
             };
-
+            */
+            var model = _competitionService.GetCompetitionInstanceViewModelById(id);
+            ViewBag.ListOfNations = _accountService.GetNationsListItems();
             return View(model);
         }
 
@@ -98,7 +100,7 @@ namespace Timataka.Web.Controllers
             if (ModelState.IsValid)
             {
                 var compInstance = await _competitionService.GetCompetitionInstanceById(model.Id);
-                compInstance.CountryId = model.Country;
+                compInstance.CountryId = model.CountryId;
                 compInstance.DateFrom = model.DateFrom;
                 compInstance.DateTo = model.DateTo;
                 compInstance.Location = model.Location;
