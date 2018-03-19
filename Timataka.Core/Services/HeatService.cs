@@ -115,6 +115,16 @@ namespace Timataka.Core.Services
 
         }
 
+        public IEnumerable<ContestantInHeat> GetContestantsInHeat(int id)
+        {
+            return _repo.GetContestantsInHeat(id);
+        }
+
+        public IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id)
+        {
+
+            return _repo.GetApplicationUsersInHeat(id);
+        }
 
     }
 }

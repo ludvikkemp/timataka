@@ -246,6 +246,23 @@ namespace Timataka.Web.Controllers
 
             return View(eventDto);
         }
-     
+
+        [HttpGet]
+        [Route("Admin/Heat/{id}")]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Heat(int id)
+        {
+            var heat = _heatService.GetHeatByIdAsync(id);
+            heat.Wait();
+
+            var heatDto = new HeatDto()
+            {
+                Heat = heat.Result,
+                Contestants = _heatService.GetContestantsInHeat(heat.Result.Id),
+                Users = _heatService.GetApplicationUsersInHeat(heat.Result.Id)
+            };
+
+            return View(heatDto);
+        }
     }
 }
