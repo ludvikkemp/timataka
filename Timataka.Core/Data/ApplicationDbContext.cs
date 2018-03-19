@@ -21,7 +21,6 @@ namespace Timataka.Core.Data
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<CompetitionInstance> CompetitionInstances { get; set; }
         public DbSet<ManagesCompetition> ManagesCompetitions { get; set; }
-        public DbSet<Event> Events { get; set; }
         public DbSet<Heat> Heats { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<ContestantInHeat> ContestantsInHeats { get; set; }

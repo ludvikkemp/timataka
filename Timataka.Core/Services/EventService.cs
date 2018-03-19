@@ -29,7 +29,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="e"></param>
         /// <returns>ID of event added or exception if event exists</returns>
-        public async Task<Event> Add(EventViewModel e)
+        public async Task<Event> AddAsync(EventViewModel e)
         {
 
             var entity = new Event
@@ -63,7 +63,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="EventName"></param>
         /// <returns></returns>
-        public async Task<Event> GetEventByName(string EventName)
+        public async Task<Event> GetEventByNameAsync(string EventName)
         {
             var e = await _repo.GetEventByNameAsync(EventName);
             return e;
@@ -74,9 +74,20 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns>Sport with a given ID.</returns>
-        public async Task<Event> GetEventById(int eventId)
+        public async Task<Event> GetEventByIdAsync(int eventId)
         {
             var e = await _repo.GetByIdAsync(eventId);
+            return e;
+        }
+
+        /// <summary>
+        /// Get a eventViewModel by its ID.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns>Sport with a given ID.</returns>
+        public async Task<EventViewModel> GetEventViewModelByIdAsync(int eventId)
+        {
+            var e = await _repo.GetEventByIdAsync(eventId);
             return e;
         }
 
@@ -85,7 +96,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="e"></param>
         /// <returns>Id of the event edited</returns>
-        public async Task<Event> Edit(Event e)
+        public async Task<Event> EditAsync(Event e)
         {
             await _repo.EditAsync(e);
             return e;
@@ -96,9 +107,9 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns>Id of the event removed</returns>
-        public async Task<int> Remove(int eventId)
+        public async Task<int> RemoveAsync(int eventId)
         {
-            var e = await GetEventById(eventId);
+            var e = await GetEventByIdAsync(eventId);
             await _repo.RemoveAsync(e);
             return eventId;
         }

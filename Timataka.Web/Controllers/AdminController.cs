@@ -235,7 +235,7 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Superadmin, Admin")]
         public IActionResult Event(int id)
         {
-            var eventObj = _eventService.GetEventById(id);
+            var eventObj = _eventService.GetEventByIdAsync(id);
             eventObj.Wait();
 
             var eventDto = new EventDto()

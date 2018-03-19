@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 
@@ -79,12 +80,12 @@ namespace Timataka.Core.Data.Repositories
         }
         public IEnumerable<Event> Get()
         {
-            return _context.Events.ToList();
+            return _context.Event.ToList();
         }
 
         public IEnumerable<EventViewModel> GetEventsForInstance(int id)
         {
-            var events = (from e in _context.Events
+            var events = (from e in _context.Event
                           where e.CompetitionInstanceId == id
                           select new EventViewModel
                           {
@@ -104,5 +105,32 @@ namespace Timataka.Core.Data.Repositories
                           }).ToList();
             return events;
         }
+        
+        public Task<EventViewModel> GetEventByIdAsync(int id)
+        {
+            var model = (from e in _context.Event
+                where e.Id == id
+                select new EventViewModel
+                {
+                    Name = e.Name,
+                    Id = e.Id,
+                    DateFrom = e.DateFrom,
+                    DateTo = e.DateTo,
+                    CompetitionInstanceId = e.CompetitionInstanceId,
+                    DisciplineId = e.DisciplineId,
+                    DisciplineName = (from d in _context.Disciplines
+                                      where d.Id == e.DisciplineId
+                                      select d.Name).FirstOrDefault(),
+                    ActiveChip = e.ActiveChip,
+                    CourseId = e.CourseId,
+                    DistanceOffset = e.DistanceOffset,
+                    Gender = e.Gender,
+                    Laps = e.Laps,
+                    Splits = e.Splits,
+                    StartInterval = e.StartInterval
+                }).SingleOrDefaultAsync();
+            return model;
+        }
+        
     }
 }

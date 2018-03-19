@@ -38,7 +38,7 @@ namespace Timataka.Web.Controllers
             {
                 try
                 {
-                    var task = await _eventService.Add(model);
+                    var task = await _eventService.AddAsync(model);
                 }
                 catch (Exception e)
                 {
@@ -52,7 +52,7 @@ namespace Timataka.Web.Controllers
         // GET: Event/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var eventobj = await _eventService.GetEventById(id);
+            var eventobj = await _eventService.GetEventByIdAsync(id);
 
             if (eventobj == null)
             {
@@ -62,14 +62,15 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: Event/Edit/5
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var eventobj = _eventService.GetEventById(id);
-            if (eventobj == null)
+            ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            var model = await _eventService.GetEventViewModelByIdAsync(id);
+            if (model == null)
             {
                 return NotFound();
             }
-            return View(eventobj);
+            return View(model);
         }
 
         // POST: Event/Edit/5
@@ -86,7 +87,7 @@ namespace Timataka.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                await _eventService.Edit(eventobj);
+                await _eventService.EditAsync(eventobj);
                 return RedirectToAction("Event","admin", new { @id = 1});
             }
             return View(eventobj);
@@ -101,7 +102,7 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var eventobj = await _eventService.GetEventById((int)id);
+            var eventobj = await _eventService.GetEventByIdAsync((int)id);
             if (eventobj == null)
             {
                 return NotFound();
@@ -115,7 +116,7 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var eventobj = await _eventService.Remove((int)id);
+            var eventobj = await _eventService.RemoveAsync((int)id);
             return RedirectToAction("Event","Admin", new { @id = 1 });
         }
     }
