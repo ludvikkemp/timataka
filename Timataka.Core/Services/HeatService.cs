@@ -18,14 +18,25 @@ namespace Timataka.Core.Services
             _repo = repo;
         }
 
-        public async Task<Heat> AddAsync(CreateHeatViewModel h)
+        public HeatService()
         {
-            IEnumerable<Heat> heats = GetHeatsForEvent(h.EventId);
+            //For unit tests
+        }
+
+        /// <summary>
+        /// Add heat to a event. If no heat exists for that event
+        /// a heat with HeatNumber = 0 is created.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public async Task<Heat> AddAsync(int eventId)
+        {
+            IEnumerable<Heat> heats = GetHeatsForEvent(eventId);
             int nextHeatNumber;
-            if(heats == null)
+            if(heats.Count() == 0)
             {
                 //For first heat
-                nextHeatNumber = 1;
+                nextHeatNumber = 0;
             }
             else
             {
@@ -35,7 +46,7 @@ namespace Timataka.Core.Services
             Heat heat = new Heat
             {
                 HeatNumber = nextHeatNumber,
-                EventId = h.EventId,
+                EventId = eventId,
                 Deleted = false
             };
             await _repo.InsertAsync(heat);
@@ -76,10 +87,15 @@ namespace Timataka.Core.Services
             return heatId;
         }
 
-        public async void ReorderHeats(int eventId)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="eventId"></param>
+        public async Task ReorderHeatsAsync(int eventId)
         {
             IEnumerable<Heat> heats = GetHeatsForEvent(eventId);
-            int heatNumber = 1;
+            int heatNumber = 0;
             foreach (var item in heats)
             {
                 item.HeatNumber = heatNumber;

@@ -11,10 +11,12 @@ namespace Timataka.Core.Services
     public class EventService : IEventService
     {
         private readonly IEventRepository _repo;
+        private readonly IHeatService _heatService;
 
-        public EventService(IEventRepository repo)
+        public EventService(IEventRepository repo, IHeatService heatService)
         {
             _repo = repo;
+            _heatService = heatService;
         }
 
         public EventService()
@@ -23,7 +25,7 @@ namespace Timataka.Core.Services
         }
 
         /// <summary>
-        /// Function to add a Event.
+        /// Function to add a Event and create one Heat in that event.
         /// </summary>
         /// <param name="e"></param>
         /// <returns>ID of event added or exception if event exists</returns>
@@ -35,6 +37,7 @@ namespace Timataka.Core.Services
                 throw new Exception("Event already exists");
             }
             */
+
             var entity = new Event
             {
                 ActiveChip = e.ActiveChip,
@@ -55,6 +58,9 @@ namespace Timataka.Core.Services
 
             await _repo.InsertAsync(entity);
             
+            //Create one heat
+            await _heatService.AddAsync(e.Id);
+
             return entity;
         }
 
@@ -113,9 +119,13 @@ namespace Timataka.Core.Services
             return events;
         }
 
-        public IEnumerable<Event> GetAllEventsOfInstance(int Id)
+        /// <summary>
+        /// Get list of events for Instance by id.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<EventViewModel> GetEventsByCompetitionInstanceId(int id)
         {
-            var events = _repo.GetEventsForInstance(Id);
+            var events = _repo.GetEventsForInstance(id);
             return events;
         }
     }

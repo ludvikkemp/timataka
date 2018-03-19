@@ -12,7 +12,9 @@ using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.AccountViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
+using Timataka.Core.Data.Repositories;
 
 namespace Timataka.Web.Controllers
 {
@@ -26,6 +28,7 @@ namespace Timataka.Web.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ICompetitionService _competitionService;
         private readonly IEventService _eventService;
+        private readonly IEventRepository _eventRepo;
 
         public AdminController(IAdminService adminService,
             IAccountService accountService,
@@ -35,7 +38,8 @@ namespace Timataka.Web.Controllers
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             ICompetitionService competitionService,
-            IEventService eventService)
+            IEventService eventService,
+            IEventRepository eventRepository)
         {
             _adminService = adminService;
             _cache = cache;
@@ -45,6 +49,7 @@ namespace Timataka.Web.Controllers
             _roleManager = roleManager;
             _competitionService = competitionService;
             _eventService = eventService;
+            _eventRepo = eventRepository;
         }
 
         [Authorize(Roles = "Admin")]
@@ -221,11 +226,11 @@ namespace Timataka.Web.Controllers
         [Route("Admin/Instance/{id}")]
         [Authorize(Roles = "Superadmin, Admin")]
         public IActionResult Instance(int id)
-        {
+        {   
             var instanceTask = _competitionService.GetCompetitionInstanceById(id);
             instanceTask.Wait();
 
-            var instance = new CompetitionInstance
+            var instance = new CompetitionsInstanceViewModel
             {
                 Id = instanceTask.Result.Id,
                 CompetitionId = instanceTask.Result.CompetitionId,
@@ -238,12 +243,15 @@ namespace Timataka.Web.Controllers
                 Deleted = instanceTask.Result.Deleted
             };
 
+            //var evnets = _eventService;
 
-
+            //var events = _eventRepo.GetEventsForInstance(id);
+            var events = _eventService.GetEventsByCompetitionInstanceId(id);
+            
             var instanceDto = new CompetitionInstanceDTO
             {
                 CompetitonInstance = instance,
-                Events = _eventService.GetAllEventsOfInstance(id)
+                Events = events
             };
 
             return View(instanceDto);

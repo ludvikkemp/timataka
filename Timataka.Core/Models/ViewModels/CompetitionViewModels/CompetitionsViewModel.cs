@@ -38,5 +38,6 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
         public int CountryId { get; set; }
         public string CountryName { get; set; }
         public Status Status { get; set; }
+        public bool Deleted { get; set; }
     }
 }
