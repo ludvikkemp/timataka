@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +24,6 @@ namespace Timataka.Web.Controllers
             _disciplineService = disciplineService;
         }
 
-        //GET: Dicipline
-        public IActionResult Index()
-        {
-            var disciplines = _disciplineService.GetAllDisciplines();
-            return View(disciplines);
-        }
-
         //GET: Dicipline/Create
         public IActionResult Create()
         {
@@ -44,7 +38,6 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid && model.Name != null)
             {
-                //var disciplineId = _disciplineService.GetNextId();
                 var sportId = int.Parse(model.SportId);
 
                 var newDiscipline = new Discipline
@@ -52,9 +45,7 @@ namespace Timataka.Web.Controllers
                     Name = model.Name,
                     SportId = sportId  
                 };
-                
                 await _disciplineService.Add(newDiscipline);
-
             }
             return RedirectToAction("Sport","Admin", new {@id = model.SportId});
         }
@@ -67,7 +58,6 @@ namespace Timataka.Web.Controllers
             {
                 return NotFound();
             }
-
             return View(discipline);
         }
 
@@ -75,33 +65,47 @@ namespace Timataka.Web.Controllers
         public IActionResult Edit(int id)
         {
             var discipline = _disciplineService.GetDisciplineById(id);
+            var model = new DisciplineViewModel
+            {
+                Id = discipline.Id,
+                Name = discipline.Name,
+                SportId = discipline.SportId
+
+            };
             if (discipline == null)
             {
                 return NotFound();
             }
-            return View(discipline);
+            return View(model);
         }
 
         //TODO
         //POST: Dicipline/Edit/1
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name")] Discipline discipline)
+        public async Task<IActionResult> Edit(int id, DisciplineViewModel model)
         {
-            if (id != discipline.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
 
-            //TODO
+            if (ModelState.IsValid)
+            {
+                var res = _disciplineService.GetDisciplineById(model.Id);
+                res.Name = model.Name;
+                await _disciplineService.Edit(res);
+                return RedirectToAction("Sport", "Admin", new {@id = model.SportId});
+            }
 
-            return View(discipline);
+            return View(model);
         }
 
-        //TODO
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete()
         {
-            throw new NotImplementedException();
+            return View();
         }
     }
 }

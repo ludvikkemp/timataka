@@ -6,48 +6,27 @@
 }
 
 <section class="content">
-    <h2>Details</h2>
+    <h3>@Model.Name</h3>
 
     <div>
-        <h4>Dicipline</h4>
-        <hr />
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Id)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SportId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ApplicationSportId)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        @Html.DisplayFor(model => model.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.SportId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => model.ApplicationSportId)
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        
+        <div>
+            <h4>@Model.Name</h4>
+            <hr />
+            <dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+            </dl>
+        </div>
+
+        
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-controller="Admin" asp-action="Sports">Back to List</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+        <a asp-controller="Admin" asp-action="Sports" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>

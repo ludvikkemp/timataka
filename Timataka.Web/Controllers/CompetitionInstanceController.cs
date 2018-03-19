@@ -54,7 +54,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    //Todo: return some error view
+                    return new BadRequestResult();
                 }
                 return RedirectToAction("Competitions","Admin");
             }
