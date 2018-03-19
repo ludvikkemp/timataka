@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.TestHost;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Timataka.Core.Data;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
+using Timataka.Web;
 using Timataka.Web.Controllers;
 using Xunit;
 
@@ -15,6 +20,18 @@ namespace Timataka.Tests
 {
     public class CompetitionControllerTests
     {
+        private readonly ApplicationDbContext _context;
+        private readonly HttpClient _client;
+
+        public CompetitionControllerTests()
+        {
+            var builder = new WebHostBuilder()
+                .UseEnvironment("Testing")
+                .UseStartup<Startup>();
+            var server = new TestServer(builder);
+            _context = server.Host.Services.GetService(typeof(ApplicationDbContext)) as ApplicationDbContext;
+            _client = server.CreateClient();
+        }
 
         [Fact]
         public void TestGetAllCompetitions()

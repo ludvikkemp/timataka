@@ -95,7 +95,7 @@ namespace Timataka.Core.Services
         public async Task ReorderHeatsAsync(int eventId)
         {
             IEnumerable<Heat> heats = GetHeatsForEvent(eventId);
-            int heatNumber = 0;
+            int heatNumber = 1;
             foreach (var item in heats)
             {
                 item.HeatNumber = heatNumber;
