@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Timataka.Core.Models.ViewModels.DisciplineViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -14,5 +15,6 @@ namespace Timataka.Core.Services
         Discipline GetDisciplineById(int DisciplineId);
         List<SelectListItem> GetSportsListItems();
         int GetNextId();
+        IEnumerable<DisciplineViewModel> GetDisciplinesBySportId(int  id);
     }
 }

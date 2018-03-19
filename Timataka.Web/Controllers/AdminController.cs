@@ -25,6 +25,7 @@ namespace Timataka.Web.Controllers
         private readonly IMemoryCache _cache;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ICompetitionService _competitionService;
+        private readonly IEventService _eventService;
 
         public AdminController(IAdminService adminService,
             IAccountService accountService,
@@ -33,7 +34,8 @@ namespace Timataka.Web.Controllers
             IDisciplineService disciplineService,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            ICompetitionService competitionService)
+            ICompetitionService competitionService,
+            IEventService eventService)
         {
             _adminService = adminService;
             _cache = cache;
@@ -42,6 +44,7 @@ namespace Timataka.Web.Controllers
             _disciplineService = disciplineService;
             _roleManager = roleManager;
             _competitionService = competitionService;
+            _eventService = eventService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -115,7 +118,7 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Superadmin, Admin")]
+        [Authorize(Roles = "Superadmin")]
         public IActionResult Roles()
         {
             var roles = _adminService.GetRoles();
@@ -123,54 +126,31 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Superadmin, Admin")]
+        [Authorize(Roles = "Superadmin")]
         public IActionResult AddRole()
         {
             return View();
         }
 
-
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Superadmin, Admin")]
         public IActionResult Sports()
-        {
+        {   
             var sports = _sportService.GetAllSports();
-            var disciplines = _disciplineService.GetAllDisciplines();
+            return View(sports);
+        }
 
-            List<SportsViewModel> models = new List<SportsViewModel>();
-
-            //Collect all sports into viewModel
-            foreach (var sport in sports)
+        [Authorize(Roles = "Superadmin, Admin")]
+        [Route("Admin/Sport/{id}")]
+        public IActionResult Sport(int id)
+        {
+            var sport = _sportService.GetSportById(id);
+            sport.Wait();
+            var dto = new SportDto
             {
-                var model = new SportsViewModel
-                {
-                    IsSport = true,
-                    DisciplineId = 0,
-                    DisciplineName = "",
-                    SportId = sport.Id,
-                    SportName = sport.Name
-                };
-
-                models.Add(model);
-            }
-
-            //Collect all disciplines into viewModel
-            foreach (var discipline in disciplines)
-            {
-                var model = new SportsViewModel
-                {
-                    IsSport = false,
-                    DisciplineId = discipline.Id,
-                    DisciplineName = discipline.Name,
-                    SportId = discipline.SportId,
-                    SportName = ""
-                };
-
-                models.Add(model);
-
-            }
-
-            return View(models);
-
+                Disciplines = _disciplineService.GetDisciplinesBySportId(id),
+                Sport = sport.Result
+            };
+            return View(dto);
         }
 
         [HttpPost]
@@ -209,9 +189,7 @@ namespace Timataka.Web.Controllers
                 Competiton = competition.Result,
                 Instances = _competitionService.GetAllInstancesOfCompetition(id)
             };
-
             return View(compDto);
-
         }
     }
 }

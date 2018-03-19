@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -11,6 +12,7 @@ namespace Timataka.Core.Data.Repositories
         Task InsertAsync(Sport entity);
 
         IEnumerable<Sport> Get();
+        IEnumerable<SportsViewModel> GetListOfSportsViewModels();
 
         Sport GetById(int id);
         Task<Sport> GetByIdAsync(int id);

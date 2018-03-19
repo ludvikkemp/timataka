@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.DisciplineViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -23,5 +24,6 @@ namespace Timataka.Core.Data.Repositories
         Task RemoveAsync(Task<Discipline> entity);
 
         List<Sport> GetSports();
+        IEnumerable<DisciplineViewModel> GetDisciplinesBySportId(int id);
     }
 }

@@ -74,11 +74,11 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns>Id of the event removed</returns>
-        public async Task<int> Remove(int EventId)
+        public async Task<int> Remove(int eventId)
         {
-            var e = await GetEventById(EventId);
+            var e = await GetEventById(eventId);
             await _repo.RemoveAsync(e);
-            return EventId;
+            return eventId;
         }
 
         /// <summary>

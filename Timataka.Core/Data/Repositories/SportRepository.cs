@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -22,6 +23,17 @@ namespace Timataka.Core.Data.Repositories
         public IEnumerable<Sport> Get()
         {
             return _context.Sports.ToList();
+        }
+
+        public IEnumerable<SportsViewModel> GetListOfSportsViewModels()
+        {
+            var result = (from s in _context.Sports
+                select new SportsViewModel
+                {
+                    Name = s.Name,
+                    Id = s.Id
+                }).ToList();
+            return result;
         }
 
         public Sport GetById(int id)
