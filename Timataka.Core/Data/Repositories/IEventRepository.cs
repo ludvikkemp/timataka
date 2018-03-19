@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Timataka.Core.Models.Entities;
 using System.Threading.Tasks;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -16,5 +17,6 @@ namespace Timataka.Core.Data.Repositories
         void Remove(Event entity);
         Task RemoveAsync(Event entity);
         IEnumerable<Event> Get();
+        IEnumerable<EventViewModel> GetEventsForInstance(int Id);
     }
 }

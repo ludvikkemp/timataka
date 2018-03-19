@@ -12,7 +12,9 @@ using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.AccountViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
+using Timataka.Core.Data.Repositories;
 
 namespace Timataka.Web.Controllers
 {
@@ -27,12 +29,12 @@ namespace Timataka.Web.Controllers
         private readonly ICompetitionService _competitionService;
         private readonly IEventService _eventService;
 
+
         public AdminController(IAdminService adminService,
             IAccountService accountService,
             IMemoryCache cache,
             ISportService sportService,
             IDisciplineService disciplineService,
-            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             ICompetitionService competitionService,
             IEventService eventService)
@@ -190,6 +192,42 @@ namespace Timataka.Web.Controllers
                 Instances = _competitionService.GetAllInstancesOfCompetition(id)
             };
             return View(compDto);
+        }
+
+        [HttpGet]
+        [Route("Admin/Instance/{id}")]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Instance(int id)
+        {   
+            var instanceTask = _competitionService.GetCompetitionInstanceById(id);
+            instanceTask.Wait();
+
+            var instance = new CompetitionsInstanceViewModel
+            {
+                Id = instanceTask.Result.Id,
+                CompetitionId = instanceTask.Result.CompetitionId,
+                DateFrom = instanceTask.Result.DateFrom,
+                DateTo = instanceTask.Result.DateTo,
+                Location = instanceTask.Result.Location,
+                CountryId = instanceTask.Result.CountryId,
+                Name = instanceTask.Result.Name,
+                Status = instanceTask.Result.Status,
+                Deleted = instanceTask.Result.Deleted
+            };
+
+            //var evnets = _eventService;
+
+            //var events = _eventRepo.GetEventsForInstance(id);
+            var events = _eventService.GetEventsByCompetitionInstanceId(id);
+            
+            var instanceDto = new CompetitionInstanceDTO
+            {
+                CompetitonInstance = instance,
+                Events = events
+            };
+
+            return View(instanceDto);
+
         }
     }
 }

@@ -9,13 +9,14 @@ namespace Timataka.Core.Services
 {
     public interface IHeatService
     {
-        Task<Heat> AddAsync(CreateHeatViewModel h);
+        Task<Heat> AddAsync(int eventId);
         Task<Heat> EditAsync(Heat h);
         Task<int> RemoveAsync(int heatId);
         IEnumerable<Heat> GetAllHeats();
         IEnumerable<Heat> GetHeatsForEvent(int eventId);
+        IEnumerable<Heat> GetDeletedHeatsForEvent(int eventId);
         Task<Heat> GetHeatByIdAsync(int id);
-        void ReorderHeats(int eventId);
+        Task ReorderHeatsAsync(int eventId);
 
     }
 }

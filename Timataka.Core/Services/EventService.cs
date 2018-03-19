@@ -4,16 +4,19 @@ using System.Text;
 using Timataka.Core.Data.Repositories;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Core.Services
 {
     public class EventService : IEventService
     {
         private readonly IEventRepository _repo;
+        private readonly IHeatService _heatService;
 
-        public EventService(IEventRepository repo)
+        public EventService(IEventRepository repo, IHeatService heatService)
         {
             _repo = repo;
+            _heatService = heatService;
         }
 
         public EventService()
@@ -22,18 +25,43 @@ namespace Timataka.Core.Services
         }
 
         /// <summary>
-        /// Function to add a Event.
+        /// Function to add a Event and create one Heat in that event.
         /// </summary>
         /// <param name="e"></param>
         /// <returns>ID of event added or exception if event exists</returns>
-        public async Task<Event> Add(Event e)
+        public async Task<Event> Add(EventViewModel e)
         {
+            /*
             if (GetEventByName(e.Name) != null)
             {
-                throw new Exception("Sport already exists");
+                throw new Exception("Event already exists");
             }
-            await _repo.InsertAsync(e);
-            return e;
+            */
+
+            var entity = new Event
+            {
+                ActiveChip = e.ActiveChip,
+                CompetitionInstanceId = e.CompetitionInstanceId,
+                DateFrom = e.DateFrom,
+                DateTo = e.DateTo,
+                CourseId = e.CourseId,
+                DisciplineId = e.DisciplineId,
+                DistanceOffset = e.DistanceOffset,
+                Gender = e.Gender,
+                Id = e.Id,
+                Laps = e.Laps,
+                Name = e.Name,
+                Splits = e.Splits,
+                StartInterval = e.StartInterval,
+                Deleted = false
+            };
+
+            await _repo.InsertAsync(entity);
+            
+            //Create one heat
+            await _heatService.AddAsync(e.Id);
+
+            return entity;
         }
 
         /// <summary>
@@ -88,6 +116,16 @@ namespace Timataka.Core.Services
         public IEnumerable<Event> GetAllEvents()
         {
             var events = _repo.Get();
+            return events;
+        }
+
+        /// <summary>
+        /// Get list of events for Instance by id.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<EventViewModel> GetEventsByCompetitionInstanceId(int id)
+        {
+            var events = _repo.GetEventsForInstance(id);
             return events;
         }
     }

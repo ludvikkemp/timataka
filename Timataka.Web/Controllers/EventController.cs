@@ -5,14 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Web.Controllers
 {
     public class EventController : Controller
     {
         private readonly IEventService _eventService;
-        public EventController(IEventService eventService)
+        private readonly IDisciplineService _disciplineService;
+        public EventController(IEventService eventService,
+                               IDisciplineService disciplineService)
         {
+            _disciplineService = disciplineService;
             _eventService = eventService;
         }
 
@@ -23,28 +27,31 @@ namespace Timataka.Web.Controllers
             return View(eventObj);
         }
 
-        public IActionResult Create()
-        {
+
+        public IActionResult Create(int instanceId)
+        {   
+            ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            ViewBag.InstanceId = instanceId;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Event obj)
+        public async Task<IActionResult> Create(EventViewModel model)
         {
-            if (ModelState.IsValid && obj.Name != null)
+            if (ModelState.IsValid && model.Name != null)
             {
                 try
                 {
-                    await _eventService.Add(obj);
+                    await _eventService.Add(model);
                 }
                 catch (Exception e)
                 {
                     //Todo: return some error view
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Instance","Admin", new { @id = model.CompetitionInstanceId });
             }
-            return View(obj);
+            return View(model);
         }
 
         // GET: Event/Details/5

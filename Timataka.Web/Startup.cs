@@ -19,9 +19,12 @@ namespace Timataka.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
+        public IHostingEnvironment CurrentEnvicoment { get; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment currentEnviroment)
+        { 
             Configuration = configuration;
+            CurrentEnvicoment = currentEnviroment;
         }
 
         public IConfiguration Configuration { get; }
@@ -29,9 +32,16 @@ namespace Timataka.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            if(CurrentEnvicoment.IsEnvironment("Testing"))
+            {
+                services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("TestingDB"));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            }
+            
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -70,22 +80,23 @@ namespace Timataka.Web
                 options.SlidingExpiration = true;
             });
 
-            // DI for Repositores
+            // DI for Repositories
             services.AddTransient<ISportRepository, SportRepository>();
             services.AddTransient<IDisciplineRepository, DisciplineRepository>();
             services.AddTransient<IAdminRepository, AdminRepository>();
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<ICompetitionRepository, CompetitionRepository>();
             services.AddTransient<IEventRepository, EventRepository>();
+            services.AddTransient<IHeatRepository, HeatRepository>();
 
+            // DI for Services
             services.AddTransient<ICompetitionService, CompetitionService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<ISportService, SportService>();
             services.AddTransient<IDisciplineService, DisciplineService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IEventService, EventService>();
-
-            services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IHeatService, HeatService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
