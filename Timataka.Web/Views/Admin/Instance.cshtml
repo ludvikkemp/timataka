@@ -1,7 +1,6 @@
-﻿@model IEnumerable<Timataka.Core.Models.Entities.Competition>
+﻿@model Timataka.Core.Models.Dto.AdminDTO.CompetitionInstanceDTO
 
 @{
-    ViewBag.Title = "Competitions";
     Layout = "_AdminLayout";
 }
 <section class="content">
@@ -9,8 +8,13 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> Competitions </span>
-                <a asp-controller="Competition" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> Add New </a>
+                <span class="title"> @Model.CompetitonInstance.Name</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <a asp-controller="Event" asp-action="Create" asp-route-instanceId ="@Model.CompetitonInstance.Id" class="btn btn-primary btn-sm rounded-s"> New Event </a>
             </div>
         </div>
 
@@ -36,7 +40,10 @@
             <div class="card">
                 <section class="section">
                     <div class="col-md-12">
-                        <div class="card" style="margin-top:15px;">
+                        <div class="card">
+                            <div class="card-block">
+                                <h3 class="title"> Events </h3>
+                            </div>
                             <section class="example">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
@@ -47,16 +54,16 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var comp in Model)
+                                            @foreach (var item in Model.Events)
                                             {
                                                 <tr>
                                                     <td>
-                                                        <a asp-controller="Admin" asp-action="Competition" asp-route-id="@comp.Id">@comp.Name</a>
+                                                        <a asp-controller="Admin" asp-action="Event" asp-route-id="@item.Id">@item.Name</a>
                                                     </td>
                                                     <td>
-                                                        <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a> 
-                                                        <a asp-controller="Competition" asp-action="Details" asp-route-id="@comp.Id" class="btn btn-success-outline btn-sm">Details</a> 
-                                                        <a asp-controller="Competition" asp-action="Delete" asp-route-id="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                        <a asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        <a asp-controller="Event" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success-outline btn-sm">Details</a>
+                                                        <a asp-controller="Event" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
                                                     </td>
                                                 </tr>
 
@@ -75,3 +82,4 @@
 
 
 </section>
+

@@ -12,9 +12,10 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180317133115_Adding_Course_table_Migrations")]
+    partial class Adding_Course_table_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,8 +352,6 @@ namespace Timataka.Core.Data.Migrations
 
                     b.Property<DateTime>("DateTo");
 
-                    b.Property<bool>("Deleted");
-
                     b.Property<int>("DisciplineId");
 
                     b.Property<int>("DistanceOffset");
@@ -370,8 +369,6 @@ namespace Timataka.Core.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompetitionInstanceId");
-
-                    b.HasIndex("CourseId");
 
                     b.HasIndex("DisciplineId");
 
@@ -534,12 +531,7 @@ namespace Timataka.Core.Data.Migrations
                         .HasForeignKey("CompetitionInstanceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Timataka.Core.Models.Entities.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Timataka.Core.Models.Entities.Discipline", "Discipline")
+                    b.HasOne("Timataka.Core.Models.Entities.Discipline", "_DisciplineId")
                         .WithMany()
                         .HasForeignKey("DisciplineId")
                         .OnDelete(DeleteBehavior.Cascade);

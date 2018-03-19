@@ -1,7 +1,6 @@
-﻿@model IEnumerable<Timataka.Core.Models.Entities.Competition>
+﻿@model Timataka.Core.Models.Dto.AdminDTO.CompetitionDto
 
 @{
-    ViewBag.Title = "Competitions";
     Layout = "_AdminLayout";
 }
 <section class="content">
@@ -9,8 +8,13 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> Competitions </span>
-                <a asp-controller="Competition" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> Add New </a>
+                <span class="title"> @Model.Competiton.Name </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <a asp-controller="CompetitionInstance" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Instance </a>
             </div>
         </div>
 
@@ -29,6 +33,32 @@
                 </div>
             </form>
         </div>
+
+        <nav class="text-right col-md-6">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href=""> Prev </a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href=""> 1 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 2 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 3 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 4 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 5 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> Next </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     <div class="row">
@@ -43,20 +73,24 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Date</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var comp in Model)
+                                            @foreach (var item in Model.Instances)
                                             {
                                                 <tr>
                                                     <td>
-                                                        <a asp-controller="Admin" asp-action="Competition" asp-route-id="@comp.Id">@comp.Name</a>
+                                                        <a asp-controller="Admin" asp-action="Instance" asp-route-id="@item.Id">@item.Name</a>
                                                     </td>
                                                     <td>
-                                                        <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a> 
-                                                        <a asp-controller="Competition" asp-action="Details" asp-route-id="@comp.Id" class="btn btn-success-outline btn-sm">Details</a> 
-                                                        <a asp-controller="Competition" asp-action="Delete" asp-route-id="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                        @item.DateFrom
+                                                    </td>
+                                                    <td>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success-outline btn-sm">Details</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
                                                     </td>
                                                 </tr>
 
@@ -75,3 +109,4 @@
 
 
 </section>
+

@@ -12,7 +12,9 @@ using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.AccountViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
+using Timataka.Core.Data.Repositories;
 
 namespace Timataka.Web.Controllers
 {
@@ -25,15 +27,19 @@ namespace Timataka.Web.Controllers
         private readonly IMemoryCache _cache;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ICompetitionService _competitionService;
+        private readonly IEventService _eventService;
+        private readonly IEventRepository _eventRepo;
 
-        public AdminController(IAdminService adminService, 
-                                IAccountService accountService,
-                                IMemoryCache cache,
-                                ISportService sportService,
-                                IDisciplineService disciplineService,
-                                UserManager<ApplicationUser> userManager,
-                                RoleManager<IdentityRole> roleManager,
-                                ICompetitionService competitionService)
+        public AdminController(IAdminService adminService,
+            IAccountService accountService,
+            IMemoryCache cache,
+            ISportService sportService,
+            IDisciplineService disciplineService,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            ICompetitionService competitionService,
+            IEventService eventService,
+            IEventRepository eventRepository)
         {
             _adminService = adminService;
             _cache = cache;
@@ -42,8 +48,10 @@ namespace Timataka.Web.Controllers
             _disciplineService = disciplineService;
             _roleManager = roleManager;
             _competitionService = competitionService;
+            _eventService = eventService;
+            _eventRepo = eventRepository;
         }
-        
+
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
@@ -67,10 +75,10 @@ namespace Timataka.Web.Controllers
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
-                listOfUsers = listOfUsers.Where(u => u.Username.ToUpper().Contains(searchToUpper) 
-                                                     || u.Email.ToUpper().Contains(searchToUpper)
+                listOfUsers = listOfUsers.Where(u => u.Username.ToUpper().Contains(searchToUpper)
                                                      || u.FirstName.ToUpper().Contains(searchToUpper)
-                                                     || u.LastName.ToUpper().Contains(searchToUpper));
+                                                     || u.LastName.ToUpper().Contains(searchToUpper)
+                                                     || u.Country.ToUpper().Contains(searchToUpper));
             }
 
             return View(listOfUsers);
@@ -92,6 +100,7 @@ namespace Timataka.Web.Controllers
             {
                 return new BadRequestResult();
             }
+
             return View(userDto);
         }
 
@@ -165,8 +174,9 @@ namespace Timataka.Web.Controllers
                 };
 
                 models.Add(model);
-                
+
             }
+
             return View(models);
 
         }
@@ -176,14 +186,14 @@ namespace Timataka.Web.Controllers
         public IActionResult AddRole(CreateRoleViewModel model)
         {
             var role = _roleManager.FindByNameAsync(model.Name);
-            
+
             if (role.Result == null)
             {
                 Task roleResult = _roleManager.CreateAsync(new IdentityRole(model.Name));
                 roleResult.Wait();
                 return Redirect("~/Admin/Roles");
             }
-            
+
             return View(model);
         }
 
@@ -192,16 +202,60 @@ namespace Timataka.Web.Controllers
         public IActionResult Competitions()
         {
             var competitions = _competitionService.GetAllCompetitions();
-            var listompDto = new List<CompetitionDto>();
-
-            foreach (var item in competitions)
-            {
-                listompDto.Add(new CompetitionDto(){Competiton = item, Instances = _competitionService.GetAllInstancesOfCompetition(item.Id)});
-            }
-            return View(listompDto);
+            return View(competitions);
         }
 
+        [HttpGet]
+        [Route("Admin/Competition/{id}")]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Competition(int id)
+        {
+            var competition = _competitionService.GetCompetitionById(id);
+            competition.Wait();
+            var compDto = new CompetitionDto
+            {
+                Competiton = competition.Result,
+                Instances = _competitionService.GetAllInstancesOfCompetition(id)
+            };
 
+            return View(compDto);
 
+        }
+
+        [HttpGet]
+        [Route("Admin/Instance/{id}")]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Instance(int id)
+        {   
+            var instanceTask = _competitionService.GetCompetitionInstanceById(id);
+            instanceTask.Wait();
+
+            var instance = new CompetitionsInstanceViewModel
+            {
+                Id = instanceTask.Result.Id,
+                CompetitionId = instanceTask.Result.CompetitionId,
+                DateFrom = instanceTask.Result.DateFrom,
+                DateTo = instanceTask.Result.DateTo,
+                Location = instanceTask.Result.Location,
+                CountryId = instanceTask.Result.CountryId,
+                Name = instanceTask.Result.Name,
+                Status = instanceTask.Result.Status,
+                Deleted = instanceTask.Result.Deleted
+            };
+
+            //var evnets = _eventService;
+
+            //var events = _eventRepo.GetEventsForInstance(id);
+            var events = _eventService.GetEventsByCompetitionInstanceId(id);
+            
+            var instanceDto = new CompetitionInstanceDTO
+            {
+                CompetitonInstance = instance,
+                Events = events
+            };
+
+            return View(instanceDto);
+
+        }
     }
 }

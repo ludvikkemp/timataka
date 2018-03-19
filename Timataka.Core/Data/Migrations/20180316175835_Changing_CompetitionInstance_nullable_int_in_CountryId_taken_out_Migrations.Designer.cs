@@ -12,9 +12,10 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180316175835_Changing_CompetitionInstance_nullable_int_in_CountryId_taken_out_Migrations")]
+    partial class Changing_CompetitionInstance_nullable_int_in_CountryId_taken_out_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,28 +299,6 @@ namespace Timataka.Core.Data.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Course", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("DisciplineId");
-
-                    b.Property<int>("Distance");
-
-                    b.Property<string>("ExternalCourseId");
-
-                    b.Property<bool>("Lap");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DisciplineId");
-
-                    b.ToTable("Courses");
-                });
-
             modelBuilder.Entity("Timataka.Core.Models.Entities.Discipline", b =>
                 {
                     b.Property<int>("Id")
@@ -351,8 +330,6 @@ namespace Timataka.Core.Data.Migrations
 
                     b.Property<DateTime>("DateTo");
 
-                    b.Property<bool>("Deleted");
-
                     b.Property<int>("DisciplineId");
 
                     b.Property<int>("DistanceOffset");
@@ -371,29 +348,9 @@ namespace Timataka.Core.Data.Migrations
 
                     b.HasIndex("CompetitionInstanceId");
 
-                    b.HasIndex("CourseId");
-
                     b.HasIndex("DisciplineId");
 
                     b.ToTable("Event");
-                });
-
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Heat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<int>("EventId");
-
-                    b.Property<int>("HeatNumber");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("Heats");
                 });
 
             modelBuilder.Entity("Timataka.Core.Models.Entities.ManagesCompetition", b =>
@@ -511,14 +468,6 @@ namespace Timataka.Core.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Course", b =>
-                {
-                    b.HasOne("Timataka.Core.Models.Entities.Discipline", "Discipline")
-                        .WithMany()
-                        .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Timataka.Core.Models.Entities.Discipline", b =>
                 {
                     b.HasOne("Timataka.Core.Models.Entities.Sport", "ApplicationSportId")
@@ -534,22 +483,9 @@ namespace Timataka.Core.Data.Migrations
                         .HasForeignKey("CompetitionInstanceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Timataka.Core.Models.Entities.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Timataka.Core.Models.Entities.Discipline", "Discipline")
+                    b.HasOne("Timataka.Core.Models.Entities.Discipline", "_DisciplineId")
                         .WithMany()
                         .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Heat", b =>
-                {
-                    b.HasOne("Timataka.Core.Models.Entities.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

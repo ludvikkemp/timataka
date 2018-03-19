@@ -60,9 +60,9 @@
                     <label asp-for="Country"></label>
                     <select name="Country" class="form-control" id="country-select">
                         @foreach (var item in ViewBag.Nations)
-                {
-                    <option value="@item.Value" id="@item.Value">@item.Text</option>
-        }
+                        {
+                            <option value="@item.Value" id="@item.Value">@item.Text</option>
+                        }
                     </select>
                 </div>
 

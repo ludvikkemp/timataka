@@ -10,13 +10,7 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Sports </span>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Sports" asp-action="Create">New Sport</a>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Discipline" asp-action="Create">New Discipline</a>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Sports" asp-action="Create">Add New</a>
             </div>
         </div>
 
@@ -68,50 +62,29 @@
             <div class="card">
                 <section class="section">
                 <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-block">
-                            <h3 class="title"> Competitions </h3>
-                        </div>
+                    <div class="card" style="margin-top:15px;">
                         <section class="example">
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th>Sport</th>
-                                        <th>Discipline</th>
+                                        <th>Name</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach (var item in Model)
                                     {
-                                        @if (item.IsSport)
+                                        if (item.IsSport)
                                          {
                                              <tr>
-                                                 <td>@item.SportName</td>
-                                                 <td></td>
+                                                 <td><a asp-controller="Admin" asp-action="Sports" asp-route-id="@item.SportId">@item.SportName</a></td>
                                                  <td>
                                                      <a class="btn btn-warning-outline btn-sm" asp-controller="Sports" asp-action="Edit" asp-route-id="@item.SportId">Edit</a>
                                                      <a class="btn btn-success-outline btn-sm" asp-controller="Sports" asp-action="Details" asp-route-id="@item.SportId">Details</a>
                                                      <a class="btn btn-danger-outline btn-sm" asp-controller="Sports" asp-action="Delete" asp-route-id="@item.SportId">Delete</a>
                                                  </td>
                                              </tr>
-                                         }
-
-                                        @foreach (var discipline in Model)
-                                         {
-                                             @if ((discipline.IsSport == false) && (discipline.SportId == item.SportId) && item.IsSport)
-                                              {
-                                                  <tr>
-                                                      <td></td>
-                                                      <td>@discipline.DisciplineName</td>
-                                                      <td>
-                                                          <a class="btn btn-warning-outline btn-sm" asp-controller="Discipline" asp-action="Edit" asp-route-id="@discipline.DisciplineId">Edit</a>
-                                                          <a class="btn btn-success-outline btn-sm" asp-controller="Discipline" asp-action="Details" asp-route-id="@discipline.DisciplineId">Details</a>
-                                                          <a class="btn btn-danger-outline btn-sm" asp-controller="Discipline" asp-action="Delete" asp-route-id="@discipline.DisciplineId">Delete</a>
-                                                      </td>
-                                                  </tr>
-                                              }
                                          }
                                     }
                                     </tbody>

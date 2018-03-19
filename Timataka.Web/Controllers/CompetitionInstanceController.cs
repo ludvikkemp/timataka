@@ -21,13 +21,6 @@ namespace Timataka.Web.Controllers
             _accountService = accountService;
         }
 
-        // Get: CompetitionInstances
-        public IActionResult Index()
-        {
-            var Instances = _competitionService.GetAllCompetitionInstances();
-            return View(Instances);
-        }
-
         // Get: CompetitionInstances/Details/3
         public async Task<IActionResult> Details(int id)
         {
@@ -69,42 +62,40 @@ namespace Timataka.Web.Controllers
         }
 
         // Get: CompetitionInstances/Edit/3
-        public IActionResult Edit(int Id)
+        public IActionResult Edit(int id)
         {
-            var c = _competitionService.GetCompetitionInstanceById(Id);
-            if (c == null)
-            {
-                return NotFound();
-            }
-            return View(c);
+            var model = _competitionService.GetCompetitionInstanceViewModelById(id);
+            ViewBag.ListOfNations = _accountService.GetNationsListItems();
+            return View(model);
         }
 
         // Post: CompetitonInstances/Edit/3
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CompetitionInstance c)
+        public async Task<IActionResult> Edit(int id, CompetitionsInstanceViewModel model)
         {
-            if (id != c.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                await _competitionService.EditInstance(c);
-                return RedirectToAction(nameof(Index));
+                var compInstance = await _competitionService.GetCompetitionInstanceById(model.Id);
+                await _competitionService.EditInstance(compInstance, model);
+                return RedirectToAction("Competition", "Admin", new { @id = compInstance.CompetitionId });
             }
-            return View(c);
+            return View(model);
         }
 
         // GET: CompetitonInstances/Delete/5
-        public async Task<IActionResult> Delete(int? Id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (Id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var c = await _competitionService.GetCompetitionInstanceById((int)Id);
+            var c = await _competitionService.GetCompetitionInstanceById((int)id);
             if (c == null)
             {
                 return NotFound();
@@ -118,8 +109,11 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var c = await _competitionService.RemoveInstance((int)id);
-            return RedirectToAction(nameof(Index));
+            var instance = _competitionService.GetCompetitionInstanceById(id);
+            var compId = instance.Result.CompetitionId;
+            await _competitionService.RemoveInstance((int)id);
+            return RedirectToAction("Competition", "Admin", compId);
+
         }
 
 

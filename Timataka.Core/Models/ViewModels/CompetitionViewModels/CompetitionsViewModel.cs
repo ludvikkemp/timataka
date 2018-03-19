@@ -8,6 +8,7 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
 {
     public class CompetitionsViewModel
     {
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Url]
@@ -22,6 +23,7 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
 
     public class CompetitionsInstanceViewModel
     {
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -32,7 +34,10 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
         [Required]
         public DateTime DateTo { get; set; }
         public string Location { get; set; }
-        public int Country { get; set; }
+        [Display(Name = "Country")]
+        public int CountryId { get; set; }
+        public string CountryName { get; set; }
         public Status Status { get; set; }
+        public bool Deleted { get; set; }
     }
 }

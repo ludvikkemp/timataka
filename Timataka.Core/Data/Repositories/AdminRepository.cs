@@ -94,5 +94,11 @@ namespace Timataka.Core.Data.Repositories
                 }).ToList();
             return roles;
         }
+
+        public string GetCountryNameById(int id)
+        {
+            var countryName = (from c in _db.Countries where c.Id == id select c.Name).ToString();
+            return countryName;
+        }
     }
 }

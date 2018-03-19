@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -78,6 +79,29 @@ namespace Timataka.Core.Data.Repositories
         public IEnumerable<Event> Get()
         {
             return _context.Events.ToList();
+        }
+
+        public IEnumerable<EventViewModel> GetEventsForInstance(int id)
+        {
+            var events = (from e in _context.Events
+                          where e.CompetitionInstanceId == id
+                          select new EventViewModel
+                          {
+                              ActiveChip = e.ActiveChip,
+                              CompetitionInstanceId = e.CompetitionInstanceId,
+                              CourseId = e.CourseId,
+                              DateFrom = e.DateFrom,
+                              DateTo = e.DateTo,
+                              DisciplineId = e.DisciplineId,
+                              DistanceOffset = e.DistanceOffset,
+                              Gender = e.Gender,
+                              Id = e.Id,
+                              Laps = e.Laps,
+                              Name = e.Name,
+                              Splits = e.Splits,
+                              StartInterval = e.StartInterval
+                          }).ToList();
+            return events;
         }
     }
 }

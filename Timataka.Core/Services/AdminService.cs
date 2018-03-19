@@ -62,5 +62,10 @@ namespace Timataka.Core.Services
         {
             return _repo.GetRoles();
         }
+
+        public string GetCountryNameById(int id)
+        {
+            return _repo.GetCountryNameById(id);
+        }
     }
 }

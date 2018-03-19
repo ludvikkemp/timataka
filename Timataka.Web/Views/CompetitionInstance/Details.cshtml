@@ -1,0 +1,44 @@
+﻿@model Timataka.Core.Models.Entities.CompetitionInstance
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+
+    <div>
+        <h4>@Model.Name</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateFrom)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DateFrom)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateTo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DateTo)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Location)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Location)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+        <a asp-controller="Admin" asp-action="Competition" asp-route-id="@Model.CompetitionId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>

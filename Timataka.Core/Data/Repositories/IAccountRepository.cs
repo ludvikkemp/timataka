@@ -6,7 +6,7 @@ using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Data.Repositories
 {
-    public interface IAccountRepository
+    public interface IAccountRepository : IDisposable
     {
         List<Country> GetNations();
     }

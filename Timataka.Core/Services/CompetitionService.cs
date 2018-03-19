@@ -25,11 +25,6 @@ namespace Timataka.Core.Services
 
         public async Task<Competition> Add(CompetitionsViewModel c)
         {
-            /*if (_repo.GetCompetitionByNameAsync(c.Name) != null)
-            {
-                throw new Exception("Competition already exists");
-            }
-            */
             var newComp = new Competition
             {
                 Name = c.Name,
@@ -40,13 +35,18 @@ namespace Timataka.Core.Services
                 Sponsor = c.Sponsor,
                 Deleted = false
             };
-            
             await _repo.InsertAsync(newComp);
             return newComp;
         }
 
-        public async Task<Competition> Edit(Competition c)
+        public async Task<Competition> Edit(Competition c, CompetitionsViewModel m)
         {
+            c.Description = m.Description;
+            c.Email = m.Description;
+            c.Name = m.Name;
+            c.Phone = m.PhoneNumber;
+            c.Sponsor = m.Sponsor;
+            c.WebPage = m.WebPage;
             await _repo.EditAsync(c);
             return c;
         }
@@ -61,6 +61,18 @@ namespace Timataka.Core.Services
         {
             var c = await _repo.GetByIdAsync(competitionId);
             return c;
+        }
+
+        public CompetitionsViewModel GetCompetitionViewModelById(int id)
+        {
+            return _repo.GetCompetitionById(id);
+        }
+
+        public async Task<bool> CompetitionExists(string modelName)
+        {
+            var result = await _repo.GetCompetitionByNameAsync(modelName);
+            if (result != null) return false;
+            return true;
         }
 
         public async Task<int> Remove(int competitionId)
@@ -80,7 +92,7 @@ namespace Timataka.Core.Services
                 DateFrom = model.DateFrom,
                 DateTo = model.DateTo,
                 Location = model.Location,
-                CountryId = model.Country,
+                CountryId = model.CountryId,
                 Name = model.Name,
                 Status = model.Status,
                 Deleted = false
@@ -90,10 +102,16 @@ namespace Timataka.Core.Services
             return newInstance;
         }
 
-        public async Task<CompetitionInstance> EditInstance(CompetitionInstance c)
+        public async Task<CompetitionInstance> EditInstance(CompetitionInstance compInstance, CompetitionsInstanceViewModel model)
         {
-            await _repo.EditInstanceAsync(c);
-            return c;
+            compInstance.CountryId = model.CountryId;
+            compInstance.DateFrom = model.DateFrom;
+            compInstance.DateTo = model.DateTo;
+            compInstance.Location = model.Location;
+            compInstance.Name = model.Name;
+            compInstance.Status = model.Status;
+            await _repo.EditInstanceAsync(compInstance);
+            return compInstance;
         }
 
         public async Task<int> RemoveInstance(int competitionInstanceId)
@@ -105,19 +123,24 @@ namespace Timataka.Core.Services
 
         public IEnumerable<CompetitionInstance> GetAllCompetitionInstances()
         {
-            var Instances = _repo.GetInstances();
-            return Instances;
+            var instances = _repo.GetInstances();
+            return instances;
         }
 
-        public IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int Id)
+        public IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int id)
         {
-            var Instances = _repo.GetInstancesForCompetition(Id);
-            return Instances;
+            var instances = _repo.GetInstancesForCompetition(id);
+            return instances;
         }
 
-        public async Task<CompetitionInstance> GetCompetitionInstanceById(int Id)
+        public async Task<CompetitionInstance> GetCompetitionInstanceById(int id)
         {
-            return await _repo.GetInstanceByIdAsync(Id);
+            return await _repo.GetInstanceByIdAsync(id);
+        }
+
+        public CompetitionsInstanceViewModel GetCompetitionInstanceViewModelById(int id)
+        {
+            return _repo.GetCompetitionInstanceById(id);
         }
 
         public async Task<ManagesCompetition> AddRole(ManagesCompetition m)
@@ -140,27 +163,27 @@ namespace Timataka.Core.Services
 
         public IEnumerable<ManagesCompetition> GetAllRoles()
         {
-            var m = GetAllRoles();
+            var m = _repo.GetAllRoles();
             return m;
         }
 
-        public IEnumerable<ManagesCompetition> GetAllRolesForCompetition(int Id)
+        public IEnumerable<ManagesCompetition> GetAllRolesForCompetition(int id)
         {
-            var m = GetAllRolesForCompetition(Id);
+            var m = _repo.GetRolesForCompetition(id);
             return m;
         }
 
-        public IEnumerable<ManagesCompetition> GetAllRolesForUser(string Id)
+        public IEnumerable<ManagesCompetition> GetAllRolesForUser(string id)
         {
-            var m = GetAllRolesForUser(Id);
+            var m = _repo.GetRolesForUser(id);
             return m;
         }
 
-        public Role GetRole(string UserId, int CompetitionId)
+        public Role GetRole(string userId, int competitionId)
         {
-            IEnumerable<ManagesCompetition> m = GetAllRolesForUser(UserId);
+            IEnumerable<ManagesCompetition> m = _repo.GetRolesForUser(userId);
             ManagesCompetition r = (from x in m
-                                    where x.CompetitionId.Equals(CompetitionId)
+                                    where x.CompetitionId.Equals(competitionId)
                                     select x).SingleOrDefault();
             return r.Role;
         }
