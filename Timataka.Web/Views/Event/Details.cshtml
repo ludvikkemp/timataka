@@ -11,16 +11,59 @@
     <div>
         <h4>Event</h4>
         <hr />
-        <dl class="dl-horizontal">
+        <dl>
             <dt>
                 @Html.DisplayNameFor(model => model.Name)
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Name)
             </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CourseId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CourseId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateFrom)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DateFrom)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateTo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DateTo)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ActiveChip)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ActiveChip)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CompetitionInstanceId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CompetitionInstanceId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DisciplineId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DisciplineId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Deleted)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Deleted)
+            </dd>
         </dl>
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+        <a asp-controller="Admin" asp-action="Instance" asp-route-id="@Model.CompetitionInstanceId" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
