@@ -1,0 +1,32 @@
+﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.HeatViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h2>Create</h2>
+
+    <h4>Heat</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="EventId" value="@ViewBag.EventId" />
+                
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a asp-controller="Admin" asp-action="Event" asp-route-id="@ViewBag.EventId">Back to List</a>
+    </div>
+
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
