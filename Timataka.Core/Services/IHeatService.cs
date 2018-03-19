@@ -14,6 +14,7 @@ namespace Timataka.Core.Services
         Task<int> RemoveAsync(int heatId);
         IEnumerable<Heat> GetAllHeats();
         IEnumerable<Heat> GetHeatsForEvent(int eventId);
+        IEnumerable<Heat> GetDeletedHeatsForEvent(int eventId);
         Task<Heat> GetHeatByIdAsync(int id);
         Task ReorderHeatsAsync(int eventId);
 

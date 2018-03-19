@@ -75,15 +75,24 @@ namespace Timataka.Core.Services
         {
             IEnumerable<Heat> heats = GetAllHeats();
             var heatsInEvent = from x in heats
-                               where x.EventId.Equals(eventId)
+                               where x.EventId.Equals(eventId) && x.Deleted.Equals(false)
                                select x;
             return heatsInEvent;  
+        }
+
+        public IEnumerable<Heat> GetDeletedHeatsForEvent(int eventId)
+        {
+            IEnumerable<Heat> heats = GetAllHeats();
+            var heatsInEvent = from x in heats
+                               where x.EventId.Equals(eventId) && x.Deleted.Equals(true)
+                               select x;
+            return heatsInEvent;
         }
 
         public async Task<int> RemoveAsync(int heatId)
         {
             var heat = await GetHeatByIdAsync(heatId);
-            await EditAsync(heat);
+            await _repo.RemoveAsync(heat);
             return heatId;
         }
 
@@ -95,7 +104,7 @@ namespace Timataka.Core.Services
         public async Task ReorderHeatsAsync(int eventId)
         {
             IEnumerable<Heat> heats = GetHeatsForEvent(eventId);
-            int heatNumber = 1;
+            int heatNumber = 0;
             foreach (var item in heats)
             {
                 item.HeatNumber = heatNumber;
@@ -104,5 +113,7 @@ namespace Timataka.Core.Services
             }
 
         }
+
+
     }
 }

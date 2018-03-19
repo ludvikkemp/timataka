@@ -38,9 +38,6 @@ namespace Timataka.Tests
         public void Setup()
         {
 
-            _context.Heats.Add(new Heat { Deleted = false, EventId = 1, HeatNumber = 0});
-            _context.Heats.Add(new Heat { Deleted = false, EventId = 2, HeatNumber = 0});
-            _context.Heats.Add(new Heat { Deleted = false, EventId = 4, HeatNumber = 0});
             _context.SaveChanges();
         }
 
@@ -48,6 +45,20 @@ namespace Timataka.Tests
         public async void TestHeatNumberOfInitialHeat()
         {
             //Arrange
+            
+
+            //Act
+            var result = await _service.AddAsync(1);
+
+            //Assert
+            Assert.Equal(expected: 0, actual: result.HeatNumber);
+        }
+
+        [Fact]
+        public async void TestHeatNumberOfNextHeat()
+        {
+            //Arrange
+            await _service.AddAsync(1);
 
             //Act
             var result = await _service.AddAsync(1);
@@ -60,9 +71,11 @@ namespace Timataka.Tests
         public async void TestHeatReorder()
         {
             //Arrange
-            _context.Heats.Add(new Heat { Deleted = false, EventId = 1, HeatNumber = 3 });
-            _context.Heats.Add(new Heat { Deleted = false, EventId = 1, HeatNumber = 7 });
-            _context.SaveChanges();
+            await _service.AddAsync(1);
+            await _service.AddAsync(1);
+            await _service.AddAsync(1);
+            await _service.AddAsync(1);
+            await _service.RemoveAsync(3);
 
             //Act
             await _service.ReorderHeatsAsync(1);
@@ -73,7 +86,25 @@ namespace Timataka.Tests
 
 
             //Assert
-            Assert.Equal(expected: 3, actual: i);
+            Assert.Equal(expected: 2, actual: i);
+        }
+
+        [Fact]
+        public async void TestDeleteHeat()
+        {
+            //Arrange
+            await _service.AddAsync(1);
+            await _service.AddAsync(1);
+            await _service.AddAsync(1);
+
+            //Act
+            await _service.RemoveAsync(2);
+            Heat result = await _service.GetHeatByIdAsync(2);
+            var result2 = _service.GetDeletedHeatsForEvent(1);
+
+            //Assert
+            Assert.Equal(expected: true, actual: result.Deleted);
+            Assert.Equal(expected: 1, actual: result2.Count());
         }
     }
 }
