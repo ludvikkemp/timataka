@@ -1,0 +1,86 @@
+﻿@model Timataka.Core.Models.Dto.AdminDTO.EventDto
+
+@{
+    Layout = "_AdminLayout";
+}
+<section class="content">
+    <div class="title-block">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> @Model.Event.Name </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <a asp-controller="Heat" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> New Heat </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="" method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Number</th>
+                                                <th>Number of Contestants</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.Heats)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <a asp-controller="Admin" asp-action="Heat" asp-route-id="@item.Id">@item.HeatNumber</a>
+                                                    </td>
+                                                    <td>
+                                                        Nr. Cont.
+                                                    </td>
+                                                    <td>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success-outline btn-sm">Details</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
