@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Timataka.Core.Data.Repositories;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 
@@ -12,11 +13,13 @@ namespace Timataka.Core.Services
     {
         private readonly IEventRepository _repo;
         private readonly IHeatService _heatService;
+        private readonly ICompetitionRepository _competitionRepo;
 
-        public EventService(IEventRepository repo, IHeatService heatService)
+        public EventService(IEventRepository repo, IHeatService heatService, ICompetitionRepository competitionRepo)
         {
             _repo = repo;
             _heatService = heatService;
+            _competitionRepo = competitionRepo;
         }
 
         public EventService()
@@ -89,6 +92,28 @@ namespace Timataka.Core.Services
         {
             var e = await _repo.GetEventByIdAsync(eventId);
             return e;
+        }
+
+        public async Task<int> EditEventViewModelAsync(EventViewModel model)
+        {
+            var editEvent = await _repo.GetByIdAsync(model.Id);
+
+            editEvent.Name = model.Name;
+            editEvent.Id = model.Id;
+            editEvent.DateFrom = model.DateFrom;
+            editEvent.DateTo = model.DateTo;
+            editEvent.ActiveChip = model.ActiveChip;
+            editEvent.CourseId = model.CourseId;
+            editEvent.Deleted = false;
+            editEvent.DisciplineId = model.DisciplineId;
+            editEvent.StartInterval = model.StartInterval;
+            editEvent.Splits = model.Splits;
+            editEvent.Laps = model.Laps;
+            editEvent.Gender = model.Gender;
+            editEvent.DistanceOffset = model.DistanceOffset;
+
+            await _repo.EditAsync(editEvent);
+            return editEvent.CompetitionInstanceId;
         }
 
         /// <summary>

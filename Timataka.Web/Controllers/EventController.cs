@@ -78,19 +78,21 @@ namespace Timataka.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Event eventobj)
+        public async Task<IActionResult> Edit(int id, EventViewModel model)
         {
-            if (id != eventobj.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                await _eventService.EditAsync(eventobj);
-                return RedirectToAction("Event","admin", new { @id = 1});
+
+                var compInstanceId = await _eventService.EditEventViewModelAsync(model);
+                //await _eventService.EditAsync(model);
+                return RedirectToAction("Instance","admin", new { @id = compInstanceId });
             }
-            return View(eventobj);
+            return View(model);
 
         }
 
