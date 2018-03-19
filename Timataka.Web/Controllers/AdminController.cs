@@ -28,6 +28,7 @@ namespace Timataka.Web.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ICompetitionService _competitionService;
         private readonly IEventService _eventService;
+        private readonly IHeatService _heatService;
 
 
         public AdminController(IAdminService adminService,
@@ -37,7 +38,8 @@ namespace Timataka.Web.Controllers
             IDisciplineService disciplineService,
             RoleManager<IdentityRole> roleManager,
             ICompetitionService competitionService,
-            IEventService eventService)
+            IEventService eventService,
+            IHeatService heatService)
         {
             _adminService = adminService;
             _cache = cache;
@@ -47,6 +49,7 @@ namespace Timataka.Web.Controllers
             _roleManager = roleManager;
             _competitionService = competitionService;
             _eventService = eventService;
+            _heatService = heatService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -214,10 +217,7 @@ namespace Timataka.Web.Controllers
                 Status = instanceTask.Result.Status,
                 Deleted = instanceTask.Result.Deleted
             };
-
-            //var evnets = _eventService;
-
-            //var events = _eventRepo.GetEventsForInstance(id);
+            
             var events = _eventService.GetEventsByCompetitionInstanceId(id);
             
             var instanceDto = new CompetitionInstanceDTO
@@ -229,5 +229,23 @@ namespace Timataka.Web.Controllers
             return View(instanceDto);
 
         }
+
+        [HttpGet]
+        [Route("Admin/Event/{id}")]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Event(int id)
+        {
+            var eventObj = _eventService.GetEventById(id);
+            eventObj.Wait();
+
+            var eventDto = new EventDto()
+            {
+                Event = eventObj.Result,
+                Heats = _heatService.GetHeatsForEvent(id)
+            };
+
+            return View(eventDto);
+        }
+     
     }
 }

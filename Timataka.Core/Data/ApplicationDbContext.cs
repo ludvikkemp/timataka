@@ -24,6 +24,7 @@ namespace Timataka.Core.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<Heat> Heats { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<ContestantInHeat> ContestantsInHeats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,6 +37,9 @@ namespace Timataka.Core.Data
 
             builder.Entity<ManagesCompetition>()
                 .HasKey(m => new {m.UserId, m.CompetitionId});
+
+            builder.Entity<ContestantInHeat>()
+                .HasKey(c => new { c.UserId, c.HeatId });
         }
     }
 }

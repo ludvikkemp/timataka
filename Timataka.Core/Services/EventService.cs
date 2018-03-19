@@ -31,12 +31,6 @@ namespace Timataka.Core.Services
         /// <returns>ID of event added or exception if event exists</returns>
         public async Task<Event> Add(EventViewModel e)
         {
-            /*
-            if (GetEventByName(e.Name) != null)
-            {
-                throw new Exception("Event already exists");
-            }
-            */
 
             var entity = new Event
             {
@@ -53,13 +47,13 @@ namespace Timataka.Core.Services
                 Name = e.Name,
                 Splits = e.Splits,
                 StartInterval = e.StartInterval,
-                Deleted = false
+                Deleted = false,
             };
 
-            await _repo.InsertAsync(entity);
+            var newEvent = await _repo.InsertAsync(entity);
             
             //Create one heat
-            await _heatService.AddAsync(e.Id);
+            await _heatService.AddAsync(newEvent.Id);
 
             return entity;
         }
