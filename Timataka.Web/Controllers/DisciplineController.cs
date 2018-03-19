@@ -44,14 +44,11 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid && model.Name != null)
             {
-                //var sportId = int.Parse(model.SportId);
-                var disciplineId = _disciplineService.GetNextId();
+                //var disciplineId = _disciplineService.GetNextId();
                 var sportId = int.Parse(model.SportId);
-                //var sport = _sportService.GetSportById(sportId);
 
                 var newDiscipline = new Discipline
                 {
-                    Id = disciplineId,
                     Name = model.Name,
                     SportId = sportId  
                 };
@@ -59,7 +56,7 @@ namespace Timataka.Web.Controllers
                 await _disciplineService.Add(newDiscipline);
 
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Sport","Admin", new {@id = model.SportId});
         }
 
         //GET: Dicipline/Details/1
