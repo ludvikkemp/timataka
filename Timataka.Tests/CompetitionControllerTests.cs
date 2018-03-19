@@ -20,19 +20,6 @@ namespace Timataka.Tests
 {
     public class CompetitionControllerTests
     {
-        private readonly ApplicationDbContext _context;
-        private readonly HttpClient _client;
-
-        public CompetitionControllerTests()
-        {
-            var builder = new WebHostBuilder()
-                .UseEnvironment("Testing")
-                .UseStartup<Startup>();
-            var server = new TestServer(builder);
-            _context = server.Host.Services.GetService(typeof(ApplicationDbContext)) as ApplicationDbContext;
-            _client = server.CreateClient();
-        }
-
         [Fact]
         public void TestGetAllCompetitions()
         {
