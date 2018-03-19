@@ -89,5 +89,21 @@ namespace Timataka.Core.Data.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public IEnumerable<ContestantInHeat> GetContestantsInHeat(int heatId)
+        {
+            var contestants = (from c in _db.ContestantsInHeats
+                               where c.HeatId == heatId
+                               select c).ToList();
+            return contestants;
+        }
+
+        public IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id)
+        {
+            var users = (from c in _db.ContestantsInHeats
+                               join u in _db.Users on c.UserId equals u.Id                              
+                               select u).ToList();
+            return users;
+        }
     }
 }
