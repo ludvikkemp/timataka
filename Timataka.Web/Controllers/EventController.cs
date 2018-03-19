@@ -43,7 +43,7 @@ namespace Timataka.Web.Controllers
             {
                 try
                 {
-                    await _eventService.Add(model);
+                    var task = await _eventService.Add(model);
                 }
                 catch (Exception e)
                 {

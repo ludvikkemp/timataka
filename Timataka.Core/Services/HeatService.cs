@@ -47,7 +47,8 @@ namespace Timataka.Core.Services
             {
                 HeatNumber = nextHeatNumber,
                 EventId = eventId,
-                Deleted = false
+                Deleted = false,
+                
             };
             await _repo.InsertAsync(heat);
             return heat;

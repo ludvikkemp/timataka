@@ -37,10 +37,11 @@ namespace Timataka.Core.Data.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public async Task InsertAsync(Event entity)
+        public async Task<Event> InsertAsync(Event entity)
         {
-            await _context.Event.AddAsync(entity);
+            var results = await _context.Event.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return results.Entity;
         }
 
         public async Task<Event> GetEventByNameAsync(string eventName)

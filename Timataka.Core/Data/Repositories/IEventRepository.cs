@@ -9,7 +9,7 @@ namespace Timataka.Core.Data.Repositories
 {
     public interface IEventRepository : IDisposable
     {
-        Task InsertAsync(Event entity);
+        Task<Event> InsertAsync(Event entity);
         Task<Event> GetEventByNameAsync(string eventName);
         Task<Event> GetByIdAsync(int id);
         void Edit(Event entity);

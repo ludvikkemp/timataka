@@ -242,10 +242,7 @@ namespace Timataka.Web.Controllers
                 Status = instanceTask.Result.Status,
                 Deleted = instanceTask.Result.Deleted
             };
-
-            //var evnets = _eventService;
-
-            //var events = _eventRepo.GetEventsForInstance(id);
+            
             var events = _eventService.GetEventsByCompetitionInstanceId(id);
             
             var instanceDto = new CompetitionInstanceDTO
