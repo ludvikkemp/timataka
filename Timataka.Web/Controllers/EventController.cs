@@ -49,7 +49,7 @@ namespace Timataka.Web.Controllers
                 {
                     //Todo: return some error view
                 }
-                return RedirectToAction("Instance","Admin", model.CompetitionInstanceId);
+                return RedirectToAction("Instance","Admin", new { @id = model.CompetitionInstanceId });
             }
             return View(model);
         }

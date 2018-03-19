@@ -49,7 +49,8 @@ namespace Timataka.Core.Services
                 Laps = e.Laps,
                 Name = e.Name,
                 Splits = e.Splits,
-                StartInterval = e.StartInterval
+                StartInterval = e.StartInterval,
+                Deleted = false
             };
 
             await _repo.InsertAsync(entity);
