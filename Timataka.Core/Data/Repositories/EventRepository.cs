@@ -40,30 +40,30 @@ namespace Timataka.Core.Data.Repositories
 
         public async Task<Event> InsertAsync(Event entity)
         {
-            var results = await _context.Event.AddAsync(entity);
+            var results = await _context.Events.AddAsync(entity);
             await _context.SaveChangesAsync();
             return results.Entity;
         }
 
         public async Task<Event> GetEventByNameAsync(string eventName)
         {
-            return await _context.Event.SingleOrDefaultAsync(x => x.Name == eventName);
+            return await _context.Events.SingleOrDefaultAsync(x => x.Name == eventName);
         }
 
         public async Task<Event> GetByIdAsync(int id)
         {
-            return await _context.Event.SingleOrDefaultAsync(x => x.Id == id);
+            return await _context.Events.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public void Edit(Event entity)
         {
-            _context.Event.Update(entity);
+            _context.Events.Update(entity);
             _context.SaveChanges();
         }
 
         public async Task EditAsync(Event entity)
         {
-            _context.Event.Update(entity);
+            _context.Events.Update(entity);
             await _context.SaveChangesAsync();
         }
 
@@ -80,12 +80,12 @@ namespace Timataka.Core.Data.Repositories
         }
         public IEnumerable<Event> Get()
         {
-            return _context.Event.ToList();
+            return _context.Events.ToList();
         }
 
         public IEnumerable<EventViewModel> GetEventsForInstance(int id)
         {
-            var events = (from e in _context.Event
+            var events = (from e in _context.Events
                           where e.CompetitionInstanceId == id
                           select new EventViewModel
                           {
@@ -108,7 +108,7 @@ namespace Timataka.Core.Data.Repositories
         
         public Task<EventViewModel> GetEventByIdAsync(int id)
         {
-            var model = (from e in _context.Event
+            var model = (from e in _context.Events
                 where e.Id == id
                 select new EventViewModel
                 {
