@@ -19,30 +19,6 @@ namespace Timataka.Tests
     {
 
         [Fact]
-        public void GetSportsIndex()
-        {
-            // Arrange
-            var serviceMock = new Mock<ISportService>();
-            //serviceMock.Setup(x => x.GetAllSports()).Returns(() => new List<Sport>()
-            //{
-                //new Sport {Id = 1, Name = "Running"},
-                //new Sport {Id = 2, Name = "Swimming"},
-                //new Sport {Id = 3, Name = "Cycling"}
-            //});
-            var controller = new SportsController(serviceMock.Object);
-
-            // Act
-            //var result = controller.Index() as ViewResult;
-            //var data = (List<Sport>)result.ViewData.Model;
-
-            // Assert
-            //Assert.IsType<ViewResult>(result);
-            //Assert.Equal(expected: "Running", actual: data.First().Name);
-            //Assert.Equal(expected: 3, actual: data.Count);
-
-        }
-
-        [Fact]
         public async void TestGetSportByID()
         {
             // Arrange
@@ -60,39 +36,6 @@ namespace Timataka.Tests
             // Assert
             var contentResult = Assert.IsType<ViewResult>(result);
             Assert.Equal("Swimming", model.Name);
-        }
-
-        [Fact]
-        public async void TestAddSportWithValidModel()
-        {
-            //Arrange
-            var serviceMock = new Mock<ISportService>();
-            Sport newSport = new Sport { Id = 4, Name = "Rowing" };
-            //serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult(newSport));
-            var controller = new SportsController(serviceMock.Object);
-
-            //Act
-            //var result = await controller.Add(newSport) as RedirectToActionResult;
-
-            //Assert 
-            //Assert.Equal(expected: "Index", actual: result.ActionName);
-        }
-
-        [Fact]
-        public async void TestAddSportWithInValidModel()
-        {
-            //Arrange
-            var serviceMock = new Mock<ISportService>();
-            Sport newSport = new Sport { Id = 8 };
-           //serviceMock.Setup(x => x.Add(newSport)).Returns(Task.FromResult((Sport)newSport));
-            var controller = new SportsController(serviceMock.Object);
-
-            //Act
-            //var result = await controller.Add(newSport) as ViewResult;
-            //var model = (Sport)result.ViewData.Model;
-
-            //Assert 
-            //Assert.Equal(expected: 8, actual: model.Id);
         }
 
         [Fact]

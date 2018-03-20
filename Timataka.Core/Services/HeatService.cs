@@ -54,12 +54,21 @@ namespace Timataka.Core.Services
             return heat;
         }
 
+        /// <summary>
+        /// Function to edit a heat
+        /// </summary>
+        /// <param name="h"></param>
+        /// <returns>Edited heat</returns>
         public async Task<Heat> EditAsync(Heat h)
         {
             await _repo.EditAsync(h);
             return h;
         }
 
+        /// <summary>
+        /// Function to get all heats
+        /// </summary>
+        /// <returns>List of all heats</returns>
         public IEnumerable<Heat> GetAllHeats()
         {
             var heats = _repo.Get();

@@ -77,6 +77,10 @@ namespace Timataka.Core.Services
             return d;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<SelectListItem> GetSportsListItems()
         {
             List<SelectListItem> selectSportsListItems =
@@ -113,6 +117,11 @@ namespace Timataka.Core.Services
             return maxId + 1;
         }
 
+        /// <summary>
+        /// Get all disciplines for a given sport
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List of disciplines</returns>
         public IEnumerable<DisciplineViewModel> GetDisciplinesBySportId(int id)
         {
             var models = _repo.GetDisciplinesBySportId(id);
