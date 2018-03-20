@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.Dto.AdminDTO.CompetitionDto
+﻿@model Timataka.Core.Models.Dto.AdminDTO.HeatDto
 
 @{
     Layout = "_AdminLayout";
@@ -8,8 +8,8 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> @Model.Competiton.Name </span>
-                <a asp-controller="CompetitionInstance" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> Add Instance </a>
+                <span class="title"> @Model.Heat.HeatNumber </span>
+                <a asp-controller="USERCONTROLLER??" asp-action="ADDUSER??" asp-route-id="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Add Contestant </a>
             </div>
         </div>
     </div>
@@ -27,9 +27,8 @@
                 </div>
             </form>
         </div>
-
     </div>
-
+    <h4>Contestants</h4>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -41,25 +40,25 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Instance</th>
-                                                <th>Date</th>
+                                                <th>BIB</th>
+                                                <th>Name</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model.Instances)
+                                            @foreach (var item in Model.Contestants)
                                             {
                                                 <tr>
                                                     <td>
-                                                        <a asp-controller="Admin" asp-action="Instance" asp-route-id="@item.Id">@item.Name</a>
+                                                        @item.Bib
                                                     </td>
                                                     <td>
-                                                        @item.DateFrom
+                                                        @item.UserId
                                                     </td>
                                                     <td>
-                                                        <a asp-controller="CompetitionInstance" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                        <a asp-controller="CompetitionInstance" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success-outline btn-sm">Details</a>
-                                                        <a asp-controller="CompetitionInstance" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                        <a asp-controller="Heat" asp-action="EditContestantInHeat" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        <a asp-controller="Heat" asp-action="DetailsContestantInHeat" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-success-outline btn-sm">Details</a>
+                                                        <a asp-controller="Heat" asp-action="DeleteContestantInHeat" asp-route-UserId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-danger-outline btn-sm">Delete</a>
                                                     </td>
                                                 </tr>
 

@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.Entities.Discipline
+﻿@model Timataka.Core.Models.ViewModels.DisciplineViewModels.DisciplineViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -14,7 +14,7 @@
         <div class="col-md-4">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="SportId" />
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" />
@@ -28,7 +28,7 @@
     </div>
 
     <div>
-        <a asp-controller="Admin" asp-action="Sports">Back to List</a>
+        <a asp-controller="Admin" asp-action="Sport" class="btn btn-secondary-outline btn-sm" asp-route-id="@Model.SportId">Back to List</a>
     </div>
 </section>
 @section Scripts {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Timataka.Core.Models.ViewModels.DisciplineViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -110,6 +111,12 @@ namespace Timataka.Core.Services
             }
 
             return maxId + 1;
+        }
+
+        public IEnumerable<DisciplineViewModel> GetDisciplinesBySportId(int id)
+        {
+            var models = _repo.GetDisciplinesBySportId(id);
+            return models;
         }
     }
 }

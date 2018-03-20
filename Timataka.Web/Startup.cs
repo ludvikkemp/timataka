@@ -80,7 +80,7 @@ namespace Timataka.Web
                 options.SlidingExpiration = true;
             });
 
-            // DI for Repositores
+            // DI for Repositories
             services.AddTransient<ISportRepository, SportRepository>();
             services.AddTransient<IDisciplineRepository, DisciplineRepository>();
             services.AddTransient<IAdminRepository, AdminRepository>();
@@ -89,6 +89,7 @@ namespace Timataka.Web
             services.AddTransient<IEventRepository, EventRepository>();
             services.AddTransient<IHeatRepository, HeatRepository>();
 
+            // DI for Services
             services.AddTransient<ICompetitionService, CompetitionService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<ISportService, SportService>();

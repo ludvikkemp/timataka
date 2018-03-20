@@ -20,14 +20,6 @@ namespace Timataka.Web.Controllers
             _eventService = eventService;
         }
 
-        public IActionResult Index(int eventId)
-        {
-            var eventObj = _eventService.GetEventById(eventId);
-
-            return View(eventObj);
-        }
-
-
         public IActionResult Create(int instanceId)
         {   
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
@@ -39,11 +31,14 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EventViewModel model)
         {
+            ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            ViewBag.InstanceId = model.CompetitionInstanceId;
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid && model.Name != null)
             {
                 try
                 {
-                    await _eventService.Add(model);
+                    var task = await _eventService.AddAsync(model);
                 }
                 catch (Exception e)
                 {
@@ -57,7 +52,7 @@ namespace Timataka.Web.Controllers
         // GET: Event/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var eventobj = await _eventService.GetEventById(id);
+            var eventobj = await _eventService.GetEventByIdAsync(id);
 
             if (eventobj == null)
             {
@@ -67,14 +62,15 @@ namespace Timataka.Web.Controllers
         }
 
         // GET: Event/Edit/5
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var eventobj = _eventService.GetEventById(id);
-            if (eventobj == null)
+            ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            var model = await _eventService.GetEventViewModelByIdAsync(id);
+            if (model == null)
             {
                 return NotFound();
             }
-            return View(eventobj);
+            return View(model);
         }
 
         // POST: Event/Edit/5
@@ -82,19 +78,21 @@ namespace Timataka.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Event eventobj)
+        public async Task<IActionResult> Edit(int id, EventViewModel model)
         {
-            if (id != eventobj.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                await _eventService.Edit(eventobj);
-                return RedirectToAction(nameof(Index));
+
+                var compInstanceId = await _eventService.EditEventViewModelAsync(model);
+                //await _eventService.EditAsync(model);
+                return RedirectToAction("Instance","admin", new { @id = compInstanceId });
             }
-            return View(eventobj);
+            return View(model);
 
         }
 
@@ -106,7 +104,7 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var eventobj = await _eventService.GetEventById((int)id);
+            var eventobj = await _eventService.GetEventByIdAsync((int)id);
             if (eventobj == null)
             {
                 return NotFound();
@@ -120,8 +118,8 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var eventobj = await _eventService.Remove((int)id);
-            return RedirectToAction(nameof(Index));
+            var eventobj = await _eventService.RemoveAsync((int)id);
+            return RedirectToAction("Event","Admin", new { @id = 1 });
         }
     }
 }

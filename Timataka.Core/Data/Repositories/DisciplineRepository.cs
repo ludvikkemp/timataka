@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.DisciplineViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -92,6 +93,19 @@ namespace Timataka.Core.Data.Repositories
         public List<Sport> GetSports()
         {
             return _db.Sports.OrderBy(x => x.Name).ToList();
+        }
+
+        public IEnumerable<DisciplineViewModel> GetDisciplinesBySportId(int id)
+        {
+            var disciplines = (from d in _db.Disciplines
+                where d.SportId == id
+                select new DisciplineViewModel
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    SportId = d.SportId
+                }).ToList();
+            return disciplines;
         }
     }
 }

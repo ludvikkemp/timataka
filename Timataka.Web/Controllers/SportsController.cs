@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -13,13 +14,6 @@ namespace Timataka.Web.Controllers
         public SportsController(ISportService sportService)
         {
             _sportService = sportService;
-        }
-
-        // GET: Sports
-        public IActionResult Index()
-        {
-            var sports = _sportService.GetAllSports();
-            return View(sports);
         }
 
         // GET: Sports/Details/5
@@ -45,19 +39,12 @@ namespace Timataka.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("Id,Name")] Sport sport)
+        public async Task<IActionResult> Create (SportsViewModel sport)
         {
             if (ModelState.IsValid && sport.Name != null)
             {
-                try
-                {
-                    await _sportService.Add(sport);
-                }
-                catch (Exception e)
-                {
-                    //Todo: return some error view
-                }
-                return RedirectToAction(nameof(Index));
+                await _sportService.Add(sport);
+                return RedirectToAction("Sports","Admin");
             }
             return View(sport);
         }
@@ -70,7 +57,7 @@ namespace Timataka.Web.Controllers
             {
                 return NotFound();
             }
-            return View(sport);
+            return View(sport.Result);
         }
 
         // POST: Sports/Edit/5
@@ -88,7 +75,7 @@ namespace Timataka.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _sportService.Edit(sport);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Sports","Admin");
             }
             return View(sport);
 
@@ -117,7 +104,7 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var sport = await _sportService.Remove((int)id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Sports","Admin");
         }
     }
 }

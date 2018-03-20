@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.Dto.AdminDTO.CompetitionInstanceDTO
+﻿@model Timataka.Core.Models.Dto.AdminDTO.EventDto
 
 @{
     Layout = "_AdminLayout";
@@ -8,11 +8,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> @Model.CompetitonInstance.Name</span>
-                <a asp-controller="Event" asp-action="Create" asp-route-instanceId="@Model.CompetitonInstance.Id" class="btn btn-primary btn-sm rounded-s"> Add Event </a>
+                <span class="title"> @Model.Event.Name </span>
+                <a asp-controller="Heat" asp-action="Create" asp-route-id="@Model.Event.Id" class="btn btn-primary btn-sm rounded-s"> Add Heat </a>
             </div>
         </div>
-
     </div>
 
     <div class="row">
@@ -41,25 +40,29 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Event</th>
+                                                <th>Number</th>
+                                                <th>Number of Contestants</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model.Events)
-                    {
-                        <tr>
-                            <td>
-                                <a asp-controller="Admin" asp-action="Event" asp-route-id="@item.Id">@item.Name</a>
-                            </td>
-                            <td>
-                                <a asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
-                                <a asp-controller="Event" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success-outline btn-sm">Details</a>
-                                <a asp-controller="Event" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
-                            </td>
-                        </tr>
+                                            @foreach (var item in Model.Heats)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <a asp-controller="Admin" asp-action="Heat" asp-route-id="@item.Id">@item.HeatNumber</a>
+                                                    </td>
+                                                    <td>
+                                                        Nr. Cont.
+                                                    </td>
+                                                    <td>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success-outline btn-sm">Details</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                    </td>
+                                                </tr>
 
-}
+                                            }
                                         </tbody>
                                     </table>
                                 </div>

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -24,16 +25,17 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Function to add a sport.
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="model"></param>
         /// <returns>ID of sport added or exception if sport exists</returns>
-        public async Task<Sport> Add(Sport s)
+        public async Task<Sport> Add(SportsViewModel model)
         {
-            if(GetSportByName(s.Name) != null)
+            var sports = await _repo.GetSportByNameAsync(model.Name);
+            var sport = new Sport { Name = model.Name };
+            if (sports == null)
             {
-                throw new Exception("Sport already exists");
+                await _repo.InsertAsync(sport);
             }
-            await _repo.InsertAsync(s);
-            return s;
+            return sport;
         }
 
         /// <summary>
@@ -52,20 +54,20 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="sportId"></param>
         /// <returns>Id of the sport removed</returns>
-        public async Task<int> Remove(int SportId)
+        public async Task<int> Remove(int sportId)
         {
-            var s = await GetSportById(SportId);
+            var s = await GetSportById(sportId);
             await _repo.RemoveAsync(s);
-            return SportId;
+            return sportId;
         }
 
         /// <summary>
         /// Get list of all sports.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<Sport> ISportService.GetAllSports()
+        public IEnumerable<SportsViewModel> GetAllSports()
         {
-            var sports = _repo.Get();
+            var sports = _repo.GetListOfSportsViewModels();
             return sports;
         }
 
@@ -83,11 +85,11 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Get a sport by its Name
         /// </summary>
-        /// <param name="SportName"></param>
+        /// <param name="sportName"></param>
         /// <returns></returns>
-        public async Task<Sport> GetSportByName(string SportName)
+        public async Task<Sport> GetSportByName(string sportName)
         {
-            var s = await _repo.GetSportByNameAsync(SportName);
+            var s = await _repo.GetSportByNameAsync(sportName);
             return s;
         }
 

@@ -11,6 +11,7 @@ namespace Timataka.Core.Models.ViewModels.EventViewModels
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        [Display(Name = "Discipline")]
         public int DisciplineId { get; set; }
         public int CompetitionInstanceId { get; set; }
         [Required]
@@ -24,5 +25,6 @@ namespace Timataka.Core.Models.ViewModels.EventViewModels
         public int StartInterval { get; set; }
         public Gender Gender { get; set; }
         public bool ActiveChip { get; set; }
+        public string DisciplineName { get; set; }
     }
 }

@@ -47,7 +47,8 @@ namespace Timataka.Core.Services
             {
                 HeatNumber = nextHeatNumber,
                 EventId = eventId,
-                Deleted = false
+                Deleted = false,
+                
             };
             await _repo.InsertAsync(heat);
             return heat;
@@ -114,6 +115,16 @@ namespace Timataka.Core.Services
 
         }
 
+        public IEnumerable<ContestantInHeat> GetContestantsInHeat(int id)
+        {
+            return _repo.GetContestantsInHeat(id);
+        }
+
+        public IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id)
+        {
+
+            return _repo.GetApplicationUsersInHeat(id);
+        }
 
     }
 }

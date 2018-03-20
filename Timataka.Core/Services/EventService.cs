@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Timataka.Core.Data.Repositories;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 
@@ -12,11 +13,13 @@ namespace Timataka.Core.Services
     {
         private readonly IEventRepository _repo;
         private readonly IHeatService _heatService;
+        private readonly ICompetitionRepository _competitionRepo;
 
-        public EventService(IEventRepository repo, IHeatService heatService)
+        public EventService(IEventRepository repo, IHeatService heatService, ICompetitionRepository competitionRepo)
         {
             _repo = repo;
             _heatService = heatService;
+            _competitionRepo = competitionRepo;
         }
 
         public EventService()
@@ -29,14 +32,8 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="e"></param>
         /// <returns>ID of event added or exception if event exists</returns>
-        public async Task<Event> Add(EventViewModel e)
+        public async Task<Event> AddAsync(EventViewModel e)
         {
-            /*
-            if (GetEventByName(e.Name) != null)
-            {
-                throw new Exception("Event already exists");
-            }
-            */
 
             var entity = new Event
             {
@@ -53,13 +50,13 @@ namespace Timataka.Core.Services
                 Name = e.Name,
                 Splits = e.Splits,
                 StartInterval = e.StartInterval,
-                Deleted = false
+                Deleted = false,
             };
 
-            await _repo.InsertAsync(entity);
+            var newEvent = await _repo.InsertAsync(entity);
             
             //Create one heat
-            await _heatService.AddAsync(e.Id);
+            await _heatService.AddAsync(newEvent.Id);
 
             return entity;
         }
@@ -69,7 +66,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="EventName"></param>
         /// <returns></returns>
-        public async Task<Event> GetEventByName(string EventName)
+        public async Task<Event> GetEventByNameAsync(string EventName)
         {
             var e = await _repo.GetEventByNameAsync(EventName);
             return e;
@@ -80,10 +77,43 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns>Sport with a given ID.</returns>
-        public async Task<Event> GetEventById(int eventId)
+        public async Task<Event> GetEventByIdAsync(int eventId)
         {
             var e = await _repo.GetByIdAsync(eventId);
             return e;
+        }
+
+        /// <summary>
+        /// Get a eventViewModel by its ID.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns>Sport with a given ID.</returns>
+        public async Task<EventViewModel> GetEventViewModelByIdAsync(int eventId)
+        {
+            var e = await _repo.GetEventByIdAsync(eventId);
+            return e;
+        }
+
+        public async Task<int> EditEventViewModelAsync(EventViewModel model)
+        {
+            var editEvent = await _repo.GetByIdAsync(model.Id);
+
+            editEvent.Name = model.Name;
+            editEvent.Id = model.Id;
+            editEvent.DateFrom = model.DateFrom;
+            editEvent.DateTo = model.DateTo;
+            editEvent.ActiveChip = model.ActiveChip;
+            editEvent.CourseId = model.CourseId;
+            editEvent.Deleted = false;
+            editEvent.DisciplineId = model.DisciplineId;
+            editEvent.StartInterval = model.StartInterval;
+            editEvent.Splits = model.Splits;
+            editEvent.Laps = model.Laps;
+            editEvent.Gender = model.Gender;
+            editEvent.DistanceOffset = model.DistanceOffset;
+
+            await _repo.EditAsync(editEvent);
+            return editEvent.CompetitionInstanceId;
         }
 
         /// <summary>
@@ -91,7 +121,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="e"></param>
         /// <returns>Id of the event edited</returns>
-        public async Task<Event> Edit(Event e)
+        public async Task<Event> EditAsync(Event e)
         {
             await _repo.EditAsync(e);
             return e;
@@ -102,11 +132,11 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns>Id of the event removed</returns>
-        public async Task<int> Remove(int EventId)
+        public async Task<int> RemoveAsync(int eventId)
         {
-            var e = await GetEventById(EventId);
+            var e = await GetEventByIdAsync(eventId);
             await _repo.RemoveAsync(e);
-            return EventId;
+            return eventId;
         }
 
         /// <summary>

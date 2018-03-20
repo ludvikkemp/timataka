@@ -22,5 +22,8 @@ namespace Timataka.Core.Data.Repositories
         void Remove(Heat h);
         Task RemoveAsync(Heat h);
 
+        //Contestants In Heat
+        IEnumerable<ContestantInHeat> GetContestantsInHeat(int heatId);
+        IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id);
     }
 }
