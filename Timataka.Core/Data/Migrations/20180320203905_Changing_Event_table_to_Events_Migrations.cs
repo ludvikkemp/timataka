@@ -66,7 +66,7 @@ namespace Timataka.Core.Data.Migrations
                 column: "CourseId",
                 principalTable: "Courses",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Events_Disciplines_DisciplineId",
@@ -74,7 +74,7 @@ namespace Timataka.Core.Data.Migrations
                 column: "DisciplineId",
                 principalTable: "Disciplines",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Heats_Events_EventId",

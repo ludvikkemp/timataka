@@ -28,6 +28,7 @@ namespace Timataka.Web.Controllers
         public IActionResult Create()
         {
             ViewBag.Sports = _disciplineService.GetSportsListItems();
+            //ViewBag.SportId = _sportService.
             return View();
         }
 
