@@ -146,6 +146,76 @@ namespace Timataka.Tests
             Assert.Equal(expected: "Keppnin 2018", actual: result.Last().Name);
         }
 
+        [Fact]
+        public async void TestAddRole()
+        {
+            //Arrange
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "1", Role = Role.Host });
+            int n = _service.GetAllRoles().Count();
+
+            //Act
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 1, UserId = "2", Role = Role.Staff });
+            var result = _service.GetAllRoles();
+
+            //Assert
+            Assert.Equal(expected: 1, actual: n);
+            Assert.Equal(expected: n + 1, actual: result.Count());
+            Assert.Equal(expected: 1, actual: result.Last().CompetitionId);
+        }
+
+        [Fact]
+        public async void TestGetRolesForCompetition()
+        {
+            //Arrange
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "1", Role = Role.Host });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 1, UserId = "2", Role = Role.Staff });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "2", Role = Role.Staff });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 3, UserId = "5", Role = Role.Staff });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "5", Role = Role.Official });
+
+
+            //Act
+            int result = _service.GetAllRolesForCompetition(2).Count();
+
+            //Assert
+            Assert.Equal(expected: 3, actual: result);
+        }
+
+        [Fact]
+        public async void TestGetRolesForUser()
+        {
+            //Arrange
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "1", Role = Role.Host });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 1, UserId = "2", Role = Role.Staff });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "2", Role = Role.Staff });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 3, UserId = "5", Role = Role.Staff });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "5", Role = Role.Official });
+
+
+            //Act
+            int result = _service.GetAllRolesForUser("2").Count();
+
+            //Assert
+            Assert.Equal(expected: 2, actual: result);
+        }
+
+        [Fact]
+        public async void TestGetRole()
+        {
+            //Arrange
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "1", Role = Role.Host });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 1, UserId = "2", Role = Role.Staff });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "2", Role = Role.Staff });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 3, UserId = "5", Role = Role.Staff });
+            await _service.AddRole(new ManagesCompetition { CompetitionId = 2, UserId = "5", Role = Role.Official });
+
+
+            //Act
+            var result = _service.GetRole("2", 1);
+
+            //Assert
+            Assert.Equal(expected: Role.Staff, actual: result);
+        }
         //TODO test functionality for roles...
 
     }
