@@ -6,7 +6,6 @@
 }
 
 <section class="content">
-    <h3>@Model.Name</h3>
 
     <div>
         
@@ -27,6 +26,6 @@
     </div>
     <div>
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning-outline btn-sm">Edit</a>
-        <a asp-controller="Admin" asp-action="Sports" class="btn btn-secondary-outline btn-sm">Back to List</a>
+        <a asp-controller="Admin" asp-action="Sports" asp-route-id="@Model.SportId" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
