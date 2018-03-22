@@ -123,6 +123,9 @@ namespace Timataka.Core.Data.Repositories
                                       select d.Name).FirstOrDefault(),
                     ActiveChip = e.ActiveChip,
                     CourseId = e.CourseId,
+                    CourseName = (from c in _context.Courses
+                                  where c.Id == e.CourseId
+                                  select c.Name).FirstOrDefault(),
                     DistanceOffset = e.DistanceOffset,
                     Gender = e.Gender,
                     Laps = e.Laps,
