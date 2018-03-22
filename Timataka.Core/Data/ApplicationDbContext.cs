@@ -13,7 +13,7 @@ namespace Timataka.Core.Data
         }
 
         public DbSet<Sport> Sports { get; set; }
-        public DbSet<Event> Event { get; set; }
+        public DbSet<Event> Events { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Discipline> Disciplines { get; set; }
         public DbSet<Club> Clubs { get; set; }
