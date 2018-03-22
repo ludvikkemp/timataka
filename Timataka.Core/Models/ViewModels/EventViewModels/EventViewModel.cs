@@ -18,6 +18,7 @@ namespace Timataka.Core.Models.ViewModels.EventViewModels
         public DateTime DateFrom { get; set; }
         [Required]
         public DateTime DateTo { get; set; }
+        [Display(Name = "Course")]
         public int CourseId { get; set; }
         public int Laps { get; set; }
         public int Splits { get; set; }

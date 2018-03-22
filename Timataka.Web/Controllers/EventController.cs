@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Timataka.Core.Data.Repositories;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
@@ -13,16 +14,21 @@ namespace Timataka.Web.Controllers
     {
         private readonly IEventService _eventService;
         private readonly IDisciplineService _disciplineService;
+        private readonly ICourseService _courseService;
+
         public EventController(IEventService eventService,
-                               IDisciplineService disciplineService)
+                               IDisciplineService disciplineService,
+                               ICourseService courseService)
         {
             _disciplineService = disciplineService;
             _eventService = eventService;
+            _courseService = courseService;
         }
 
         public IActionResult Create(int instanceId)
         {   
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            ViewBag.Courses = _courseService.GetCourseDropDown();
             ViewBag.InstanceId = instanceId;
             return View();
         }
