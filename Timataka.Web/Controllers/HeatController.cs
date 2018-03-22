@@ -48,5 +48,30 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        // Get: Heat/Edit/3
+        public IActionResult Edit(int id)
+        {
+            var task = _heatService.GetHeatByIdAsync(id);
+            var entity = task.Result;
+            return View(entity);
+        }
+
+        // Post: Heat/Edit/3
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Heat entity)
+        {
+            if (id != entity.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                await _heatService.EditAsync(entity);
+                return RedirectToAction("Event", "Admin", new { @id = entity.EventId });
+            }
+            return View(entity);
+        }
+
     }
 }
