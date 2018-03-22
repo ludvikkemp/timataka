@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Timataka.Core.Models.Entities
 {
-    public enum Role
+    public enum CompetitionRole
     {
         Host = 0,
         Official = 1,
@@ -25,6 +25,6 @@ namespace Timataka.Core.Models.Entities
         [ForeignKey(nameof(CompetitionId))]
         public virtual Competition ApplicationCompetitonId { get; set; }
 
-        public Role Role { get; set; }
+        public CompetitionRole Role { get; set; }
     }
 }
