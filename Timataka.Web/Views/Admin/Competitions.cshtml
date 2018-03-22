@@ -49,17 +49,19 @@
                                         <tbody>
                                             @foreach (var comp in Model)
                                             {
-                                                <tr>
-                                                    <td>
-                                                        <a asp-controller="Admin" asp-action="Competition" asp-route-id="@comp.Id">@comp.Name</a>
-                                                    </td>
-                                                    <td>
-                                                        <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a> 
-                                                        <a asp-controller="Competition" asp-action="Details" asp-route-id="@comp.Id" class="btn btn-success-outline btn-sm">Details</a> 
-                                                        <a asp-controller="Competition" asp-action="Delete" asp-route-id="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
-                                                    </td>
-                                                </tr>
-
+                                                if (comp.Deleted == false)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <a asp-controller="Admin" asp-action="Competition" asp-route-id="@comp.Id">@comp.Name</a>
+                                                        </td>
+                                                        <td>
+                                                            <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a> 
+                                                            <a asp-controller="Competition" asp-action="Details" asp-route-id="@comp.Id" class="btn btn-success-outline btn-sm">Details</a> 
+                                                            <a asp-controller="Competition" asp-action="Delete" asp-route-id="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                }
                                             }
                                         </tbody>
                                     </table>
