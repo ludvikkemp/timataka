@@ -71,8 +71,8 @@ namespace Timataka.Core.Services
         public async Task<bool> CompetitionExists(string modelName)
         {
             var result = await _repo.GetCompetitionByNameAsync(modelName);
-            if (result != null) return false;
-            return true;
+            if (result != null) return true;
+            return false;
         }
 
         public async Task<int> Remove(int competitionId)
