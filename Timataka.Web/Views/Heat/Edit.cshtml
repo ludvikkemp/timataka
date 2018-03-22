@@ -1,0 +1,36 @@
+﻿@model Timataka.Core.Models.Entities.Heat
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h4>Edit Instance</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="EventId" value="@Model.EventId" />
+                <input type="hidden" asp-for="Id" value="@Model.Id" />
+                <input type="hidden" asp-for="Deleted" value="@Model.Deleted" />
+                <div class="form-group">
+                    <label asp-for="HeatNumber" class="control-label"></label>
+                    <input asp-for="HeatNumber" class="form-control" />
+                    <span asp-validation-for="HeatNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-controller="Admin" asp-action="Event" asp-route-id="@Model.EventId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
