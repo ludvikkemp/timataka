@@ -1,0 +1,30 @@
+﻿@model Timataka.Core.Models.Entities.Heat
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h2>Delete</h2>
+
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Heat</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.HeatNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HeatNumber)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" value="@Model.Id"/>
+            <input type="submit" value="Delete" class="btn btn-primary" /> |
+            <a asp-controller="Admin" asp-action="Event" asp-route-id="@Model.EventId">Back to List</a>
+        </form>
+    </div>
+</section>

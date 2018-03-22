@@ -112,7 +112,7 @@ namespace Timataka.Web.Controllers
             var instance = _competitionService.GetCompetitionInstanceById(id);
             var compId = instance.Result.CompetitionId;
             await _competitionService.RemoveInstance((int)id);
-            return RedirectToAction("Competition", "Admin", compId);
+            return RedirectToAction("Competition", "Admin", new { @id = compId });
 
         }
 
