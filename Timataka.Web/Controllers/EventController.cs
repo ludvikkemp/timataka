@@ -71,6 +71,7 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            ViewBag.Courses = _courseService.GetCourseDropDown();
             var model = await _eventService.GetEventViewModelByIdAsync(id);
             if (model == null)
             {

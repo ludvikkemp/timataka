@@ -20,6 +20,34 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    @if (Model.Gender == Gender.Female)
+                    {
+                        <select name="Gender" class="form-control">
+                            <option selected value="0">Female</option>
+                            <option value="1">Male</option>
+                            <option value="2">Both</option>
+                        </select>
+                    }
+                    else if (Model.Gender == Gender.Male)
+                    {
+                        <select name="Gender" class="form-control">
+                            <option value="0">Female</option>
+                            <option selected value="1">Male</option>
+                            <option value="2">Both</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select name="Gender" class="form-control">
+                            <option value="0">Female</option>
+                            <option value="1">Male</option>
+                            <option selected value="2">Both</option>
+                        </select>
+                    }
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="DateFrom" class="control-label"></label>
                     <input asp-for="DateFrom" class="form-control" />
                     <span asp-validation-for="DateFrom" class="text-danger"></span>
@@ -49,11 +77,25 @@
                     <input asp-for="StartInterval" class="form-control" />
                     <span asp-validation-for="StartInterval" class="text-danger"></span>
                 </div>
+
+
                 <div class="form-group">
-                    <label asp-for="CourseId" class="control-label"></label>
-                    <input asp-for="CourseId" class="form-control" />
+                    <label asp-for="CourseId"></label>
+                    <select name="CourseId" class="form-control">
+                        <option value="@Model.CourseId"> @Model.CourseName</option>
+                        @foreach (var item in ViewBag.Courses)
+                        {
+                            if (@item.Name != Model.CourseName)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+
+                        }
+                    </select>
                     <span asp-validation-for="CourseId" class="text-danger"></span>
                 </div>
+
+
                 <div class="form-group">
                     <label asp-for="ActiveChip" class="control-label"></label>
                     <select name="ActiveChip" class="form-control">
@@ -64,46 +106,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Gender" class="control-label"></label>
-                    @if (Model.Gender == Gender.Female)
-                    {
-                    <select name="Gender" class="form-control">
-                        <option selected value="0">Female</option>
-                        <option value="1">Male</option>
-                        <option value="2">Both</option>
-                    </select>
-                    }
-                    else if (Model.Gender == Gender.Male)
-                    {
-                    <select name="Gender" class="form-control">
-                        <option value="0">Female</option>
-                        <option selected value="1">Male</option>
-                        <option value="2">Both</option>
-                    </select>
-                        }
-                    else
-                    {
-                    <select name="Gender" class="form-control">
-                        <option value="0">Female</option>
-                        <option value="1">Male</option>
-                        <option selected value="2">Both</option>
-                    </select>
-                    }
-                    <span asp-validation-for="Gender" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
                     <label asp-for="DisciplineId"></label>
                     <select name="DisciplineId" class="form-control">
                         <option value="@Model.DisciplineId"> @Model.DisciplineName </option>
                         @foreach (var item in ViewBag.Disciplines)
-                        {
-                            if (@item.Name != Model.DisciplineName)
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
+            {
+                if (@item.Name != Model.DisciplineName)
+                {
+                    <option value="@item.Id">@item.Name</option>
+    }
 
-                        }
+}
                     </select>
                     <span asp-validation-for="DisciplineId" class="text-danger"></span>
                 </div>
