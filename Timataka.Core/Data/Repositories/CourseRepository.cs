@@ -71,7 +71,7 @@ namespace Timataka.Core.Data.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public Task<Course> GetCompetitionByNameAsync(string cName)
+        public Task<Course> GetCourseByNameAsync(string cName)
         {
             return _db.Courses.SingleOrDefaultAsync(x => x.Name == cName);
         }
