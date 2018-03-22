@@ -69,14 +69,17 @@ namespace Timataka.Core.Data.Repositories
 
         public void Remove(Event entity)
         {
-            //TODO:Mark as removed, not delete compleatly
-            throw new NotImplementedException();
+            entity.Deleted = true;
+            _context.Events.Update(entity);
+            _context.SaveChanges();
+            
         }
 
-        public Task RemoveAsync(Event entity)
+        public async Task RemoveAsync(Event entity)
         {
-            //TODO:Mark as removed, not delete compleatly
-            throw new NotImplementedException();
+            entity.Deleted = true;
+            _context.Events.Update(entity);
+            await _context.SaveChangesAsync();
         }
         public IEnumerable<Event> Get()
         {
@@ -101,7 +104,8 @@ namespace Timataka.Core.Data.Repositories
                               Laps = e.Laps,
                               Name = e.Name,
                               Splits = e.Splits,
-                              StartInterval = e.StartInterval
+                              StartInterval = e.StartInterval,
+                              Deleted = e.Deleted
                           }).ToList();
             return events;
         }

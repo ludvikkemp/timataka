@@ -28,5 +28,6 @@ namespace Timataka.Core.Models.ViewModels.EventViewModels
         public Gender Gender { get; set; }
         public bool ActiveChip { get; set; }
         public string DisciplineName { get; set; }
+        public Boolean Deleted { get; set; }
     }
 }

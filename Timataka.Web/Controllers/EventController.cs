@@ -111,13 +111,15 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var eventobj = await _eventService.GetEventByIdAsync((int)id);
-            if (eventobj == null)
+            var task = _eventService.GetEventByIdAsync((int)id);
+            var entity = task.Result;
+
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(eventobj);
+            return View(entity);
         }
 
         // POST: Event/Delete/5
@@ -125,8 +127,11 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var eventobj = await _eventService.RemoveAsync((int)id);
-            return RedirectToAction("Event","Admin", new { @id = 1 });
+            var instance = _eventService.GetEventByIdAsync(id);
+            var instanceId = instance.Result.CompetitionInstanceId;
+            await _eventService.RemoveAsync(id);
+            return RedirectToAction("Instance", "Admin", new { @id = instanceId });
+
         }
     }
 }
