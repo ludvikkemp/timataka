@@ -83,7 +83,10 @@
                                                 @foreach (var user in Model)
                                                 {
                                                     <tr>
-                                                        <td>@user.FirstName @user.Middlename @user.LastName</td>
+                                                        <td>
+                                                            <a asp-action="" asp-route-id="" asp-route-userId="@user.Id">@user.FirstName @user.Middlename @user.LastName</a>
+                                                            
+                                                        </td>
                                                         <td>@user.Username</td>
                                                         <td>@user.DateOfBirth.ToString("dd MMMM, yyyy")</td>
                                                         <td>@user.Country</td>

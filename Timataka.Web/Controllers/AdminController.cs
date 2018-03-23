@@ -29,6 +29,7 @@ namespace Timataka.Web.Controllers
         private readonly ICompetitionService _competitionService;
         private readonly IEventService _eventService;
         private readonly IHeatService _heatService;
+        private readonly IClubService _clubService;
 
 
         public AdminController(IAdminService adminService,
@@ -39,7 +40,8 @@ namespace Timataka.Web.Controllers
             RoleManager<IdentityRole> roleManager,
             ICompetitionService competitionService,
             IEventService eventService,
-            IHeatService heatService)
+            IHeatService heatService,
+            IClubService clubService)
         {
             _adminService = adminService;
             _cache = cache;
@@ -50,6 +52,7 @@ namespace Timataka.Web.Controllers
             _competitionService = competitionService;
             _eventService = eventService;
             _heatService = heatService;
+            _clubService = clubService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -279,7 +282,7 @@ namespace Timataka.Web.Controllers
 
             var roles = new Role();
 
-            var PersonnelDto = new PersonnelDto()
+            var personnelDto = new PersonnelDto()
             {
                 AssignedRoles = assignedRoles,
                 Competition = competition.Result,
@@ -287,7 +290,14 @@ namespace Timataka.Web.Controllers
                 Users = usersDto
             };
 
-            return View(PersonnelDto);
+            return View(personnelDto);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Clubs()
+        {
+            var clubs = _clubService.GetListOfCLubs();
+            return View(clubs);
         }
     }
 }
