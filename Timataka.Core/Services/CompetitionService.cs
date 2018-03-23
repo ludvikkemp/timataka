@@ -25,105 +25,106 @@ namespace Timataka.Core.Services
         }
 
         #region Competition
-        /// <summary>
-        /// Function to add new competition.
-        /// </summary>
-        /// <param name="c">CompetitionViewModel</param>
-        /// <returns>Returns the newly created competition</returns>
-        public async Task<Competition> Add(CompetitionsViewModel c)
-        {
-            //TODO: Check if competition exists
-            var newComp = new Competition
-            {
-                Name = c.Name,
-                WebPage = c.WebPage,
-                Email = c.Email,
-                Phone = c.PhoneNumber,
-                Description = c.Description,
-                Sponsor = c.Sponsor,
-                Deleted = false
-            };
-            await _repo.InsertAsync(newComp);
-            return newComp;
-        }
 
-        /// <summary>
-        /// Function to edit a competition
-        /// </summary>
-        /// <param name="c"></param>
-        /// <param name="m"></param>
-        /// <returns>Edited competition</returns>
-        public async Task<Competition> Edit(Competition c, CompetitionsViewModel m)
-        {
-            c.Description = m.Description;
-            c.Email = m.Description;
-            c.Name = m.Name;
-            c.Phone = m.PhoneNumber;
-            c.Sponsor = m.Sponsor;
-            c.WebPage = m.WebPage;
-            await _repo.EditAsync(c);
-            return c;
-        }
+                /// <summary>
+                /// Function to add new competition.
+                /// </summary>
+                /// <param name="c">CompetitionViewModel</param>
+                /// <returns>Returns the newly created competition</returns>
+                public async Task<Competition> Add(CompetitionsViewModel c)
+                {
+                    //TODO: Check if competition exists
+                    var newComp = new Competition
+                    {
+                        Name = c.Name,
+                        WebPage = c.WebPage,
+                        Email = c.Email,
+                        Phone = c.PhoneNumber,
+                        Description = c.Description,
+                        Sponsor = c.Sponsor,
+                        Deleted = false
+                    };
+                    await _repo.InsertAsync(newComp);
+                    return newComp;
+                }
 
-        /// <summary>
-        /// Function to get list of all compeitions
-        /// </summary>
-        /// <returns>List of all competitions</returns>
-        public IEnumerable<Competition> GetAllCompetitions()
-        {
-            var competitions = _repo.Get();
-            return competitions;
-        }
+                /// <summary>
+                /// Function to edit a competition
+                /// </summary>
+                /// <param name="c"></param>
+                /// <param name="m"></param>
+                /// <returns>Edited competition</returns>
+                public async Task<Competition> Edit(Competition c, CompetitionsViewModel m)
+                {
+                    c.Description = m.Description;
+                    c.Email = m.Description;
+                    c.Name = m.Name;
+                    c.Phone = m.PhoneNumber;
+                    c.Sponsor = m.Sponsor;
+                    c.WebPage = m.WebPage;
+                    await _repo.EditAsync(c);
+                    return c;
+                }
 
-        /// <summary>
-        /// Function to get a competition by its ID
-        /// </summary>
-        /// <param name="competitionId"></param>
-        /// <returns>Competition with the given ID if it exists</returns>
-        public async Task<Competition> GetCompetitionById(int competitionId)
-        {
-            //TODO: Check if competition exists
-            var c = await _repo.GetByIdAsync(competitionId);
-            return c;
-        }
+                /// <summary>
+                /// Function to get list of all compeitions
+                /// </summary>
+                /// <returns>List of all competitions</returns>
+                public IEnumerable<Competition> GetAllCompetitions()
+                {
+                    var competitions = _repo.Get();
+                    return competitions;
+                }
 
-        /// <summary>
-        /// Function to get competition by ID.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>CompetitionViewModel for the given competition</returns>
-        public CompetitionsViewModel GetCompetitionViewModelById(int id)
-        {
-            //TODO: Check if competition exists
-            return _repo.GetCompetitionById(id);
-        }
+                /// <summary>
+                /// Function to get a competition by its ID
+                /// </summary>
+                /// <param name="competitionId"></param>
+                /// <returns>Competition with the given ID if it exists</returns>
+                public async Task<Competition> GetCompetitionById(int competitionId)
+                {
+                    //TODO: Check if competition exists
+                    var c = await _repo.GetByIdAsync(competitionId);
+                    return c;
+                }
 
-        /// <summary>
-        /// Function to check if a given cmopetition exists.
-        /// </summary>
-        /// <param name="modelName"></param>
-        /// <returns>True if the competition exists, false otherwise.</returns>
-        public async Task<bool> CompetitionExists(string modelName)
-        {
-            var result = await _repo.GetCompetitionByNameAsync(modelName);
-            if (result == null) return false;
-            return true;
-        }
+                /// <summary>
+                /// Function to get competition by ID.
+                /// </summary>
+                /// <param name="id"></param>
+                /// <returns>CompetitionViewModel for the given competition</returns>
+                public CompetitionsViewModel GetCompetitionViewModelById(int id)
+                {
+                    //TODO: Check if competition exists
+                    return _repo.GetCompetitionById(id);
+                }
 
-        /// <summary>
-        /// Function to remove a given competition.
-        /// </summary>
-        /// <param name="competitionId"></param>
-        /// <returns>The ID of the competition removed.</returns>
-        public async Task<int> Remove(int competitionId)
-        {
-            //TODO: return true/false?
-            var c = await GetCompetitionById(competitionId);
-            await _repo.RemoveAsync(c);
-            return competitionId;
-        }
+                /// <summary>
+                /// Function to check if a given cmopetition exists.
+                /// </summary>
+                /// <param name="modelName"></param>
+                /// <returns>True if the competition exists, false otherwise.</returns>
+                public async Task<bool> CompetitionExists(string modelName)
+                {
+                    var result = await _repo.GetCompetitionByNameAsync(modelName);
+                    if (result == null) return false;
+                    return true;
+                }
 
-#endregion
+                /// <summary>
+                /// Function to remove a given competition.
+                /// </summary>
+                /// <param name="competitionId"></param>
+                /// <returns>The ID of the competition removed.</returns>
+                public async Task<int> Remove(int competitionId)
+                {
+                    //TODO: return true/false?
+                    var c = await GetCompetitionById(competitionId);
+                    await _repo.RemoveAsync(c);
+                    return competitionId;
+                }
+
+        #endregion
 
         #region Competition Instance
         /// <summary>
