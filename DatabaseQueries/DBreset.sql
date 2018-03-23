@@ -16,6 +16,8 @@ DROP TABLE dbo.Disciplines;
 
 DROP TABLE dbo.UsersInClubs
 
+DROP TABLE dbo.Clubs
+
 DROP TABLE dbo.Sports;
 
 CREATE TABLE [dbo].[Sports] (
@@ -33,6 +35,19 @@ INSERT INTO [dbo].[Sports] ([Id], [Name]) VALUES ('5','Sled Dog Racing')
 INSERT INTO [dbo].[Sports] ([Id], [Name]) VALUES ('6','Triathlon')
 INSERT INTO [dbo].[Sports] ([Id], [Name]) VALUES ('7','Biathlon')
 SET IDENTITY_INSERT [dbo].[Sports] OFF
+
+CREATE TABLE [dbo].[Clubs] (
+    [Id]               INT            IDENTITY (1, 1) NOT NULL,
+    [Email]            NVARCHAR (MAX) NULL,
+    [Name]             NVARCHAR (MAX) NULL,
+    [NameAbbreviation] NVARCHAR (MAX) NULL,
+    [Phone]            NVARCHAR (MAX) NULL,
+    [Webpage]          NVARCHAR (MAX) NULL,
+    CONSTRAINT [PK_Clubs] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+INSERT INTO [dbo].[Clubs] ([Name], [NameAbbreviation], [Phone], [Webpage], [Email]) VALUES ('Íþróttafélag Reykjavíkur', 'ÍR', '5877080', 'www.ir.is', 'ir@ir.is')
+INSERT INTO [dbo].[Clubs] ([Name], [NameAbbreviation], [Phone], [Webpage], [Email]) VALUES ('Knattspyrnufélag Reykjavíkur', 'KR', '1234567', 'www.kr.is', 'kr@kr.is')
 
 CREATE TABLE [dbo].[UsersInClubs] (
     [UserId]  NVARCHAR (450) NOT NULL,

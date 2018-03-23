@@ -24,6 +24,9 @@ namespace Timataka.Core.Data
         public DbSet<Heat> Heats { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<ContestantInHeat> ContestantsInHeats { get; set; }
+        //public DbSet<Marker> Markers { get; set; }
+        //public DbSet<Device> Devices { get; set; }
+        //public DbSet<DevicesInEvent> DevicesInEvents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
