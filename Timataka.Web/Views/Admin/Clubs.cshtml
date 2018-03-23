@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<Timataka.Core.Models.Entities.Club>
 
 @{
     ViewData["Title"] = "Clubs";
@@ -76,7 +76,7 @@
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
-                                                    <td><a asp-controller="Admin" asp-action="Club" asp-route-id="@item.Id">@item.Name</a></td>
+                                                    <td>@item.Name</td>
                                                     <td>
                                                         <a class="btn btn-warning-outline btn-sm" asp-controller="Club" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                                                         <a class="btn btn-success-outline btn-sm" asp-controller="Club" asp-action="Details" asp-route-id="@item.Id">Details</a>
