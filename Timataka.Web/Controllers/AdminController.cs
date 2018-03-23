@@ -264,5 +264,12 @@ namespace Timataka.Web.Controllers
 
             return View(heatDto);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Clubs()
+        {
+            return View();
+        }
     }
 }

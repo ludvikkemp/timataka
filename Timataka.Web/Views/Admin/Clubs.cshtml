@@ -1,0 +1,98 @@
+﻿
+
+@{
+    ViewData["Title"] = "Clubs";
+    Layout = "_AdminLayout";
+}
+<section class="content">
+    <div class="title-block">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> Clubs </span>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Club" asp-action="Create">Add New</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="" method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <nav class="text-right col-md-6">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href=""> Prev </a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href=""> 1 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 2 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 3 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 4 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 5 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> Next </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td><a asp-controller="Admin" asp-action="Club" asp-route-id="@item.Id">@item.Name</a></td>
+                                                    <td>
+                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Club" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Club" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Club" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
