@@ -148,6 +148,8 @@ CREATE TABLE [dbo].[ManagesCompetitions] (
     CONSTRAINT [FK_ManagesCompetitions_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers] ([Id]) ON DELETE CASCADE
 );
 
+INSERT INTO dbo.ManagesCompetitions ([CompetitionId], [UserId], [Role]) VALUES ('1', 'dba8bd36-6b90-48dd-9f30-341a0d11a1f3', 0)
+
 CREATE TABLE [dbo].[CompetitionInstances] (
     [Id]            INT            IDENTITY (1, 1) NOT NULL,
     [CompetitionId] INT            NOT NULL,

@@ -4,3 +4,5 @@ from Events e
 inner join CompetitionInstances c on e.CompetitionInstanceId = c.Id
 inner join Disciplines d on e.DisciplineId = d.Id
 inner join Sports s on d.SportId = s.Id;
+
+
