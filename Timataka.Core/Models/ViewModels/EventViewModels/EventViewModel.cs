@@ -18,7 +18,9 @@ namespace Timataka.Core.Models.ViewModels.EventViewModels
         public DateTime DateFrom { get; set; }
         [Required]
         public DateTime DateTo { get; set; }
+        [Display(Name = "Course")]
         public int CourseId { get; set; }
+        public string CourseName { get; set; }
         public int Laps { get; set; }
         public int Splits { get; set; }
         public int DistanceOffset { get; set; }
@@ -26,5 +28,6 @@ namespace Timataka.Core.Models.ViewModels.EventViewModels
         public Gender Gender { get; set; }
         public bool ActiveChip { get; set; }
         public string DisciplineName { get; set; }
+        public Boolean Deleted { get; set; }
     }
 }

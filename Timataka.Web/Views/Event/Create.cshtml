@@ -20,6 +20,15 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <select name="Gender" class="form-control">
+                        <option value="0">Female</option>
+                        <option value="1">Male</option>
+                        <option value="2">Both</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="DateFrom" class="control-label"></label>
                     <input asp-for="DateFrom" class="form-control" />
                     <span asp-validation-for="DateFrom" class="text-danger"></span>
@@ -49,9 +58,15 @@
                     <input asp-for="StartInterval" class="form-control" />
                     <span asp-validation-for="StartInterval" class="text-danger"></span>
                 </div>
+                
                 <div class="form-group">
-                    <label asp-for="CourseId" class="control-label"></label>
-                    <input asp-for="CourseId" class="form-control" />
+                    <label asp-for="CourseId"></label>
+                    <select name="CourseId" class="form-control">
+                        @foreach (var item in ViewBag.Courses)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
                     <span asp-validation-for="CourseId" class="text-danger"></span>
                 </div>
 
@@ -64,27 +79,16 @@
                     <span asp-validation-for="ActiveChip" class="text-danger"></span>
                 </div>
 
-
-                <div class="form-group">
-                    <label asp-for="Gender" class="control-label"></label>
-                    <select name="Gender" class="form-control">
-                        <option value="0">Female</option>
-                        <option value="1">Male</option>
-                        <option value="2">Both</option>
-                    </select>
-                    <span asp-validation-for="Gender" class="text-danger"></span>
-                </div>
                 <div class="form-group">
                     <label asp-for="DisciplineId"></label>
                     <select name="DisciplineId" class="form-control">
                         @foreach (var item in ViewBag.Disciplines)
-            {
-                <option value="@item.Id">@item.Name</option>
-}
+                        {
+                        <option value="@item.Id">@item.Name</option>
+                        }
                     </select>
                     <span asp-validation-for="DisciplineId" class="text-danger"></span>
                 </div>
-
 
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />

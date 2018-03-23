@@ -34,8 +34,9 @@ namespace Timataka.Web.Controllers
         }
 
         // Get: CompetitionInstances/Create
-        public IActionResult Create()
+        public IActionResult Create(int compId)
         {
+            ViewBag.CompId = compId;
             ViewBag.CompetitionIds = _competitionService.GetAllCompetitions();
             ViewBag.Nations = _accountService.GetNationsListItems();
             return View();
@@ -56,7 +57,7 @@ namespace Timataka.Web.Controllers
                 {
                     return new BadRequestResult();
                 }
-                return RedirectToAction("Competitions","Admin");
+                return RedirectToAction("Competition","Admin", new { @id = model.CompetitionId });
             }
             return View(model);
         }
@@ -112,7 +113,7 @@ namespace Timataka.Web.Controllers
             var instance = _competitionService.GetCompetitionInstanceById(id);
             var compId = instance.Result.CompetitionId;
             await _competitionService.RemoveInstance((int)id);
-            return RedirectToAction("Competition", "Admin", compId);
+            return RedirectToAction("Competition", "Admin", new { @id = compId });
 
         }
 

@@ -17,7 +17,6 @@ namespace Timataka.Web.Controllers
     public class DisciplineController : Controller
     {
         private readonly IDisciplineService _disciplineService;
-        private readonly ISportService _sportService;
 
         public DisciplineController(IDisciplineService disciplineService)
         {
@@ -25,10 +24,10 @@ namespace Timataka.Web.Controllers
         }
 
         //GET: Dicipline/Create
-        public IActionResult Create()
+        public IActionResult Create(int sportId)
         {
             ViewBag.Sports = _disciplineService.GetSportsListItems();
-            //ViewBag.SportId = _sportService.
+            ViewBag.SportId = sportId;
             return View();
         }
 

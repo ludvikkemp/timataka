@@ -88,6 +88,7 @@ namespace Timataka.Web
             services.AddTransient<ICompetitionRepository, CompetitionRepository>();
             services.AddTransient<IEventRepository, EventRepository>();
             services.AddTransient<IHeatRepository, HeatRepository>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
 
             // DI for Services
             services.AddTransient<ICompetitionService, CompetitionService>();
@@ -97,6 +98,7 @@ namespace Timataka.Web
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IHeatService, HeatService>();
+            services.AddTransient<ICourseService, CourseService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

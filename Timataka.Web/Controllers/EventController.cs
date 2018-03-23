@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Timataka.Core.Data.Repositories;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
@@ -13,16 +14,21 @@ namespace Timataka.Web.Controllers
     {
         private readonly IEventService _eventService;
         private readonly IDisciplineService _disciplineService;
+        private readonly ICourseService _courseService;
+
         public EventController(IEventService eventService,
-                               IDisciplineService disciplineService)
+                               IDisciplineService disciplineService,
+                               ICourseService courseService)
         {
             _disciplineService = disciplineService;
             _eventService = eventService;
+            _courseService = courseService;
         }
 
         public IActionResult Create(int instanceId)
         {   
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            ViewBag.Courses = _courseService.GetCourseDropDown();
             ViewBag.InstanceId = instanceId;
             return View();
         }
@@ -65,6 +71,7 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            ViewBag.Courses = _courseService.GetCourseDropDown();
             var model = await _eventService.GetEventViewModelByIdAsync(id);
             if (model == null)
             {
@@ -104,13 +111,15 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var eventobj = await _eventService.GetEventByIdAsync((int)id);
-            if (eventobj == null)
+            var task = _eventService.GetEventByIdAsync((int)id);
+            var entity = task.Result;
+
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(eventobj);
+            return View(entity);
         }
 
         // POST: Event/Delete/5
@@ -118,8 +127,11 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var eventobj = await _eventService.RemoveAsync((int)id);
-            return RedirectToAction("Event","Admin", new { @id = 1 });
+            var instance = _eventService.GetEventByIdAsync(id);
+            var instanceId = instance.Result.CompetitionInstanceId;
+            await _eventService.RemoveAsync(id);
+            return RedirectToAction("Instance", "Admin", new { @id = instanceId });
+
         }
     }
 }
