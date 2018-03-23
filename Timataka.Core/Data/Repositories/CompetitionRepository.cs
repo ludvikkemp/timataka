@@ -241,16 +241,28 @@ namespace Timataka.Core.Data.Repositories
             return m;
         }
 
-        public IEnumerable<ManagesCompetition> GetRolesForCompetition(int id)
+        public IEnumerable<ManagesCompetitionViewModel> GetRolesForCompetition(int id)
         {
-            var m = from x in _context.ManagesCompetitions
-                    where x.CompetitionId.Equals(id)
-                    select x;
-            return m;
+            var results = from m in _context.ManagesCompetitions
+                    join c in _context.Competitions on m.CompetitionId equals c.Id
+                    join u in _context.Users on m.UserId equals u.Id
+                    where m.CompetitionId.Equals(id)
+                    select new ManagesCompetitionViewModel
+                    {
+                        UserId = u.Id,
+                        CompetitionId = c.Id,
+                        DateOfBirth = u.DateOfBirth,
+                        FirstName = u.FirstName,
+                        LastName = u.LastName,
+                        MiddleName = u.MiddleName,
+                        Role = m.Role,
+                        Ssn = u.Ssn,
+                        UserDeleted = u.Deleted
+                    };
+            return results;
         }
 
         public IEnumerable<ManagesCompetition> GetRolesForUser(string Id)
-
         {
             var m = from x in _context.ManagesCompetitions
                     where x.UserId.Equals(Id)

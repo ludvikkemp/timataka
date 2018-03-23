@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
@@ -109,10 +110,10 @@ namespace Timataka.Web.Controllers
         }
 
         //ManagesCompetition
-
-
+        
+        
         // Get Competitions/ManagesCompetitions
-        [HttpGet("/Competitions/ManagesCompetitions/{CompetitionId}")]
+ /*       [HttpGet("/Competitions/ManagesCompetitions/{CompetitionId}")]
         public IActionResult GetRoles(int competitionId)
         {
             if(competitionId == 0)
@@ -121,22 +122,46 @@ namespace Timataka.Web.Controllers
             }
             return View(_competitionService.GetAllRolesForCompetition(competitionId));
         }
-
+*/
         // Get Competitons/ManagesCompetitions/Add
-        [HttpGet("/Competitons/ManagesCompetitions/Add")]
+        [HttpGet]
         public IActionResult AddRole(string userId, int competitionId)
         {
-            var m = new {  userId,  competitionId };
-            return View(m);
+            ViewBag.userId = userId;
+            ViewBag.competitionId = competitionId;
+
+            List<SelectListItem> selectRolesListItems = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "Host",
+                    Value = "0"
+                },
+                new SelectListItem
+                {
+                    Text = "Official",
+                    Value = "1"
+                },
+                new SelectListItem
+                {
+                    Text = "Staff",
+                    Value = "2"
+                }
+            };
+
+            ViewBag.roles = selectRolesListItems;
+
+            return View();
         }
 
         // Post Competitons/ManagesCompetitions/Add
-        [HttpPost("/Competitions/ManagesCompetitions/Add")]
+        [HttpPost]
         public IActionResult AddRole(ManagesCompetition m)
         {
             if(ModelState.IsValid)
             {
-                _competitionService.AddRole(m);
+                var task = _competitionService.AddRole(m);
+                task.Wait();
                 return RedirectToAction("Competitions", "Admin");
             }
             return View();

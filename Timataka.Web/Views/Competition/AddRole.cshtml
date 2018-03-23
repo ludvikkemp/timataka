@@ -1,0 +1,39 @@
+﻿@model Timataka.Core.Models.ViewModels.CompetitionViewModels.ManagesCompetitionViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h4>Create Competition</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddRole">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="UserId" value="@ViewBag.userId" />
+                <input type="hidden" asp-for="CompetitionId" value="@ViewBag.competitionId" />
+                <div class="form-group">
+                    <label asp-for="Role"></label>
+                    <select name="Role" class="form-control">
+                        @foreach (var item in ViewBag.roles)
+                        {
+                            <option value="@item.Value" id="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-controller="Admin" asp-action="Competitions" class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
