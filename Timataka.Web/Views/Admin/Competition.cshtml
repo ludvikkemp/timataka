@@ -10,6 +10,7 @@
             <div class="col-md-12">
                 <span class="title"> @Model.Competiton.Name </span>
                 <a asp-controller="CompetitionInstance" asp-action="Create" asp-route-compId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Add Instance </a>
+                <a asp-controller="Admin" asp-action="Personnel" asp-route-compId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Personnel </a>
             </div>
         </div>
     </div>

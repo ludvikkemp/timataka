@@ -31,9 +31,8 @@ namespace Timataka.Core.Services
         Task<ManagesCompetition> EditRole(ManagesCompetition m);
         Task RemoveRole(ManagesCompetition m);
         IEnumerable<ManagesCompetition> GetAllRoles();
-        IEnumerable<ManagesCompetition> GetAllRolesForCompetition(int Id);
+        IEnumerable<ManagesCompetitionViewModel> GetAllRolesForCompetition(int Id);
         IEnumerable<ManagesCompetition> GetAllRolesForUser(string Id);
         Role GetRole(string userId, int competitionId);
-        
     }
 }

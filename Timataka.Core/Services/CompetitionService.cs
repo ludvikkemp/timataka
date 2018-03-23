@@ -272,13 +272,14 @@ namespace Timataka.Core.Services
             var m = _repo.GetAllRoles();
             return m;
         }
-
+        
         /// <summary>
         /// Function to get all roles for a given competiton
         /// </summary>
         /// <param name="id"></param>
         /// <returns>All roles for a given competitions</returns>
-        public IEnumerable<ManagesCompetition> GetAllRolesForCompetition(int id)
+        public IEnumerable<ManagesCompetitionViewModel> GetAllRolesForCompetition(int id)
+
         {
             var m = _repo.GetRolesForCompetition(id);
             return m;

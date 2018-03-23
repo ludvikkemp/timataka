@@ -264,5 +264,30 @@ namespace Timataka.Web.Controllers
 
             return View(heatDto);
         }
+
+        [HttpGet]
+        [Route("Admin/Personnel/{id}")]
+        [Authorize(Roles = "Superadmin, Admin")]
+        public IActionResult Personnel(int id)
+        {
+            var competition = _competitionService.GetCompetitionById(id);
+            competition.Wait();
+
+            var usersDto = _adminService.GetUsers();
+
+            var assignedRoles = _competitionService.GetAllRolesForCompetition(id);
+
+            var roles = new Role();
+
+            var PersonnelDto = new PersonnelDto()
+            {
+                AssignedRoles = assignedRoles,
+                Competition = competition.Result,
+                Roles = roles,
+                Users = usersDto
+            };
+
+            return View(PersonnelDto);
+        }
     }
 }
