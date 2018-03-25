@@ -1,8 +1,51 @@
-﻿@model object
+﻿@model Timataka.Core.Models.ViewModels.ClubViewModels.EditClubViewModel
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewData["Title"] = "Details";
+    Layout = "_AdminLayout";
 }
 
-<h2>title</h2>
+<section class="content">
+
+    <div>
+        <h4>@Model.Name</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.NameAbbreviation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NameAbbreviation)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Webpage)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Webpage)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+        <a asp-controller="Admin" asp-action="Clubs" class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>

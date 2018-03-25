@@ -48,6 +48,11 @@ namespace Timataka.Core.Services
         public async Task<Club> EditClubAsync(EditClubViewModel m)
         {
             var c = await _repo.GetByIdAsync(m.Id);
+            c.Name = m.Name;
+            c.Webpage = m.Webpage;
+            c.Email = m.Email;
+            c.Phone = m.Phone;
+            c.NameAbbreviation = m.NameAbbreviation;
             await _repo.EditAsync(c);
             return c;
         }

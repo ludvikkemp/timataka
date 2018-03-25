@@ -51,8 +51,6 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditClubViewModel model)
         {
-            //:TODO LAGA ÞETTA !!!!!
-            /*
             if (id != model.Id)
             {
                 return NotFound();
@@ -62,13 +60,17 @@ namespace Timataka.Web.Controllers
                 await _clubService.EditClubAsync(model);
                 return RedirectToAction("Clubs", "Admin");
             }
-            */
             return View(model);
         }
 
-        public IActionResult Details()
+        public IActionResult Details(int id)
         {
-            return View();
+            var club = _clubService.GetClubViewModelById(id);
+            if (club == null)
+            {
+                return NotFound();
+            }
+            return View(club);
         }
 
         public IActionResult Delete()
