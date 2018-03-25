@@ -30,6 +30,7 @@ namespace Timataka.Web.Controllers
         private readonly IEventService _eventService;
         private readonly IHeatService _heatService;
         private readonly IClubService _clubService;
+        private readonly ICourseService _courseService;
 
 
         public AdminController(IAdminService adminService,
@@ -41,7 +42,8 @@ namespace Timataka.Web.Controllers
             ICompetitionService competitionService,
             IEventService eventService,
             IHeatService heatService,
-            IClubService clubService)
+            IClubService clubService,
+            ICourseService courseService)
         {
             _adminService = adminService;
             _cache = cache;
@@ -53,6 +55,7 @@ namespace Timataka.Web.Controllers
             _eventService = eventService;
             _heatService = heatService;
             _clubService = clubService;
+            _courseService = courseService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -298,6 +301,13 @@ namespace Timataka.Web.Controllers
         {
             var clubs = _clubService.GetListOfCLubs();
             return View(clubs);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Courses()
+        {
+            var courses = _courseService.GetListOfCourses();
+            return View(courses);
         }
     }
 }
