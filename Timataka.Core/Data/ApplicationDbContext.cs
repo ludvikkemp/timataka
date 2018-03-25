@@ -26,7 +26,7 @@ namespace Timataka.Core.Data
         public DbSet<ContestantInHeat> ContestantsInHeats { get; set; }
         public DbSet<Marker> Markers { get; set; }
         public DbSet<Device> Devices { get; set; }
-        //public DbSet<DevicesInEvent> DevicesInEvents { get; set; }
+        public DbSet<DevicesInEvent> DevicesInEvents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -45,6 +45,9 @@ namespace Timataka.Core.Data
 
             builder.Entity<Marker>()
                 .HasKey(m => new { m.EventId, m.HeatId });
+
+            builder.Entity<DevicesInEvent>()
+                .HasKey(d => new { d.EventId, d.DeviceId });
         }
     }
 }
