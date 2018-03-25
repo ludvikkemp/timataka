@@ -24,7 +24,7 @@ namespace Timataka.Core.Data
         public DbSet<Heat> Heats { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<ContestantInHeat> ContestantsInHeats { get; set; }
-        //public DbSet<Marker> Markers { get; set; }
+        public DbSet<Marker> Markers { get; set; }
         //public DbSet<Device> Devices { get; set; }
         //public DbSet<DevicesInEvent> DevicesInEvents { get; set; }
 
@@ -42,6 +42,9 @@ namespace Timataka.Core.Data
 
             builder.Entity<ContestantInHeat>()
                 .HasKey(c => new { c.UserId, c.HeatId });
+
+            builder.Entity<Marker>()
+                .HasKey(m => new { m.EventId, m.HeatId });
         }
     }
 }
