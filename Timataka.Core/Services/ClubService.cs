@@ -26,7 +26,7 @@ namespace Timataka.Core.Services
 
         public async Task<bool> ClubExistsAsync(string modelName)
         {
-            var result = await _repo.GetCompetitionByNameAsync(modelName);
+            var result = await _repo.GetClubByNameAsync(modelName);
             if (result != null) return true;
             return false;
         }
