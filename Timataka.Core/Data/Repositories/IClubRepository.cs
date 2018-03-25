@@ -17,7 +17,7 @@ namespace Timataka.Core.Data.Repositories
         Task EditAsync(Club c);
         void Remove(Club c);
         Task RemoveAsync(Club c);
-        Task<Club> GetCompetitionByNameAsync(string cName);
+        Task<Club> GetClubByNameAsync(string cName);
         
     }
 }

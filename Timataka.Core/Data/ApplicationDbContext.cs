@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Timataka.Core.Models;
 using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Data
