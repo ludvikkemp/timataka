@@ -11,14 +11,17 @@ namespace Timataka.Web.Controllers
     public class CourseController : Controller
     {
         private readonly ICourseService _courseService;
-        public CourseController(ICourseService courseService)
+        private readonly IDisciplineService _disciplineService;
+        public CourseController(ICourseService courseService, IDisciplineService disciplineService)
         {
             _courseService = courseService;
+            _disciplineService = disciplineService;
         }
 
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
             return View();
         }
 
