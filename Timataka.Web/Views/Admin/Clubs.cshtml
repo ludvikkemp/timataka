@@ -75,14 +75,17 @@
                                         <tbody>
                                             @foreach (var item in Model)
                                             {
-                                                <tr>
-                                                    <td>@item.Name</td>
-                                                    <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Club" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Club" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Club" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                                    </td>
-                                                </tr>
+                                                @if (item.Deleted == false)
+                                                {
+                                                    <tr>
+                                                        <td>@item.Name</td>
+                                                        <td>
+                                                            <a class="btn btn-warning-outline btn-sm" asp-controller="Club" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                                            <a class="btn btn-success-outline btn-sm" asp-controller="Club" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                                            <a class="btn btn-danger-outline btn-sm" asp-controller="Club" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                }
                                             }
                                         </tbody>
                                     </table>
