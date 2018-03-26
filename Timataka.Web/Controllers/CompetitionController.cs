@@ -154,7 +154,7 @@ namespace Timataka.Web.Controllers
             return View();
         }
 
-        // Post Competitons/ManagesCompetitions/Add
+        // Post Competitions/ManagesCompetitions/Add
         [HttpPost]
         public IActionResult AddRole(ManagesCompetition m)
         {
@@ -165,6 +165,93 @@ namespace Timataka.Web.Controllers
                 return RedirectToAction("Competitions", "Admin");
             }
             return View();
-        }     
+        }
+
+        // Get: Competitions/ManagesCompetitions/Edit
+        public IActionResult EditManager(string userId, int competitionId)
+        {
+            var modelAllCompetitionRoles = _competitionService.GetAllRolesForCompetition(competitionId);
+
+            var model = new ManagesCompetitionViewModel();
+
+            foreach (var item in modelAllCompetitionRoles)
+            {
+                if(item.UserId == userId)
+                {
+                    model = item;
+                }
+            }
+
+            List<SelectListItem> selectRolesListItems = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "Host",
+                    Value = "0"
+                },
+                new SelectListItem
+                {
+                    Text = "Official",
+                    Value = "1"
+                },
+                new SelectListItem
+                {
+                    Text = "Staff",
+                    Value = "2"
+                }
+            };
+
+            ViewBag.roles = selectRolesListItems;
+
+            return View(model);
+        }
+
+        // Post: Competitions/ManagesCompetitions/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditManager(ManagesCompetitionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = new ManagesCompetition
+                {
+                    CompetitionId = model.CompetitionId,
+                    UserId = model.UserId,
+                    Role = model.Role
+                };
+                await _competitionService.EditRole(entity);
+                return RedirectToAction("Personnel", "Admin", new { @id = model.CompetitionId });
+            }
+            return View(model);
+        }
+
+        // GET: CompetitonInstances/Delete/5
+        public async Task<IActionResult> DeleteManager(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var c = await _competitionService.GetCompetitionInstanceById((int)id);
+            if (c == null)
+            {
+                return NotFound();
+            }
+
+            return View(c);
+        }
+
+        // POST: CompetitonInstances/Delete/5
+        [HttpPost, ActionName("DeleteManager")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmedManager(int id)
+        {
+            var instance = _competitionService.GetCompetitionInstanceById(id);
+            var compId = instance.Result.CompetitionId;
+            await _competitionService.RemoveInstance((int)id);
+            return RedirectToAction("Competition", "Admin", new { @id = compId });
+
+        }
     }
 }
