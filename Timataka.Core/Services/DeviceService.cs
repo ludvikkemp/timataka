@@ -85,7 +85,9 @@ namespace Timataka.Core.Services
                     throw new Exception("Device with the name \"" + d.Name + "\" already exists.");
                 }
             }
-            return await _repo.EditAsync(d);
+            oldDevice.Name = d.Name;
+            oldDevice.Active = d.Active;
+            return await _repo.EditAsync(oldDevice);
         }
 
         /// <summary>
