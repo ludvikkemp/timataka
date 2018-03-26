@@ -225,32 +225,38 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        // GET: CompetitonInstances/Delete/5
-        public async Task<IActionResult> DeleteManager(int? id)
+        // GET: Competition/ManagesCompetition/Delete
+        public IActionResult DeleteManager(string userId, int competitionId)
         {
-            if (id == null)
+            var modelAllCompetitionRoles = _competitionService.GetAllRolesForCompetition(competitionId);
+
+            var model = new ManagesCompetitionViewModel();
+
+            foreach (var item in modelAllCompetitionRoles)
             {
-                return NotFound();
+                if (item.UserId == userId)
+                {
+                    model = item;
+                }
             }
 
-            var c = await _competitionService.GetCompetitionInstanceById((int)id);
-            if (c == null)
-            {
-                return NotFound();
-            }
-
-            return View(c);
+            return View(model);
         }
 
-        // POST: CompetitonInstances/Delete/5
+        // POST: Competition/ManagesCompetition/Delete
         [HttpPost, ActionName("DeleteManager")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmedManager(int id)
+        public async Task<IActionResult> DeleteConfirmedManager(ManagesCompetitionViewModel model)
         {
-            var instance = _competitionService.GetCompetitionInstanceById(id);
-            var compId = instance.Result.CompetitionId;
-            await _competitionService.RemoveInstance((int)id);
-            return RedirectToAction("Competition", "Admin", new { @id = compId });
+            var entity = new ManagesCompetition
+            {
+                CompetitionId = model.CompetitionId,
+                UserId = model.UserId,
+                Role = model.Role
+            };
+
+            await _competitionService.RemoveRole(entity);
+            return RedirectToAction("Personnel", "Admin", new { @id = model.CompetitionId });
 
         }
     }
