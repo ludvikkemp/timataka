@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Timataka.Core.Models.Dto.AdminDTO;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -99,6 +100,44 @@ namespace Timataka.Core.Data.Repositories
         {
             var countryName = (from c in _db.Countries where c.Id == id select c.Name).ToString();
             return countryName;
+        }
+
+        public IEnumerable<UserViewModel> GetAdminUsers()
+        {
+            var admins = (from a in _db.Users
+                join r in _db.UserRoles on a.Id equals r.UserId
+                join ro in _db.Roles on r.RoleId equals ro.Id
+                where ro.Name == "Admin"
+                select new UserViewModel
+                {
+                    Id = a.Id,
+                    FirstName = a.FirstName,
+                    LastName = a.LastName,
+                    Username = a.UserName,
+                    Role = "Admin"
+
+                }).ToList();
+            return admins;
+        }
+
+        public IEnumerable<UserViewModel> GetNonAdminUsers()
+        {
+            //TODO: ATH ÞARF AÐ LAGA ÞETTA !!
+
+            var nonAdmins = (from a in _db.Users
+                join r in _db.UserRoles on a.Id equals r.UserId
+                join ro in _db.Roles on r.RoleId equals ro.Id
+                where ro.Name != "Admin" && ro.Name != "Superadmin"
+                select new UserViewModel
+                {
+                    Id = a.Id,
+                    FirstName = a.FirstName,
+                    LastName = a.LastName,
+                    Username = a.UserName,
+                    Role = "User"
+
+                }).ToList();
+            return nonAdmins;
         }
     }
 }
