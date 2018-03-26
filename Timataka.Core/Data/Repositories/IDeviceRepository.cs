@@ -8,8 +8,8 @@ namespace Timataka.Core.Data.Repositories
 {
     public interface IDeviceRepository : IDisposable
     {
-        Boolean Add(Device d);
-        Task<Boolean> AddAsync(Device d);
+        Device Add(Device d);
+        Task<Device> AddAsync(Device d);
 
         IEnumerable<Device> Get();
 
@@ -21,5 +21,14 @@ namespace Timataka.Core.Data.Repositories
 
         Boolean Remove(Device d);
         Task<Boolean> RemoveAsync(Device d);
+
+        Boolean AddDeviceToEvent(DevicesInEvent d);
+        Task<Boolean> AddDeviceToEventAsync(DevicesInEvent d);
+
+        IEnumerable<DevicesInEvent> GetDevicesInEvents();
+
+        Boolean RemoveDeviceInEvent(DevicesInEvent d);
+        Task<Boolean> RemoveDeviceInEventAsync(DevicesInEvent d);
+
     }
 }

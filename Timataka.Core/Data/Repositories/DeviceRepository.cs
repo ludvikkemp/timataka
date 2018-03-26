@@ -17,27 +17,19 @@ namespace Timataka.Core.Data.Repositories
             _db = db;
         }
 
-        public Boolean Add(Device d)
+        public Device Add(Device d)
         {
-            var result = false;
-            if (_db.Devices.Add(d) != null)
-            {
-                result = true;
-            }
+            _db.Devices.Add(d);
             _db.SaveChanges();
-            return result;
+            return d;
           
         }
 
-        public async Task<Boolean> AddAsync(Device d)
+        public async Task<Device> AddAsync(Device d)
         {
-            var result = false;
-            if (await _db.Devices.AddAsync(d) != null)
-            {
-                result = true;
-            }
+            await _db.Devices.AddAsync(d);
             await _db.SaveChangesAsync();
-            return result;
+            return d;
         }
 
         public Boolean Edit(Device d)
@@ -122,6 +114,55 @@ namespace Timataka.Core.Data.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public bool AddDeviceToEvent(DevicesInEvent d)
+        {
+            var result = false;
+            if(_db.DevicesInEvents.Add(d) != null)
+            {
+                result = true;
+            }
+            _db.SaveChanges();
+            return result;
+        }
+
+        public async Task<bool> AddDeviceToEventAsync(DevicesInEvent d)
+        {
+            var result = false;
+            if (await _db.DevicesInEvents.AddAsync(d) != null)
+            {
+                result = true;
+            }
+            await _db.SaveChangesAsync();
+            return result;
+        }
+
+        public IEnumerable<DevicesInEvent> GetDevicesInEvents()
+        {
+            return _db.DevicesInEvents.ToList();
+        }
+
+        public bool RemoveDeviceInEvent(DevicesInEvent d)
+        {
+            var result = false;
+            if (_db.DevicesInEvents.Remove(d) != null)
+            {
+                result = true;
+            }
+            _db.SaveChanges();
+            return result;
+        }
+
+        public async Task<bool> RemoveDeviceInEventAsync(DevicesInEvent d)
+        {
+            var result = false;
+            if (_db.DevicesInEvents.Remove(d) != null)
+            {
+                result = true;
+            }
+            await _db.SaveChangesAsync();
+            return result;
         }
     }
 }
