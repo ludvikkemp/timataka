@@ -6,16 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Timataka.Web.Controllers
 {
     public class HeatController : Controller
     {
         private readonly IHeatService _heatService;
+        private readonly IAdminService _adminService;
 
-        public HeatController(IHeatService heatService)
+        public HeatController(IHeatService heatService,
+                              IAdminService adminService)
         {
             _heatService = heatService;
+            _adminService = adminService;
         }
 
         public IActionResult Index()
@@ -107,10 +111,56 @@ namespace Timataka.Web.Controllers
 
         //Contestants In Heat
 
-
-        public IActionResult AddContestant(int heatId, string userId)
+        
+        // GET: HeatController/AddContestant
+        public IActionResult AddContestant(int heatId)
         {
-            return View();
+            List<SelectListItem> selectUsersListItems =
+                new List<SelectListItem>();
+
+            var listOfUsers = _adminService.GetUsers();
+
+            foreach (var item in listOfUsers)
+            {
+                selectUsersListItems.Add(
+                    new SelectListItem
+                    {
+                        Text = item.FirstName + ' ' + item.Middlename + ' ' + item.LastName + " (" + item.Ssn + ")",
+                        Value = item.Id
+                    });
+            }
+
+            ViewBag.heatId = heatId;
+            ViewBag.users = selectUsersListItems;
+            return View(); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddContestant(ContestantsInHeatViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var entitiy = new ContestantInHeat
+                    {
+                        Bib = model.Bib,
+                        HeatId = model.HeatId,
+                        Modified = model.Modified,
+                        Team = model.Team,
+                        UserId = model.UserId
+                    };
+
+                    await _heatService.AddAsyncContestantInHeat(entitiy);
+                }
+                catch(Exception e)
+                {
+                    return new BadRequestResult();
+                }
+                return RedirectToAction("Heat", "Admin", new { @id = model.HeatId });
+            }
+            return View(model);
         }
 
         public IActionResult EditContestant(int heatId, string userId)

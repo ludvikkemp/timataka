@@ -264,8 +264,7 @@ namespace Timataka.Web.Controllers
             var heatDto = new HeatDto()
             {
                 Heat = heat.Result,
-                Contestants = _heatService.GetContestantsInHeat(heat.Result.Id),
-                Users = _heatService.GetApplicationUsersInHeat(heat.Result.Id)
+                Contestants = _heatService.GetContestantsInHeat(heat.Result.Id)
             };
 
             return View(heatDto);
