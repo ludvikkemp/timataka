@@ -103,5 +103,35 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("Event", "Admin", new { @id = eventId });
 
         }
+
+
+        //Contestants In Heat
+
+
+        public IActionResult AddContestant(int heatId, string userId)
+        {
+            return View();
+        }
+
+        public IActionResult EditContestant(int heatId, string userId)
+        {
+            var entitiy = _heatService.GetContestantInHeatById(heatId,userId);
+            
+            var model = new ContestantsInHeatViewModel
+            {
+                Bib = entitiy.Bib,
+                HeatId = entitiy.HeatId,
+                Modified = entitiy.Modified,
+                Team = entitiy.Team,
+                UserId = entitiy.UserId
+            };
+
+            return View(model);
+        } 
+
+        public IActionResult RemoveContestant(int heatId, string userId)
+        {
+            return View();
+        }
     }
 }
