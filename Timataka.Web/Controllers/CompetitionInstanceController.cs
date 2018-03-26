@@ -13,12 +13,15 @@ namespace Timataka.Web.Controllers
     {
         private readonly ICompetitionService _competitionService;
         private readonly IAccountService _accountService;
+        private readonly IDeviceService _deviceService;
 
         public CompetitionInstanceController(ICompetitionService competitionService, 
-                                             IAccountService accountService)
+                                             IAccountService accountService,
+                                             IDeviceService deviceService)
         {
             _competitionService = competitionService;
             _accountService = accountService;
+            _deviceService = deviceService;
         }
 
         // Get: CompetitionInstances/Details/3
@@ -115,6 +118,14 @@ namespace Timataka.Web.Controllers
             await _competitionService.RemoveInstance((int)id);
             return RedirectToAction("Competition", "Admin", new { @id = compId });
 
+        }
+
+        [HttpGet]
+        [Route("/Instance/{instanceId}/Devices")]
+        public IActionResult Devices(int instanceId)
+        {
+            var data = _deviceService.GetDevicesInCompetitionInstance(instanceId);
+            return View(data);
         }
 
 

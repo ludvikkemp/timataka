@@ -81,8 +81,7 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var task = _heatService.GetHeatByIdAsync((int)id);
-            var entity = task.Result;
+            var entity = await _heatService.GetHeatByIdAsync((int)id);
             
             if (entity == null)
             {
