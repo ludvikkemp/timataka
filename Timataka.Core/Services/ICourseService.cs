@@ -13,5 +13,8 @@ namespace Timataka.Core.Services
         Task<bool> CourseExistsAsync(string modelName);
         Task AddAsync(CourseViewModel model);
         IEnumerable<Course> GetListOfCourses();
+        CourseViewModel GetCourseViewModelById(int id);
+        Task<bool> EditCourseAsync(CourseViewModel model);
+        Task<bool> MarkCourseAsDeleted(int modelId);
     }
 }

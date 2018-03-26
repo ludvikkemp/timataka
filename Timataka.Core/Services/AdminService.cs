@@ -11,6 +11,7 @@ using Timataka.Core.Data;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -66,6 +67,18 @@ namespace Timataka.Core.Services
         public string GetCountryNameById(int id)
         {
             return _repo.GetCountryNameById(id);
+        }
+
+        public IEnumerable<UserViewModel> GetAdminUsers()
+        {
+            var admins = _repo.GetAdminUsers();
+            return admins;
+        }
+
+        public IEnumerable<UserViewModel> GetNonAdminUsers()
+        {
+            var nonAdmins = _repo.GetNonAdminUsers();
+            return nonAdmins;
         }
     }
 }

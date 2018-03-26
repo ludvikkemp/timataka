@@ -11,14 +11,17 @@ namespace Timataka.Web.Controllers
     public class CourseController : Controller
     {
         private readonly ICourseService _courseService;
-        public CourseController(ICourseService courseService)
+        private readonly IDisciplineService _disciplineService;
+        public CourseController(ICourseService courseService, IDisciplineService disciplineService)
         {
             _courseService = courseService;
+            _disciplineService = disciplineService;
         }
 
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
             return View();
         }
 
@@ -38,19 +41,66 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
-            throw new NotImplementedException();
+            ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            var model = _courseService.GetCourseViewModelById(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
         }
 
-        public IActionResult Details()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, CourseViewModel model)
         {
-            throw new NotImplementedException();
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                var success = await _courseService.EditCourseAsync(model);
+                if (success)
+                {
+                    return RedirectToAction("Courses", "Admin");
+                }   
+            }
+            return View(model);
         }
 
-        public IActionResult Delete()
+        public IActionResult Details(int id)
         {
-            throw new NotImplementedException();
+            var course = _courseService.GetCourseViewModelById(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            return View(course);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var model = _courseService.GetCourseViewModelById(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, CourseViewModel model)
+        {
+            var success = await _courseService.MarkCourseAsDeleted(id);
+            if (success)
+            {
+                return RedirectToAction("Courses", "Admin");
+            }
+            return View();
         }
     }
 }

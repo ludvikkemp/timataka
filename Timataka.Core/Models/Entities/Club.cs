@@ -12,5 +12,6 @@ namespace Timataka.Core.Models.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Webpage { get; set; }
+        public bool Deleted { get; set; }
     }
 }

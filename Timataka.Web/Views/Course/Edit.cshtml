@@ -1,17 +1,18 @@
 ﻿@model Timataka.Core.Models.ViewModels.CourseViewModels.CourseViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Edit";
     Layout = "_AdminLayout";
 }
 
 <section class="content">
-    <h4>Create Course</h4>
+    <h4>Edit Course</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Create">
+            <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" />
@@ -20,9 +21,14 @@
                 <div class="form-group">
                     <label asp-for="DisciplineId"></label>
                     <select name="DisciplineId" class="form-control">
+                        <option selected="" value="@Model.DisciplineId"> @Model.DisciplineName </option>
                         @foreach (var item in ViewBag.Disciplines)
                         {
-                        <option value="@item.Id" id="@item.Id">@item.Name</option>
+                            if (item.Name != Model.DisciplineName)
+                            {
+                                <option value="@item.Id" id="@item.Id">@item.Name</option>
+                            }
+
                         }
                     </select>
                 </div>
@@ -44,7 +50,7 @@
                     <span asp-validation-for="ExternalCourseId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </form>
         </div>
@@ -57,3 +63,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

@@ -1,0 +1,57 @@
+﻿@model Timataka.Core.Models.ViewModels.CourseViewModels.CourseViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+
+    <div>
+        <h4>@Model.Name</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DisciplineName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DisciplineName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Distance)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Distance)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Lap)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Lap)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ExternalCourseId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ExternalCourseId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Deleted)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Deleted)
+            </dd>
+
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+        <a asp-controller="Admin" asp-action="Courses" class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>
