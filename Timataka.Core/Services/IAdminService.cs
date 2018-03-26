@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Dto.AdminDTO;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -13,5 +14,7 @@ namespace Timataka.Core.Services
         Task<bool> UpdateUser(UserDto model);
         object GetRoles();
         string GetCountryNameById(int id);
+        IEnumerable<UserViewModel> GetAdminUsers();
+        IEnumerable<UserViewModel> GetNonAdminUsers();
     }
 }
