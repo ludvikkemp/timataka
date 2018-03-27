@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
 
@@ -120,23 +121,27 @@ namespace Timataka.Core.Data.Repositories
             return admins;
         }
 
+        // This Function May Cause Problems Where Users Become In The Thousands
+        // Algorythm is x'2
         public IEnumerable<UserViewModel> GetNonAdminUsers()
         {
-            //TODO: ATH ÞARF AÐ LAGA ÞETTA !!
-
-            var nonAdmins = (from a in _db.Users
-                join r in _db.UserRoles on a.Id equals r.UserId
-                join ro in _db.Roles on r.RoleId equals ro.Id
-                where ro.Name != "Admin" && ro.Name != "Superadmin"
-                select new UserViewModel
+            var users = GetUsers();
+            var nonAdmins = new List<UserViewModel>();
+            foreach (var user in users)
+            {
+                // Checks if user is only in "User" role
+                if (user.Roles.Count == 1)
                 {
-                    Id = a.Id,
-                    FirstName = a.FirstName,
-                    LastName = a.LastName,
-                    Username = a.UserName,
-                    Role = "User"
-
-                }).ToList();
+                    nonAdmins.Add(new UserViewModel
+                    {
+                        Id = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Username = user.Username,
+                        Role = "User"
+                    });
+                }
+            }
             return nonAdmins;
         }
     }

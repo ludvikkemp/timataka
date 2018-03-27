@@ -156,6 +156,17 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("Roles");
         }
 
+        public async Task<IActionResult> RemoveRole(string id)
+        {
+            var userManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var user = await userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                await userManager.RemoveFromRoleAsync(user, "Admin");
+            }
+            return RedirectToAction("Roles");
+        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult Sports()
         {   
@@ -176,23 +187,7 @@ namespace Timataka.Web.Controllers
             };
             return View(dto);
         }
-        /*
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public IActionResult AddRole(CreateRoleViewModel model)
-        {
-            var role = _roleManager.FindByNameAsync(model.Name);
 
-            if (role.Result == null)
-            {
-                Task roleResult = _roleManager.CreateAsync(new IdentityRole(model.Name));
-                roleResult.Wait();
-                return Redirect("~/Admin/Roles");
-            }
-
-            return View(model);
-        }
-        */
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Competitions()
@@ -321,17 +316,6 @@ namespace Timataka.Web.Controllers
         {
             var courses = _courseService.GetListOfCourses();
             return View(courses);
-        }
-
-        public async Task<IActionResult> RemoveRole(string id)
-        {
-            var userManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var user = await userManager.FindByIdAsync(id);
-            if (user != null)
-            {
-                await userManager.RemoveFromRoleAsync(user, "Admin");
-            }
-            return RedirectToAction("Roles");
         }
     }
 }
