@@ -25,10 +25,13 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task <IActionResult> Create(int id)
         {
             ViewBag.Events = _eventService.GetEventDropDownList();
             ViewBag.Nations = _accountService.GetNationsListItems();
+            var _event = await _eventService.GetEventByIdAsync(id);
+            ViewBag.EventName = _event.Name;
+            ViewBag.EventId = id;
             return View();
         }
 

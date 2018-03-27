@@ -28,16 +28,24 @@
                     <span asp-validation-for="AgeTo" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Gender" class="control-label"></label>
-                    <input asp-for="Gender" class="form-control" />
-                    <span asp-validation-for="Gender" class="text-danger"></span>
+                    <label asp-for="Gender"></label>
+                    <select name="Gender" class="form-control">
+                        <option value="0" id="">Female</option>
+                        <option value="1" id="">Male</option>
+                        <option value="2" id="">Both</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label asp-for="EventId"></label>
                     <select name="EventId" class="form-control">
+                        <option selected value="@ViewBag.EventId" id="eventId">@ViewBag.EventName</option>
                         @foreach (var item in ViewBag.Events)
-            {
-                <option value="@item.Id" id="@item.Id">@item.Name</option>
+    {
+        if (item.Id != ViewBag.Id)
+        {
+                    <option value="@item.Id" id="@item.Id">@item.Name</option>
+}
+
 }
                     </select>
                 </div>
@@ -46,7 +54,7 @@
                     <select name="CountryId" class="form-control">
                         @foreach (var item in ViewBag.Nations)
             {
-                <option value="@item.Value" id="@item.Value">@item.text</option>
+                <option value="@item.Value" id="@item.Value">@item.Text</option>
 }
                     </select>
                 </div>
@@ -58,7 +66,7 @@
     </div>
 
     <div>
-        <a asp-controller="Admin" asp-action="Clubs" class="btn btn-secondary-outline btn-sm">Back to List</a>
+        <a asp-controller="Admin" asp-action="Categories" asp-route-id="@ViewBag.EventId" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
 @section Scripts {
