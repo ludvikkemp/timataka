@@ -11,9 +11,16 @@ namespace Timataka.Core.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _repo;
-        public CategoryService(ICategoryRepository repo)
+        private readonly IEventRepository _eventRepo;
+        private readonly IAccountRepository _accountRepo;
+        public CategoryService(
+            ICategoryRepository repo,
+            IEventRepository eventRepo,
+            IAccountRepository accountRepo)
         {
             _repo = repo;
+            _eventRepo = eventRepo;
+            _accountRepo = accountRepo;
         }
 
         public IEnumerable<CategoryViewModel> GetListOfCategoriesByEventId(int id)
@@ -48,9 +55,23 @@ namespace Timataka.Core.Services
             throw new NotImplementedException();
         }
 
-        public CategoryViewModel GetCategoryViewModelById(int id)
+        public async Task<CategoryViewModel> GetCategoryViewModelById(int id)
         {
-            throw new NotImplementedException();
+            var c = _repo.GetById(id);
+            var e = await _eventRepo.GetEventByIdAsync(c.EventId);
+            var n = _accountRepo.GetCountryById(c.CountryId);
+            var model = new CategoryViewModel
+            {
+                EventName = e.Name,
+                CountryName = n.Name,
+                Name = c.Name,
+                AgeFrom = c.AgeFrom,
+                AgeTo = c.AgeTo,
+                CountryId = c.CountryId,
+                EventId = c.EventId,
+                Gender = c.Gender
+            };
+            return model;
         }
 
         public Task<int> RemoveAsync(int categoryId)

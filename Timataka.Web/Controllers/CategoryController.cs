@@ -50,5 +50,36 @@ namespace Timataka.Web.Controllers
             }
             return View(model);
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            ViewBag.Events = _eventService.GetEventDropDownList();
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            var model = await _categoryService.GetCategoryViewModelById(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, CategoryViewModel model)
+        {
+            ViewBag.Events = _eventService.GetEventDropDownList();
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                await _categoryService.EditClubAsync(model);
+                return RedirectToAction("Clubs", "Admin");
+            }
+            return View(model);
+        }
     }
 }
