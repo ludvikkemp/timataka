@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.CategoryViewModels;
+
+namespace Timataka.Core.Services
+{
+    public interface ICategoryService
+    {
+        IEnumerable<Category> GetListOfCategories();
+        Task<bool> CategoryExistsAsync(string modelName);
+        Task<Category> AddAsync(CategoryViewModel c);
+        Task<Category> EditClubAsync(CategoryViewModel m);
+        CategoryViewModel GetCategoryViewModelById(int id);
+        Task<int> RemoveAsync(int categoryId);
+    }
+}

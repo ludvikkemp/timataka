@@ -6,7 +6,7 @@ using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Data.Repositories
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IDisposable
     {
         void Insert(Category c);
         Task InsertAsync(Category c);
