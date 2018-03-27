@@ -16,6 +16,7 @@ using Timataka.Core.Models.ViewModels.AdminViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
 using Timataka.Core.Data.Repositories;
+using Timataka.Core.Models.ViewModels.HeatViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -259,10 +260,28 @@ namespace Timataka.Web.Controllers
             var eventObj = _eventService.GetEventByIdAsync(id);
             eventObj.Wait();
 
+            var heats = _heatService.GetHeatsForEvent(id);
+            
+            var models = new List<HeatViewModel>();
+
+            foreach(var heat in heats)
+            {
+                var model = new HeatViewModel
+                {
+                    Deleted = heat.Deleted,
+                    EventId = heat.EventId,
+                    HeatNumber = heat.HeatNumber,
+                    Id = heat.Id,
+                    NumberOfContestants = _heatService.GetContestantsInHeat(heat.Id).Count()
+                };
+                models.Add(model);
+            }
+            
+
             var eventDto = new EventDto()
             {
                 Event = eventObj.Result,
-                Heats = _heatService.GetHeatsForEvent(id)
+                Heats = models,
             };
 
             return View(eventDto);
