@@ -11,9 +11,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> Devices in @ViewBag.CompetitionInstance.Name</span>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="CompetitionInstance" asp-action="AssignDevice" asp-route-instanceId="@ViewBag.CompetitionInstance.Id">Assign Device</a>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Admin" asp-action="Instance" asp-route-id="@ViewBag.CompetitionInstance.Id">Events</a>
+                <span class="title"> Devices in @ViewBag.Event.Name </span>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Event" asp-action="AssignDevice" asp-route-eventId="@ViewBag.Event.Id">Assign Device</a>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Admin" asp-action="Event" asp-route-id="@ViewBag.Event.Id">Event</a>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Admin" asp-action="Instance" asp-route-id="@ViewBag.Event.CompetitionInstanceId">Instance</a>
             </div>
         </div>
 
@@ -71,10 +72,8 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Device</th>
+                                                <th>Name</th>
                                                 <th>Active</th>
-                                                <th>Event</th>
-                                                <th>Time</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -84,10 +83,8 @@
                                                 <tr>
                                                     <td>@item.Device.Name</td>
                                                     <td>@item.Device.Active</td>
-                                                    <td>@item.Event.Name</td>
-                                                    <td>@item.Event.DateFrom.TimeOfDay - @item.Event.DateTo.TimeOfDay</td>
                                                     <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="CompetitionInstance" asp-action="UnassignDevice" asp-route-deviceId="@item.Device.Id" asp-route-eventId="@item.Event.Id" asp-route-instanceId="@item.Event.CompetitionInstanceId">Unassign</a>
+                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Event" asp-action="UnassignDevice" asp-route-deviceId="@item.Device.Id" asp-route-eventId="@item.Event.Id">Unassign</a>
                                                         <a class="btn btn-success-outline btn-sm" asp-controller="Device" asp-action="Details" asp-route-id="@item.Device.Id">Details</a>
                                                     </td>
                                                 </tr>

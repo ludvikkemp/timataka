@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.DeviceViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -14,14 +15,17 @@ namespace Timataka.Web.Controllers
         private readonly ICompetitionService _competitionService;
         private readonly IAccountService _accountService;
         private readonly IDeviceService _deviceService;
+        private readonly IEventService _eventService;
 
         public CompetitionInstanceController(ICompetitionService competitionService, 
                                              IAccountService accountService,
-                                             IDeviceService deviceService)
+                                             IDeviceService deviceService,
+                                             IEventService eventService)
         {
             _competitionService = competitionService;
             _accountService = accountService;
             _deviceService = deviceService;
+            _eventService = eventService;
         }
 
         // Get: CompetitionInstances/Details/3
@@ -121,11 +125,37 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("/Instance/{instanceId}/Devices")]
+        [Route("/CompetitionInstance/{instanceId}/Devices")]
         public IActionResult Devices(int instanceId)
         {
             var data = _deviceService.GetDevicesInCompetitionInstance(instanceId);
+            ViewBag.CompetitionInstance = _competitionService.GetCompetitionInstanceById(instanceId).Result;
             return View(data);
+        }
+
+        [HttpGet]
+        [Route("/CompetitionInstance/{instanceId}/Event/{eventId}/UnassignDevice/{deviceId}")]
+        public async Task<IActionResult> UnassignDevice(int deviceId, int eventId, int instanceId)
+        {
+            await _deviceService.RemoveDeviceInEventAsync(new DevicesInEvent { DeviceId = deviceId, EventId = eventId });
+            return RedirectToAction("Devices", instanceId);
+        }
+
+        [HttpGet]
+        [Route("/CompetitionInstance/{instanceId}/AssignDevice")]
+        public IActionResult AssignDevice(int instanceId)
+        {
+            ViewBag.Devices = _deviceService.GetDevices();
+            ViewBag.Events = _eventService.GetEventsByCompetitionInstanceId(instanceId);
+            return View();
+        }
+
+        [HttpPost("/CompetitionInstance/{instanceId}/AssignDevice")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignDevice(CreateDeviceInEventViewModel model, int instanceId)
+        {
+            await _deviceService.AddDeviceInEventAsync(model.DeviceId, model.EventId);
+            return RedirectToAction("Devices", instanceId);
         }
 
 
