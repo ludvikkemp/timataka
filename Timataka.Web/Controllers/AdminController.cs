@@ -33,6 +33,7 @@ namespace Timataka.Web.Controllers
         private readonly ICourseService _courseService;
         private readonly IDeviceService _deviceService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ICategoryService _categoryService;
 
         public AdminController(IAdminService adminService,
             IAccountService accountService,
@@ -45,7 +46,8 @@ namespace Timataka.Web.Controllers
             IClubService clubService,
             ICourseService courseService,
             IDeviceService deviceService,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            ICategoryService categoryService)
 
         {
             _adminService = adminService;
@@ -60,6 +62,7 @@ namespace Timataka.Web.Controllers
             _courseService = courseService;
             _deviceService = deviceService;
             _serviceProvider = serviceProvider;
+            _categoryService = categoryService;
         }
             
         [Authorize(Roles = "Admin")]
@@ -305,6 +308,16 @@ namespace Timataka.Web.Controllers
             };
 
             return View(personnelDto);
+        }
+
+        [HttpGet]
+        [Route("Admin/Catagories/{id}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Categories(int id)
+        {
+            var categories = _categoryService.GetListOfCategoriesByEventId(id);
+            ViewBag.EventId = id;
+            return View(categories);
         }
 
         [Authorize(Roles = "Admin")]
