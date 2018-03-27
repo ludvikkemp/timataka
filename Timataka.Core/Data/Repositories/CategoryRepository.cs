@@ -60,13 +60,13 @@ namespace Timataka.Core.Data.Repositories
 
         public void Remove(Category c)
         {
-            _db.Categories.Update(c);
+            _db.Categories.Remove(c);
             _db.SaveChanges();
         }
 
         public async Task<int> RemoveAsync(Category c)
         {
-            _db.Categories.Update(c);
+            _db.Categories.Remove(c);
             await _db.SaveChangesAsync();
             return 1;
         }
@@ -112,7 +112,7 @@ namespace Timataka.Core.Data.Repositories
                                    CountryName = country.Name,
                                    Name = c.Name,
                                    EventName = e.Name,
-                                   Gender = e.Gender
+                                   Gender = c.Gender
                                }).ToList();
             return categories;
         }

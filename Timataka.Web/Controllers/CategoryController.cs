@@ -76,17 +76,17 @@ namespace Timataka.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                await _categoryService.EditClubAsync(model);
+                await _categoryService.EditCategoryAsync(model);
                 return RedirectToAction("Categories", "Admin", new { @id = model.EventId });
             }
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var model = _categoryService.GetCategoryViewModelById(id);
-            return View(model.Result);
+            var model = await _categoryService.GetCategoryViewModelById(id);
+            return View(model);
         }
 
         [HttpPost]

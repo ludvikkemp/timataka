@@ -50,9 +50,17 @@ namespace Timataka.Core.Services
             return newCategory;
         }
 
-        public Task<Category> EditClubAsync(CategoryViewModel m)
+        public async Task<Category> EditCategoryAsync(CategoryViewModel m)
         {
-            throw new NotImplementedException();
+            var c = await _repo.GetByIdAsync(m.Id);
+            c.Name = m.Name;
+            c.AgeFrom = m.AgeFrom;
+            c.AgeTo = m.AgeTo;
+            c.CountryId = m.CountryId;
+            c.EventId = m.EventId;
+            c.Gender = m.Gender;
+            await _repo.EditAsync(c);
+            return c;
         }
 
         public async Task<CategoryViewModel> GetCategoryViewModelById(int id)
@@ -70,7 +78,8 @@ namespace Timataka.Core.Services
                 AgeTo = c.AgeTo,
                 CountryId = c.CountryId,
                 EventId = c.EventId,
-                Gender = c.Gender
+                Gender = c.Gender,
+                Id = c.Id
             };
             return model;
         }
