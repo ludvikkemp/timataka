@@ -207,8 +207,8 @@ namespace Timataka.Core.Services
         public IEnumerable<Event> GetEventsForADevice(int id)
         {
             var result = (from x in _repo.GetDevicesInEvents()
-                          where x.DeviceId == id
-                          select _eventService.GetEventByIdAsync(id).Result);
+                         where x.DeviceId == id
+                         select _eventService.GetEventByIdAsync(x.EventId).Result).ToList();
             return result;
         }
 
