@@ -9,7 +9,7 @@ namespace Timataka.Core.Services
 {
     public interface ICategoryService
     {
-        IEnumerable<Category> GetListOfCategories();
+        IEnumerable<CategoryViewModel> GetListOfCategoriesByEventId(int id);
         Task<bool> CategoryExistsAsync(string modelName);
         Task<Category> AddAsync(CategoryViewModel c);
         Task<Category> EditClubAsync(CategoryViewModel m);

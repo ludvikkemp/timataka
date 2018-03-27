@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.CategoryViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -92,6 +93,27 @@ namespace Timataka.Core.Data.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public IEnumerable<CategoryViewModel> GetListOfCategoriesForEvent(int eventId)
+        {
+            var categories = (from c in _db.Categories
+                               join e in _db.Events on c.EventId equals e.Id
+                               join country in _db.Countries on c.CountryId equals country.Id
+                               where c.EventId == eventId
+                               select new CategoryViewModel
+                               {
+                                   EventId = e.Id,
+                                   Id = c.Id,
+                                   AgeFrom = c.AgeFrom,
+                                   AgeTo = c.AgeTo,
+                                   CountryId = c.CountryId,
+                                   CountryName = country.Name,
+                                   Name = c.Name,
+                                   EventName = e.Name,
+                                   Gender = e.Gender
+                               }).ToList();
+            return categories;
         }
     }
 

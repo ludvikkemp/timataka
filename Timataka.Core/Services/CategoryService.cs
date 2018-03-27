@@ -16,9 +16,9 @@ namespace Timataka.Core.Services
             _repo = repo;
         }
 
-        public IEnumerable<Category> GetListOfCategories()
+        public IEnumerable<CategoryViewModel> GetListOfCategoriesByEventId(int id)
         {
-            throw new NotImplementedException();
+            return _repo.GetListOfCategoriesForEvent(id);
         }
 
         public async Task<bool> CategoryExistsAsync(string modelName)
