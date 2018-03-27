@@ -162,7 +162,7 @@ namespace Timataka.Web.Controllers
             {
                 var task = _competitionService.AddRole(m);
                 task.Wait();
-                return RedirectToAction("Competitions", "Admin");
+                return RedirectToAction("Personnel", "Admin", new { @id= m.CompetitionId });
             }
             return View();
         }
