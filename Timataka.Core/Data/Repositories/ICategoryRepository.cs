@@ -18,7 +18,7 @@ namespace Timataka.Core.Data.Repositories
         void Edit(Category c);
         Task EditAsync(Category c);
         void Remove(Category c);
-        Task RemoveAsync(Category c);
+        Task<int> RemoveAsync(Category c);
         Task<Category> GetCategoryByNameAsync(string cName);
     }
 }

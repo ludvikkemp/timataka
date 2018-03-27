@@ -50,12 +50,28 @@ namespace Timataka.Core.Services
 
         public CategoryViewModel GetCategoryViewModelById(int id)
         {
-            throw new NotImplementedException();
+            var entity = _repo.GetById(id);
+
+            var model = new CategoryViewModel
+            {
+                AgeFrom = entity.AgeFrom,
+                AgeTo = entity.AgeTo,
+                CountryId = entity.CountryId,
+                EventId = entity.EventId,
+                Gender = entity.Gender,
+                Id = entity.Id,
+                Name = entity.Name
+                //CountryName = ,
+                //EventName 
+            };
+
+            return  model;
         }
 
         public Task<int> RemoveAsync(int categoryId)
         {
-            throw new NotImplementedException();
+            var entity = _repo.GetById(categoryId);
+            return _repo.RemoveAsync(entity);
         }
     }
 }

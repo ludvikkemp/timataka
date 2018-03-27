@@ -42,8 +42,28 @@ namespace Timataka.Web.Controllers
                 if (!exists)
                 {
                     await _categoryService.AddAsync(model);
-                    return RedirectToAction("Categories", "Admin");
+                    return RedirectToAction("Categories", "Admin", new { @id = model.EventId });
                 }
+            }
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var model = _categoryService.GetCategoryViewModelById(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(CategoryViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var status = await _categoryService.RemoveAsync(model.Id);
+                return RedirectToAction("Categories", "Admin", new { @id = model.EventId });
             }
             return View(model);
         }

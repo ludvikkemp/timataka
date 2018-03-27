@@ -64,10 +64,11 @@ namespace Timataka.Core.Data.Repositories
             _db.SaveChanges();
         }
 
-        public async Task RemoveAsync(Category c)
+        public async Task<int> RemoveAsync(Category c)
         {
             _db.Categories.Update(c);
             await _db.SaveChangesAsync();
+            return 1;
         }
 
         public Task<Category> GetCategoryByNameAsync(string cName)
