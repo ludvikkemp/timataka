@@ -16,7 +16,7 @@ namespace Timataka.Core.Models.Entities
         [ForeignKey(nameof(CompetitionInstanceId))]
         public virtual CompetitionInstance CompetitionInstance { get; set; }
 
-        public int HeatId { get; set; }
+        public int? HeatId { get; set; }
         [ForeignKey(nameof(HeatId))]
         public virtual Heat Heat { get; set; }
 
