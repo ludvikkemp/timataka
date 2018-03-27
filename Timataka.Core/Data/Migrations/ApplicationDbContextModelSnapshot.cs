@@ -204,6 +204,32 @@ namespace Timataka.Core.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Timataka.Core.Models.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AgeFrom");
+
+                    b.Property<int>("AgeTo");
+
+                    b.Property<int>("CountryId");
+
+                    b.Property<int>("EventId");
+
+                    b.Property<int>("Gender");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("Timataka.Core.Models.Entities.Club", b =>
                 {
                     b.Property<int>("Id")
@@ -565,6 +591,19 @@ namespace Timataka.Core.Data.Migrations
                     b.HasOne("Timataka.Core.Models.Entities.Country", "Nation")
                         .WithMany()
                         .HasForeignKey("NationalityId");
+                });
+
+            modelBuilder.Entity("Timataka.Core.Models.Entities.Category", b =>
+                {
+                    b.HasOne("Timataka.Core.Models.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Timataka.Core.Models.Entities.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Timataka.Core.Models.Entities.CompetitionInstance", b =>
