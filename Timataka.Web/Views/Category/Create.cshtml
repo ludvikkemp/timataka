@@ -1,0 +1,66 @@
+﻿@model Timataka.Core.Models.ViewModels.CategoryViewModels.CategoryViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h4>Create Category</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AgeFrom" class="control-label"></label>
+                    <input asp-for="AgeFrom" class="form-control" />
+                    <span asp-validation-for="AgeFrom" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AgeTo" class="control-label"></label>
+                    <input asp-for="AgeTo" class="form-control" />
+                    <span asp-validation-for="AgeTo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <input asp-for="Gender" class="form-control" />
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EventId"></label>
+                    <select name="EventId" class="form-control">
+                        @foreach (var item in ViewBag.Events)
+            {
+                <option value="@item.Id" id="@item.Id">@item.Name</option>
+}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CountryId"></label>
+                    <select name="CountryId" class="form-control">
+                        @foreach (var item in ViewBag.Nations)
+            {
+                <option value="@item.Value" id="@item.Value">@item.text</option>
+}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-controller="Admin" asp-action="Clubs" class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

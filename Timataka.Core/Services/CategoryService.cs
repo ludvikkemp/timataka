@@ -21,14 +21,26 @@ namespace Timataka.Core.Services
             return _repo.GetListOfCategoriesForEvent(id);
         }
 
-        public Task<bool> CategoryExistsAsync(string modelName)
+        public async Task<bool> CategoryExistsAsync(string modelName)
         {
-            throw new NotImplementedException();
+            var result = await _repo.GetCategoryByNameAsync(modelName);
+            if (result != null) return true;
+            return false;
         }
 
-        public Task<Category> AddAsync(CategoryViewModel c)
+        public async Task<Category> AddAsync(CategoryViewModel c)
         {
-            throw new NotImplementedException();
+            var newCategory = new Category
+            {
+                Name = c.Name,
+                AgeFrom = c.AgeFrom,
+                AgeTo = c.AgeTo,
+                CountryId = c.CountryId,
+                EventId = c.EventId,
+                Gender = c.Gender
+            };
+            await _repo.InsertAsync(newCategory);
+            return newCategory;
         }
 
         public Task<Category> EditClubAsync(CategoryViewModel m)
