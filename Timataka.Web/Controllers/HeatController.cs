@@ -177,11 +177,91 @@ namespace Timataka.Web.Controllers
             };
 
             return View(model);
-        } 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditContestant(ContestantsInHeatViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var entity = new ContestantInHeat
+                    {
+                        UserId = model.UserId,
+                        HeatId = model.HeatId,
+                        Bib = model.Bib,
+                        Team = model.Team,
+                        Modified = DateTime.Now
+                    };
+
+                    await _heatService.EditAsyncContestantInHeat(entity);
+                }
+                catch (Exception e)
+                {
+                    return new BadRequestResult();
+                }
+                return RedirectToAction("Heat", "Admin", new { @id = model.HeatId });
+            }
+            return View(model);
+        }
 
         public IActionResult RemoveContestant(int heatId, string userId)
         {
-            return View();
+            var modelList = _heatService.GetContestantsInHeat(heatId);
+            var model = new ContestantsInHeatViewModel();
+
+            foreach(var item in modelList)
+            {
+                if (item.HeatId == heatId && item.UserId == userId)
+                {
+                    model = item;
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveContestant(ContestantsInHeatViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var entity = _heatService.GetContestantInHeatById(model.HeatId, model.UserId);
+
+                    await _heatService.RemoveAsyncContestantInHeat(entity);
+                }
+                catch (Exception e)
+                {
+                    return new BadRequestResult();
+                }
+                return RedirectToAction("Heat", "Admin", new { @id = model.HeatId });
+            }
+            return View(model);
+        }
+
+        public IActionResult DetailsContestant(int heatId, string userId)
+        {
+            if(heatId == 0 || userId == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var modelList = _heatService.GetContestantsInHeat(heatId);
+            var model = new ContestantsInHeatViewModel();
+
+            foreach (var item in modelList)
+            {
+                if(item.HeatId == heatId && item.UserId == userId)
+                {
+                    model = item;
+                }
+            }
+
+            return View(model);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.Entities.Heat
+﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.ContestantsInHeatViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,19 +6,23 @@
 }
 
 <section class="content">
-    <h4>Edit Instance</h4>
+    <h4>Edit Contestant</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Edit">
+            <form asp-action="EditContestant">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="EventId" value="@Model.EventId" />
-                <input type="hidden" asp-for="Id" value="@Model.Id" />
-                <input type="hidden" asp-for="Deleted" value="@Model.Deleted" />
+                <input type="hidden" asp-for="HeatId" value="@Model.HeatId" />
+                <input type="hidden" asp-for="UserId" value="@Model.UserId" />
                 <div class="form-group">
-                    <label asp-for="HeatNumber" class="control-label"></label>
-                    <input asp-for="HeatNumber" class="form-control" />
-                    <span asp-validation-for="HeatNumber" class="text-danger"></span>
+                    <label asp-for="Bib" class="control-label"></label>
+                    <input asp-for="Bib" class="form-control" />
+                    <span asp-validation-for="Bib" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Team" class="control-label"></label>
+                    <input asp-for="Team" class="form-control" />
+                    <span asp-validation-for="Team" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
@@ -28,7 +32,7 @@
     </div>
 
     <div>
-        <a asp-controller="Admin" asp-action="Event" asp-route-id="@Model.EventId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+        <a asp-controller="Admin" asp-action="Heat" asp-route-id="@Model.HeatId" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
 @section Scripts {

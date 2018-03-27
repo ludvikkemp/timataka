@@ -56,9 +56,9 @@
                                                         @item.FirstName @item.MiddleName @item.LastName
                                                     </td>
                                                     <td>
-                                                        <a asp-controller="Heat" asp-action="EditContestantInHeat" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                        <a asp-controller="Heat" asp-action="DetailsContestantInHeat" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-success-outline btn-sm">Details</a>
-                                                        <a asp-controller="Heat" asp-action="DeleteContestantInHeat" asp-route-UserId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                        <a asp-controller="Heat" asp-action="EditContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        <a asp-controller="Heat" asp-action="DetailsContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-success-outline btn-sm">Details</a>
+                                                        <a asp-controller="Heat" asp-action="RemoveContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-danger-outline btn-sm">Delete</a>
                                                     </td>
                                                 </tr>
 
