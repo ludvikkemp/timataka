@@ -1,0 +1,110 @@
+﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.ContestantsInHeatViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+
+    <div>
+        <h4>@Model.FirstName @Model.MiddleName @Model.LastName</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Bib)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Bib)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DateOfBirth)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DeletedHeat)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DeletedHeat)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DeletedUser)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DeletedUser)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Gender)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gender)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HeatNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HeatNumber)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Modified)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Modified)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Ssn)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Ssn)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Team)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Team)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UserId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UserId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.NationalityId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NationalityId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HeatId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HeatId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EventId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EventId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CountryId)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="EditContestant" asp-route-heatId="@Model.HeatId" asp-route-userId="@Model.UserId" class="btn btn-warning-outline btn-sm">Edit</a> 
+        <a asp-controller="Admin" asp-action="Heat" asp-route-id="@Model.HeatId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>

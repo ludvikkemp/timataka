@@ -73,9 +73,35 @@ namespace Timataka.Web.Controllers
             return View(club);
         }
 
-        public IActionResult Delete()
+ 
+        // GET: Club/Delete/5
+        public IActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var c = _clubService.GetClubViewModelById((int)id);
+            
+            if (c == null)
+            {
+                return NotFound();
+            }
+
+            c.Id = (int)id;
+
+            return View(c);
         }
+
+        // POST: Club/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var c = await _clubService.RemoveAsync(id);
+            return RedirectToAction("Clubs", "Admin");
+        }
+
     }
 }

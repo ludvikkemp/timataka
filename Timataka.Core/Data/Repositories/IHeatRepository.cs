@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.HeatViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -23,7 +24,17 @@ namespace Timataka.Core.Data.Repositories
         Task RemoveAsync(Heat h);
 
         //Contestants In Heat
-        IEnumerable<ContestantInHeat> GetContestantsInHeat(int heatId);
+        IEnumerable<ContestantsInHeatViewModel> GetContestantsInHeat(int heatId);
         IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id);
+        ContestantInHeat GetContestantInHeatById(int heatId, string userId);
+
+        void EditContestantInHeat(ContestantInHeat h);
+        Task EditAsyncContestantInHeat(ContestantInHeat h);
+
+        void RemoveContestantInHeat(ContestantInHeat h);
+        Task RemoveAsyncContestantInHeat(ContestantInHeat h);
+
+        void InsertContestantInHeat(ContestantInHeat h);
+        Task InsertAsyncContestantInHeat(ContestantInHeat h);
     }
 }

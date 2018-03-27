@@ -59,12 +59,14 @@ namespace Timataka.Core.Data.Repositories
 
         public void Remove(Club c)
         {
+            c.Deleted = true;
             _db.Clubs.Update(c);
             _db.SaveChanges();
         }
 
         public async Task RemoveAsync(Club c)
         {
+            c.Deleted = true;
             _db.Clubs.Update(c);
             await _db.SaveChangesAsync();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -124,7 +125,7 @@ namespace Timataka.Core.Services
 
         }
 
-        public IEnumerable<ContestantInHeat> GetContestantsInHeat(int id)
+        public IEnumerable<ContestantsInHeatViewModel> GetContestantsInHeat(int id)
         {
             return _repo.GetContestantsInHeat(id);
         }
@@ -133,6 +134,38 @@ namespace Timataka.Core.Services
         {
 
             return _repo.GetApplicationUsersInHeat(id);
+        }
+
+        public ContestantInHeat GetContestantInHeatById(int heatId, string userId)
+        {
+            return _repo.GetContestantInHeatById(heatId, userId);
+        }
+
+        public void EditContestantInHeat(ContestantInHeat h)
+        {
+            _repo.EditContestantInHeat(h);
+        }
+        public async Task EditAsyncContestantInHeat(ContestantInHeat h)
+        {
+            await _repo.EditAsyncContestantInHeat(h);
+        }
+
+        public void RemoveContestantInHeat(ContestantInHeat h)
+        {
+            _repo.RemoveContestantInHeat(h);
+        }
+        public async Task RemoveAsyncContestantInHeat(ContestantInHeat h)
+        {
+            await _repo.RemoveAsyncContestantInHeat(h);
+        }
+
+        public void AddContestantInHeat(ContestantInHeat h)
+        {
+            _repo.InsertContestantInHeat(h);
+        }
+        public async Task AddAsyncContestantInHeat(ContestantInHeat h)
+        {
+            await _repo.InsertAsyncContestantInHeat(h);
         }
 
     }

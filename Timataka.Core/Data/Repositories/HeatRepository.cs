@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.HeatViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -90,11 +91,33 @@ namespace Timataka.Core.Data.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<ContestantInHeat> GetContestantsInHeat(int heatId)
+        public IEnumerable<ContestantsInHeatViewModel> GetContestantsInHeat(int heatId)
         {
             var contestants = (from c in _db.ContestantsInHeats
+                               join u in _db.Users on c.UserId equals u.Id
+                               join h in _db.Heats on heatId equals h.Id
                                where c.HeatId == heatId
-                               select c).ToList();
+                               select new ContestantsInHeatViewModel
+                               {
+                                   Bib = c.Bib,
+                                   CountryId = u.CountryId,
+                                   DateOfBirth = u.DateOfBirth,
+                                   DeletedHeat = h.Deleted,
+                                   DeletedUser = u.Deleted,
+                                   EventId = h.EventId,
+                                   FirstName = u.FirstName,
+                                   Gender = u.Gender,
+                                   HeatId = h.Id,
+                                   HeatNumber = h.HeatNumber,
+                                   LastName = u.LastName,
+                                   MiddleName = u.MiddleName,
+                                   Modified = c.Modified,
+                                   NationalityId = u.NationalityId,
+                                   Phone = u.Phone,
+                                   Ssn = u.Ssn,
+                                   Team = c.Team,
+                                   UserId = u.Id
+                               }).ToList();
             return contestants;
         }
 
@@ -104,6 +127,47 @@ namespace Timataka.Core.Data.Repositories
                                join u in _db.Users on c.UserId equals u.Id                              
                                select u).ToList();
             return users;
+        }
+
+        public ContestantInHeat GetContestantInHeatById(int heatId, string userId)
+        {
+            var contestantInHeat = (from c in _db.ContestantsInHeats
+                                    where c.HeatId == heatId && c.UserId == userId
+                                    select c).SingleOrDefault();
+            return contestantInHeat;
+        }
+
+        public void EditContestantInHeat(ContestantInHeat h)
+        {
+            _db.ContestantsInHeats.Update(h);
+            _db.SaveChanges();
+        }
+        public async Task EditAsyncContestantInHeat(ContestantInHeat h)
+        {
+            _db.ContestantsInHeats.Update(h);
+            await _db.SaveChangesAsync();
+        }
+
+        public void RemoveContestantInHeat(ContestantInHeat h)
+        {
+            _db.ContestantsInHeats.Remove(h);
+            _db.SaveChanges();
+        }
+        public async Task RemoveAsyncContestantInHeat(ContestantInHeat h)
+        {
+            _db.ContestantsInHeats.Remove(h);
+            await _db.SaveChangesAsync();
+        }
+
+        public void InsertContestantInHeat(ContestantInHeat h)
+        {
+            _db.ContestantsInHeats.Add(h);
+            _db.SaveChanges();
+        }
+        public async Task InsertAsyncContestantInHeat(ContestantInHeat h)
+        {
+            _db.ContestantsInHeats.Add(h);
+            await _db.SaveChangesAsync();
         }
     }
 }

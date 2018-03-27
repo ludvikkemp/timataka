@@ -1,0 +1,31 @@
+﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.ContestantsInHeatViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h2>Delete</h2>
+
+    <h3>Are you sure you want to remove this?</h3>
+    <div>
+        <h4>Contestant</h4>
+        <hr />
+        <dl>
+            <dt>
+                Name
+            </dt>
+            <dd>
+                @Model.FirstName @Model.MiddleName @Model.LastName (@Model.Ssn)
+            </dd>
+        </dl>
+
+        <form asp-action="RemoveContestant">
+            <input type="hidden" asp-for="HeatId" value="@Model.HeatId" />
+            <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+            <input type="submit" value="Delete" class="btn btn-primary" /> |
+            <a asp-controller="Admin" asp-action="Heat" asp-route-id="@Model.HeatId">Back to List</a>
+        </form>
+    </div>
+</section>

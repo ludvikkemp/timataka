@@ -1,0 +1,32 @@
+﻿@model Timataka.Core.Models.Entities.Device
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+
+    <div>
+        <h4>@Model.Name</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Active)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Active)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+        <a asp-controller="Admin" asp-action="Devices" class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>

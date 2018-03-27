@@ -19,7 +19,17 @@ namespace Timataka.Core.Services
         Task ReorderHeatsAsync(int eventId);
         
         //Contestants In Heat
-        IEnumerable<ContestantInHeat> GetContestantsInHeat(int id);
+        IEnumerable<ContestantsInHeatViewModel> GetContestantsInHeat(int id);
         IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id);
+        ContestantInHeat GetContestantInHeatById(int heatId, string userId);
+
+        void EditContestantInHeat(ContestantInHeat h);
+        Task EditAsyncContestantInHeat(ContestantInHeat h);
+
+        void RemoveContestantInHeat(ContestantInHeat h);
+        Task RemoveAsyncContestantInHeat(ContestantInHeat h);
+
+        void AddContestantInHeat(ContestantInHeat h);
+        Task AddAsyncContestantInHeat(ContestantInHeat h);
     }
 }

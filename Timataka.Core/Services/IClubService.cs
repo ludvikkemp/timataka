@@ -14,5 +14,6 @@ namespace Timataka.Core.Services
         Task<Club> AddAsync(CreateClubViewModel c);
         Task<Club> EditClubAsync(EditClubViewModel m);
         EditClubViewModel GetClubViewModelById(int id);
+        Task<int> RemoveAsync(int clubId);
     }
 }
