@@ -65,8 +65,12 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var device = await _deviceService.GetDeviceByIdAsync(id);
-            return View(device);
+            var result = new DeviceDetailsViewModel
+            {
+                Device = await _deviceService.GetDeviceByIdAsync(id),
+                Events = _deviceService.GetEventsForADevice(id)
+            };
+            return View(result);
         }
 
         [HttpGet]
