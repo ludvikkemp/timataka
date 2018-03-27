@@ -25,10 +25,13 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task <IActionResult> Create(int id)
         {
             ViewBag.Events = _eventService.GetEventDropDownList();
             ViewBag.Nations = _accountService.GetNationsListItems();
+            var _event = await _eventService.GetEventByIdAsync(id);
+            ViewBag.EventName = _event.Name;
+            ViewBag.EventId = id;
             return View();
         }
 
@@ -47,13 +50,43 @@ namespace Timataka.Web.Controllers
             }
             return View(model);
         }
+        
+        public async Task<IActionResult> Edit(int id)
+        {
+            ViewBag.Events = _eventService.GetEventDropDownList();
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            var model = await _categoryService.GetCategoryViewModelById(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
 
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, CategoryViewModel model)
+        {
+            ViewBag.Events = _eventService.GetEventDropDownList();
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                await _categoryService.EditClubAsync(model);
+                return RedirectToAction("Categories", "Admin", new { @id = model.EventId });
+            }
+            return View(model);
+        }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
             var model = _categoryService.GetCategoryViewModelById(id);
-            return View(model);
+            return View(model.Result);
         }
 
         [HttpPost]
@@ -67,5 +100,6 @@ namespace Timataka.Web.Controllers
             }
             return View(model);
         }
+        
     }
 }

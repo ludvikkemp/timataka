@@ -11,9 +11,11 @@ namespace Timataka.Core.Models.ViewModels.CategoryViewModels
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        [Display(Name = "Event")]
         public int EventId { get; set; }
         public string EventName { get; set; }
 
+        [Display(Name = "Country")]
         public int CountryId { get; set; }
         public string CountryName { get; set; }
 

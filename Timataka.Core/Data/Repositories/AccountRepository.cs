@@ -23,6 +23,11 @@ namespace Timataka.Core.Data.Repositories
             return _db.Countries.OrderBy(x => x.Name).ToList();
         }
 
+        public Country GetCountryById(int id)
+        {
+            return _db.Countries.SingleOrDefault(x => x.Id == id);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this._disposed)
