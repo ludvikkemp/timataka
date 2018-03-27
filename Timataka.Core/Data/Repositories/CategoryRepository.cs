@@ -57,23 +57,21 @@ namespace Timataka.Core.Data.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public void Remove(Club c)
+        public void Remove(Category c)
         {
-            c.Deleted = true;
-            _db.Clubs.Update(c);
+            _db.Categories.Update(c);
             _db.SaveChanges();
         }
 
-        public async Task RemoveAsync(Club c)
+        public async Task RemoveAsync(Category c)
         {
-            c.Deleted = true;
-            _db.Clubs.Update(c);
+            _db.Categories.Update(c);
             await _db.SaveChangesAsync();
         }
 
-        public Task<Club> GetClubByNameAsync(string cName)
+        public Task<Category> GetCategoryByNameAsync(string cName)
         {
-            return _db.Clubs.SingleOrDefaultAsync(x => x.Name == cName);
+            return _db.Categories.SingleOrDefaultAsync(x => x.Name == cName);
         }
 
 
