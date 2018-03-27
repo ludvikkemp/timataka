@@ -10,12 +10,12 @@ namespace Timataka.Core.Models.Entities
 
     public class Marker
     {
-        [Key]
-        public int EventId { get; set; }
-        [ForeignKey(nameof(EventId))]
-        public virtual Event Event { get; set; }
+        public int Id { get; set; }
 
-        [Key]
+        public int CompetitionInstanceId { get; set; }
+        [ForeignKey(nameof(CompetitionInstanceId))]
+        public virtual CompetitionInstance CompetitionInstance { get; set; }
+
         public int HeatId { get; set; }
         [ForeignKey(nameof(HeatId))]
         public virtual Heat Heat { get; set; }
