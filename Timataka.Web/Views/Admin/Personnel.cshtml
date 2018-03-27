@@ -41,8 +41,8 @@
                                                     <td>@item.FirstName @item.MiddleName @item.LastName</td>
                                                     <td>@item.Role</td>
                                                     <td>
-                                                        <a asp-controller="Competition" asp-action="" asp-route-competitionId="@item.CompetitionId" asp-route-userId="@item.UserId" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                        <a asp-controller="Competition" asp-action="" asp-route-competitionId="@item.CompetitionId" asp-route-userId="@item.UserId" class="btn btn-warning-outline btn-sm">Delete</a>
+                                                        <a asp-controller="Competition" asp-action="EditManager" asp-route-competitionId="@item.CompetitionId" asp-route-userId="@item.UserId" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        <a asp-controller="Competition" asp-action="DeleteManager" asp-route-competitionId="@item.CompetitionId" asp-route-userId="@item.UserId" class="btn btn-warning-outline btn-sm">Delete</a>
                                                     </td>
                                                 </tr>
                                             }

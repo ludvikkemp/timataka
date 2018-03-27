@@ -17,5 +17,6 @@ namespace Timataka.Core.Models.ViewModels.ClubViewModels
         public string Phone { get; set; }
         [Url]
         public string Webpage { get; set; }
+        public bool Deleted { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.ContestantsInHeatViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h2>Add Contestant</h2>
+
+    <h4>Contestant In Heat</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddContestant">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="HeatId" value="@ViewBag.heatId" />
+                <div class="form-group">
+                    <label asp-for="Bib" class="control-label"></label>
+                    <input asp-for="Bib" class="form-control" />
+                    <span asp-validation-for="Bib" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Team" class="control-label"></label>
+                    <input asp-for="Team" class="form-control" />
+                    <span asp-validation-for="Team" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Modified" class="control-label"></label>
+                    <input asp-for="Modified" class="form-control" />
+                    <span asp-validation-for="Modified" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserId"></label>
+                    <select asp-for="UserId" name="UserId" class="form-control">
+                        @foreach (var item in ViewBag.users)
+                        {
+                            <option value="@item.Value" id="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="AddContestant" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-controller="Admin" asp-action="Heat" asp-route-id="@ViewBag.heatId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
