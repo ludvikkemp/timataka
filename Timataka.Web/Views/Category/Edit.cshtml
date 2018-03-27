@@ -56,15 +56,7 @@
                 <div class="form-group">
                     <label asp-for="EventId"></label>
                     <select name="EventId" class="form-control">
-                        <option selected value="@Model.EventId" id="eventId">@Model.EventName</option>
-                        @foreach (var item in ViewBag.Events)
-                        {
-                            if (item.Id != Model.CountryId)
-                            {
-                                <option value="@item.Id" id="@item.Id">@item.Name</option>
-                            }
-
-                        }
+                        <option selected value="@Model.EventId" id="@Model.EventId">@Model.EventName</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -89,7 +81,7 @@
     </div>
 
     <div>
-        <a asp-controller="Admin" asp-action="Categories" class="btn btn-secondary-outline btn-sm">Back to List</a>
+        <a asp-controller="Admin" asp-action="Categories" asp-route-id="@Model.EventId" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
 @section Scripts {

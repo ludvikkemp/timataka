@@ -76,8 +76,8 @@ namespace Timataka.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                await _categoryService.EditClubAsync(model);
-                return RedirectToAction("Clubs", "Admin");
+                await _categoryService.EditCategoryAsync(model);
+                return RedirectToAction("Categories", "Admin", new { @id = model.EventId} );
             }
             return View(model);
         }

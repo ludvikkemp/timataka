@@ -111,7 +111,7 @@ namespace Timataka.Core.Data.Repositories
                                    CountryName = country.Name,
                                    Name = c.Name,
                                    EventName = e.Name,
-                                   Gender = e.Gender
+                                   Gender = c.Gender
                                }).ToList();
             return categories;
         }

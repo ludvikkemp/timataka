@@ -12,7 +12,7 @@ namespace Timataka.Core.Services
         IEnumerable<CategoryViewModel> GetListOfCategoriesByEventId(int id);
         Task<bool> CategoryExistsAsync(string modelName);
         Task<Category> AddAsync(CategoryViewModel c);
-        Task<Category> EditClubAsync(CategoryViewModel m);
+        Task<Category> EditCategoryAsync(CategoryViewModel m);
         Task<CategoryViewModel> GetCategoryViewModelById(int id);
         Task<int> RemoveAsync(int categoryId);
     }
