@@ -32,8 +32,17 @@ namespace Timataka.Core.Services
 
         public async void AssignMarkerToHeat(Marker m, int heatId)
         {
-            m.HeatId = heatId;
-            await EditAsync(m);
+            if(m.HeatId == null)
+            {
+                m.HeatId = heatId;
+                await EditAsync(m);
+            }
+            else
+            {
+                var newMarker = await DuplicateMarker(m);
+                newMarker.HeatId = heatId;
+                await EditAsync(m);
+            }
         }
 
         public async Task<bool> EditAsync(Marker m)
@@ -59,7 +68,7 @@ namespace Timataka.Core.Services
             return result;
         }
 
-        public IEnumerable<Marker> GetmarkersForHeat(int id)
+        public IEnumerable<Marker> GetMarkersForHeat(int id)
         {
             var result = (from m in GetMarkers()
                           where m.HeatId == id
@@ -70,6 +79,19 @@ namespace Timataka.Core.Services
         public async Task<Boolean> RemoveAsync(Marker m)
         {
             return await _repo.RemoveAsync(m);
+        }
+        
+        public async Task<Marker> DuplicateMarker(Marker m)
+        {
+            var newMarker = new Marker
+            {
+                CompetitionInstanceId = m.CompetitionInstanceId,
+                Location = m.Location,
+                Time = m.Time,
+                Type = m.Type
+            };
+            await _repo.AddAsync(newMarker);
+            return newMarker;
         }
     }
 }

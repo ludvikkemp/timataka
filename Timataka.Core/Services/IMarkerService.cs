@@ -13,12 +13,14 @@ namespace Timataka.Core.Services
         Task<Boolean> EditAsync(Marker m);
         Task<Boolean> RemoveAsync(Marker m);
 
-        Task<Marker> GetDeviceByIdAsync(int id);
+        Task<Marker> GetMarkerByIdAsync(int id);
         IEnumerable<Marker> GetMarkers();
         IEnumerable<Marker> GetMarkersForCompetitionInstance(int id);
-        IEnumerable<Marker> GetmarkersForHeat(int id);
+        IEnumerable<Marker> GetMarkersForHeat(int id);
 
         void AssignMarkerToHeat(Marker m, int heatId);
+
+        void DuplicateMarker(Marker m);
 
     }
 }
