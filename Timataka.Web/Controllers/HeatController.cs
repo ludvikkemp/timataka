@@ -268,9 +268,13 @@ namespace Timataka.Web.Controllers
 
         public IActionResult Markers(int id)
         {
-            var markers = _markerService.GetmarkersForHeat(id);
+            var assignedMarkers = _markerService.GetMarkersForHeat(id);
+
+            var instanceID = 1;
+
+            var allMarkers = _markerService.GetUnassignedMarkers(instanceID);
             ViewBag.HeatId = id;
-            return View(markers);
+            return View(assignedMarkers);
         }
 
         public async Task<IActionResult> AssignMarker(int heatId, int markerId)
@@ -282,14 +286,14 @@ namespace Timataka.Web.Controllers
 
         public IActionResult EditMarker(int id)
         {
-            var markers = _markerService.GetmarkersForHeat(id);
+            var markers = _markerService.GetMarkersForHeat(id);
             ViewBag.HeatId = id;
             return View(markers);
         }
 
         public IActionResult RemoveMarker(int id)
         {
-            var markers = _markerService.GetmarkersForHeat(id);
+            var markers = _markerService.GetMarkersForHeat(id);
             ViewBag.HeatId = id;
             return View(markers);
         }
