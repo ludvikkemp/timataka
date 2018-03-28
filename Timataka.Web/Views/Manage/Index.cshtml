@@ -33,7 +33,7 @@
         {
             <div class="input-group">
                 <input asp-for="Email" class="form-control" />
-                <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                <span class="input-group-addon" aria-hidden="true"><span class="glyphicon text-success"></span></span>
             </div>
 }
 else
@@ -54,21 +54,7 @@ else
             </form>
         </div>
         
-        <div class="col-md-6">
-            <h5>Change Password</h5>
-            <form method="post">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="PasswordOld">Old Password</label>
-                    <input asp-for="PasswordOld" type="password" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="PasswordNew">New Password</label>
-                    <input asp-for="PasswordNew" type="password" class="form-control" />
-                </div>
-                <button type="submit" class="btn btn-oval btn-info btn-sm">Change</button>
-            </form>
-        </div>
+        
     </div>
 </section>
 

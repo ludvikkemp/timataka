@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.ViewModels.ClubViewModels;
 using Timataka.Core.Services;
@@ -14,13 +15,19 @@ namespace Timataka.Web.Controllers
             _clubService = clubService;
         }
 
+        //GET: /Admin/Club/Create
         [HttpGet]
+        [Authorize(Roles="Admin")]
+        [Route("/Admin/Club/Create")]
         public IActionResult Create()
         {
             return View();
         }
 
+        //POST: /Admin/Club/Create
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Club/Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateClubViewModel model)
         {
@@ -36,9 +43,13 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(int id)
+        //GET: /Admin/Club/Edit/{clubId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Club/Edit/{clubId}")]
+        public IActionResult Edit(int clubId)
         {
-            var model = _clubService.GetClubViewModelById(id);
+            var model = _clubService.GetClubViewModelById(clubId);
             if (model == null)
             {
                 return NotFound();
@@ -47,11 +58,14 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        //POST: /Admin/Club/Edit/{clubId}
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Club/Edit/{clubId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, EditClubViewModel model)
+        public async Task<IActionResult> Edit(int clubId, EditClubViewModel model)
         {
-            if (id != model.Id)
+            if (clubId != model.Id)
             {
                 return NotFound();
             }
@@ -63,9 +77,13 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        public IActionResult Details(int id)
+        //GET: /Admin/Club/Details{clubId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Club/Details/{clubId}")]
+        public IActionResult Details(int clubId)
         {
-            var club = _clubService.GetClubViewModelById(id);
+            var club = _clubService.GetClubViewModelById(clubId);
             if (club == null)
             {
                 return NotFound();
@@ -73,31 +91,30 @@ namespace Timataka.Web.Controllers
             return View(club);
         }
 
- 
-        // GET: Club/Delete/5
-        public IActionResult Delete(int? id)
+        //GET: /Admin/Club/Delete{clubId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Club/Delete/{clubId}")]
+        public IActionResult Delete(int? clubId)
         {
-            if (id == null)
+            if (clubId == null)
             {
                 return NotFound();
             }
-
-            var c = _clubService.GetClubViewModelById((int)id);
-            
+            var c = _clubService.GetClubViewModelById((int)clubId);
             if (c == null)
             {
                 return NotFound();
             }
-
-            c.Id = (int)id;
-
+            c.Id = (int)clubId;
             return View(c);
         }
 
-        // POST: Club/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        //POST: /Admin/Club/Delete/{clubId}
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Club/Delete/{clubId}")]
+        public async Task<IActionResult> Delete(int id)
         {
             var c = await _clubService.RemoveAsync(id);
             return RedirectToAction("Clubs", "Admin");
