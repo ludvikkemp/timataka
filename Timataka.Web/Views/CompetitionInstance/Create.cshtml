@@ -51,15 +51,11 @@
                             <option value="@item.Value" id="@item.Value">@item.Text</option>
                         }
                     </select>
+                    
                 </div>
                 <div class="form-group">
-                    <label asp-for="CompetitionId"></label>
-                    <select name="CompetitionId" class="form-control" id="country-select">
-                        @foreach (var item in ViewBag.CompetitionIds)
-                        {
-                            <option value="@item.Id" id="@item.Id">@item.Name</option>
-                        }
-                    </select>
+                    <input type="hidden" asp-for="CompetitionId" value="@ViewContext.RouteData.Values["competitionId"]" />
+                    
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
@@ -69,7 +65,7 @@
     </div>
 
     <div>
-        <a asp-controller="Admin" asp-action="Competition" asp-route-id="@ViewBag.CompId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+        <a asp-controller="Admin" asp-action="Competition" asp-route-competitionId="@ViewBag.CompId" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
 @section Scripts {

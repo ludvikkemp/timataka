@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Competitions </span>
-                <a asp-controller="Competition" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> Add New </a>
+                <a asp-controller="Competition" asp-action="Create" class="btn btn-primary btn-sm rounded-s"> Create New </a>
             </div>
         </div>
 
@@ -53,12 +53,12 @@
                                                 {
                                                     <tr>
                                                         <td>
-                                                            <a asp-controller="Admin" asp-action="Competition" asp-route-id="@comp.Id">@comp.Name</a>
+                                                            <a asp-controller="Admin" asp-action="Competition" asp-route-competitionId="@comp.Id">@comp.Name</a>
                                                         </td>
                                                         <td>
-                                                            <a asp-controller="Competition" asp-action="Edit" asp-route-id="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a> 
-                                                            <a asp-controller="Competition" asp-action="Details" asp-route-id="@comp.Id" class="btn btn-success-outline btn-sm">Details</a> 
-                                                            <a asp-controller="Competition" asp-action="Delete" asp-route-id="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                            <a asp-controller="Competition" asp-action="Edit" asp-route-competitionId="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a> 
+                                                            <a asp-controller="Competition" asp-action="Details" asp-route-competitionId="@comp.Id" class="btn btn-success-outline btn-sm">Details</a> 
+                                                            <a asp-controller="Competition" asp-action="Delete" asp-route-competitionId="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
                                                         </td>
                                                     </tr>
                                                 }

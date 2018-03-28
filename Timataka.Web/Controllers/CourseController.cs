@@ -21,20 +21,20 @@ namespace Timataka.Web.Controllers
             _disciplineService = disciplineService;
         }
 
-        // Get: Admin/Courses/Create
+        //GET: /Admin/Course/Create
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Courses/Create")]
+        [Route("/Admin/Course/Create")]
         public IActionResult Create()
         {
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
             return View();
         }
 
-        // Post: Admin/Courses/Create
+        //POST: /Admin/Course/Create
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Courses/Create")]
+        [Route("/Admin/Course/Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CourseViewModel model)
         {
@@ -50,10 +50,10 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        // Get: Admin/Courses/Edit/{courseId}
+        //GET: /Admin/Club/Edit/{courseId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Courses/Edit/{courseId}")]
+        [Route("/Admin/Course/Edit/{courseId}")]
         public IActionResult Edit(int courseId)
         {
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
@@ -62,14 +62,13 @@ namespace Timataka.Web.Controllers
             {
                 return NotFound();
             }
-
             return View(model);
         }
 
-        // Post: Admin/Courses/Edit/{courseId}
+        //POST: /Admin/Club/Edit/{courseId}
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Courses/Edit/{courseId}")]
+        [Route("/Admin/Course/Edit/{courseId}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int courseId, CourseViewModel model)
         {
@@ -88,10 +87,10 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        // Get: Admin/Courses/Details/{courseId}
+        //GET: /Admin/Club/Details{courseId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Courses/Details/{courseId}")]
+        [Route("/Admin/Course/Details/{courseId}")]
         public IActionResult Details(int courseId)
         {
             var course = _courseService.GetCourseViewModelById(courseId);
@@ -102,10 +101,9 @@ namespace Timataka.Web.Controllers
             return View(course);
         }
 
-        // Get: Admin/Courses/Delete/{courseId}
+        //GET: /Admin/Course/Delete{courseId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Courses/Delete/{courseId}")]
         public IActionResult Delete(int courseId)
         {
             var model = _courseService.GetCourseViewModelById(courseId);
@@ -116,11 +114,10 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        // Post: Admin/Courses/Delete/{courseId}
+        //POST: /Admin/Course/Delete/{courseId}
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Courses/Delete/{courseId}")]
-        [ValidateAntiForgeryToken]
+        [Route("/Admin/Course/Delete/{courseId}")]
         public async Task<IActionResult> Delete(int courseId, CourseViewModel model)
         {
             var success = await _courseService.MarkCourseAsDeleted(courseId);

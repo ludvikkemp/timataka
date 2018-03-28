@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Services;
@@ -29,15 +30,22 @@ namespace Timataka.Web.Controllers
             _deviceService = deviceService;
         }
 
-        public IActionResult Create(int instanceId)
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create")]
+        public IActionResult Create(int competitionInstanceId, int competitionId)
         {   
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
             ViewBag.Courses = _courseService.GetCourseDropDown();
-            ViewBag.InstanceId = instanceId;
+            ViewBag.InstanceId = competitionInstanceId;
             return View();
         }
 
+        //POST: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EventViewModel model)
         {
@@ -54,29 +62,20 @@ namespace Timataka.Web.Controllers
                 {
                     //Todo: return some error view
                 }
-                return RedirectToAction("Instance","Admin", new { @id = model.CompetitionInstanceId });
+                return RedirectToAction("CompetitionInstance","Admin", new { CompetitionInstanceid = model.CompetitionInstanceId });
             }
             return View(model);
         }
 
-        // GET: Event/Details/5
-        public async Task<IActionResult> Details(int id)
-        {
-            var eventobj = await _eventService.GetEventByIdAsync(id);
-
-            if (eventobj == null)
-            {
-                return NotFound();
-            }
-            return View(eventobj);
-        }
-
-        // GET: Event/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Edit
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Edit/{eventId}")]
+        public async Task<IActionResult> Edit(int competitionId, int competitionInstanceId, int eventId)
         {
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
             ViewBag.Courses = _courseService.GetCourseDropDown();
-            var model = await _eventService.GetEventViewModelByIdAsync(id);
+            var model = await _eventService.GetEventViewModelByIdAsync(eventId);
             if (model == null)
             {
                 return NotFound();
@@ -84,10 +83,10 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        // POST: Event/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //POST: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Edit
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Edit/{eventId}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EventViewModel model)
         {
@@ -101,10 +100,22 @@ namespace Timataka.Web.Controllers
 
                 var compInstanceId = await _eventService.EditEventViewModelAsync(model);
                 //await _eventService.EditAsync(model);
-                return RedirectToAction("Instance","admin", new { @id = compInstanceId });
+                return RedirectToAction("CompetitionInstance","admin", new { @compInstanceId = compInstanceId });
             }
             return View(model);
 
+        }
+
+        // GET: Event/Details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            var eventobj = await _eventService.GetEventByIdAsync(id);
+
+            if (eventobj == null)
+            {
+                return NotFound();
+            }
+            return View(eventobj);
         }
 
         // GET: Event/Delete/5

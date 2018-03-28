@@ -47,6 +47,12 @@ namespace Timataka.Web.Controllers
         public string StatusMessage { get; set; }
 
         [HttpGet]
+        public IActionResult Settings()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
