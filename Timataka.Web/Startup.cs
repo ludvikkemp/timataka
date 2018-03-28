@@ -92,6 +92,7 @@ namespace Timataka.Web
             services.AddTransient<IClubRepository, ClubRepository>();
             services.AddTransient<IDeviceRepository, DeviceRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IMarkerRepository, MarkerRepository>();
 
             // DI for Services
             services.AddTransient<ICompetitionService, CompetitionService>();
@@ -105,6 +106,7 @@ namespace Timataka.Web
             services.AddTransient<IClubService, ClubService>();
             services.AddTransient<IDeviceService, DeviceService>();
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IMarkerService, MarkerService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

@@ -14,12 +14,15 @@ namespace Timataka.Web.Controllers
     {
         private readonly IHeatService _heatService;
         private readonly IAdminService _adminService;
+        private readonly IMarkerService _markerService;
 
         public HeatController(IHeatService heatService,
-                              IAdminService adminService)
+                              IAdminService adminService,
+                              IMarkerService markerService)
         {
             _heatService = heatService;
             _adminService = adminService;
+            _markerService = markerService;
         }
 
         public IActionResult Index()
@@ -262,5 +265,13 @@ namespace Timataka.Web.Controllers
 
             return View(model);
         }
+
+        public IActionResult Markers(int id)
+        {
+            var markers = _markerService.GetmarkersForHeat(id);
+            ViewBag.HeatId = id;
+            return View(markers);
+        }
+
     }
 }
