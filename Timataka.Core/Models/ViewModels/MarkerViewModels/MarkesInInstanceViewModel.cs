@@ -9,6 +9,6 @@ namespace Timataka.Core.Models.ViewModels.MarkerViewModels
     {
         public Marker Marker { get; set; }
         public string EventName { get; set; }
-        public int HeatNumber { get; set; }
+        public int? HeatNumber { get; set; }
     }
 }
