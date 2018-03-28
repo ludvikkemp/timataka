@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
-using Timataka.Core.Models.ViewModels.Marker;
+using Timataka.Core.Models.ViewModels.MarkerViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -93,5 +93,14 @@ namespace Timataka.Core.Services
             await _repo.AddAsync(newMarker);
             return newMarker;
         }
+
+        public IEnumerable<Marker> GetUnassignedMarkers(int id)
+        {
+            var result = (from m in GetMarkers()
+                          where m.CompetitionInstanceId == id && m.HeatId == null
+                          select m).ToList();
+            return result;
+        }
+
     }
 }

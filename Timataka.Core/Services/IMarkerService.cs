@@ -17,10 +17,12 @@ namespace Timataka.Core.Services
         IEnumerable<Marker> GetMarkers();
         IEnumerable<Marker> GetMarkersForCompetitionInstance(int id);
         IEnumerable<Marker> GetMarkersForHeat(int id);
+        IEnumerable<Marker> GetUnassignedMarkers(int id);
 
         void AssignMarkerToHeat(Marker m, int heatId);
 
         Task<Marker> DuplicateMarker(Marker m);
+
 
     }
 }
