@@ -339,6 +339,7 @@ namespace Timataka.Web.Controllers
             return View(categories);
         }
 
+
         [Authorize(Roles = "Admin")]
         public IActionResult Clubs()
         {
@@ -346,6 +347,8 @@ namespace Timataka.Web.Controllers
             return View(clubs);
         }
 
+        [HttpGet]
+        [Route("Admin/Courses")]
         [Authorize(Roles = "Admin")]
         public IActionResult Courses()
         {
@@ -353,6 +356,8 @@ namespace Timataka.Web.Controllers
             return View(courses);
         }
 
+        [HttpGet]
+        [Route("Admin/Devices")]
         [Authorize(Roles = "Admin")]
         public IActionResult Devices()
         {
