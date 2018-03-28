@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
-using Timataka.Core.Models.ViewModels.Marker;
+using Timataka.Core.Models.ViewModels.MarkerViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -20,7 +20,7 @@ namespace Timataka.Core.Services
 
         void AssignMarkerToHeat(Marker m, int heatId);
 
-        void DuplicateMarker(Marker m);
+        Task<Marker> DuplicateMarker(Marker m);
 
     }
 }
