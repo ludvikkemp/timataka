@@ -52,19 +52,19 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Function to remove a given sport.
         /// </summary>
-        /// <param name="sportId"></param>
+        /// <param name="id"></param>
         /// <returns>Id of the sport removed</returns>
-        public async Task<int> Remove(int sportId)
+        public async Task<int> Remove(int id)
         {
-            var s = await GetSportByIdAsync(sportId);
+            var s = await GetSportByIdAsync(id);
             await _repo.RemoveAsync(s);
-            return sportId;
+            return id;
         }
 
         /// <summary>
         /// Get list of all sports.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of all sports</returns>
         public IEnumerable<SportsViewModel> GetAllSports()
         {
             var sports = _repo.GetListOfSportsViewModels();
@@ -74,22 +74,22 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Get a sport by its ID.
         /// </summary>
-        /// <param name="sportId"></param>
+        /// <param name="id"></param>
         /// <returns>Sport with a given ID.</returns>
-        public async Task<Sport> GetSportByIdAsync(int sportId)
+        public async Task<Sport> GetSportByIdAsync(int id)
         {
-            var s = await _repo.GetByIdAsync(sportId);
+            var s = await _repo.GetByIdAsync(id);
             return s;
         }
 
         /// <summary>
         /// Get a sport by its Name
         /// </summary>
-        /// <param name="sportName"></param>
-        /// <returns></returns>
-        public async Task<Sport> GetSportByName(string sportName)
+        /// <param name="name"></param>
+        /// <returns>Sport with the given name.</returns>
+        public async Task<Sport> GetSportByName(string name)
         {
-            var s = await _repo.GetSportByNameAsync(sportName);
+            var s = await _repo.GetSportByNameAsync(name);
             return s;
         }
 

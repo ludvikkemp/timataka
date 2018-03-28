@@ -18,13 +18,14 @@ namespace Timataka.Tests
         {
             //Arrange
             var serviceMock = new Mock<IDisciplineService>();
+            var serviceMock2 = new Mock<ISportService>();
             serviceMock.Setup(x => x.GetAllDisciplines()).Returns(() => new List<Discipline>()
             {
                 new Discipline {Id = 1, Name = "Road Running", SportId = 1},
                 new Discipline {Id = 2, Name = "Race Walking", SportId = 1},
                 new Discipline {Id = 3, Name = "Cross Country Running", SportId = 1}
             });
-            var controller = new DisciplineController(serviceMock.Object);
+            var controller = new DisciplineController(serviceMock.Object, serviceMock2.Object);
 
             //Act
             //var result = controller.Index() as ViewResult;

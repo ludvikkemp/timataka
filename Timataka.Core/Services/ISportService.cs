@@ -9,9 +9,8 @@ namespace Timataka.Core.Services
     {
         Task<Sport> Add(SportsViewModel m);
         Task<Sport> Edit(Sport s);
-        Task<int> Remove(int sportId);
+        Task<int> Remove(int id);
         IEnumerable<SportsViewModel> GetAllSports();
-        Task<Sport> GetSportByIdAsync(int sportId);
-
+        Task<Sport> GetSportByIdAsync(int id);
     }
 }

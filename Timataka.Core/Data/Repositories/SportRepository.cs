@@ -13,21 +13,21 @@ namespace Timataka.Core.Data.Repositories
     public class SportRepository : ISportRepository
     {
         private bool _disposed = false;
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
 
-        public SportRepository(ApplicationDbContext context)
+        public SportRepository(ApplicationDbContext db)
         {
-            _context = context;
+            _db = db;
         }
 
         public IEnumerable<Sport> Get()
         {
-            return _context.Sports.ToList();
+            return _db.Sports.ToList();
         }
 
         public IEnumerable<SportsViewModel> GetListOfSportsViewModels()
         {
-            var result = (from s in _context.Sports
+            var result = (from s in _db.Sports
                 select new SportsViewModel
                 {
                     Name = s.Name,
@@ -38,36 +38,36 @@ namespace Timataka.Core.Data.Repositories
 
         public Sport GetById(int id)
         {
-            return _context.Sports.SingleOrDefault(x => x.Id == id);
+            return _db.Sports.SingleOrDefault(x => x.Id == id);
         }
 
         public Task<Sport> GetByIdAsync(int id)
         {
-            return _context.Sports.SingleOrDefaultAsync(x => x.Id == id);
+            return _db.Sports.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public void Insert(Sport entity)
         {
-            _context.Sports.Add(entity);
-            _context.SaveChanges();
+            _db.Sports.Add(entity);
+            _db.SaveChanges();
         }
 
         public async Task InsertAsync(Sport entity)
         {
-            await _context.Sports.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await _db.Sports.AddAsync(entity);
+            await _db.SaveChangesAsync();
         }
 
         public void Edit(Sport entity)
         {
-            _context.Sports.Update(entity);
-            _context.SaveChanges();
+            _db.Sports.Update(entity);
+            _db.SaveChanges();
         }
 
         public async Task EditAsync(Sport entity)
         {
-            _context.Sports.Update(entity);
-            await _context.SaveChangesAsync();
+            _db.Sports.Update(entity);
+            await _db.SaveChangesAsync();
         }
 
         
@@ -78,7 +78,7 @@ namespace Timataka.Core.Data.Repositories
             {
                 if (disposing)
                 {
-                    _context.Dispose();
+                    _db.Dispose();
                 }
             }
 
@@ -105,7 +105,7 @@ namespace Timataka.Core.Data.Repositories
 
         public Task<Sport> GetSportByNameAsync(string sportName)
         {
-            var s = _context.Sports.SingleOrDefaultAsync(x => x.Name == sportName);
+            var s = _db.Sports.SingleOrDefaultAsync(x => x.Name == sportName);
             return s;
         }
     }
