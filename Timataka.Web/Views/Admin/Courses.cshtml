@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Courses </span>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Course" asp-action="Create">Add New</a>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Course" asp-action="Create">Create New</a>
             </div>
         </div>
 
@@ -79,9 +79,9 @@
                                                 <tr>
                                                     <td>@item.Name</td>
                                                     <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Course" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Course" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Course" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Course" asp-action="Edit" asp-route-courseId="@item.Id">Edit</a>
+                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Course" asp-action="Details" asp-route-courseId="@item.Id">Details</a>
+                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Course" asp-action="Delete" asp-route-courseId="@item.Id">Delete</a>
                                                     </td>
                                                 </tr>
                                             }
