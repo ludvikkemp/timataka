@@ -186,7 +186,7 @@ namespace Timataka.Web.Controllers
         [Route("Admin/Sport/{sportId}")]
         public IActionResult Sport(int sportId)
         {
-            var sport = _sportService.GetSportById(sportId);
+            var sport = _sportService.GetSportByIdAsync(sportId);
             sport.Wait();
             var dto = new SportDto
             {

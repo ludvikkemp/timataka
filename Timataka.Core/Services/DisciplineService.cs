@@ -26,7 +26,7 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Function to add a discipline.
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="d"></param>
         /// <returns>ID of discipline added</returns>
         public async Task<Discipline> AddAsync(Discipline d)
         {
@@ -37,7 +37,7 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Function to edit a discipline.
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="d"></param>
         /// <returns>Id of the discipline edited</returns>
         public async Task<Discipline> EditAsync(Discipline d)
         {
@@ -48,12 +48,12 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Function to remove a given discipline.
         /// </summary>
-        /// <param name="DisciplineId"></param>
+        /// <param name="id"></param>
         /// <returns>Id of the discipline removed</returns>
-        public int Remove(int DisciplineId)
+        public async Task<int> RemoveAsync(int id)
         {
-            _repo.Remove(GetDisciplineById(DisciplineId));
-            return DisciplineId;
+            await _repo.RemoveAsync(await GetDisciplineByIdAsync(id));
+            return id;
         }
 
         /// <summary>
@@ -69,52 +69,12 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Get a discipline by its ID.
         /// </summary>
-        /// <param name="DisciplineId"></param>
+        /// <param name="id"></param>
         /// <returns>Discipline with a given ID.</returns>
-        public Discipline GetDisciplineById(int DisciplineId)
+        public async Task<Discipline> GetDisciplineByIdAsync(int id)
         {
-            var d = _repo.GetById(DisciplineId);
+            var d = await _repo.GetByIdAsync(id);
             return d;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public List<SelectListItem> GetSportsListItems()
-        {
-            List<SelectListItem> selectSportsListItems =
-                new List<SelectListItem>();
-
-            var listOfSports = _repo.GetSports();
-
-            foreach (var item in listOfSports)
-            {
-                selectSportsListItems.Add(
-                    new SelectListItem
-                    {
-                        Text = item.Name,
-                        Value = item.Id.ToString()
-                    });
-            }
-
-            return selectSportsListItems;
-        }
-
-        public int GetNextId()
-        {
-            int maxId = -1;
-            var disciplines = _repo.Get();
-
-            foreach(var discipline in disciplines)
-            {
-                if(discipline.Id > maxId)
-                {
-                    maxId = discipline.Id;
-                }
-            }
-
-            return maxId + 1;
         }
 
         /// <summary>

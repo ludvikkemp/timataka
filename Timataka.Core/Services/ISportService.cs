@@ -11,7 +11,7 @@ namespace Timataka.Core.Services
         Task<Sport> Edit(Sport s);
         Task<int> Remove(int sportId);
         IEnumerable<SportsViewModel> GetAllSports();
-        Task<Sport> GetSportById(int sportId);
+        Task<Sport> GetSportByIdAsync(int sportId);
 
     }
 }

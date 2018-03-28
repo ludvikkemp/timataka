@@ -56,7 +56,7 @@ namespace Timataka.Core.Services
         /// <returns>Id of the sport removed</returns>
         public async Task<int> Remove(int sportId)
         {
-            var s = await GetSportById(sportId);
+            var s = await GetSportByIdAsync(sportId);
             await _repo.RemoveAsync(s);
             return sportId;
         }
@@ -76,7 +76,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="sportId"></param>
         /// <returns>Sport with a given ID.</returns>
-        public async Task<Sport> GetSportById(int sportId)
+        public async Task<Sport> GetSportByIdAsync(int sportId)
         {
             var s = await _repo.GetByIdAsync(sportId);
             return s;

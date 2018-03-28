@@ -8,13 +8,11 @@ namespace Timataka.Core.Services
 {
     public interface IDisciplineService
     {
-        Task<Discipline> AddAsync(Discipline s);
-        Task<Discipline> EditAsync(Discipline s);
-        int Remove(int DisciplineId);
+        Task<Discipline> AddAsync(Discipline d);
+        Task<Discipline> EditAsync(Discipline d);
+        Task<int> RemoveAsync(int id);
         IEnumerable<Discipline> GetAllDisciplines();
-        Discipline GetDisciplineById(int DisciplineId);
-        List<SelectListItem> GetSportsListItems();
-        int GetNextId();
-        IEnumerable<DisciplineViewModel> GetDisciplinesBySportId(int  id);
+        Task<Discipline> GetDisciplineByIdAsync(int id);
+        IEnumerable<DisciplineViewModel> GetDisciplinesBySportId(int id);
     }
 }

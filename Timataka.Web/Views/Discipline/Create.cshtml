@@ -19,15 +19,7 @@
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="SportId"></label>
-                    <select name="SportId" class="form-control">
-                        @foreach (var item in ViewBag.Sports)
-                        {
-                            <option value="@item.Value" id="@item.Value">@item.Text</option>
-                        }
-                    </select>
-                </div>
+                <input type="hidden" asp-for="SportId" value="@ViewContext.RouteData.Values["sportId"]" />
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>

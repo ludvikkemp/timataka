@@ -23,7 +23,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Sport/Details/{sportId}")]
         public async Task<IActionResult> Details(int sportId)
         {
-            var sport = await _sportService.GetSportById(sportId);
+            var sport = await _sportService.GetSportByIdAsync(sportId);
 
             if (sport == null)
             {
@@ -62,7 +62,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Sport/Edit/{sportId}")]
         public IActionResult Edit(int sportId)
         {
-            var sport = _sportService.GetSportById(sportId);
+            var sport = _sportService.GetSportByIdAsync(sportId);
             if (sport == null)
             {
                 return NotFound();
@@ -91,7 +91,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Sport/Delete/{sportId}")]
         public async Task<IActionResult> Delete(int sportId)
         {
-            var sport = await _sportService.GetSportById(sportId);
+            var sport = await _sportService.GetSportByIdAsync(sportId);
             return View(sport);
         }
 
