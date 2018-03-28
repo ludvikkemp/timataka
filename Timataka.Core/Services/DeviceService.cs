@@ -13,11 +13,13 @@ namespace Timataka.Core.Services
     {
         private readonly IDeviceRepository _repo;
         private readonly IEventService _eventService;
+        private readonly ICompetitionService _competitionService;
 
-        public DeviceService(IDeviceRepository repo, IEventService eventService)
+        public DeviceService(IDeviceRepository repo, IEventService eventService, ICompetitionService competitionService)
         {
             _repo = repo;
             _eventService = eventService;
+            _competitionService = competitionService;
         }
 
         /// <summary>
@@ -162,15 +164,38 @@ namespace Timataka.Core.Services
         }
 
         /// <summary>
-        /// 
+        /// Function that returns all devices for given event.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IEnumerable<DevicesInEvent> GetDevicesInEvent(int id)
+        public IEnumerable<DeviceInEventViewModel> GetDevicesInEvent(int id)
         {
             var result = (from x in _repo.GetDevicesInEvents()
                           where x.EventId == id
-                          select x);
+                          select new DeviceInEventViewModel
+                          {
+                              Device = GetDeviceByIdAsync(x.DeviceId).Result,
+                              Event = _eventService.GetEventByIdAsync(x.EventId).Result,
+                              DevicesInEvent = x
+                          });
+            return result;
+        }
+
+        /// <summary>
+        /// Function to get all devices for a competition instance
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IEnumerable<DeviceInEventViewModel> GetDevicesInCompetitionInstance(int id)
+        {
+            var result = from x in _eventService.GetEventsByCompetitionInstanceId(id)
+                         join d in _repo.GetDevicesInEvents() on x.Id equals d.EventId
+                         select new DeviceInEventViewModel
+                         {
+                             Event = _eventService.GetEventByIdAsync(d.EventId).Result,
+                             DevicesInEvent = d,
+                             Device = GetDeviceByIdAsync(d.DeviceId).Result
+                         };
             return result;
         }
 
@@ -182,8 +207,8 @@ namespace Timataka.Core.Services
         public IEnumerable<Event> GetEventsForADevice(int id)
         {
             var result = (from x in _repo.GetDevicesInEvents()
-                          where x.DeviceId == id
-                          select _eventService.GetEventByIdAsync(id).Result);
+                         where x.DeviceId == id
+                         select _eventService.GetEventByIdAsync(x.EventId).Result).ToList();
             return result;
         }
 

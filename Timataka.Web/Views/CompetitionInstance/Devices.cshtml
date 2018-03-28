@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Timataka.Core.Models.ViewModels.DeviceViewModels.DeviceInEventViewModel>
+
+@{
+    ViewBag.Title = "Devices";
+    ViewData["Title"] = "Devices";
+    Layout = "_AdminLayout";
+}
+
+<<section class="content">
+    <div class="title-block">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> Devices in @ViewBag.CompetitionInstance.Name</span>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="CompetitionInstance" asp-action="AssignDevice" asp-route-instanceId="@ViewBag.CompetitionInstance.Id">Assign Device</a>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Admin" asp-action="Instance" asp-route-id="@ViewBag.CompetitionInstance.Id">Events</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="" method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <nav class="text-right col-md-6">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href=""> Prev </a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href=""> 1 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 2 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 3 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 4 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 5 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> Next </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Device</th>
+                                                <th>Active</th>
+                                                <th>Event</th>
+                                                <th>Time</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.Device.Name</td>
+                                                    <td>@item.Device.Active</td>
+                                                    <td>@item.Event.Name</td>
+                                                    <td>@item.Event.DateFrom.TimeOfDay - @item.Event.DateTo.TimeOfDay</td>
+                                                    <td>
+                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="CompetitionInstance" asp-action="UnassignDevice" asp-route-deviceId="@item.Device.Id" asp-route-eventId="@item.Event.Id" asp-route-instanceId="@item.Event.CompetitionInstanceId">Unassign</a>
+                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Device" asp-action="Details" asp-route-id="@item.Device.Id">Details</a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.Entities.Device
+﻿@model Timataka.Core.Models.ViewModels.DeviceViewModels.DeviceDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -8,25 +8,38 @@
 <section class="content">
 
     <div>
-        <h4>@Model.Name</h4>
+        <h4>@Model.Device.Name</h4>
         <hr />
         <dl>
             <dt>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Device.Name)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Name)
+                @Html.DisplayFor(model => model.Device.Name)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Active)
+                @Html.DisplayNameFor(model => model.Device.Active)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Active)
+                @Html.DisplayFor(model => model.Device.Active)
             </dd>
         </dl>
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+        <h4>Used in events</h4>
+        <hr />
+        <dl>
+            @foreach (var x in Model.Events)
+             {
+                <dd>
+                    <a asp-controller="Admin" asp-action="Event" asp-route-id="@x.Id">@x.Name</a> - @x.DateFrom - @x.DateTo
+                </dd>
+             }
+
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Device.Id" class="btn btn-warning-outline btn-sm">Edit</a>
         <a asp-controller="Admin" asp-action="Devices" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>

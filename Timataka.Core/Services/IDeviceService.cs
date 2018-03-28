@@ -20,7 +20,8 @@ namespace Timataka.Core.Services
         Boolean NameExists(String name);
 
         Task<DevicesInEvent> AddDeviceInEventAsync(int dId, int eId);
-        IEnumerable<DevicesInEvent> GetDevicesInEvent(int id);
+        IEnumerable<DeviceInEventViewModel> GetDevicesInEvent(int id);
+        IEnumerable<DeviceInEventViewModel> GetDevicesInCompetitionInstance(int id);
         IEnumerable<Event> GetEventsForADevice(int id);
         Task<Boolean> RemoveDeviceInEventAsync(DevicesInEvent d);
         Boolean DeviceAssigned(DevicesInEvent d);

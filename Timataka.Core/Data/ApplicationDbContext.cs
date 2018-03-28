@@ -43,9 +43,6 @@ namespace Timataka.Core.Data
             builder.Entity<ContestantInHeat>()
                 .HasKey(c => new { c.UserId, c.HeatId });
 
-            builder.Entity<Marker>()
-                .HasKey(m => new { m.EventId, m.HeatId });
-
             builder.Entity<DevicesInEvent>()
                 .HasKey(d => new { d.EventId, d.DeviceId });
         }

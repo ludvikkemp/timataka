@@ -1,0 +1,38 @@
+﻿@model Timataka.Core.Models.ViewModels.DeviceViewModels.CreateDeviceInEventViewModel
+
+@{
+    ViewData["Title"] = "AssignDevice";
+    Layout = "_AdminLayout";
+}
+<section class="content">
+
+    <h4>Assign Device</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AssignDevice">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="DeviceId">Device</label>
+                    <select name="DeviceId" class="form-control">
+                        @foreach (var item in ViewBag.Devices)
+                        {
+                            <option value="@item.Id" id="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <input type="hidden" asp-for="EventId" value="@ViewBag.Event.Id" />
+                <div class="form-group">
+                    <input type="submit" value="Assign" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-controller="Event" asp-action="Devices" asp-route-eventId=@ViewContext.RouteData.Values["eventId"] class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

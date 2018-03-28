@@ -7,6 +7,7 @@ using Timataka.Core.Data.Repositories;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
+using Timataka.Core.Models.ViewModels.DeviceViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -15,14 +16,17 @@ namespace Timataka.Web.Controllers
         private readonly IEventService _eventService;
         private readonly IDisciplineService _disciplineService;
         private readonly ICourseService _courseService;
+        private readonly IDeviceService _deviceService;
 
         public EventController(IEventService eventService,
                                IDisciplineService disciplineService,
-                               ICourseService courseService)
+                               ICourseService courseService,
+                               IDeviceService deviceService)
         {
             _disciplineService = disciplineService;
             _eventService = eventService;
             _courseService = courseService;
+            _deviceService = deviceService;
         }
 
         public IActionResult Create(int instanceId)
@@ -111,8 +115,7 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var task = _eventService.GetEventByIdAsync((int)id);
-            var entity = task.Result;
+            var entity = await _eventService.GetEventByIdAsync((int)id);;
 
             if (entity == null)
             {
@@ -132,6 +135,40 @@ namespace Timataka.Web.Controllers
             await _eventService.RemoveAsync(id);
             return RedirectToAction("Instance", "Admin", new { @id = instanceId });
 
+        }
+
+        [HttpGet]
+        [Route("/Event/{eventId}/Devices")]
+        public IActionResult Devices(int eventId)
+        {
+            var data = _deviceService.GetDevicesInEvent(eventId);
+            ViewBag.Event = _eventService.GetEventByIdAsync(eventId).Result;
+            return View(data);
+        }
+
+        [HttpGet]
+        [Route("/Event/{eventId}/UnassignDevice/{deviceId}")]
+        public async Task<IActionResult> UnassignDevice(int deviceId, int eventId)
+        {
+            await _deviceService.RemoveDeviceInEventAsync(new DevicesInEvent { DeviceId = deviceId, EventId = eventId });
+            return RedirectToAction("Event", "Admin", new { @id = eventId });
+        }
+
+        [HttpGet]
+        [Route("/Event/{eventId}/AssignDevice")]
+        public async Task<IActionResult> AssignDevice(int eventId)
+        {
+            ViewBag.Devices = _deviceService.GetDevices();
+            ViewBag.Event = await _eventService.GetEventByIdAsync(eventId);
+            return View();
+        }
+
+        [HttpPost("/Event/{eventId}/AssignDevice")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignDevice(CreateDeviceInEventViewModel model)
+        {
+            await _deviceService.AddDeviceInEventAsync(model.DeviceId, model.EventId);
+            return RedirectToAction("Devices", model.EventId);
         }
     }
 }
