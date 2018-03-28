@@ -58,7 +58,7 @@ namespace Timataka.Core.Services
         public async Task<Competition> Edit(Competition c, CompetitionsViewModel m)
         {
             c.Description = m.Description;
-            c.Email = m.Description;
+            c.Email = m.Email;
             c.Name = m.Name;
             c.Phone = m.PhoneNumber;
             c.Sponsor = m.Sponsor;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Timataka.Core.Models.Entities;
@@ -19,26 +20,19 @@ namespace Timataka.Web.Controllers
             _competitionService = competitionService;
         }
 
-        // Get: Competitions/Details/3
-        public async Task<IActionResult> Details(int id)
-        {
-            var c = await _competitionService.GetCompetitionById(id);
-
-            if (c == null)
-            {
-                return NotFound();
-            }
-            return View(c);
-        }
-
-        // Get: Competitions/Create
+        //GET: /Admin/Competition/Create
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/Create")]
         public IActionResult Create()
         {
             return View();
         }
 
-        //Post: Competitions/Create
+        //Post: Admin/Competitions/Create
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CompetitionsViewModel model)
         {
@@ -54,10 +48,13 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        // Get: Competitions/Edit/3
-        public IActionResult Edit(int id)
+        //GET: /Admin/Competition/Edit/{clubId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/Edit/{competitionId}")]
+        public IActionResult Edit(int competitionId)
         {
-            var model = _competitionService.GetCompetitionViewModelById(id);
+            var model = _competitionService.GetCompetitionViewModelById(competitionId);
             if (model == null)
             {
                 return NotFound();
@@ -65,33 +62,53 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        // Post: Competitons/Edit/3
+        //POST: /Admin/Competition/Edit/{clubId}
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/Edit/{competitionId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CompetitionsViewModel model)
+        public async Task<IActionResult> Edit(int competitionId, CompetitionsViewModel model)
         {
-            if (id != model.Id)
+            if (competitionId != model.Id)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                var instance = await _competitionService.GetCompetitionById(model.Id);
-                await _competitionService.Edit(instance, model);
+                var competition = await _competitionService.GetCompetitionById(model.Id);
+                await _competitionService.Edit(competition, model);
                 return RedirectToAction("Competitions", "Admin");
             }
             return View(model);
         }
 
-        // GET: Competitons/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        //GET: /Admin/Competition/Details{competitionId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/Details/{competitionId}")]
+        public async Task<IActionResult> Details(int competitionId)
         {
-            if (id == null)
+            var c = await _competitionService.GetCompetitionById(competitionId);
+
+            if (c == null)
+            {
+                return NotFound();
+            }
+            return View(c);
+        }
+
+        //GET: /Admin/Competition/Delete{competitionId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/Delete/{competitionId}")]
+        public async Task<IActionResult> Delete(int? competitionId)
+        {
+            if (competitionId == null)
             {
                 return NotFound();
             }
 
-            var c = await _competitionService.GetCompetitionById((int)id);
+            var c = await _competitionService.GetCompetitionById((int)competitionId);
             if (c == null)
             {
                 return NotFound();
@@ -100,29 +117,20 @@ namespace Timataka.Web.Controllers
             return View(c);
         }
 
-        // POST: Competitons/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        //POST: /Admin/Competition/Delete/{competitionId}
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/Delete/{competitionId}")]
+        public async Task<IActionResult> Delete(int competitionId)
         {
-            var sport = await _competitionService.Remove((int)id);
+            var sport = await _competitionService.Remove((int)competitionId);
             return RedirectToAction("Competitions", "Admin");
         }
 
-        //ManagesCompetition
+
+        // *** ManagesCompetition *** //
         
-        
-        // Get Competitions/ManagesCompetitions
- /*       [HttpGet("/Competitions/ManagesCompetitions/{CompetitionId}")]
-        public IActionResult GetRoles(int competitionId)
-        {
-            if(competitionId == 0)
-            {
-                return View(_competitionService.GetAllRoles());
-            }
-            return View(_competitionService.GetAllRolesForCompetition(competitionId));
-        }
-*/
+
         // Get Competitons/ManagesCompetitions/Add
         [HttpGet]
         public IActionResult AddRole(string userId, int competitionId)

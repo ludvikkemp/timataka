@@ -14,6 +14,7 @@
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="CompetitionId" />
+                <input type="hidden" asp-for="Id" />
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" />
@@ -38,49 +39,49 @@
                     <label asp-for="Status"></label>
                     <select name="Status" class="form-control">
                         @if (Model.Status == Status.Pending)
-                        {
-                        <option selected value="0">Pending</option>
-                        <option value="1">Open For Registration</option>
-                        <option value="2">On Going</option>
-                        <option value="3">Finished</option>
-                        <option value="4">Closed</option>
-                        }
+            {
+                <option selected value="0">Pending</option>
+                <option value="1">Open For Registration</option>
+                <option value="2">On Going</option>
+                <option value="3">Finished</option>
+                <option value="4">Closed</option>
+}
 
                         @if (Model.Status == Status.OpenForRegistration)
-                        {
-                        <option value="0">Pending</option>
-                        <option selected value="1">Open For Registration</option>
-                        <option value="2">On Going</option>
-                        <option value="3">Finished</option>
-                        <option value="4">Closed</option>
-                        }
+            {
+                <option value="0">Pending</option>
+                <option selected value="1">Open For Registration</option>
+                <option value="2">On Going</option>
+                <option value="3">Finished</option>
+                <option value="4">Closed</option>
+}
 
                         @if (Model.Status == Status.Ongoing)
-                        {
-                        <option value="0">Pending</option>
-                        <option value="1">Open For Registration</option>
-                        <option selected value="2">On Going</option>
-                        <option value="3">Finished</option>
-                        <option value="4">Closed</option>
-                        }
+            {
+                <option value="0">Pending</option>
+                <option value="1">Open For Registration</option>
+                <option selected value="2">On Going</option>
+                <option value="3">Finished</option>
+                <option value="4">Closed</option>
+}
 
                         @if (Model.Status == Status.Finished)
-                        {
-                        <option value="0">Pending</option>
-                        <option value="1">Open For Registration</option>
-                        <option value="2">On Going</option>
-                        <option selected value="3">Finished</option>
-                        <option value="4">Closed</option>
-                        }
+            {
+                <option value="0">Pending</option>
+                <option value="1">Open For Registration</option>
+                <option value="2">On Going</option>
+                <option selected value="3">Finished</option>
+                <option value="4">Closed</option>
+}
 
                         @if (Model.Status == Status.Closed)
-                        {
-                        <option value="0">Pending</option>
-                        <option value="1">Open For Registration</option>
-                        <option value="2">On Going</option>
-                        <option value="3">Finished</option>
-                        <option selected value="4">Closed</option>
-                        }
+            {
+                <option value="0">Pending</option>
+                <option value="1">Open For Registration</option>
+                <option value="2">On Going</option>
+                <option value="3">Finished</option>
+                <option selected value="4">Closed</option>
+}
 
                     </select>
                 </div>
@@ -89,8 +90,8 @@
                     <select name="CountryId" class="form-control">
                         <option value="@Model.CountryId"> @Model.CountryName </option>
                         @foreach (var item in ViewBag.ListOfNations)
-    {
-                    <option value="@item.Value" id="@item.Value">@item.Text</option>
+            {
+                <option value="@item.Value" id="@item.Value">@item.Text</option>
 }
                     </select>
                 </div>
@@ -102,7 +103,7 @@
     </div>
 
     <div>
-        <a asp-controller="Admin" asp-action="Competition" asp-route-id="@Model.CompetitionId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+        <a asp-controller="Admin" asp-action="Competition" asp-route-competitionId="@Model.CompetitionId" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
 @section Scripts {

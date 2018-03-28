@@ -205,26 +205,26 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Admin/Competition/{id}")]
+        [Route("Admin/Competition/{competitionId}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Competition(int id)
+        public IActionResult Competition(int competitionId)
         {
-            var competition = _competitionService.GetCompetitionById(id);
+            var competition = _competitionService.GetCompetitionById(competitionId);
             competition.Wait();
             var compDto = new CompetitionDto
             {
                 Competiton = competition.Result,
-                Instances = _competitionService.GetAllInstancesOfCompetition(id)
+                Instances = _competitionService.GetAllInstancesOfCompetition(competitionId)
             };
             return View(compDto);
         }
 
         [HttpGet]
-        [Route("Admin/Instance/{id}")]
+        [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Instance(int id)
+        public IActionResult CompetitionInstance(int competitionId, int competitionInstanceId)
         {   
-            var instanceTask = _competitionService.GetCompetitionInstanceById(id);
+            var instanceTask = _competitionService.GetCompetitionInstanceById(competitionInstanceId);
             instanceTask.Wait();
 
             var instance = new CompetitionsInstanceViewModel
@@ -240,7 +240,7 @@ namespace Timataka.Web.Controllers
                 Deleted = instanceTask.Result.Deleted
             };
             
-            var events = _eventService.GetEventsByCompetitionInstanceId(id);
+            var events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
             
             var instanceDto = new CompetitionInstanceDTO
             {
@@ -253,14 +253,14 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Admin/Event/{id}")]
+        [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Event(int id)
+        public IActionResult Event(int competitionId, int competitionInstanceId, int eventId)
         {
-            var eventObj = _eventService.GetEventByIdAsync(id);
+            var eventObj = _eventService.GetEventByIdAsync(eventId);
             eventObj.Wait();
 
-            var heats = _heatService.GetHeatsForEvent(id);
+            var heats = _heatService.GetHeatsForEvent(eventId);
             
             var models = new List<HeatViewModel>();
 

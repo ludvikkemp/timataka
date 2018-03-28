@@ -12,6 +12,8 @@ namespace Timataka.Core.Models.Entities
         
         public int SportId { get; set; }
         [ForeignKey(nameof(SportId))]
-        public virtual Sport ApplicationSportId { get; set; } 
+        public virtual Sport ApplicationSportId { get; set; }
+
+        public Boolean Deleted { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
@@ -28,29 +29,22 @@ namespace Timataka.Web.Controllers
             _eventService = eventService;
         }
 
-        // Get: CompetitionInstances/Details/3
-        public async Task<IActionResult> Details(int id)
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Create
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Create")]
+        public IActionResult Create(int competitionId)
         {
-            var c = await _competitionService.GetCompetitionInstanceById(id);
-
-            if (c == null)
-            {
-                return NotFound();
-            }
-            return View(c);
-        }
-
-        // Get: CompetitionInstances/Create
-        public IActionResult Create(int compId)
-        {
-            ViewBag.CompId = compId;
+            ViewBag.CompId = competitionId;
             ViewBag.CompetitionIds = _competitionService.GetAllCompetitions();
             ViewBag.Nations = _accountService.GetNationsListItems();
             return View();
         }
 
-        // Post: CompetitionInstances/Create
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Create
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CompetitionsInstanceViewModel model)
         {
@@ -64,25 +58,30 @@ namespace Timataka.Web.Controllers
                 {
                     return new BadRequestResult();
                 }
-                return RedirectToAction("Competition","Admin", new { @id = model.CompetitionId });
+                return RedirectToAction("Competition","Admin", new { @competitionId = model.CompetitionId });
             }
             return View(model);
         }
 
-        // Get: CompetitionInstances/Edit/3
-        public IActionResult Edit(int id)
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Edit/{competitionInstanceId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Edit/{competitionInstanceId}")]
+        public IActionResult Edit(int competitionId, int competitionInstanceId)
         {
-            var model = _competitionService.GetCompetitionInstanceViewModelById(id);
+            var model = _competitionService.GetCompetitionInstanceViewModelById(competitionInstanceId);
             ViewBag.ListOfNations = _accountService.GetNationsListItems();
             return View(model);
         }
 
-        // Post: CompetitonInstances/Edit/3
+        //POST: /Admin/Competition/{competitionId}/CompetitionInstance/Edit/{competitionInstanceId}
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Edit/{competitionInstanceId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CompetitionsInstanceViewModel model)
+        public async Task<IActionResult> Edit(int competitionId, int competitionInstanceId, CompetitionsInstanceViewModel model)
         {
-            if (id != model.Id)
+            if (competitionInstanceId != model.Id)
             {
                 return NotFound();
             }
@@ -90,20 +89,38 @@ namespace Timataka.Web.Controllers
             {
                 var compInstance = await _competitionService.GetCompetitionInstanceById(model.Id);
                 await _competitionService.EditInstance(compInstance, model);
-                return RedirectToAction("Competition", "Admin", new { @id = compInstance.CompetitionId });
+                return RedirectToAction("Competition", "Admin", new { @competitionId = compInstance.CompetitionId });
             }
             return View(model);
         }
 
-        // GET: CompetitonInstances/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Details/{competitionInstanceId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Details/{competitionInstanceId}")]
+        public async Task<IActionResult> Details(int competitionId, int competitionInstanceId)
         {
-            if (id == null)
+            var c = await _competitionService.GetCompetitionInstanceById(competitionInstanceId);
+
+            if (c == null)
+            {
+                return NotFound();
+            }
+            return View(c);
+        }
+
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Delete/{competitionInstanceId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Delete/{competitionInstanceId}")]
+        public async Task<IActionResult> Delete(int competitionId, int? competitionInstanceId)
+        {
+            if (competitionInstanceId == null)
             {
                 return NotFound();
             }
 
-            var c = await _competitionService.GetCompetitionInstanceById((int)id);
+            var c = await _competitionService.GetCompetitionInstanceById((int)competitionInstanceId);
             if (c == null)
             {
                 return NotFound();
@@ -112,17 +129,22 @@ namespace Timataka.Web.Controllers
             return View(c);
         }
 
-        // POST: CompetitonInstances/Delete/5
-        [HttpPost, ActionName("Delete")]
+        //POST: /Admin/Competition/{competitionId}/CompetitionInstance/Delete/{competitionInstanceId}
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Delete/{competitionInstanceId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId)
         {
-            var instance = _competitionService.GetCompetitionInstanceById(id);
+            var instance = _competitionService.GetCompetitionInstanceById(competitionInstanceId);
             var compId = instance.Result.CompetitionId;
-            await _competitionService.RemoveInstance((int)id);
-            return RedirectToAction("Competition", "Admin", new { @id = compId });
+            await _competitionService.RemoveInstance((int)competitionInstanceId);
+            return RedirectToAction("Competition", "Admin", new { @competitionId = compId });
 
         }
+
+
+        // **************** DEVICES ****************** //
 
         [HttpGet]
         [Route("/CompetitionInstance/{instanceId}/Devices")]
