@@ -55,7 +55,7 @@ namespace Timataka.Web.Controllers
         //GET: /Admin/Sport/{sportId}/Discipline/Details/{disciplineId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Sport/{sportId}/Discipline/Details/{disciplineId}")]
+        [Route("/Admin/Sport/{sportId}/Discipline/Details/{disciplineId}")]
         public IActionResult Details(int disciplineId, int sportId)
         {
             var discipline = _disciplineService.GetDisciplineById(disciplineId);
@@ -69,7 +69,7 @@ namespace Timataka.Web.Controllers
         //GET: /Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}")]
+        [Route("/Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}")]
         public IActionResult Edit(int disciplineId, int sportId)
         {
             var discipline = _disciplineService.GetDisciplineById(disciplineId);
@@ -90,7 +90,7 @@ namespace Timataka.Web.Controllers
         //POST: /Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}")]
+        [Route("/Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int sportId, int disciplineId, DisciplineViewModel model)
         {
@@ -99,7 +99,7 @@ namespace Timataka.Web.Controllers
                 var result = _disciplineService.GetDisciplineById(model.Id);
                 result.Name = model.Name;
                 await _disciplineService.EditAsync(result);
-                return RedirectToAction("Sport", "Admin", new { @id = sportId });
+                return RedirectToAction("Sport", "Admin", new { @sportId= sportId });
             }
 
             return View(model);
