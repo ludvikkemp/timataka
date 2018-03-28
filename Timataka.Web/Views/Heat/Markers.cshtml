@@ -46,7 +46,7 @@
                                                         @item.Location
                                                     </td>
                                                     <td>
-                                                        <a asp-controller="Heat" asp-action="AssignMarker" asp-route-markerId="@item.Id" asp-route-heatId="@item.HeatId" class="btn btn-warning-outline btn-sm">Assign</a>
+                                                        <a asp-controller="Heat" asp-action="AssignMarker" asp-route-markerId="@item.Id" asp-route-heatId="@ViewBag.HeatId" class="btn btn-success-outline btn-sm">Assign</a>
                                                         <a asp-controller="Heat" asp-action="EditMarker" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
                                                         <a asp-controller="Heat" asp-action="RemoveMarker" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
                                                     </td>
