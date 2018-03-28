@@ -10,7 +10,11 @@
             <div class="col-md-12">
                 <span class="title"> @Model.Event.Name </span>
                 <a asp-controller="Heat" asp-action="Create" asp-route-id="@Model.Event.Id" class="btn btn-primary btn-sm rounded-s"> Add Heat </a>
+<<<<<<< HEAD
                 <a asp-controller="Event" asp-action="Devices" asp-route-eventId="@Model.Event.Id" class="btn btn-primary btn-sm rounded-s"> Devices </a>
+=======
+                <a asp-controller="Admin" asp-action="Categories" asp-route-id="@Model.Event.Id" class="btn btn-primary btn-sm rounded-s"> Categories </a>
+>>>>>>> 556a9a1ea22c90b3025fd3f177d9f5ab52fef8bb
             </div>
         </div>
     </div>
@@ -56,7 +60,7 @@
                                                             <a asp-controller="Admin" asp-action="Heat" asp-route-id="@item.Id">@item.HeatNumber</a>
                                                         </td>
                                                         <td>
-                                                            Nr. Cont.
+                                                            @item.NumberOfContestants
                                                         </td>
                                                         <td>
                                                             <a asp-controller="Heat" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>

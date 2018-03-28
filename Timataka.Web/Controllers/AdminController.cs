@@ -16,6 +16,7 @@ using Timataka.Core.Models.ViewModels.AdminViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
 using Timataka.Core.Data.Repositories;
+using Timataka.Core.Models.ViewModels.HeatViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -33,6 +34,7 @@ namespace Timataka.Web.Controllers
         private readonly ICourseService _courseService;
         private readonly IDeviceService _deviceService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ICategoryService _categoryService;
 
         public AdminController(IAdminService adminService,
             IAccountService accountService,
@@ -45,7 +47,8 @@ namespace Timataka.Web.Controllers
             IClubService clubService,
             ICourseService courseService,
             IDeviceService deviceService,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            ICategoryService categoryService)
 
         {
             _adminService = adminService;
@@ -60,6 +63,7 @@ namespace Timataka.Web.Controllers
             _courseService = courseService;
             _deviceService = deviceService;
             _serviceProvider = serviceProvider;
+            _categoryService = categoryService;
         }
             
         [Authorize(Roles = "Admin")]
@@ -160,6 +164,17 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("Roles");
         }
 
+        public async Task<IActionResult> RemoveRole(string id)
+        {
+            var userManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var user = await userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                await userManager.RemoveFromRoleAsync(user, "Admin");
+            }
+            return RedirectToAction("Roles");
+        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult Sports()
         {   
@@ -180,23 +195,7 @@ namespace Timataka.Web.Controllers
             };
             return View(dto);
         }
-        /*
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public IActionResult AddRole(CreateRoleViewModel model)
-        {
-            var role = _roleManager.FindByNameAsync(model.Name);
 
-            if (role.Result == null)
-            {
-                Task roleResult = _roleManager.CreateAsync(new IdentityRole(model.Name));
-                roleResult.Wait();
-                return Redirect("~/Admin/Roles");
-            }
-
-            return View(model);
-        }
-        */
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Competitions()
@@ -261,10 +260,28 @@ namespace Timataka.Web.Controllers
             var eventObj = _eventService.GetEventByIdAsync(id);
             eventObj.Wait();
 
+            var heats = _heatService.GetHeatsForEvent(id);
+            
+            var models = new List<HeatViewModel>();
+
+            foreach(var heat in heats)
+            {
+                var model = new HeatViewModel
+                {
+                    Deleted = heat.Deleted,
+                    EventId = heat.EventId,
+                    HeatNumber = heat.HeatNumber,
+                    Id = heat.Id,
+                    NumberOfContestants = _heatService.GetContestantsInHeat(heat.Id).Count()
+                };
+                models.Add(model);
+            }
+            
+
             var eventDto = new EventDto()
             {
                 Event = eventObj.Result,
-                Heats = _heatService.GetHeatsForEvent(id)
+                Heats = models,
             };
 
             return View(eventDto);
@@ -281,8 +298,7 @@ namespace Timataka.Web.Controllers
             var heatDto = new HeatDto()
             {
                 Heat = heat.Result,
-                Contestants = _heatService.GetContestantsInHeat(heat.Result.Id),
-                Users = _heatService.GetApplicationUsersInHeat(heat.Result.Id)
+                Contestants = _heatService.GetContestantsInHeat(heat.Result.Id)
             };
 
             return View(heatDto);
@@ -313,6 +329,16 @@ namespace Timataka.Web.Controllers
             return View(personnelDto);
         }
 
+        [HttpGet]
+        [Route("Admin/Catagories/{id}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Categories(int id)
+        {
+            var categories = _categoryService.GetListOfCategoriesByEventId(id);
+            ViewBag.EventId = id;
+            return View(categories);
+        }
+
         [Authorize(Roles = "Admin")]
         public IActionResult Clubs()
         {
@@ -333,17 +359,6 @@ namespace Timataka.Web.Controllers
             var devices = _deviceService.GetDevices();
             return View(devices);
 
-        }
-
-        public async Task<IActionResult> RemoveRole(string id)
-        {
-            var userManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var user = await userManager.FindByIdAsync(id);
-            if (user != null)
-            {
-                await userManager.RemoveFromRoleAsync(user, "Admin");
-            }
-            return RedirectToAction("Roles");
         }
     }
 }

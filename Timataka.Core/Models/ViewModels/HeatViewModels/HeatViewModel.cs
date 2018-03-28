@@ -11,5 +11,6 @@ namespace Timataka.Core.Models.ViewModels.HeatViewModels
         public int EventId { get; set; }
         public int HeatNumber { get; set; }
         public Boolean Deleted { get; set; }
+        public int NumberOfContestants { get; set;  }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Timataka.Core.Data.Repositories;
 using System.Threading.Tasks;
@@ -114,6 +115,16 @@ namespace Timataka.Core.Services
 
             await _repo.EditAsync(editEvent);
             return editEvent.CompetitionInstanceId;
+        }
+
+        /// <summary>
+        /// Function get a drop down list of Events
+        /// which only holds Id and Name properties
+        /// </summary>
+        /// <returns>A List of Event Drop Down List View Model</returns>
+        public IEnumerable<EventDropDownListViewModel> GetEventDropDownList()
+        {
+            return _repo.GetDropDownList();
         }
 
         /// <summary>

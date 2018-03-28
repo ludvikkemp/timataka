@@ -10,6 +10,7 @@ namespace Timataka.Core.Models.Entities
 
     public class Marker
     {
+        [Key]
         public int Id { get; set; }
 
         public int CompetitionInstanceId { get; set; }

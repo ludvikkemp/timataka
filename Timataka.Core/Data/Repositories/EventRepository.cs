@@ -138,6 +138,16 @@ namespace Timataka.Core.Data.Repositories
                 }).SingleOrDefaultAsync();
             return model;
         }
-        
+
+        public IEnumerable<EventDropDownListViewModel> GetDropDownList()
+        {
+            var model = (from e in _context.Events
+                select new EventDropDownListViewModel
+                {
+                    Id = e.Id,
+                    Name = e.Name
+                }).ToList();
+            return model;
+        }
     }
 }

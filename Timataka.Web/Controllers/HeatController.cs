@@ -6,16 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Timataka.Web.Controllers
 {
     public class HeatController : Controller
     {
         private readonly IHeatService _heatService;
+        private readonly IAdminService _adminService;
 
-        public HeatController(IHeatService heatService)
+        public HeatController(IHeatService heatService,
+                              IAdminService adminService)
         {
             _heatService = heatService;
+            _adminService = adminService;
         }
 
         public IActionResult Index()
@@ -101,6 +105,162 @@ namespace Timataka.Web.Controllers
             await _heatService.RemoveAsync(id);
             return RedirectToAction("Event", "Admin", new { @id = eventId });
 
+        }
+
+
+        //Contestants In Heat
+
+        
+        // GET: HeatController/AddContestant
+        public IActionResult AddContestant(int heatId)
+        {
+            List<SelectListItem> selectUsersListItems =
+                new List<SelectListItem>();
+
+            var listOfUsers = _adminService.GetUsers();
+
+            foreach (var item in listOfUsers)
+            {
+                selectUsersListItems.Add(
+                    new SelectListItem
+                    {
+                        Text = item.FirstName + ' ' + item.Middlename + ' ' + item.LastName + " (" + item.Ssn + ")",
+                        Value = item.Id
+                    });
+            }
+
+            ViewBag.heatId = heatId;
+            ViewBag.users = selectUsersListItems;
+            return View(); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddContestant(ContestantsInHeatViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var entitiy = new ContestantInHeat
+                    {
+                        Bib = model.Bib,
+                        HeatId = model.HeatId,
+                        Modified = model.Modified,
+                        Team = model.Team,
+                        UserId = model.UserId
+                    };
+
+                    await _heatService.AddAsyncContestantInHeat(entitiy);
+                }
+                catch(Exception e)
+                {
+                    return new BadRequestResult();
+                }
+                return RedirectToAction("Heat", "Admin", new { @id = model.HeatId });
+            }
+            return View(model);
+        }
+
+        public IActionResult EditContestant(int heatId, string userId)
+        {
+            var entitiy = _heatService.GetContestantInHeatById(heatId,userId);
+            
+            var model = new ContestantsInHeatViewModel
+            {
+                Bib = entitiy.Bib,
+                HeatId = entitiy.HeatId,
+                Modified = entitiy.Modified,
+                Team = entitiy.Team,
+                UserId = entitiy.UserId
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditContestant(ContestantsInHeatViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var entity = new ContestantInHeat
+                    {
+                        UserId = model.UserId,
+                        HeatId = model.HeatId,
+                        Bib = model.Bib,
+                        Team = model.Team,
+                        Modified = DateTime.Now
+                    };
+
+                    await _heatService.EditAsyncContestantInHeat(entity);
+                }
+                catch (Exception e)
+                {
+                    return new BadRequestResult();
+                }
+                return RedirectToAction("Heat", "Admin", new { @id = model.HeatId });
+            }
+            return View(model);
+        }
+
+        public IActionResult RemoveContestant(int heatId, string userId)
+        {
+            var modelList = _heatService.GetContestantsInHeat(heatId);
+            var model = new ContestantsInHeatViewModel();
+
+            foreach(var item in modelList)
+            {
+                if (item.HeatId == heatId && item.UserId == userId)
+                {
+                    model = item;
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveContestant(ContestantsInHeatViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var entity = _heatService.GetContestantInHeatById(model.HeatId, model.UserId);
+
+                    await _heatService.RemoveAsyncContestantInHeat(entity);
+                }
+                catch (Exception e)
+                {
+                    return new BadRequestResult();
+                }
+                return RedirectToAction("Heat", "Admin", new { @id = model.HeatId });
+            }
+            return View(model);
+        }
+
+        public IActionResult DetailsContestant(int heatId, string userId)
+        {
+            if(heatId == 0 || userId == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var modelList = _heatService.GetContestantsInHeat(heatId);
+            var model = new ContestantsInHeatViewModel();
+
+            foreach (var item in modelList)
+            {
+                if(item.HeatId == heatId && item.UserId == userId)
+                {
+                    model = item;
+                }
+            }
+
+            return View(model);
         }
     }
 }

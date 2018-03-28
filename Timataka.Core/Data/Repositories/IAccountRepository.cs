@@ -9,5 +9,6 @@ namespace Timataka.Core.Data.Repositories
     public interface IAccountRepository : IDisposable
     {
         List<Country> GetNations();
+        Country GetCountryById(int id);
     }
 }

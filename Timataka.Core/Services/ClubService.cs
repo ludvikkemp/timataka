@@ -66,9 +66,25 @@ namespace Timataka.Core.Services
                 Webpage = c.Webpage,
                 NameAbbreviation = c.NameAbbreviation,
                 Email = c.Email,
-                Phone = c.Phone
+                Phone = c.Phone,
+                Id = id,
+                Deleted = c.Deleted
             };
             return model;
+        }
+        
+        /// <summary>
+        /// Function to remove a given club.
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns>The ID of the competition removed.</returns>
+        public async Task<int> RemoveAsync(int clubId)
+        {
+            //TODO: return true/false?
+            var c = _repo.GetById(clubId);
+            
+            await _repo.RemoveAsync(c);
+            return c.Id;
         }
     }
 }

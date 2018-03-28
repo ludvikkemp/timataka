@@ -22,9 +22,9 @@
         </dl>
 
         <form asp-action="Delete">
-            <input type="hidden" asp-for="Id" value="@Model.Id"/>
-            <input type="submit" value="Delete" class="btn btn-primary" /> |
-            <a asp-controller="Admin" asp-action="Event" asp-route-id="@Model.EventId">Back to List</a>
+            <input type="hidden" asp-for="Id" value="@Model.Id" />
+            <input type="submit" value="Delete" class="btn btn-warning-outline btn-sm" />
+            <a asp-controller="Admin" asp-action="Event" asp-route-id="@Model.EventId" class="btn btn-secondary-outline btn-sm">Back to List</a>
         </form>
     </div>
 </section>
