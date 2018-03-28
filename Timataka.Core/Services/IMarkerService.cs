@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
-using Timataka.Core.Models.ViewModels.Marker;
+using Timataka.Core.Models.ViewModels.MarkerViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -16,9 +16,13 @@ namespace Timataka.Core.Services
         Task<Marker> GetMarkerByIdAsync(int id);
         IEnumerable<Marker> GetMarkers();
         IEnumerable<Marker> GetMarkersForCompetitionInstance(int id);
-        IEnumerable<Marker> GetmarkersForHeat(int id);
+        IEnumerable<Marker> GetMarkersForHeat(int id);
+        IEnumerable<Marker> GetUnassignedMarkers(int id);
 
         void AssignMarkerToHeat(Marker m, int heatId);
+
+        Task<Marker> DuplicateMarker(Marker m);
+
 
     }
 }

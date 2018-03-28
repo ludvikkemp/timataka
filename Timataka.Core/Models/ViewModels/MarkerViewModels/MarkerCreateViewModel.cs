@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Timataka.Core.Models.Entities;
 
-namespace Timataka.Core.Models.ViewModels.Marker
+namespace Timataka.Core.Models.ViewModels.MarkerViewModels
 {
     public class MarkerCreateViewModel
     {

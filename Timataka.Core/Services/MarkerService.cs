@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
-using Timataka.Core.Models.ViewModels.Marker;
+using Timataka.Core.Models.ViewModels.MarkerViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -32,8 +32,17 @@ namespace Timataka.Core.Services
 
         public async void AssignMarkerToHeat(Marker m, int heatId)
         {
-            m.HeatId = heatId;
-            await EditAsync(m);
+            if(m.HeatId == null)
+            {
+                m.HeatId = heatId;
+                await EditAsync(m);
+            }
+            else
+            {
+                var newMarker = await DuplicateMarker(m);
+                newMarker.HeatId = heatId;
+                await EditAsync(m);
+            }
         }
 
         public async Task<bool> EditAsync(Marker m)
@@ -59,7 +68,7 @@ namespace Timataka.Core.Services
             return result;
         }
 
-        public IEnumerable<Marker> GetmarkersForHeat(int id)
+        public IEnumerable<Marker> GetMarkersForHeat(int id)
         {
             var result = (from m in GetMarkers()
                           where m.HeatId == id
@@ -71,5 +80,27 @@ namespace Timataka.Core.Services
         {
             return await _repo.RemoveAsync(m);
         }
+        
+        public async Task<Marker> DuplicateMarker(Marker m)
+        {
+            var newMarker = new Marker
+            {
+                CompetitionInstanceId = m.CompetitionInstanceId,
+                Location = m.Location,
+                Time = m.Time,
+                Type = m.Type
+            };
+            await _repo.AddAsync(newMarker);
+            return newMarker;
+        }
+
+        public IEnumerable<Marker> GetUnassignedMarkers(int id)
+        {
+            var result = (from m in GetMarkers()
+                          where m.CompetitionInstanceId == id && m.HeatId == null
+                          select m).ToList();
+            return result;
+        }
+
     }
 }
