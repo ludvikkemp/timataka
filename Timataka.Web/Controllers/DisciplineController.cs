@@ -23,37 +23,42 @@ namespace Timataka.Web.Controllers
             _disciplineService = disciplineService;
         }
 
-        //GET: Dicipline/Create
+        //GET: /Admin/Sport/{sportId}/Discipline/Create
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Sport/{sportId}/Discipline/Create")]
         public IActionResult Create(int sportId)
         {
             ViewBag.Sports = _disciplineService.GetSportsListItems();
-            ViewBag.SportId = sportId;
             return View();
         }
 
-        //POST: Dicipline/Create
+        //POST: /Admin/Sport/{sportId}/Dicipline/Create
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Sport/{sportId}/Discipline/Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateViewModel model)
+        public async Task<IActionResult> Create(CreateViewModel model, int sportId)
         {
-            if (ModelState.IsValid && model.Name != null)
+            if (ModelState.IsValid)
             {
-                var sportId = int.Parse(model.SportId);
-
-                var newDiscipline = new Discipline
+                var discipline = new Discipline
                 {
                     Name = model.Name,
-                    SportId = sportId  
+                    SportId = sportId
                 };
-                await _disciplineService.Add(newDiscipline);
+                await _disciplineService.AddAsync(discipline);
             }
-            return RedirectToAction("Sport","Admin", new {@id = model.SportId});
+            return RedirectToAction("Sport", "Admin", new { @id = model.SportId });
         }
 
-        //GET: Dicipline/Details/1
-        public IActionResult Details(int id)
+        //GET: /Admin/Sport/{sportId}/Discipline/Details/{disciplineId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("Admin/Sport/{sportId}/Discipline/Details/{disciplineId}")]
+        public IActionResult Details(int disciplineId, int sportId)
         {
-            var discipline = _disciplineService.GetDisciplineById(id);
+            var discipline = _disciplineService.GetDisciplineById(disciplineId);
             if (discipline == null)
             {
                 return NotFound();
@@ -61,10 +66,13 @@ namespace Timataka.Web.Controllers
             return View(discipline);
         }
 
-        //GET: Dicipline/Edit/1
-        public IActionResult Edit(int id)
+        //GET: /Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}")]
+        public IActionResult Edit(int disciplineId, int sportId)
         {
-            var discipline = _disciplineService.GetDisciplineById(id);
+            var discipline = _disciplineService.GetDisciplineById(disciplineId);
             var model = new DisciplineViewModel
             {
                 Id = discipline.Id,
@@ -79,33 +87,42 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        //TODO
-        //POST: Dicipline/Edit/1
+        //POST: /Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("Admin/Sport/{sportId}/Discipline/Edit/{disciplineId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, DisciplineViewModel model)
+        public async Task<IActionResult> Edit(int sportId, int disciplineId, DisciplineViewModel model)
         {
-            if (id != model.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                var res = _disciplineService.GetDisciplineById(model.Id);
-                res.Name = model.Name;
-                await _disciplineService.Edit(res);
-                return RedirectToAction("Sport", "Admin", new {@id = model.SportId});
+                var result = _disciplineService.GetDisciplineById(model.Id);
+                result.Name = model.Name;
+                await _disciplineService.EditAsync(result);
+                return RedirectToAction("Sport", "Admin", new { @id = sportId });
             }
 
             return View(model);
         }
 
+        //Get: /Admin/Sport/{sportId}/Discipline/Delete/{disciplineId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult Delete()
+        [Route("/Admin/Sport/{sportId}/Discipline/Delete/{disciplineId}")]
+        public IActionResult Delete(int sportId, int disciplineId)
         {
-            return View();
+            var discipline = _disciplineService.GetDisciplineById(disciplineId);
+            return View(discipline);
+        }
+
+        //Post: /Admin/Sport/{sportId}/Discipline/Delete/{disciplineId}
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Sport/{sportId}/Discipline/Delete/{disciplineId}")]
+        public IActionResult DeleteConfirmed(int sportId, int disciplineId)
+        {
+            _disciplineService.Remove(disciplineId);
+            return RedirectToAction("Sport", "Admin", new { @sportId = sportId});
         }
     }
 }

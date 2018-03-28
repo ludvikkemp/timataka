@@ -35,27 +35,27 @@ namespace Timataka.Core.Data.Repositories
             return _db.Disciplines.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public void Insert(Discipline entity)
+        public void Insert(Discipline discipline)
         {
-            _db.Disciplines.Add(entity);
+            _db.Disciplines.Add(discipline);
             _db.SaveChanges();
         }
 
-        public async Task InsertAsync(Discipline entity)
+        public async Task InsertAsync(Discipline d)
         {
-            _db.Disciplines.Add(entity);
+            _db.Disciplines.Add(d);
             await _db.SaveChangesAsync();
         }
 
-        public void Edit(Discipline entity)
+        public void Edit(Discipline d)
         {
-            _db.Disciplines.Update(entity);
+            _db.Disciplines.Update(d);
             _db.SaveChanges();
         }
 
-        public async Task EditAsync(Discipline entity)
+        public async Task EditAsync(Discipline d)
         {
-            _db.Disciplines.Update(entity);
+            _db.Disciplines.Update(d);
             await _db.SaveChangesAsync();
         }
 
@@ -78,16 +78,16 @@ namespace Timataka.Core.Data.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public void Remove(Discipline entity)
+        public void Remove(Discipline d)
         {
-            //TODO:Mark as removed, not delete compleatly
-            throw new NotImplementedException();
+            d.Deleted = true;
+            Edit(d);
         }
 
-        public Task RemoveAsync(Task<Discipline> entity)
+        public async Task RemoveAsync(Discipline d)
         {
-            //TODO:Mark as removed, not delete compleatly
-            throw new NotImplementedException();
+            d.Deleted = true;
+            await EditAsync(d);
         }
 
         public List<Sport> GetSports()

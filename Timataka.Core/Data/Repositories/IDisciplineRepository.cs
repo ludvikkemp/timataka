@@ -9,19 +9,19 @@ namespace Timataka.Core.Data.Repositories
 {
     public interface IDisciplineRepository : IDisposable
     {
-        void Insert(Discipline entity);
-        Task InsertAsync(Discipline entity);
+        void Insert(Discipline d);
+        Task InsertAsync(Discipline d);
 
         IEnumerable<Discipline> Get();
 
         Discipline GetById(int id);
         Task<Discipline> GetByIdAsync(int id);
 
-        void Edit(Discipline entity);
-        Task EditAsync(Discipline entity);
+        void Edit(Discipline d);
+        Task EditAsync(Discipline d);
 
-        void Remove(Discipline entity);
-        Task RemoveAsync(Task<Discipline> entity);
+        void Remove(Discipline d);
+        Task RemoveAsync(Discipline d);
 
         List<Sport> GetSports();
         IEnumerable<DisciplineViewModel> GetDisciplinesBySportId(int id);

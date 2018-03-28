@@ -28,7 +28,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="s"></param>
         /// <returns>ID of discipline added</returns>
-        public async Task<Discipline> Add(Discipline d)
+        public async Task<Discipline> AddAsync(Discipline d)
         {
             await _repo.InsertAsync(d);
             return d;
@@ -39,7 +39,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="s"></param>
         /// <returns>Id of the discipline edited</returns>
-        public async Task<Discipline> Edit(Discipline d)
+        public async Task<Discipline> EditAsync(Discipline d)
         {
             await _repo.EditAsync(d);
             return d;

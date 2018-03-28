@@ -25,7 +25,7 @@
         
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning-outline btn-sm">Edit</a>
-        <a asp-controller="Admin" asp-action="Sports" asp-route-id="@Model.SportId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+        <a asp-action="Edit" asp-route-disciplineId="@Model.Id" asp-route-sportId="@Model.SportId" class="btn btn-warning-outline btn-sm">Edit</a>
+        <a asp-controller="Admin" asp-action="Sports" asp-route-sportId="@Model.SportId" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>

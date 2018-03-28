@@ -183,14 +183,14 @@ namespace Timataka.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Sport/{id}")]
-        public IActionResult Sport(int id)
+        [Route("Admin/Sport/{sportId}")]
+        public IActionResult Sport(int sportId)
         {
-            var sport = _sportService.GetSportById(id);
+            var sport = _sportService.GetSportById(sportId);
             sport.Wait();
             var dto = new SportDto
             {
-                Disciplines = _disciplineService.GetDisciplinesBySportId(id),
+                Disciplines = _disciplineService.GetDisciplinesBySportId(sportId),
                 Sport = sport.Result
             };
             return View(dto);

@@ -27,7 +27,7 @@ namespace Timataka.Tests
             mockService.Setup(x => x.GetSportById(SportId))
                 .Returns(Task.FromResult(new Sport { Id = 2, Name = "Swimming" }));
 
-            var controller = new SportsController(mockService.Object);
+            var controller = new SportController(mockService.Object);
 
             // Act
             var result = await controller.Details(SportId) as ViewResult;
@@ -47,7 +47,7 @@ namespace Timataka.Tests
             serviceMock.Setup(x => x.Remove(sport2Delete.Id)).Returns(Task.FromResult(result: sport2Delete.Id));
             serviceMock.Setup(y => y.GetSportById(sport2Delete.Id)).
                 Returns(Task.FromResult(sport2Delete));
-            var controller = new SportsController(serviceMock.Object);
+            var controller = new SportController(serviceMock.Object);
 
             //Act
             var result = await controller.Delete(1) as ViewResult;

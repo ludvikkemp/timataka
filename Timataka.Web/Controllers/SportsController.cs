@@ -7,11 +7,11 @@ using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
 {
-    public class SportsController : Controller
+    public class SportController : Controller
     {
         private readonly ISportService _sportService;
 
-        public SportsController(ISportService sportService)
+        public SportController(ISportService sportService)
         {
             _sportService = sportService;
         }
@@ -49,7 +49,7 @@ namespace Timataka.Web.Controllers
             return View(sport);
         }
 
-        // GET: Sports/Edit/5
+        // GET: /Admin/Sports/Edit/{sportId}
         public IActionResult Edit(int id)
         {
             var sport = _sportService.GetSportById(id);
