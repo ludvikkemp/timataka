@@ -66,12 +66,15 @@ namespace Timataka.Web.Controllers
             _categoryService = categoryService;
         }
             
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
+        [Route("Admin/Users")]
         [Authorize(Roles = "Admin")]
         public IActionResult Users(string search)
         {
@@ -98,8 +101,9 @@ namespace Timataka.Web.Controllers
             return View(listOfUsers);
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpGet]
+        [Route("Admin/User/Edit/{username}")]
+        [Authorize(Roles = "Admin")]
         public ActionResult EditUser(string username)
         {
             if (username == null)
@@ -118,9 +122,11 @@ namespace Timataka.Web.Controllers
             return View(userDto);
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult> EditUser(UserDto model)
+        [Route("Admin/User/Edit/{username}")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditUser(string username, UserDto model)
         {
             if (ModelState.IsValid)
             {
@@ -137,6 +143,8 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Route("Admin/Roles")]
         [Authorize(Roles = "Superadmin")]
         public IActionResult Roles()
         {
@@ -164,6 +172,8 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("Roles");
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Superadmin")]
         public async Task<IActionResult> RemoveRole(string id)
         {
             var userManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
