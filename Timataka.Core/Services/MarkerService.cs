@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
@@ -29,39 +30,46 @@ namespace Timataka.Core.Services
             });
         }
 
-        public void AssignMarkerToHeat(Marker m, int heatId)
+        public async void AssignMarkerToHeat(Marker m, int heatId)
         {
-            throw new NotImplementedException();
+            m.HeatId = heatId;
+            await EditAsync(m);
         }
 
-        public Task<bool> EditAsync(Marker m)
+        public async Task<bool> EditAsync(Marker m)
         {
-            throw new NotImplementedException();
+            return await _repo.EditAsync(m);
         }
 
-        public Task<Marker> GetDeviceByIdAsync(int id)
+        public async Task<Marker> GetMarkerByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repo.GetByIdAsync(id);
         }
 
         public IEnumerable<Marker> GetMarkers()
         {
-            throw new NotImplementedException();
+            return _repo.Get();
         }
 
         public IEnumerable<Marker> GetMarkersForCompetitionInstance(int id)
         {
-            throw new NotImplementedException();
+            var result = (from m in GetMarkers()
+                          where m.CompetitionInstanceId == id
+                          select m).ToList();
+            return result;
         }
 
         public IEnumerable<Marker> GetmarkersForHeat(int id)
         {
-            throw new NotImplementedException();
+            var result = (from m in GetMarkers()
+                          where m.HeatId == id
+                          select m).ToList();
+            return result;
         }
 
-        public Task<bool> RemoveAsync(Marker m)
+        public async Task<Boolean> RemoveAsync(Marker m)
         {
-            throw new NotImplementedException();
+            return await _repo.RemoveAsync(m);
         }
     }
 }
