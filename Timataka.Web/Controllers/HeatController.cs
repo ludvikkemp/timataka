@@ -14,12 +14,15 @@ namespace Timataka.Web.Controllers
     {
         private readonly IHeatService _heatService;
         private readonly IAdminService _adminService;
+        private readonly IMarkerService _markerService;
 
         public HeatController(IHeatService heatService,
-                              IAdminService adminService)
+                              IAdminService adminService,
+                              IMarkerService markerService)
         {
             _heatService = heatService;
             _adminService = adminService;
+            _markerService = markerService;
         }
 
         public IActionResult Index()
@@ -262,5 +265,38 @@ namespace Timataka.Web.Controllers
 
             return View(model);
         }
+
+        public IActionResult Markers(int id)
+        {
+            var assignedMarkers = _markerService.GetMarkersForHeat(id);
+
+            var instanceID = 1;
+
+            var allMarkers = _markerService.GetUnassignedMarkers(instanceID);
+            ViewBag.HeatId = id;
+            return View(assignedMarkers);
+        }
+
+        public async Task<IActionResult> AssignMarker(int heatId, int markerId)
+        {
+            var marker = await _markerService.GetMarkerByIdAsync(markerId);
+            marker.HeatId = heatId;
+            return RedirectToAction("Markers", "Heat", new { id = heatId} );
+        }
+
+        public IActionResult EditMarker(int id)
+        {
+            var markers = _markerService.GetMarkersForHeat(id);
+            ViewBag.HeatId = id;
+            return View(markers);
+        }
+
+        public IActionResult RemoveMarker(int id)
+        {
+            var markers = _markerService.GetMarkersForHeat(id);
+            ViewBag.HeatId = id;
+            return View(markers);
+        }
+
     }
 }

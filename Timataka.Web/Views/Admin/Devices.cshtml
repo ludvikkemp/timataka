@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Devices </span>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Device" asp-action="Create">Add New</a>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Device" asp-action="Create">Create New</a>
             </div>
         </div>
 
@@ -81,9 +81,9 @@
                                                     <td>@item.Name</td>
                                                     <td>@item.Active</td>
                                                     <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Device" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Device" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Device" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Device" asp-action="Edit" asp-route-deviceId="@item.Id">Edit</a>
+                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Device" asp-action="Details" asp-route-deviceId="@item.Id">Details</a>
+                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Device" asp-action="Delete" asp-route-deviceId="@item.Id">Delete</a>
                                                     </td>
                                                 </tr>
                                             }

@@ -80,5 +80,6 @@ namespace Timataka.Core.Services
             var nonAdmins = _repo.GetNonAdminUsers();
             return nonAdmins;
         }
+
     }
 }

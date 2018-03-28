@@ -10,6 +10,7 @@
             <div class="col-md-12">
                 <span class="title"> @Model.Heat.HeatNumber </span>
                 <a asp-controller="Heat" asp-action="AddContestant" asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Add Contestant </a>
+                <a asp-controller="Heat" asp-action="Markers" asp-route-id="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Markers </a>
             </div>
         </div>
     </div>
