@@ -123,6 +123,14 @@ namespace Timataka.Core.Data.Repositories
             return _db.ChipsInHeats.ToList();
         }
 
+        public async Task<ChipInHeat> GetChipInHeatByCodeAndUserId(string code, string userId)
+        {
+            var result = await (from h in _db.ChipsInHeats
+                                where h.ChipCode == code && h.UserId == userId
+                                select h).SingleOrDefaultAsync();
+            return result;
+        }
+
         public bool RemoveChip(Chip c)
         {
             var result = false;
@@ -185,5 +193,7 @@ namespace Timataka.Core.Data.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+
     }
 }
