@@ -53,7 +53,10 @@
                                                 {
                                                     <tr>
                                                         <td>
-                                                            <a asp-controller="Admin" asp-action="Event" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@item.CompetitionInstanceId" asp-route-eventId="@item.Id">@item.Name</a>
+                                                            <a asp-controller="Admin" asp-action="Event" 
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" 
+                                                               asp-route-competitionInstanceId="@item.CompetitionInstanceId" 
+                                                               asp-route-eventId="@item.Id">@item.Name</a>
                                                         </td>
                                                         <td>
                                                             <a asp-controller="Event" asp-action="Edit" 
@@ -62,8 +65,17 @@
                                                                asp-route-eventId="@item.Id" 
                                                                class="btn btn-warning-outline btn-sm">Edit</a>
 
-                                                            <a asp-controller="Event" asp-action="Details" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@item.CompetitionInstanceId" asp-route-eventId="@item.Id" class="btn btn-success-outline btn-sm">Details</a>
-                                                            <a asp-controller="Event" asp-action="Delete" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@item.CompetitionInstanceId" asp-route-eventId="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                            <a asp-controller="Event" asp-action="Details" 
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" 
+                                                               asp-route-competitionInstanceId="@item.CompetitionInstanceId" 
+                                                               asp-route-eventId="@item.Id" 
+                                                               class="btn btn-success-outline btn-sm">Details</a>
+
+                                                            <a asp-controller="Event" asp-action="Delete" 
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" 
+                                                               asp-route-competitionInstanceId="@item.CompetitionInstanceId" 
+                                                               asp-route-eventId="@item.Id" 
+                                                               class="btn btn-danger-outline btn-sm">Delete</a>
                                                         </td>
                                                     </tr>
                                                 }
