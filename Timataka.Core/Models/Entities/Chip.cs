@@ -13,6 +13,12 @@ namespace Timataka.Core.Models.Entities
         public int Number { get; set; }
         public Boolean Active { get; set; }
 
+        /// <summary>
+        /// Update following when:
+        ///     1. Chip is assigned to user in heat
+        ///     2. Chip is detected at location
+        ///     3. Chip is scanned
+        /// </summary>
         public string LastUserId { get; set; }
         [ForeignKey(nameof(LastUserId))]
         public virtual ApplicationUser User { get; set; }
