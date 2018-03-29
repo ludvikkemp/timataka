@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.ChipViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -10,7 +11,7 @@ namespace Timataka.Core.Data.Repositories
         Chip Add(Chip c);
         Task<Chip> AddAsync(Chip c);
 
-        IEnumerable<Chip> GetChips();
+        IEnumerable<ChipViewModel> GetChips();
         Chip GetChipByCode(string code);
         Task<Chip> GetChipByCodeAsync(string code);
 

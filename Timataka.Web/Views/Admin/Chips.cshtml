@@ -1,0 +1,110 @@
+﻿@model System.Collections.Generic.IEnumerable<Timataka.Core.Models.ViewModels.ChipViewModels.ChipViewModel>
+
+@{
+    ViewBag.Title = "Chips";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <div class="title-block">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> Chips </span>
+                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Chip" asp-action="Create">Create New</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="" method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <nav class="text-right col-md-6">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href=""> Prev </a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href=""> 1 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 2 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 3 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 4 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 5 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> Next </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Number</th>
+                                                <th>Active</th>
+                                                <th>Last Assigned To</th>
+                                                <th>Last Competition</th>
+                                                <th>Last Seen</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.Code</td>
+                                                    <td>@item.Number</td>
+                                                    <td>@item.Active</td>
+                                                    <td>@item.LastUserId</td>
+                                                    <td>@item.LastCompetitionInstanceId</td>
+                                                    <td>@item.LastSeen</td>
+                                                    <td>
+                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Chip" asp-action="Edit" asp-route-code="@item.Code">Edit</a>
+                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Chip" asp-action="Details" asp-route-code="@item.Code">Details</a>
+                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Chip" asp-action="Delete" asp-route-code="@item.Code">Delete</a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+

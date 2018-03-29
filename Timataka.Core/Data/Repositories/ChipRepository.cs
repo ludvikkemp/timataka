@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.ChipViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -100,7 +101,7 @@ namespace Timataka.Core.Data.Repositories
 
         public Chip GetChipByCode(string code)
         {
-            return (from c in GetChips()
+            return (from c in _db.Chips
                     where c.Code == code
                     select c).SingleOrDefault();
         }
@@ -113,9 +114,24 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
-        public IEnumerable<Chip> GetChips()
+        public IEnumerable<ChipViewModel> GetChips()
         {
-            return _db.Chips.ToList();
+            var chips = (from c in _db.Chips
+                         join i in _db.CompetitionInstances on c.LastCompetitionInstanceId equals i.Id
+                         join u in _db.Users on c.LastUserId equals u.Id
+                         select new ChipViewModel
+                         {
+                            LastUserId = u.Id,
+                            LastCompetitionInstanceId = i.Id,
+                            Active = c.Active,
+                            Code = c.Code,
+                            LastCompetitionInstanceName = i.Name,
+                            LastSeen = c.LastSeen,
+                            LastUserName = u.FirstName + " " + u.MiddleName + " " + u.LastName,
+                            LastUserSsn = u.Ssn,
+                            Number = c.Number
+                         }).ToList();
+            return chips;
         }
 
         public IEnumerable<ChipInHeat> GetChipsInHeats()

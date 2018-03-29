@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.ChipViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -11,7 +12,7 @@ namespace Timataka.Core.Services
         Task<Chip> GetChipByCodeAsync(string code);
         Task<Boolean> EditChipAsync(Chip c);
         Task<Boolean> RemoveChipAsync(Chip c);
-        IEnumerable<Chip> GetChips();
+        IEnumerable<ChipViewModel> GetChips();
 
         Task<ChipInHeat> AssignChipToUserInHeat(ChipInHeat c);
         Task<ChipInHeat> GetChipInEventByCodeAndUserId(string code, string userId);

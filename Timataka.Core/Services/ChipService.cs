@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.ChipViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -46,9 +47,10 @@ namespace Timataka.Core.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Chip> GetChips()
+        public IEnumerable<ChipViewModel> GetChips()
         {
-            throw new NotImplementedException();
+            return _repo.GetChips();
+
         }
 
         public Task<ChipInHeat> GetChipsInHeatForUser()
