@@ -97,7 +97,12 @@
         </div>
     </div>
     <div>
-        <a asp-controller="Admin" asp-action="Instance" asp-route-id="@ViewBag.InstanceId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+
+        <a asp-controller="Admin"
+           asp-action="CompetitionInstance"
+           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+           class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 
 </section>

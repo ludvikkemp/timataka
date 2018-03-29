@@ -12,9 +12,20 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Devices in @ViewBag.Event.Name </span>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Event" asp-action="AssignDevice" asp-route-eventId="@ViewBag.Event.Id">Assign Device</a>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Admin" asp-action="Event" asp-route-id="@ViewBag.Event.Id">Event</a>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Admin" asp-action="Instance" asp-route-id="@ViewBag.Event.CompetitionInstanceId">Instance</a>
+                <a class="btn btn-primary btn-sm rounded-s" 
+                   asp-controller="Event" 
+                   asp-action="AssignDevice" 
+                   asp-route-eventId="@ViewBag.Event.Id">Assign Device</a>
+
+                <a class="btn btn-primary btn-sm rounded-s" 
+                   asp-controller="Admin" 
+                   asp-action="Event" 
+                   asp-route-eventId="@ViewBag.Event.Id">Event</a>
+
+                <a class="btn btn-primary btn-sm rounded-s" 
+                   asp-controller="Admin" 
+                   asp-action="CompetitionInstance" 
+                   asp-route-competitionInstanceId="@ViewBag.Event.CompetitionInstanceId">Instance</a>
             </div>
         </div>
 

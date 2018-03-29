@@ -170,7 +170,7 @@ namespace Timataka.Web.Controllers
             {
                 var task = _competitionService.AddRole(m);
                 task.Wait();
-                return RedirectToAction("Personnel", "Admin", new { @id= m.CompetitionId });
+                return RedirectToAction("Personnel", "Admin", new { eventId= m.CompetitionId });
             }
             return View();
         }
@@ -228,7 +228,7 @@ namespace Timataka.Web.Controllers
                     Role = model.Role
                 };
                 await _competitionService.EditRole(entity);
-                return RedirectToAction("Personnel", "Admin", new { @id = model.CompetitionId });
+                return RedirectToAction("Personnel", "Admin", new { eventId = model.CompetitionId });
             }
             return View(model);
         }
@@ -264,7 +264,7 @@ namespace Timataka.Web.Controllers
             };
 
             await _competitionService.RemoveRole(entity);
-            return RedirectToAction("Personnel", "Admin", new { @id = model.CompetitionId });
+            return RedirectToAction("Personnel", "Admin", new { eventId = model.CompetitionId });
 
         }
     }

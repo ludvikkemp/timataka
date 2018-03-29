@@ -6,7 +6,7 @@
 }
 
 <section class="content">
-    <h4>Edit Instance</h4>
+    <h4>Edit Heat</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -28,7 +28,13 @@
     </div>
 
     <div>
-        <a asp-controller="Admin" asp-action="Event" asp-route-id="@Model.EventId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+
+        <a asp-controller="Admin"
+           asp-action="Event"
+           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+           class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
 @section Scripts {
