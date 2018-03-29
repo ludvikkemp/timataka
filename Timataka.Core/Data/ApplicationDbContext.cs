@@ -27,6 +27,8 @@ namespace Timataka.Core.Data
         public DbSet<Device> Devices { get; set; }
         public DbSet<DevicesInEvent> DevicesInEvents { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Chip> Chips { get; set; }
+        //public DbSet<ChipInHeat> ChipsInHeats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
