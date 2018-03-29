@@ -24,7 +24,11 @@
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" value="@Model.Id"/>
             <input type="submit" value="Delete" class="btn btn-danger-outline btn-sm" /> 
-            <a asp-controller="Admin" asp-action="Instance" asp-route-id="@Model.CompetitionInstanceId">Back to List</a>
+            <a asp-controller="Admin" 
+               asp-action="CompetitionInstance" 
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               class="btn btn-secondary-outline btn-sm">Back to List</a>
         </form>
     </div>
 </section>

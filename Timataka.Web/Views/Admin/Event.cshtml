@@ -9,9 +9,20 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> @Model.Event.Name </span>
-                <a asp-controller="Heat" asp-action="Create" asp-route-id="@Model.Event.Id" class="btn btn-primary btn-sm rounded-s"> Add Heat </a>
-                <a asp-controller="Event" asp-action="Devices" asp-route-eventId="@Model.Event.Id" class="btn btn-primary btn-sm rounded-s"> Devices </a>
-                <a asp-controller="Admin" asp-action="Categories" asp-route-id="@Model.Event.Id" class="btn btn-primary btn-sm rounded-s"> Categories </a>
+                <a asp-controller="Heat" 
+                   asp-action="Create" 
+                   asp-route-eventId="@Model.Event.Id" 
+                   class="btn btn-primary btn-sm rounded-s"> Add Heat </a>
+
+                <a asp-controller="Event" 
+                   asp-action="Devices" 
+                   asp-route-eventId="@Model.Event.Id" 
+                   class="btn btn-primary btn-sm rounded-s"> Devices </a>
+
+                <a asp-controller="Admin" 
+                   asp-action="Categories" 
+                   asp-route-eventId="@Model.Event.Id" 
+                   class="btn btn-primary btn-sm rounded-s"> Categories </a>
             </div>
         </div>
     </div>
@@ -54,15 +65,32 @@
                                                 {
                                                     <tr>
                                                         <td>
-                                                            <a asp-controller="Admin" asp-action="Heat" asp-route-id="@item.Id">@item.HeatNumber</a>
+                                                            <a asp-controller="Admin" 
+                                                               asp-action="Heat"
+                                                               asp-route-heatId="@item.Id" 
+                                                               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">Heat Number @item.HeatNumber</a>
                                                         </td>
                                                         <td>
                                                             @item.NumberOfContestants
                                                         </td>
                                                         <td>
-                                                            <a asp-controller="Heat" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                            <a asp-controller="Admin" asp-action="Heat" asp-route-id="@item.Id" class="btn btn-success-outline btn-sm">Details</a>
-                                                            <a asp-controller="Heat" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                            <a asp-controller="Heat" 
+                                                               asp-action="Edit" 
+                                                               asp-route-heatId="@item.Id" 
+                                                               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                               class="btn btn-warning-outline btn-sm">Edit</a>
+
+                                                            <a asp-controller="Heat" 
+                                                               asp-action="Delete" 
+                                                               asp-route-heatId="@item.Id" 
+                                                               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                               class="btn btn-danger-outline btn-sm">Delete</a>
                                                         </td>
                                                     </tr>
                                                 }

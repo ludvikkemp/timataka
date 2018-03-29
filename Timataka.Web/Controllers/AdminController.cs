@@ -287,7 +287,6 @@ namespace Timataka.Web.Controllers
                 models.Add(model);
             }
             
-
             var eventDto = new EventDto()
             {
                 Event = eventObj.Result,
@@ -298,17 +297,21 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Admin/Heat/{id}")]
+        [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Heat(int id)
+        public async Task<IActionResult> Heat(int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
-            var heat = _heatService.GetHeatByIdAsync(id);
-            heat.Wait();
+            var heat = await _heatService.GetHeatByIdAsync(heatId);
+
+            if (heat == null)
+            {
+                return NotFound();
+            }
 
             var heatDto = new HeatDto()
             {
-                Heat = heat.Result,
-                Contestants = _heatService.GetContestantsInHeat(heat.Result.Id)
+                Heat = heat,
+                Contestants = _heatService.GetContestantsInHeat(heat.Id)
             };
 
             return View(heatDto);

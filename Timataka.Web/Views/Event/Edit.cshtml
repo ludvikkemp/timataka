@@ -7,7 +7,7 @@
 }
 
 <section class="content">
-    <h4>Edit Competition</h4>
+    <h4>Edit Event</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -128,7 +128,10 @@
     </div>
 
     <div>
-        <a asp-controller="Admin" asp-action="Instance" asp-route-id="@Model.CompetitionInstanceId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+        <a asp-controller="Admin" asp-action="CompetitionInstance" 
+           asp-route-competitionInstanceId="@Model.CompetitionInstanceId"
+           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+           class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
 @section Scripts {

@@ -45,7 +45,7 @@ namespace Timataka.Web.Controllers
                 if (!exists)
                 {
                     await _categoryService.AddAsync(model);
-                    return RedirectToAction("Categories", "Admin", new { @id = model.EventId });
+                    return RedirectToAction("Categories", "Admin", new { eventId = model.EventId });
                 }
             }
             return View(model);
@@ -77,7 +77,7 @@ namespace Timataka.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _categoryService.EditCategoryAsync(model);
-                return RedirectToAction("Categories", "Admin", new { @id = model.EventId });
+                return RedirectToAction("Categories", "Admin", new { eventId = model.EventId });
             }
             return View(model);
         }
@@ -96,7 +96,7 @@ namespace Timataka.Web.Controllers
             if (ModelState.IsValid)
             {
                 var status = await _categoryService.RemoveAsync(model.Id);
-                return RedirectToAction("Categories", "Admin", new { @id = model.EventId });
+                return RedirectToAction("Categories", "Admin", new { eventId = model.EventId });
             }
             return View(model);
         }
