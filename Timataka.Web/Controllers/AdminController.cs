@@ -35,6 +35,7 @@ namespace Timataka.Web.Controllers
         private readonly IDeviceService _deviceService;
         private readonly IServiceProvider _serviceProvider;
         private readonly ICategoryService _categoryService;
+        private readonly IChipService _chipService;
 
         public AdminController(IAdminService adminService,
             IAccountService accountService,
@@ -48,7 +49,8 @@ namespace Timataka.Web.Controllers
             ICourseService courseService,
             IDeviceService deviceService,
             IServiceProvider serviceProvider,
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            IChipService chipService)
 
         {
             _adminService = adminService;
@@ -64,6 +66,7 @@ namespace Timataka.Web.Controllers
             _deviceService = deviceService;
             _serviceProvider = serviceProvider;
             _categoryService = categoryService;
+            _chipService = chipService;
         }
             
         [HttpGet]
@@ -374,6 +377,15 @@ namespace Timataka.Web.Controllers
             var devices = _deviceService.GetDevices();
             return View(devices);
 
+        }
+
+        [HttpGet]
+        [Route("Admin/Chips")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Chips()
+        {
+            var chips = _chipService.GetChips();
+            return View(chips);
         }
     }
 }
