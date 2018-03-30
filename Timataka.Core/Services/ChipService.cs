@@ -22,9 +22,9 @@ namespace Timataka.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task<ChipInHeat> AssignChipToUserInHeat(ChipInHeat c)
+        public bool AssignChipToUserInHeat(ChipInHeat c)
         {
-            throw new NotImplementedException();
+            return _repo.AssignChipToUserInHeat(c);
         }
 
         public Task<bool> EditChipAsync(Chip c)
@@ -53,9 +53,19 @@ namespace Timataka.Core.Services
 
         }
 
+        public IEnumerable<Chip> Get()
+        {
+            return _repo.Get();
+        }
+
         public Task<ChipInHeat> GetChipsInHeatForUser()
         {
             throw new NotImplementedException();
+        }
+        
+        public IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId)
+        {
+            return _repo.GetChipsInHeat(heatId);
         }
 
         public IEnumerable<ChipInHeat> GetChipsInHeatsForUser(string id)

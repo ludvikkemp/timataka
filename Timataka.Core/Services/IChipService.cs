@@ -13,9 +13,11 @@ namespace Timataka.Core.Services
         Task<Boolean> EditChipAsync(Chip c);
         Task<Boolean> RemoveChipAsync(Chip c);
         IEnumerable<ChipViewModel> GetChips();
+        IEnumerable<Chip> Get();
 
-        Task<ChipInHeat> AssignChipToUserInHeat(ChipInHeat c);
+        bool AssignChipToUserInHeat(ChipInHeat c);
         Task<ChipInHeat> GetChipInEventByCodeAndUserId(string code, string userId);
+        IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId);
         Task<Boolean> UpdateChipStory(ChipInHeat c);
         IEnumerable<ChipInHeat> GetChipsInHeatsForUser(string id);
         Task<Boolean> MarkInvalid (ChipInHeat c);
