@@ -150,8 +150,8 @@ namespace Timataka.Web.Controllers
         #region DEVICES FOR EVENTS
 
         [HttpGet]
-        [Route("/Event/{eventId}/Devices")]
-        public IActionResult Devices(int eventId)
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Devices")]
+        public IActionResult Devices(int eventId, int competitionId, int competitionInstanceId)
         {
             var data = _deviceService.GetDevicesInEvent(eventId);
             ViewBag.Event = _eventService.GetEventByIdAsync(eventId).Result;
@@ -159,25 +159,25 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("/Event/{eventId}/UnassignDevice/{deviceId}")]
-        public async Task<IActionResult> UnassignDevice(int deviceId, int eventId)
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/UnassignDevice/{deviceId}")]
+        public async Task<IActionResult> UnassignDevice(int deviceId, int eventId, int competitionId, int competitionInstanceId)
         {
             await _deviceService.RemoveDeviceInEventAsync(new DevicesInEvent { DeviceId = deviceId, EventId = eventId });
-            return RedirectToAction("Event", "Admin", new { eventId = eventId });
+            return RedirectToAction("Devices", "Event", new { eventId });
         }
 
         [HttpGet]
-        [Route("/Event/{eventId}/AssignDevice")]
-        public async Task<IActionResult> AssignDevice(int eventId)
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/AssignDevice")]
+        public async Task<IActionResult> AssignDevice(int eventId, int competitionId, int competitionInstanceId)
         {
             ViewBag.Devices = _deviceService.GetDevices();
             ViewBag.Event = await _eventService.GetEventByIdAsync(eventId);
             return View();
         }
 
-        [HttpPost("/Event/{eventId}/AssignDevice")]
+        [HttpPost("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/AssignDevice")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignDevice(CreateDeviceInEventViewModel model)
+        public async Task<IActionResult> AssignDevice(CreateDeviceInEventViewModel model, int competitionInstanceId, int competitionId)
         {
             await _deviceService.AddDeviceInEventAsync(model.DeviceId, model.EventId);
             return RedirectToAction("Devices", model.EventId);

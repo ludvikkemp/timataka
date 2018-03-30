@@ -50,8 +50,8 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _sportService.Add(sport);
-                return RedirectToAction("Sport", "Admin", new { @sportId = sport.Id });
+                var newSport = await _sportService.Add(sport);
+                return RedirectToAction("Sport", "Admin", new { @sportId = newSport.Id });
             }
             return View(sport);
         }

@@ -78,7 +78,7 @@ namespace Timataka.Web.Controllers
         // Get: Admin/Device/Details/{deviceId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("Admin/Device/Details/{deviceId}")]
+        [Route("/Admin/Device/Details/{deviceId}")]
         public async Task<IActionResult> Details(int deviceId)
         {
             var result = new DeviceDetailsViewModel
