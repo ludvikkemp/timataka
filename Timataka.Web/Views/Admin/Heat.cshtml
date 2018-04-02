@@ -8,16 +8,33 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> @Model.Heat.HeatNumber </span>
-                <a asp-controller="Heat" asp-action="AddContestant" asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Add Contestant </a>
-                <a asp-controller="Heat" asp-action="Markers" asp-route-id="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Markers </a>
+                
+                <span class="title">
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="CompetitionInstance"
+                       asp-route-competitionId="@Model.Competition.Id"
+                       asp-route-competitionInstanceId="@Model.CompetitionInstance.Id">@Model.CompetitionInstance.Name</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="Event"
+                       asp-route-competitionId="@Model.Competition.Id"
+                       asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+                       asp-route-eventId="@Model.Event.Id">@Model.Event.Name</a> /
+
+                    Heat Number @Model.Heat.HeatNumber
+                </span>
+                
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <form asp-action="" method="get" class="form-inline">
+        <div class="col-md-4">
+            <form asp-action="" method="get" class="">
                 <div class="input-group">
                     <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
                     <span class="input-group-btn">
@@ -28,8 +45,11 @@
                 </div>
             </form>
         </div>
+    <div class="col-md-8">
+        <a asp-controller="Heat" asp-action="AddContestant" asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Add Contestant </a>
+        <a asp-controller="Heat" asp-action="Markers" asp-route-id="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Markers </a>
     </div>
-    <h4>Contestants</h4>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -42,7 +62,7 @@
                                         <thead>
                                             <tr>
                                                 <th>BIB</th>
-                                                <th>Name</th>
+                                                <th>Contestants</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>

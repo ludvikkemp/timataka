@@ -8,37 +8,40 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> @Model.Event.Name </span>
-                <a asp-controller="Heat" 
-                   asp-action="Create" 
-                   asp-route-eventId="@Model.Event.Id" 
-                   class="btn btn-primary btn-sm rounded-s"> Add Heat </a>
+                <span class="title">
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
 
-                <a asp-controller="Event" 
-                   asp-action="Devices" 
-                   asp-route-eventId="@Model.Event.Id" 
-                   class="btn btn-primary btn-sm rounded-s"> Devices </a>
+                    <a asp-controller="Admin"
+                       asp-action="CompetitionInstance"
+                       asp-route-competitionId="@Model.Competition.Id"
+                       asp-route-competitionInstanceId="@Model.CompetitionInstance.Id">@Model.CompetitionInstance.Name</a> /
 
-                <a asp-controller="Admin" 
-                   asp-action="Categories" 
-                   asp-route-eventId="@Model.Event.Id" 
-                   class="btn btn-primary btn-sm rounded-s"> Categories </a>
+                    @Model.Event.Name
+                </span>
+
+                
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-6">
-            <form asp-action="" method="get" class="form-inline">
-                <div class="input-group">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
+            <a asp-controller="Heat"
+               asp-action="Create"
+               asp-route-eventId="@Model.Event.Id"
+               class="btn btn-primary btn-sm rounded-s">Add Heat</a>
+
+            <a asp-controller="Event"
+               asp-action="Devices"
+               asp-route-eventId="@Model.Event.Id"
+               class="btn btn-primary btn-sm rounded-s">Devices</a>
+
+            <a asp-controller="Admin"
+               asp-action="Categories"
+               asp-route-eventId="@Model.Event.Id"
+               class="btn btn-primary btn-sm rounded-s">Categories</a>
         </div>
     </div>
 
