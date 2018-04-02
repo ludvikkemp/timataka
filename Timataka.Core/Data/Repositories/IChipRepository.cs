@@ -15,6 +15,9 @@ namespace Timataka.Core.Data.Repositories
         Chip GetChipByCode(string code);
         Task<Chip> GetChipByCodeAsync(string code);
 
+        Chip GetChipByNumber(int number);
+        Task<Chip> GetChipByNumberAsync(int number);
+
         Boolean EditChip(Chip c);
         Task<Boolean> EditChipAsync(Chip c);
 
@@ -25,8 +28,7 @@ namespace Timataka.Core.Data.Repositories
         Task<Boolean> AssignChipToUserInHeatAsync(ChipInHeat c);
 
         IEnumerable<ChipInHeat> GetChipsInHeats();
-        Task<ChipInHeat> GetChipInHeatByCodeAndUserId(string code, string userId);
-
+        
         Boolean EditChipInHeat(ChipInHeat c);
         Task<Boolean> EditChipInHeatAsync(ChipInHeat c);
 

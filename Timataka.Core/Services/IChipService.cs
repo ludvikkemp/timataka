@@ -12,12 +12,18 @@ namespace Timataka.Core.Services
         Task<Chip> GetChipByCodeAsync(string code);
         Task<Boolean> EditChipAsync(Chip c);
         Task<Boolean> RemoveChipAsync(Chip c);
+        Task<Boolean> UpdateChipStory(ChipInHeat c);
+        Task<Boolean> MarkInvalid(ChipInHeat c);
         IEnumerable<ChipViewModel> GetChips();
 
-        Task<ChipInHeat> AssignChipToUserInHeat(ChipInHeat c);
-        Task<ChipInHeat> GetChipInEventByCodeAndUserId(string code, string userId);
-        Task<Boolean> UpdateChipStory(ChipInHeat c);
-        IEnumerable<ChipInHeat> GetChipsInHeatsForUser(string id);
-        Task<Boolean> MarkInvalid (ChipInHeat c);
+        Task<ChipInHeat> AssignChipToUserInHeatAsync(ChipInHeat c);
+        IEnumerable<ChipInHeat> GetChipsInHeats();
+        IEnumerable<ChipInHeat> GetChipsInHeatsForUser(string userId);
+        IEnumerable<ChipInHeat> GetChipsInHeatsForUserInHeat(string userId, int heatId);
+        IEnumerable<ChipInHeat> GetChipsInHeatsForEvent(int eventId);
+        IEnumerable<ChipInHeat> GetChipsInHeatForHeat(int heatId);
+        IEnumerable<ChipInHeat> GetChipsInCompetitionInstanceForUser(int competitionInstanceId, string userId);
+        ChipInHeat GetChipInHeatByCodeAndUserId(string code, string userId, int heatId);
+
     }
 }
