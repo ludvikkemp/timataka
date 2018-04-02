@@ -8,35 +8,34 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> @Model.CompetitonInstance.Name</span>
-                <a asp-controller="Event" 
-                   asp-action="Create" 
-                   asp-route-competitionInstanceId="@Model.CompetitonInstance.Id"
-                   asp-route-competitionId="@Model.CompetitonInstance.CompetitionId"
-                   class="btn btn-primary btn-sm rounded-s"> Add Event </a>
-
-                <a asp-controller="CompetitionInstance" 
-                   asp-action="Devices" 
-                   asp-route-competitionInstanceId="@Model.CompetitonInstance.Id" 
-                   class="btn btn-primary btn-sm rounded-s"> Devices </a>
+                <span class="title">
+                    <a asp-controller="Admin" 
+                       asp-action="Competition" 
+                       asp-route-competitionId="@Model.Competition.Id"> @Model.Competition.Name</a> /  
+                    
+                    @Model.CompetitonInstance.Name
+                </span>
+                
             </div>
         </div>
 
     </div>
 
     <div class="row">
+
         <div class="col-md-6">
-            <form asp-action="" method="get" class="form-inline">
-                <div class="input-group">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
+            <a asp-controller="Event"
+               asp-action="Create"
+               asp-route-competitionInstanceId="@Model.CompetitonInstance.Id"
+               asp-route-competitionId="@Model.CompetitonInstance.CompetitionId"
+               class="btn btn-primary btn-sm rounded-s">Add Event</a>
+
+            <a asp-controller="CompetitionInstance"
+               asp-action="Devices"
+               asp-route-competitionInstanceId="@Model.CompetitonInstance.Id"
+               class="btn btn-primary btn-sm rounded-s">Devices</a>
         </div>
+
     </div>
 
     <div class="row">
@@ -50,7 +49,7 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Event</th>
+                                                <th>Events</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>

@@ -9,15 +9,14 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> @Model.Competiton.Name </span>
-                <a asp-controller="CompetitionInstance" asp-action="Create" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Create Instance </a>
-                <a asp-controller="Admin" asp-action="Personnel" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Personnel </a>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <form asp-action="" method="get" class="form-inline">
+
+        <div class="col-md-4">
+            <form asp-action="" method="get">
                 <div class="input-group">
                     <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
                     <span class="input-group-btn">
@@ -27,6 +26,10 @@
                     </span>
                 </div>
             </form>
+        </div>
+        <div class="col-md-8">
+            <a asp-controller="CompetitionInstance" asp-action="Create" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Create Instance </a>
+            <a asp-controller="Admin" asp-action="Personnel" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Personnel </a>
         </div>
 
     </div>
