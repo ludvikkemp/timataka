@@ -51,6 +51,9 @@ namespace Timataka.Core.Data
 
             builder.Entity<ChipInHeat>()
                 .HasKey(c => new { c.UserId, c.ChipCode });
+
+            builder.Entity<MarkerInHeat>()
+                .HasKey(m => new {m.HeatId, m.MarkerId});
         }
     }
 }
