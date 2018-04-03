@@ -387,7 +387,7 @@ namespace Timataka.Web.Controllers
                     UserId = model.UserId
                 };
 
-                var status = _chipService.AssignChipToUserInHeatAsync(entity);
+                var status = _chipService.AssignChipToUserInHeat(entity);
                 return RedirectToAction("Chips", "Heat", new { });
             }
 

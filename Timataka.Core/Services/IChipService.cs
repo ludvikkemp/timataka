@@ -19,6 +19,7 @@ namespace Timataka.Core.Services
 
         IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId);
 
+        bool AssignChipToUserInHeat(ChipInHeat c);
         Task<ChipInHeat> AssignChipToUserInHeatAsync(ChipInHeat c);
         IEnumerable<ChipInHeat> GetChipsInHeats();
         IEnumerable<ChipInHeat> GetChipsInHeatsForUser(string userId);
