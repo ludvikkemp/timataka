@@ -185,7 +185,7 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> AssignDevice(CreateDeviceInEventViewModel model, int competitionInstanceId, int competitionId)
         {
             await _deviceService.AddDeviceInEventAsync(model.DeviceId, model.EventId);
-            return RedirectToAction("Devices", competitionInstanceId);
+            return RedirectToAction("Devices", new { competitionInstanceId, competitionId });
         }
 
         #endregion
@@ -206,17 +206,16 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignMarker/{markerId}")]
         public IActionResult AssignMarker(int competitionId, int competitionInstanceId, int markerId)
         {
-            ViewBag.Events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
+            //Safna saman heats - events drop down lista
             return View();
         }
 
         [HttpPost]
-        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignDevice")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignMarker/{markerId}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignMarker(CreateDeviceInEventViewModel model, int competitionInstanceId, int competitionId)
         {
-            await _deviceService.AddDeviceInEventAsync(model.DeviceId, model.EventId);
-            return RedirectToAction("Devices", competitionInstanceId);
+            return RedirectToAction("Markers", new { competitionInstanceId, competitionId });
         }
 
 

@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Timataka.Core.Models.ViewModels.MarkerViewModels.MarkersInEventViewModel>
+
+@{
+    ViewBag.Title = "Markers";
+    ViewData["Title"] = "Markers";
+    Layout = "_AdminLayout";
+}
+
+<<section class="content">
+    <div class="title-block">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> Markers in @ViewBag.CompetitionInstance.Name</span>
+                <a class="btn btn-primary btn-sm rounded-s"
+                   asp-controller="CompetitionInstance"
+                   asp-action="AssignMarker"
+                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                   asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                   asp-route-competitionInstanceId="@ViewBag.CompetitionInstance.Id">Assign Marker</a>
+
+                <a asp-controller="Admin"
+                   asp-action="CompetitionInstance"
+                   asp-route-competitionInstanceId="@ViewBag.CompetitionInstance.Id"
+                   class="btn btn-primary btn-sm rounded-s">Events</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="" method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <nav class="text-right col-md-6">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href=""> Prev </a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href=""> 1 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 2 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 3 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 4 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> 5 </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href=""> Next </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Location</th>
+                                                <th>Type</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.Marker.Time</td>
+                                                    <td>@item.Marker.Location</td>
+                                                    <td>@item.Marker.Type</td>
+                                                    <td>
+                                                        <a class="btn btn-warning-outline btn-sm"
+                                                           asp-controller="CompetitionInstance"
+                                                           asp-action="AssignMarker"
+                                                           asp-route-deviceId="@item.Marker.Id"
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                           asp-route-competitionInstanceId="@ViewBag.CompetitionInstance.Id">Assign</a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
