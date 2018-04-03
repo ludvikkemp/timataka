@@ -115,5 +115,53 @@ namespace Timataka.Core.Data.Repositories
             await _db.SaveChangesAsync();
             return result;
         }
+
+        public MarkerInHeat AddMarkerInHeat(MarkerInHeat m)
+        {
+            _db.MarkersInHeats.Add(m);
+            _db.SaveChanges();
+            return m;
+        }
+
+        public async Task<MarkerInHeat> AddMarkerInHeatAsync(MarkerInHeat m)
+        {
+            await _db.MarkersInHeats.AddAsync(m);
+            await _db.SaveChangesAsync();
+            return m;
+        }
+
+        public IEnumerable<MarkerInHeat> GetMarkersInHeats()
+        {
+            return _db.MarkersInHeats.ToList();
+        }
+
+        public MarkerInHeat GetMarkerInHeat(int markerId, int heatId)
+        {
+            return (from m in GetMarkersInHeats()
+                    where m.MarkerId == markerId && m.HeatId == heatId
+                    select m).SingleOrDefault();
+        }
+
+        public bool RemoveMarkerInHeat(MarkerInHeat m)
+        {
+            var result = false;
+            if(_db.MarkersInHeats.Remove(m) != null)
+            {
+                result = true;
+            }
+            _db.SaveChanges();
+            return result;
+        }
+
+        public async Task<bool> RemoveMarkerInHeatAsync(MarkerInHeat m)
+        {
+            var result = false;
+            if (_db.MarkersInHeats.Remove(m) != null)
+            {
+                result = true;
+            }
+            await _db.SaveChangesAsync();
+            return result;
+        }
     }
 }

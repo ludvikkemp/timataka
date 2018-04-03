@@ -12,6 +12,7 @@ namespace Timataka.Core.Data.Repositories
         Task<Event> InsertAsync(Event entity);
         Task<Event> GetEventByNameAsync(string eventName);
         Task<Event> GetByIdAsync(int id);
+        Event GetById(int id);
         void Edit(Event entity);
         Task EditAsync(Event entity);
         void Remove(Event entity);

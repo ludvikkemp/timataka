@@ -9,8 +9,14 @@ namespace Timataka.Core.Models.ViewModels.DeviceViewModels
     {
         public DevicesInEvent DevicesInEvent { get; set; }
 
-        public Event Event { get; set; }
+        public string EventName { get; set; }
 
-        public Device Device { get; set; }
+        public string DeviceName { get; set; }
+
+        public DateTime DateFrom { get; set; }
+
+        public DateTime DateTo { get; set; }
+
+        public Boolean Active { get; set; }
     }
 }

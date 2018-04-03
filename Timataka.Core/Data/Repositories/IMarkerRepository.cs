@@ -21,5 +21,15 @@ namespace Timataka.Core.Data.Repositories
 
         Boolean Remove(Marker m);
         Task<Boolean> RemoveAsync(Marker m);
+
+        MarkerInHeat AddMarkerInHeat(MarkerInHeat m);
+        Task<MarkerInHeat> AddMarkerInHeatAsync(MarkerInHeat m);
+
+        IEnumerable<MarkerInHeat> GetMarkersInHeats();
+
+        MarkerInHeat GetMarkerInHeat(int markerId, int heatId);
+
+        Boolean RemoveMarkerInHeat(MarkerInHeat m);
+        Task<Boolean> RemoveMarkerInHeatAsync(MarkerInHeat m);
     }
 }

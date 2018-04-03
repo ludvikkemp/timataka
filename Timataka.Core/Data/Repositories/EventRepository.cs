@@ -149,5 +149,10 @@ namespace Timataka.Core.Data.Repositories
                 }).ToList();
             return model;
         }
+
+        public Event GetById(int id)
+        {
+            return _context.Events.SingleOrDefault(x => x.Id == id);
+        }
     }
 }

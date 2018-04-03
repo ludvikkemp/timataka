@@ -169,5 +169,10 @@ namespace Timataka.Core.Services
             var events = _repo.GetEventsForInstance(id);
             return events;
         }
+
+        public Event GetEventById(int eventId)
+        {
+            return _repo.GetById(eventId);
+        }
     }
 }

@@ -17,17 +17,22 @@ namespace Timataka.Web.Controllers
         private readonly IAccountService _accountService;
         private readonly IDeviceService _deviceService;
         private readonly IEventService _eventService;
+        private readonly IMarkerService _markerService;
 
         public CompetitionInstanceController(ICompetitionService competitionService, 
                                              IAccountService accountService,
                                              IDeviceService deviceService,
-                                             IEventService eventService)
+                                             IEventService eventService,
+                                             IMarkerService markerService)
         {
             _competitionService = competitionService;
             _accountService = accountService;
             _deviceService = deviceService;
             _eventService = eventService;
+            _markerService = markerService;
         }
+
+        #region CompetitionInstance
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Create
         [HttpGet]
@@ -143,17 +148,15 @@ namespace Timataka.Web.Controllers
 
         }
 
+        #endregion
 
-        // **************** DEVICES COMPETITION INSTANCES ****************** //
-
+        #region Devices
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Devices")]
         public IActionResult Devices(int competitionId, int competitionInstanceId)
         {
-            //TODO: HÉR ÞARF AÐ ATHUGA MEÐ RESPONSE TIME, TEKUR 1500ms REQUEST FYRIR 3-4 DEVICE AÐ LOADAST
-
             var data = _deviceService.GetDevicesInCompetitionInstance(competitionInstanceId);
             ViewBag.CompetitionInstance = _competitionService.GetCompetitionInstanceById(competitionInstanceId).Result;
             return View(data);
@@ -185,6 +188,39 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("Devices", competitionInstanceId);
         }
 
+        #endregion
+
+        #region Markers
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Markers")]
+        public IActionResult Markers(int competitionId, int competitionInstanceId)
+        {
+            var data = _markerService.GetMarkersForCompetitionInstance(competitionInstanceId);
+            ViewBag.CompetitionInstance = _competitionService.GetCompetitionInstanceById(competitionInstanceId).Result;
+            return View(data);
+        }
+
+        [HttpGet]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignMarker/{markerId}")]
+        public IActionResult AssignMarker(int competitionId, int competitionInstanceId, int markerId)
+        {
+            ViewBag.Events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignDevice")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignMarker(CreateDeviceInEventViewModel model, int competitionInstanceId, int competitionId)
+        {
+            await _deviceService.AddDeviceInEventAsync(model.DeviceId, model.EventId);
+            return RedirectToAction("Devices", competitionInstanceId);
+        }
+
+
+        #endregion
 
     }
 }
