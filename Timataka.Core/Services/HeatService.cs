@@ -145,6 +145,7 @@ namespace Timataka.Core.Services
         {
             _repo.EditContestantInHeat(h);
         }
+
         public async Task EditAsyncContestantInHeat(ContestantInHeat h)
         {
             await _repo.EditAsyncContestantInHeat(h);

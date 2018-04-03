@@ -6,23 +6,16 @@ using System.Text;
 
 namespace Timataka.Core.Models.Entities
 {
-    public class ChipInHeat
+    public class MarkerInHeat
     {
-        [Key]
-        public string UserId { get; set; }
-        [ForeignKey(nameof(UserId))]
-        public virtual ApplicationUser User { get; set;}
-
         [Key]
         public int HeatId { get; set; }
         [ForeignKey(nameof(HeatId))]
         public virtual Heat Heat { get; set; }
 
         [Key]
-        public string ChipCode { get; set; }
-        [ForeignKey(nameof(ChipCode))]
-        public virtual Chip Chip { get; set; }
-
-        public Boolean Valid { get; set; }
+        public int MarkerId { get; set; }
+        [ForeignKey(nameof(MarkerId))]
+        public virtual Marker Marker { get; set; }
     }
 }

@@ -90,20 +90,20 @@
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
-                                                    <td>@item.Device.Name</td>
-                                                    <td>@item.Device.Active</td>
+                                                    <td>@item.DevicesInEvent.Device.Name</td>
+                                                    <td>@item.DevicesInEvent.Device.Active</td>
                                                     <td>
                                                         <a class="btn btn-warning-outline btn-sm" 
                                                            asp-controller="Event" 
                                                            asp-action="UnassignDevice" 
-                                                           asp-route-deviceId="@item.Device.Id" 
+                                                           asp-route-deviceId="@item.DevicesInEvent.DeviceId" 
                                                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                            asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                                                           asp-route-eventId="@item.Event.Id">Unassign</a>
+                                                           asp-route-eventId="@item.DevicesInEvent.EventId">Unassign</a>
                                                         <a class="btn btn-success-outline btn-sm" 
                                                            asp-controller="Device" 
                                                            asp-action="Details" 
-                                                           asp-route-deviceId="@item.Device.Id">Details</a>
+                                                           asp-route-deviceId="@item.DevicesInEvent.DeviceId">Details</a>
                                                     </td>
                                                 </tr>
                                             }

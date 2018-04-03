@@ -29,6 +29,7 @@ namespace Timataka.Core.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Chip> Chips { get; set; }
         public DbSet<ChipInHeat> ChipsInHeats { get; set; }
+        public DbSet<MarkerInHeat> MarkersInHeats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

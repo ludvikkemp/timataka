@@ -12,37 +12,27 @@ namespace Timataka.Core.Services
     public class MarkerService : IMarkerService
     {
         private readonly IMarkerRepository _repo;
+        private readonly IHeatService _heatService;
+        private readonly IEventService _eventService;
 
-        public MarkerService(IMarkerRepository repo)
+        public MarkerService(IMarkerRepository repo,
+                             IHeatService heatService,
+                             IEventService eventService)
         {
             _repo = repo;
+            _heatService = heatService;
+            _eventService = eventService;
         }
 
-        public async Task<Marker> AddAsync(MarkerCreateViewModel m)
+        public async Task<Marker> AddAsync(Marker m)
         {
-            return await _repo.AddAsync(new Marker
-            {
-                CompetitionInstanceId = m.CompetitionInstanceId,
-                HeatId = m.HeatId,
-                Location = m.Location,
-                Time = m.Time,
-                Type = m.Type
-            });
+            return await _repo.AddAsync(m);
         }
 
-        public async void AssignMarkerToHeat(Marker m, int heatId)
+        public async void AssignMarkerToHeat(int markerId, int heatId)
         {
-            if(m.HeatId == null)
-            {
-                m.HeatId = heatId;
-                await EditAsync(m);
-            }
-            else
-            {
-                var newMarker = await DuplicateMarker(m);
-                newMarker.HeatId = heatId;
-                await EditAsync(m);
-            }
+            MarkerInHeat m = new MarkerInHeat { MarkerId = markerId, HeatId = heatId };
+            await _repo.AddMarkerInHeatAsync(m);
         }
 
         public async Task<bool> EditAsync(Marker m)
@@ -70,9 +60,25 @@ namespace Timataka.Core.Services
 
         public IEnumerable<Marker> GetMarkersForHeat(int id)
         {
-            var result = (from m in GetMarkers()
-                          where m.HeatId == id
+            var result = (from markersInHeat in _repo.GetMarkersInHeats()
+                          join m in GetMarkers() on markersInHeat.MarkerId equals m.Id
+                          where markersInHeat.HeatId == id
                           select m).ToList();
+            return result;
+        }
+
+        public IEnumerable<MarkersInEventViewModel> GetMarkersForEvent(int id)
+        {
+            var heats = _heatService.GetHeatsForEvent(id);
+            var e = _eventService.GetEventById(id);
+            var result = (from m in GetMarkersForCompetitionInstance(e.CompetitionInstanceId)
+                          join markersInHeat in _repo.GetMarkersInHeats() on m.Id equals markersInHeat.MarkerId
+                          join h in heats on markersInHeat.HeatId equals h.Id
+                          select new MarkersInEventViewModel
+                          {
+                              HeatNumber = h.HeatNumber,
+                              Marker = m
+                          }).ToList();
             return result;
         }
 
@@ -81,26 +87,6 @@ namespace Timataka.Core.Services
             return await _repo.RemoveAsync(m);
         }
         
-        public async Task<Marker> DuplicateMarker(Marker m)
-        {
-            var newMarker = new Marker
-            {
-                CompetitionInstanceId = m.CompetitionInstanceId,
-                Location = m.Location,
-                Time = m.Time,
-                Type = m.Type
-            };
-            await _repo.AddAsync(newMarker);
-            return newMarker;
-        }
-
-        public IEnumerable<Marker> GetUnassignedMarkers(int id)
-        {
-            var result = (from m in GetMarkers()
-                          where m.CompetitionInstanceId == id && m.HeatId == null
-                          select m).ToList();
-            return result;
-        }
 
     }
 }

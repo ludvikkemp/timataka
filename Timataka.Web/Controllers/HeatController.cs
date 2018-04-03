@@ -283,15 +283,14 @@ namespace Timataka.Web.Controllers
 
             var instanceID = 1;
 
-            var allMarkers = _markerService.GetUnassignedMarkers(instanceID);
+            var allMarkers = _markerService.GetMarkersForCompetitionInstance(instanceID);
             ViewBag.HeatId = id;
             return View(assignedMarkers);
         }
 
-        public async Task<IActionResult> AssignMarker(int heatId, int markerId)
+        public IActionResult AssignMarker(int heatId, int markerId)
         {
-            var marker = await _markerService.GetMarkerByIdAsync(markerId);
-            marker.HeatId = heatId;
+            _markerService.AssignMarkerToHeat(markerId, heatId);
             return RedirectToAction("Markers", "Heat", new { eventId = heatId} );
         }
 

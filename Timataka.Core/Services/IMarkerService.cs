@@ -9,7 +9,7 @@ namespace Timataka.Core.Services
 {
     public interface IMarkerService
     {
-        Task<Marker> AddAsync(MarkerCreateViewModel m);
+        Task<Marker> AddAsync(Marker m);
         Task<Boolean> EditAsync(Marker m);
         Task<Boolean> RemoveAsync(Marker m);
 
@@ -17,12 +17,9 @@ namespace Timataka.Core.Services
         IEnumerable<Marker> GetMarkers();
         IEnumerable<Marker> GetMarkersForCompetitionInstance(int id);
         IEnumerable<Marker> GetMarkersForHeat(int id);
-        IEnumerable<Marker> GetUnassignedMarkers(int id);
+        IEnumerable<MarkersInEventViewModel> GetMarkersForEvent(int id);
 
-        void AssignMarkerToHeat(Marker m, int heatId);
-
-        Task<Marker> DuplicateMarker(Marker m);
-
+        void AssignMarkerToHeat(int markerId, int heatId);
 
     }
 }
