@@ -26,7 +26,7 @@
             <input type="hidden" asp-for="Name" value="@Model.Name" />
             <input type="hidden" asp-for="EventId" value="@Model.EventId" />
             <input type="submit" value="Delete" class="btn btn-danger-outline btn-sm" />
-            <a asp-controller="Admin" asp-action="Categories" asp-route-id="@Model.EventId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+            <a asp-controller="Admin" asp-action="Categories" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" class="btn btn-secondary-outline btn-sm">Back to List</a>
         </form>
     </div>
 </section>

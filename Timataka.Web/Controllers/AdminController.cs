@@ -362,12 +362,11 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Admin/Catagories/{id}")]
+        [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Catagories")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Categories(int id)
+        public IActionResult Categories(int competitionId, int competitionInstanceId, int eventId)
         {
-            var categories = _categoryService.GetListOfCategoriesByEventId(id);
-            ViewBag.EventId = id;
+            var categories = _categoryService.GetListOfCategoriesByEventId(eventId);
             return View(categories);
         }
 
