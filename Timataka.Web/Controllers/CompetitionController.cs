@@ -133,6 +133,8 @@ namespace Timataka.Web.Controllers
 
         // Get Competitons/ManagesCompetitions/Add
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/Personnel/{userId}/AddRole")]
         public IActionResult AddRole(string userId, int competitionId)
         {
             ViewBag.userId = userId;
@@ -164,18 +166,24 @@ namespace Timataka.Web.Controllers
 
         // Post Competitions/ManagesCompetitions/Add
         [HttpPost]
-        public IActionResult AddRole(ManagesCompetition m)
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/Personnel/{userId}/AddRole")]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddRole(ManagesCompetition m, int competitionId, string userId)
         {
             if(ModelState.IsValid)
             {
                 var task = _competitionService.AddRole(m);
                 task.Wait();
-                return RedirectToAction("Personnel", "Admin", new { eventId= m.CompetitionId });
+                return RedirectToAction("Personnel", "Admin", new { competitionId = m.CompetitionId });
             }
             return View();
         }
 
-        // Get: Competitions/ManagesCompetitions/Edit
+        // Get: /Admin/Competition/{competitionId}/Personnel/{userId}/EditManager
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/Personnel/{userId}/EditManager")]
         public IActionResult EditManager(string userId, int competitionId)
         {
             var modelAllCompetitionRoles = _competitionService.GetAllRolesForCompetition(competitionId);
@@ -214,10 +222,12 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        // Post: Competitions/ManagesCompetitions/Edit
+        // Post: /Admin/Competition/{competitionId}/Personnel/{userId}/EditManager
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/Personnel/{userId}/EditManager")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditManager(ManagesCompetitionViewModel model)
+        public async Task<IActionResult> EditManager(ManagesCompetitionViewModel model, int competitionId, string userId)
         {
             if (ModelState.IsValid)
             {
@@ -228,12 +238,15 @@ namespace Timataka.Web.Controllers
                     Role = model.Role
                 };
                 await _competitionService.EditRole(entity);
-                return RedirectToAction("Personnel", "Admin", new { eventId = model.CompetitionId });
+                return RedirectToAction("Personnel", "Admin", new { competitionId = model.CompetitionId });
             }
             return View(model);
         }
 
-        // GET: Competition/ManagesCompetition/Delete
+        // GET: /Admin/Competition/{competitionId}/Personnel/{userId}/DeleteManager
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/Personnel/{userId}/DeleteManager")]
         public IActionResult DeleteManager(string userId, int competitionId)
         {
             var modelAllCompetitionRoles = _competitionService.GetAllRolesForCompetition(competitionId);
@@ -251,10 +264,12 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        // POST: Competition/ManagesCompetition/Delete
+        // POST: /Admin/Competition/{competitionId}/Personnel/{userId}/DeleteManager
         [HttpPost, ActionName("DeleteManager")]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/Personnel/{userId}/DeleteManager")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmedManager(ManagesCompetitionViewModel model)
+        public async Task<IActionResult> DeleteConfirmedManager(ManagesCompetitionViewModel model, int competitionId, string userId)
         {
             var entity = new ManagesCompetition
             {
@@ -264,7 +279,7 @@ namespace Timataka.Web.Controllers
             };
 
             await _competitionService.RemoveRole(entity);
-            return RedirectToAction("Personnel", "Admin", new { eventId = model.CompetitionId });
+            return RedirectToAction("Personnel", "Admin", new { competitionId = model.CompetitionId });
 
         }
     }

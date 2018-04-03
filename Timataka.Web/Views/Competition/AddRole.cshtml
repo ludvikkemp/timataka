@@ -18,21 +18,21 @@
                     <label asp-for="Role"></label>
                     <select name="Role" class="form-control">
                         @foreach (var item in ViewBag.roles)
-                        {
-                            <option value="@item.Value" id="@item.Value">@item.Text</option>
-                        }
+            {
+                <option value="@item.Value" id="@item.Value">@item.Text</option>
+}
                     </select>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
+                <div>
+                    <a asp-controller="Admin" asp-action="Personnel" asp-route-competitionId="@ViewBag.competitionId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+                </div>
             </form>
         </div>
     </div>
 
-    <div>
-        <a asp-controller="Admin" asp-action="Personnel" asp-route-id="@ViewBag.competitionId" class="btn btn-secondary-outline btn-sm">Back to List</a>
-    </div>
 </section>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

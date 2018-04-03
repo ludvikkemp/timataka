@@ -337,16 +337,16 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Admin/Personnel/{id}")]
+        [Route("Admin/Competition/{competitionId}/Personnel")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Personnel(int id)
+        public IActionResult Personnel(int competitionId)
         {
-            var competition = _competitionService.GetCompetitionById(id);
+            var competition = _competitionService.GetCompetitionById(competitionId);
             competition.Wait();
 
             var usersDto = _adminService.GetUsers();
 
-            var assignedRoles = _competitionService.GetAllRolesForCompetition(id);
+            var assignedRoles = _competitionService.GetAllRolesForCompetition(competitionId);
 
             var roles = new Role();
 
