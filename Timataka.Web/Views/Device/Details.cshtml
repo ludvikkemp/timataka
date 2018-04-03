@@ -32,7 +32,11 @@
             @foreach (var x in Model.Events)
              {
                 <dd>
-                    <a asp-controller="Admin" asp-action="Event" asp-route-id="@x.Id">@x.Name</a> - @x.DateFrom - @x.DateTo
+                    <a asp-controller="Admin" 
+                       asp-action="Event" 
+                       asp-route-competitionInstanceId="@x.CompetitionInstanceId"
+                       asp-route-competitionId="@x.CompetitionId"
+                       asp-route-eventId="@x.Event.Id">@x.Event.Name</a> - @x.Event.DateFrom - @x.Event.DateTo
                 </dd>
              }
 

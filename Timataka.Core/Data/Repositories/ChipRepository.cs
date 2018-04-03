@@ -114,9 +114,25 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
+
         public IEnumerable<Chip> Get()
         {
             return _db.Chips;
+        }
+
+        public Chip GetChipByNumber(int number)
+        {
+            return (from c in _db.Chips
+                    where c.Number == number
+                    select c).SingleOrDefault();
+        }
+
+        public async Task<Chip> GetChipByNumberAsync(int number)
+        {
+            var result = await(from c in _db.Chips
+                               where c.Number == number
+                               select c).SingleOrDefaultAsync();
+            return result;
         }
 
         public IEnumerable<ChipViewModel> GetChips()
@@ -143,6 +159,7 @@ namespace Timataka.Core.Data.Repositories
         {
             return _db.ChipsInHeats.ToList();
         }
+
 
         public IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId)
         {
@@ -178,6 +195,7 @@ namespace Timataka.Core.Data.Repositories
                                 select h).SingleOrDefaultAsync();
             return result;
         }
+
 
         public bool RemoveChip(Chip c)
         {

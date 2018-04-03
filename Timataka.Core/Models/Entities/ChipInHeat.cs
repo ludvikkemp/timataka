@@ -13,6 +13,7 @@ namespace Timataka.Core.Models.Entities
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set;}
 
+        [Key]
         public int HeatId { get; set; }
         [ForeignKey(nameof(HeatId))]
         public virtual Heat Heat { get; set; }

@@ -48,26 +48,24 @@
         <nav class="text-right col-md-6">
             <ul class="pagination">
                 <li class="page-item">
-                    <a class="page-link" href=""> Prev </a>
+                    <a class="page-link"
+                       asp-controller="Event" 
+                       asp-action="AssignDevice" 
+                       asp-route-eventId="@ViewBag.Event.Id">Assign Device</a>
                 </li>
                 <li class="page-item active">
-                    <a class="page-link" href=""> 1 </a>
+                    <a class="page-link"
+                       asp-controller="Admin" 
+                       asp-action="Event" 
+                       asp-route-eventId="@ViewBag.Event.Id">Event</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href=""> 2 </a>
+                    <a class="page-link"
+                       asp-controller="Admin" 
+                       asp-action="CompetitionInstance" 
+                       asp-route-competitionInstanceId="@ViewBag.Event.CompetitionInstanceId">Instance</a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href=""> 3 </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href=""> 4 </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href=""> 5 </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href=""> Next </a>
-                </li>
+                
             </ul>
         </nav>
     </div>
@@ -95,8 +93,17 @@
                                                     <td>@item.Device.Name</td>
                                                     <td>@item.Device.Active</td>
                                                     <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Event" asp-action="UnassignDevice" asp-route-deviceId="@item.Device.Id" asp-route-eventId="@item.Event.Id">Unassign</a>
-                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Device" asp-action="Details" asp-route-id="@item.Device.Id">Details</a>
+                                                        <a class="btn btn-warning-outline btn-sm" 
+                                                           asp-controller="Event" 
+                                                           asp-action="UnassignDevice" 
+                                                           asp-route-deviceId="@item.Device.Id" 
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                           asp-route-eventId="@item.Event.Id">Unassign</a>
+                                                        <a class="btn btn-success-outline btn-sm" 
+                                                           asp-controller="Device" 
+                                                           asp-action="Details" 
+                                                           asp-route-deviceId="@item.Device.Id">Details</a>
                                                     </td>
                                                 </tr>
                                             }

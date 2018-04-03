@@ -254,9 +254,12 @@ namespace Timataka.Web.Controllers
             };
             
             var events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
+            var competition = _competitionService.GetCompetitionById(competitionId);
+            competition.Wait();
             
             var instanceDto = new CompetitionInstanceDTO
             {
+                Competition = competition.Result,
                 CompetitonInstance = instance,
                 Events = events
             };
@@ -289,9 +292,16 @@ namespace Timataka.Web.Controllers
                 };
                 models.Add(model);
             }
-            
+
+            var competition = _competitionService.GetCompetitionById(competitionId);
+            competition.Wait();
+            var competitionInstance = _competitionService.GetCompetitionInstanceById(competitionInstanceId);
+            competitionInstance.Wait();
+
             var eventDto = new EventDto()
             {
+                Competition = competition.Result,
+                CompetitionInstance = competitionInstance.Result,
                 Event = eventObj.Result,
                 Heats = models,
             };
@@ -311,8 +321,14 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
+            var competition = await _competitionService.GetCompetitionById(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceById(competitionInstanceId);
+            var instanceEvent = await _eventService.GetEventByIdAsync(eventId);
             var heatDto = new HeatDto()
             {
+                Competition = competition,
+                CompetitionInstance = competitionInstance,
+                Event = instanceEvent,
                 Heat = heat,
                 Contestants = _heatService.GetContestantsInHeat(heat.Id)
             };

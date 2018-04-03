@@ -9,6 +9,7 @@ namespace Timataka.Core.Models.Dto.AdminDTO
 {
     public class CompetitionInstanceDTO
     {
+        public Competition Competition { get; set; }
         public CompetitionsInstanceViewModel CompetitonInstance { get; set; }
         public IEnumerable<EventViewModel> Events { get; set; }
     }

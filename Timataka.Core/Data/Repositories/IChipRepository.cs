@@ -16,6 +16,9 @@ namespace Timataka.Core.Data.Repositories
         Chip GetChipByCode(string code);
         Task<Chip> GetChipByCodeAsync(string code);
 
+        Chip GetChipByNumber(int number);
+        Task<Chip> GetChipByNumberAsync(int number);
+
         Boolean EditChip(Chip c);
         Task<Boolean> EditChipAsync(Chip c);
 

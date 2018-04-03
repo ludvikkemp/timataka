@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -15,7 +16,9 @@ namespace Timataka.Core.Services
         private readonly IEventService _eventService;
         private readonly ICompetitionService _competitionService;
 
-        public DeviceService(IDeviceRepository repo, IEventService eventService, ICompetitionService competitionService)
+        public DeviceService(IDeviceRepository repo, 
+                                IEventService eventService, 
+                                ICompetitionService competitionService)
         {
             _repo = repo;
             _eventService = eventService;
@@ -204,11 +207,17 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="id">ID of the device.</param>
         /// <returns>List of events</returns>
-        public IEnumerable<Event> GetEventsForADevice(int id)
+        public IEnumerable<EventListForDevicesViewModel> GetEventsForADevice(int id)
         {
             var result = (from x in _repo.GetDevicesInEvents()
                          where x.DeviceId == id
-                         select _eventService.GetEventByIdAsync(x.EventId).Result).ToList();
+                         select new EventListForDevicesViewModel
+                         {
+                             Event = _eventService.GetEventByIdAsync(x.EventId).Result,
+                             CompetitionInstanceId = _eventService.GetEventByIdAsync(x.EventId).Result.CompetitionInstanceId,
+                             CompetitionId = _competitionService.GetCompetitionInstanceById(_eventService.
+                                                GetEventByIdAsync(x.EventId).Result.CompetitionInstanceId).Result.CompetitionId
+                         }).ToList();
             return result;
         }
 

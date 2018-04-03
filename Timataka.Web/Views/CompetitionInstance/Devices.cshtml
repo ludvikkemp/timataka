@@ -16,6 +16,7 @@
                    asp-controller="CompetitionInstance" 
                    asp-action="AssignDevice"
                    asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                   asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                    asp-route-competitionInstanceId="@ViewBag.CompetitionInstance.Id">Assign Device</a>
 
                 <a asp-controller="Admin" 
@@ -100,12 +101,13 @@
                                                            asp-action="UnassignDevice" 
                                                            asp-route-deviceId="@item.Device.Id" 
                                                            asp-route-eventId="@item.Event.Id" 
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                            asp-route-competitionInstanceId="@item.Event.CompetitionInstanceId">Unassign</a>
 
                                                         <a class="btn btn-success-outline btn-sm"
                                                            asp-controller="Device" 
-                                                           asp-action="Details" 
-                                                           asp-route-id="@item.Device.Id">Details</a>
+                                                           asp-action="Details"
+                                                           asp-route-deviceId="@item.Device.Id">Details</a>
                                                     </td>
                                                 </tr>
                                             }

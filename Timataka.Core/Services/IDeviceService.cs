@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -22,7 +23,7 @@ namespace Timataka.Core.Services
         Task<DevicesInEvent> AddDeviceInEventAsync(int dId, int eId);
         IEnumerable<DeviceInEventViewModel> GetDevicesInEvent(int id);
         IEnumerable<DeviceInEventViewModel> GetDevicesInCompetitionInstance(int id);
-        IEnumerable<Event> GetEventsForADevice(int id);
+        IEnumerable<EventListForDevicesViewModel> GetEventsForADevice(int id);
         Task<Boolean> RemoveDeviceInEventAsync(DevicesInEvent d);
         Boolean DeviceAssigned(DevicesInEvent d);
     }

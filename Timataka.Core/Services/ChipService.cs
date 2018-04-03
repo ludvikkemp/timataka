@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
@@ -11,15 +13,21 @@ namespace Timataka.Core.Services
     public class ChipService : IChipService
     {
         private readonly IChipRepository _repo;
+        private readonly IHeatService _heatService;
+        private readonly IEventService _eventService;
 
-        public ChipService(IChipRepository repo)
+        public ChipService(IChipRepository repo,
+                            IHeatService heatService,
+                            IEventService eventService)
         {
             _repo = repo;
+            _heatService = heatService;
+            _eventService = eventService;
         }
 
-        public Task<Chip> AddChipAsync(Chip c)
+        public async Task<Chip> AddChipAsync(Chip c)
         {
-            throw new NotImplementedException();
+            return await _repo.AddAsync(c);
         }
 
         public bool AssignChipToUserInHeat(ChipInHeat c)
@@ -27,24 +35,36 @@ namespace Timataka.Core.Services
             return _repo.AssignChipToUserInHeat(c);
         }
 
-        public Task<bool> EditChipAsync(Chip c)
+        public async Task<ChipInHeat> AssignChipToUserInHeatAsync(ChipInHeat c)
         {
-            throw new NotImplementedException();
+            if (await _repo.AssignChipToUserInHeatAsync(c))
+            {
+                var result = GetChipInHeatByCodeAndUserId(c.ChipCode, c.UserId, c.HeatId);
+                return result;
+            }
+            else
+            {
+                throw new Exception("Failed");
+            }
         }
 
-        public Task<Chip> GetChipByCode(string code)
+        public async Task<bool> EditChipAsync(Chip c)
         {
-            throw new NotImplementedException();
+            return await _repo.EditChipAsync(c);
         }
 
-        public Task<Chip> GetChipByCodeAsync(string code)
+        public async Task<Chip> GetChipByCodeAsync(string code)
         {
-            throw new NotImplementedException();
+            var result = await _repo.GetChipByCodeAsync(code);
+            return result;
         }
 
-        public Task<ChipInHeat> GetChipInEventByCodeAndUserId(string code, string userId)
+        public ChipInHeat GetChipInHeatByCodeAndUserId(string code, string userId, int heatId)
         {
-            throw new NotImplementedException();
+            var result = (from h in GetChipsInHeats()
+                          where h.ChipCode == code && h.UserId == userId && h.HeatId == heatId
+                          select h).SingleOrDefault();
+            return result;
         }
 
         public IEnumerable<ChipViewModel> GetChips()
@@ -53,14 +73,47 @@ namespace Timataka.Core.Services
 
         }
 
+        public IEnumerable<ChipInHeat> GetChipsInHeatsForUser(string userId)
+        {
+            return (from c in _repo.GetChipsInHeats()
+                    where c.UserId == userId
+                    select c).ToList();
+        }
+
+        public IEnumerable<ChipInHeat> GetChipsInHeats()
+        {
+            return _repo.GetChipsInHeats();
+        }
+
+        public IEnumerable<ChipInHeat> GetChipsInHeatsForUserInHeat(string userId, int heatId)
+        {
+            return (from c in GetChipsInHeatsForUser(userId)
+                    where c.HeatId == heatId
+                    select c).ToList();
+        }
+
+        public IEnumerable<ChipInHeat> GetChipsInHeatsForEvent(int eventId)
+        {
+            var heats = _heatService.GetHeatsForEvent(eventId);
+            IEnumerable<ChipInHeat> result = Enumerable.Empty<ChipInHeat>();
+            foreach (var item in heats)
+            {
+                var r = GetChipsInHeatForHeat(item.Id);
+                result.Concat(r);
+            }
+            return result;
+        }
+
         public IEnumerable<Chip> Get()
         {
             return _repo.Get();
         }
 
-        public Task<ChipInHeat> GetChipsInHeatForUser()
+        public IEnumerable<ChipInHeat> GetChipsInHeatForHeat(int heatId)
         {
-            throw new NotImplementedException();
+            return (from c in GetChipsInHeats()
+                    where c.HeatId == heatId
+                    select c).ToList();
         }
         
         public IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId)
@@ -68,24 +121,39 @@ namespace Timataka.Core.Services
             return _repo.GetChipsInHeat(heatId);
         }
 
-        public IEnumerable<ChipInHeat> GetChipsInHeatsForUser(string id)
+        public IEnumerable<ChipInHeat> GetChipsInCompetitionInstanceForUser(int competitionInstanceId, string userId)
         {
-            throw new NotImplementedException();
+            var events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
+            IEnumerable<ChipInHeat> result = Enumerable.Empty<ChipInHeat>();
+            foreach(var i in events)
+            {
+                var heats = _heatService.GetHeatsForEvent(i.Id);
+                foreach(var j in heats)
+                {
+                    result.Concat(GetChipsInHeatsForUserInHeat(userId, j.Id));
+                }
+            }
+            return result;
         }
 
-        public Task<bool> MarkInvalid(ChipInHeat c)
+        public async Task<bool> MarkInvalid(ChipInHeat c)
         {
-            throw new NotImplementedException();
+            c.Valid = false;
+            return await _repo.EditChipInHeatAsync(c);
         }
 
-        public Task<bool> RemoveChipAsync(Chip c)
+        public async Task<bool> RemoveChipAsync(Chip c)
         {
-            throw new NotImplementedException();
+            return await _repo.RemoveChipAsync(c);
         }
 
-        public Task<bool> UpdateChipStory(ChipInHeat c)
+        public async Task<bool> UpdateChipStory(ChipInHeat c)
         {
-            throw new NotImplementedException();
+            Chip chip = await GetChipByCodeAsync(c.ChipCode);
+            chip.LastCompetitionInstanceId = c.Heat.Event.CompetitionInstanceId;
+            chip.LastSeen = DateTime.Now;
+            chip.LastUserId = c.UserId;
+            return await _repo.EditChipAsync(chip);
         }
     }
 }
