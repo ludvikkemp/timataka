@@ -434,7 +434,8 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/DetailsChip/{userId}")]
         public IActionResult DetailsChip(int competitionId, int competitionInstanceId, int eventId, int heatId, string chipCode, string userId)
         {
-            return View();
+            var model = _chipService.GetChipInHeatByCodeAndUserId(chipCode, userId, heatId);
+            return View(model);
         }
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/RemoveChip/{userId}
