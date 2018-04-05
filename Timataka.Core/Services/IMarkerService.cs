@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.MarkerViewModels;
 
 namespace Timataka.Core.Services
@@ -19,7 +20,9 @@ namespace Timataka.Core.Services
         IEnumerable<Marker> GetMarkersForHeat(int id);
         IEnumerable<MarkersInEventViewModel> GetMarkersForEvent(int id);
 
-        void AssignMarkerToHeat(int markerId, int heatId);
+        Task<Boolean>AssignMarkerToHeatAsync(AssignMarkerToHeatViewModel model);
+
+        IEnumerable<EventHeatViewModel> GetEventHeatListForMarker(int markerId, int competitionInstanceId);
 
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
+using Timataka.Core.Models.ViewModels.MarkerViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -206,15 +207,18 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignMarker/{markerId}")]
         public IActionResult AssignMarker(int competitionId, int competitionInstanceId, int markerId)
         {
-            //Safna saman heats - events drop down lista
+            var data = _markerService.GetEventHeatListForMarker(markerId, competitionInstanceId);
+            ViewBag.EventHeatList = data;
+            ViewBag.markerId = markerId;
             return View();
         }
 
         [HttpPost]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignMarker/{markerId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignMarker(CreateDeviceInEventViewModel model, int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> AssignMarker(AssignMarkerToHeatViewModel model, int competitionInstanceId, int competitionId, int markerId)
         {
+            await _markerService.AssignMarkerToHeatAsync(model);
             return RedirectToAction("Markers", new { competitionInstanceId, competitionId });
         }
 

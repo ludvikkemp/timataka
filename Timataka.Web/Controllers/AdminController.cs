@@ -260,7 +260,7 @@ namespace Timataka.Web.Controllers
             var instanceDto = new CompetitionInstanceDTO
             {
                 Competition = competition.Result,
-                CompetitonInstance = instance,
+                CompetitionInstance = instance,
                 Events = events
             };
 

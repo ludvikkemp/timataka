@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.MarkerViewModels;
 
 namespace Timataka.Core.Services
@@ -29,10 +30,14 @@ namespace Timataka.Core.Services
             return await _repo.AddAsync(m);
         }
 
-        public async void AssignMarkerToHeat(int markerId, int heatId)
+        public async Task<Boolean> AssignMarkerToHeatAsync(AssignMarkerToHeatViewModel model)
         {
-            MarkerInHeat m = new MarkerInHeat { MarkerId = markerId, HeatId = heatId };
-            await _repo.AddMarkerInHeatAsync(m);
+            MarkerInHeat m = new MarkerInHeat { MarkerId = model.MarkerId, HeatId = model.HeatId };
+            if(await _repo.AddMarkerInHeatAsync(m) != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> EditAsync(Marker m)
@@ -85,6 +90,22 @@ namespace Timataka.Core.Services
         public async Task<Boolean> RemoveAsync(Marker m)
         {
             return await _repo.RemoveAsync(m);
+        }
+
+        public Boolean IsAssigned(int markerId, int heatId)
+        {
+            return (from x in _repo.GetMarkersInHeats()
+                    where x.MarkerId == markerId && x.HeatId == heatId
+                    select x).Any();
+        }
+
+        public IEnumerable<EventHeatViewModel> GetEventHeatListForMarker(int markerId, int competitionInstanceId)
+        {
+            var heatList = _eventService.GetEventHeatListForCompetitionInstance(competitionInstanceId);
+            var r = (from x in heatList
+                     where IsAssigned(markerId, x.HeatId) == false
+                     select x).ToList();
+            return r;
         }
         
 

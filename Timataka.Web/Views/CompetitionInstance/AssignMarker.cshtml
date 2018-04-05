@@ -1,0 +1,41 @@
+﻿@model Timataka.Core.Models.ViewModels.MarkerViewModels.AssignMarkerToHeatViewModel
+
+@{
+    ViewData["Title"] = "AssignMarker";
+    Layout = "_AdminLayout";
+}
+<section class="content">
+
+    <h4>Assign Marker</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AssignMarker">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="HeatId">Event - Heat</label>
+                    <select name="HeatId" class="form-control">
+                        @foreach (var item in ViewBag.EventHeatList)
+                        {
+                             <option value="@item.HeatId" HeatId="@item.HeatId">@item.EventName - Heat @item.HeatNumber</option>
+                        }
+                    </select>
+                </div>
+                <input type="hidden" asp-for="MarkerId" value="@ViewBag.markerId" />
+                <div class="form-group">
+                    <input type="submit" value="Assign" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-controller="CompetitionInstance" asp-action="Markers"
+           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+           asp-route-competitionInstanceId=@ViewContext.RouteData.Values["competitionInstanceId"] 
+           class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

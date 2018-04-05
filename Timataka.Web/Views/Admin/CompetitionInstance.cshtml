@@ -13,7 +13,7 @@
                        asp-action="Competition" 
                        asp-route-competitionId="@Model.Competition.Id"> @Model.Competition.Name</a> /  
                     
-                    @Model.CompetitonInstance.Name
+                    @Model.CompetitionInstance.Name
                 </span>
                 
             </div>
@@ -26,14 +26,21 @@
         <div class="col-md-6">
             <a asp-controller="Event"
                asp-action="Create"
-               asp-route-competitionInstanceId="@Model.CompetitonInstance.Id"
-               asp-route-competitionId="@Model.CompetitonInstance.CompetitionId"
+               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
                class="btn btn-primary btn-sm rounded-s">Add Event</a>
 
             <a asp-controller="CompetitionInstance"
                asp-action="Devices"
-               asp-route-competitionInstanceId="@Model.CompetitonInstance.Id"
+               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
                class="btn btn-primary btn-sm rounded-s">Devices</a>
+
+            <a asp-controller="CompetitionInstance"
+               asp-action="Markers"
+               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
+               class="btn btn-primary btn-sm rounded-s">Markers</a>
         </div>
 
     </div>

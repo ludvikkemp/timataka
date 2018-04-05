@@ -38,7 +38,9 @@
     </div>
 
     <div>
-        <a asp-controller="CompetitionInstance" asp-action="Devices" asp-route-instanceId=@ViewContext.RouteData.Values["instanceId"] class="btn btn-secondary-outline btn-sm">Back to List</a>
+        <a asp-controller="CompetitionInstance" 
+           asp-action="Devices" 
+           asp-route-competitionInstanceId=@ViewContext.RouteData.Values["competitionInstanceId"] class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
 @section Scripts {

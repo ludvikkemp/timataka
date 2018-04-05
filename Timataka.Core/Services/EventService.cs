@@ -174,5 +174,25 @@ namespace Timataka.Core.Services
         {
             return _repo.GetById(eventId);
         }
+
+        /// <summary>
+        /// Returns list of all heats in all events for competition instance
+        /// </summary>
+        /// <param name="id">Competition instance id</param>
+        /// <returns></returns>
+        public IEnumerable<EventHeatViewModel> GetEventHeatListForCompetitionInstance(int id)
+        {
+            var events = GetEventsByCompetitionInstanceId(id);
+            var result = (from e in events
+                          join h in _heatService.GetAllHeats() on e.Id equals h.EventId
+                          select new EventHeatViewModel
+                          {
+                              EventId = e.Id,
+                              EventName = e.Name,
+                              HeatId = h.Id,
+                              HeatNumber = h.HeatNumber
+                          }).ToList();
+            return result;
+        }
     }
 }

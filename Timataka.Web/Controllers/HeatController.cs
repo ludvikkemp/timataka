@@ -10,6 +10,7 @@ using Timataka.Core.Models.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Timataka.Core.Models.Dto.HeatDTO;
 using Timataka.Core.Models.ViewModels.ChipViewModels;
+using Timataka.Core.Models.ViewModels.MarkerViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -296,10 +297,10 @@ namespace Timataka.Web.Controllers
             return View(assignedMarkers);
         }
 
-        public IActionResult AssignMarker(int heatId, int markerId)
+        public IActionResult AssignMarker(AssignMarkerToHeatViewModel model)
         {
-            _markerService.AssignMarkerToHeat(markerId, heatId);
-            return RedirectToAction("Markers", "Heat", new { eventId = heatId} );
+            _markerService.AssignMarkerToHeatAsync(model);
+            return RedirectToAction("Markers", "Heat", new { eventId = model.HeatId} );
         }
 
         public IActionResult EditMarker(int id)
