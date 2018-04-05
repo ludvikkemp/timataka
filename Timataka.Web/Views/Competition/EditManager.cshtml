@@ -13,27 +13,28 @@
             <form asp-action="EditManager">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="CompetitionId" value="@Model.CompetitionId" />
-                <input type="hidden" asp-for="UserId" value="@Model.UserId"/>
+                <input type="hidden" asp-for="UserId" value="@Model.UserId" />
                 <div class="form-group">
                     <label asp-for="Role"></label>
                     <select name="Role" class="form-control">
                         @foreach (var item in ViewBag.roles)
-                        {
-                            <option value="@item.Value" id="@item.Value">@item.Text</option>
-                        }
+            {
+                <option value="@item.Value" id="@item.Value">@item.Text</option>
+}
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+                <div>
+                    <a asp-controller="Admin" asp-action="Personnel" asp-route-competitionId="@Model.CompetitionId" class="btn btn-secondary-outline btn-sm">Back to List</a>
                 </div>
             </form>
         </div>
     </div>
 
-    <div>
-        <a asp-controller="Admin" asp-action="Personnel" asp-route-id="@Model.CompetitionId" class="btn btn-secondary-outline btn-sm">Back to List</a>
-    </div>
+    
 </section>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -24,8 +24,10 @@
         <form asp-action="DeleteManager">
             <input type="hidden" asp-for="CompetitionId" value="@Model.CompetitionId" />
             <input type="hidden" asp-for="UserId" value="@Model.UserId" />
-            <input type="submit" value="DeleteManager" class="btn btn-primary" /> |
-            <a asp-controller="Admin" asp-action="Personnel" asp-rout-id="@Model.CompetitionId">Back to List</a>
+            <input type="submit" value="DeleteManager" class="btn btn-primary" />
+            <div>
+                <a asp-controller="Admin" asp-action="Personnel" asp-route-competitionId="@Model.CompetitionId" class="btn btn-secondary-outline btn-sm">Back to List</a>
+            </div>
         </form>
     </div>
 </section>

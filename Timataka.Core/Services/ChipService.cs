@@ -30,6 +30,11 @@ namespace Timataka.Core.Services
             return await _repo.AddAsync(c);
         }
 
+        public bool AssignChipToUserInHeat(ChipInHeat c)
+        {
+            return _repo.AssignChipToUserInHeat(c);
+        }
+
         public async Task<ChipInHeat> AssignChipToUserInHeatAsync(ChipInHeat c)
         {
             if (await _repo.AssignChipToUserInHeatAsync(c))
@@ -99,11 +104,21 @@ namespace Timataka.Core.Services
             return result;
         }
 
+        public IEnumerable<Chip> Get()
+        {
+            return _repo.Get();
+        }
+
         public IEnumerable<ChipInHeat> GetChipsInHeatForHeat(int heatId)
         {
             return (from c in GetChipsInHeats()
                     where c.HeatId == heatId
                     select c).ToList();
+        }
+        
+        public IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId)
+        {
+            return _repo.GetChipsInHeat(heatId);
         }
 
         public IEnumerable<ChipInHeat> GetChipsInCompetitionInstanceForUser(int competitionInstanceId, string userId)
