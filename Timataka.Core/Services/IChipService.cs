@@ -29,5 +29,6 @@ namespace Timataka.Core.Services
         IEnumerable<ChipInHeat> GetChipsInCompetitionInstanceForUser(int competitionInstanceId, string userId);
         ChipInHeatViewModel GetChipInHeatByCodeAndUserId(string code, string userId, int heatId);
         Boolean EditChipInHeat(ChipInHeat c);
+        Boolean RemoveChipInHeat(ChipInHeat c);
     }
 }

@@ -141,6 +141,11 @@ namespace Timataka.Core.Services
             return result;
         }
 
+        public Boolean RemoveChipInHeat(ChipInHeat c)
+        {
+            return _repo.RemoveChipInHeat(c);
+        }
+
         public async Task<bool> MarkInvalid(ChipInHeat c)
         {
             c.Valid = false;
