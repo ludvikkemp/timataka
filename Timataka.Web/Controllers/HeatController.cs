@@ -422,7 +422,7 @@ namespace Timataka.Web.Controllers
                 };
 
                 var status = _chipService.EditChipInHeat(entitiy);
-                RedirectToAction("Chips","Heat", new { heatId = heatId, eventId = eventId, competitionInstanceId = competitionInstanceId, competitionId = competitionId });
+                return RedirectToAction("Chips", "Heat", new { heatId = heatId, eventId = eventId, competitionInstanceId = competitionInstanceId, competitionId = competitionId });
             }
             
             return View(model);
