@@ -95,6 +95,12 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         public ActionResult Edit(string username)
         {
+            var user = _userManager.GetUserAsync(User);
+            user.Wait();
+            if (user.Result.UserName != username)
+            {
+                return Unauthorized();
+            }
             if (username == null)
             {
                 return new BadRequestObjectResult(null);
@@ -117,7 +123,7 @@ namespace Timataka.Web.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user.UserName != username)
             {
-                return BadRequest(404);
+                return Unauthorized();
             }
             if (ModelState.IsValid)
             {
