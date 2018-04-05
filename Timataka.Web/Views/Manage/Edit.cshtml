@@ -1,0 +1,40 @@
+﻿@model Timataka.Core.Models.Dto.AdminDTO.UserDto
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "_AdminLayout";
+}
+
+
+<section class="content">
+    <h2>@ViewBag.Title</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <hr />
+                <input type="hidden" asp-for="Id" value="@Model.Id" />
+                <input type="hidden" asp-for="CountryId" value="@Model.CountryId" />
+                <input type="hidden" asp-for="DateOfBirth" value="@Model.DateOfBirth" />
+                <input type="hidden" asp-for="FirstName" value="@Model.FirstName" />
+                <input type="hidden" asp-for="Middlename" value="@Model.Middlename" />
+                <input type="hidden" asp-for="LastName" value="@Model.LastName" />
+                <input type="hidden" asp-for="Ssn" value="@Model.Ssn" />
+                <input type="hidden" asp-for="Gender" value="@Model.Gender" />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Phone"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</section>
