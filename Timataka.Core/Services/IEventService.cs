@@ -11,6 +11,7 @@ namespace Timataka.Core.Services
     {
         Task<Event> AddAsync(EventViewModel e);
         Task<Event> GetEventByIdAsync(int eventId);
+        Event GetEventById(int eventId);
         Task<Event> EditAsync(Event e);
         Task<int> RemoveAsync(int EventId);
         IEnumerable<Event> GetAllEvents();

@@ -5,10 +5,9 @@ using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Models.ViewModels.MarkerViewModels
 {
-    public class MarkesInInstanceViewModel
+    public class MarkersInEventViewModel
     {
         public Marker Marker { get; set; }
-        public string EventName { get; set; }
-        public int? HeatNumber { get; set; }
+        public int HeatNumber { get; set; }
     }
 }

@@ -173,12 +173,17 @@ namespace Timataka.Core.Services
         /// <returns></returns>
         public IEnumerable<DeviceInEventViewModel> GetDevicesInEvent(int id)
         {
+            var e = _eventService.GetEventById(id);
             var result = (from x in _repo.GetDevicesInEvents()
+                          join d in _repo.Get() on x.DeviceId equals d.Id
                           where x.EventId == id
                           select new DeviceInEventViewModel
                           {
-                              Device = GetDeviceByIdAsync(x.DeviceId).Result,
-                              Event = _eventService.GetEventByIdAsync(x.EventId).Result,
+                              DeviceName = d.Name,
+                              EventName = e.Name,
+                              Active = x.Device.Active,
+                              DateFrom = e.DateFrom,
+                              DateTo = e.DateTo,
                               DevicesInEvent = x
                           });
             return result;
@@ -191,13 +196,17 @@ namespace Timataka.Core.Services
         /// <returns></returns>
         public IEnumerable<DeviceInEventViewModel> GetDevicesInCompetitionInstance(int id)
         {
-            var result = from x in _eventService.GetEventsByCompetitionInstanceId(id)
-                         join d in _repo.GetDevicesInEvents() on x.Id equals d.EventId
+            var result = from e in _eventService.GetEventsByCompetitionInstanceId(id)
+                         join devicesInEvents in _repo.GetDevicesInEvents() on e.Id equals devicesInEvents.EventId
+                         join d in _repo.Get() on devicesInEvents.DeviceId equals d.Id
                          select new DeviceInEventViewModel
                          {
-                             Event = _eventService.GetEventByIdAsync(d.EventId).Result,
-                             DevicesInEvent = d,
-                             Device = GetDeviceByIdAsync(d.DeviceId).Result
+                             DeviceName = d.Name,
+                             EventName = e.Name,
+                             Active = d.Active,
+                             DateFrom = e.DateFrom,
+                             DateTo = e.DateTo,
+                             DevicesInEvent = devicesInEvents
                          };
             return result;
         }
