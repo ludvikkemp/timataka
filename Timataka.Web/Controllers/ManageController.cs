@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Timataka.Core.Data.Repositories;
+using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.ManageViewModels;
 using Timataka.Core.Services;
@@ -26,6 +28,9 @@ namespace Timataka.Web.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly IAccountService _accountService;
+        private readonly IAccountRepository _accountRepository;
+        private readonly IAdminService _adminService;
 
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
@@ -34,22 +39,97 @@ namespace Timataka.Web.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IAccountService accountService,
+          IAccountRepository accountRepository,
+          IAdminService adminService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _accountService = accountService;
+            _accountRepository = accountRepository;
+            _adminService = adminService;
         }
 
         [TempData]
         public string StatusMessage { get; set; }
 
         [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var model = new UserDto
+            {
+                Id = user.Id,
+                CountryId = user.CountryId,
+                Country = _accountRepository.GetCountryById((int) user.CountryId).Name,
+                Gender = user.Gender,
+                Username = user.UserName,
+                DateOfBirth = user.DateOfBirth,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                Middlename = user.MiddleName,
+                LastName = user.LastName,
+                Phone = user.Phone,
+                Ssn = user.Ssn,
+                NationalityId = user.NationalityId
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
         public IActionResult Settings()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("Admin/User/Edit/{username}")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Edit(string username)
+        {
+            if (username == null)
+            {
+                return new BadRequestObjectResult(null);
+            }
+
+            var userDto = _adminService.GetUserByUsername(username);
+
+            if (userDto == null)
+            {
+                return new BadRequestResult();
+            }
+
+            return View(userDto);
+        }
+
+        [HttpPost]
+        [Route("Admin/User/Edit/{username}")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(string username, UserDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _adminService.UpdateUser(model);
+                if (result)
+                {
+                    return Redirect("~/manage/profile");
+                }
+            }
+
+            // Something went wrong!
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            return View(model);
         }
 
         [HttpGet]
