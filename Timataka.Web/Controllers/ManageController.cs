@@ -93,8 +93,6 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Admin/User/Edit/{username}")]
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit(string username)
         {
             if (username == null)
@@ -113,11 +111,14 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpPost]
-        [Route("Admin/User/Edit/{username}")]
-        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(string username, UserDto model)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user.UserName != username)
+            {
+                return BadRequest(404);
+            }
             if (ModelState.IsValid)
             {
                 var result = await _adminService.UpdateUser(model);
