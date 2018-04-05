@@ -114,6 +114,12 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
+
+        public IEnumerable<Chip> Get()
+        {
+            return _db.Chips;
+        }
+
         public Chip GetChipByNumber(int number)
         {
             return (from c in _db.Chips
@@ -153,6 +159,43 @@ namespace Timataka.Core.Data.Repositories
         {
             return _db.ChipsInHeats.ToList();
         }
+
+
+        public IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId)
+        {
+            var chipsInHeat = (from c in _db.ChipsInHeats
+                         join h in _db.Heats on c.HeatId equals h.Id
+                         join chips in _db.Chips on c.ChipCode equals chips.Code
+                         join i in _db.CompetitionInstances on chips.LastCompetitionInstanceId equals i.Id
+                         join u in _db.Users on chips.LastUserId equals u.Id
+                         select new ChipInHeatViewModel
+                         {
+                             LastUserId = u.Id,
+                             LastCompetitionInstanceId = i.Id,
+                             Active = chips.Active,
+                             ChipCode = chips.Code,
+                             LastCompetitionInstanceName = i.Name,
+                             LastSeen = chips.LastSeen,
+                             LastUserName = u.FirstName + " " + u.MiddleName + " " + u.LastName,
+                             LastUserSsn = u.Ssn,
+                             Number = chips.Number,
+                             HeatId = h.Id,
+                             HeatNumber = h.HeatNumber,
+                             Valid = c.Valid,
+                             UserId = c.UserId
+                         }).ToList();
+
+            return chipsInHeat;
+        }
+
+        public async Task<ChipInHeat> GetChipInHeatByCodeAndUserId(string code, string userId)
+        {
+            var result = await (from h in _db.ChipsInHeats
+                                where h.ChipCode == code && h.UserId == userId
+                                select h).SingleOrDefaultAsync();
+            return result;
+        }
+
 
         public bool RemoveChip(Chip c)
         {

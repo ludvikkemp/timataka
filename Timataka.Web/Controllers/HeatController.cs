@@ -8,6 +8,8 @@ using Timataka.Core.Models.ViewModels.HeatViewModels;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Timataka.Core.Models.Dto.HeatDTO;
+using Timataka.Core.Models.ViewModels.ChipViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -16,14 +18,17 @@ namespace Timataka.Web.Controllers
         private readonly IHeatService _heatService;
         private readonly IAdminService _adminService;
         private readonly IMarkerService _markerService;
+        private readonly IChipService _chipService;
 
         public HeatController(IHeatService heatService,
                               IAdminService adminService,
-                              IMarkerService markerService)
+                              IMarkerService markerService,
+                              IChipService chipService)
         {
             _heatService = heatService;
             _adminService = adminService;
             _markerService = markerService;
+            _chipService = chipService;
         }
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Create
@@ -277,6 +282,9 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+
+        /*** MARKERS IN HEAT ***/
+
         public IActionResult Markers(int id)
         {
             var assignedMarkers = _markerService.GetMarkersForHeat(id);
@@ -306,6 +314,93 @@ namespace Timataka.Web.Controllers
             var markers = _markerService.GetMarkersForHeat(id);
             ViewBag.HeatId = id;
             return View(markers);
+        }
+
+        /*** CHIPS IN HEAT ***/
+
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips")]
+        public IActionResult Chips(int heatId, int eventId, int competitionInstanceId, int competitionId)
+        {
+            var chipsInHeat = _chipService.GetChipsInHeat(heatId);
+            
+            return View(chipsInHeat);
+        }
+
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/AssignChip
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/AssignChip")]
+        public IActionResult AssignChip(int heatId, int competitionId, int competitionInstanceId, int eventId)
+        {
+            var usersInHeat = _heatService.GetContestantsInHeat(heatId);
+            var chips = _chipService.Get();
+
+            List<SelectListItem> selectUsersListItems =
+                new List<SelectListItem>();
+
+            List<SelectListItem> selectChipsListItems =
+                new List<SelectListItem>();
+
+            foreach (var item in usersInHeat)
+            {
+                selectUsersListItems.Add(
+                    new SelectListItem
+                    {
+                        Text = item.FirstName + ' ' + item.MiddleName + ' ' + item.LastName + " (" + item.Ssn + ")",
+                        Value = item.UserId
+                    });
+            }
+
+            foreach (var item in chips)
+            {
+                selectChipsListItems.Add(
+                    new SelectListItem
+                    {
+                        Text = item.Code + " (" + item.Number + ")",
+                        Value = item.Code
+                    });
+            }
+
+            ViewBag.Users = selectUsersListItems;
+            ViewBag.Chips = selectChipsListItems;
+            
+            return View();
+        }
+
+        //Post: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/AssignChip
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/AssignChip")]
+        public IActionResult AssignChip(int heatId, int competitionId, int competitionInstanceId, int eventId, ChipInHeatViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = new ChipInHeat
+                {
+                    ChipCode = model.ChipCode,
+                    HeatId = model.HeatId,
+                    Valid = model.Valid,
+                    UserId = model.UserId
+                };
+
+                var status = _chipService.AssignChipToUserInHeat(entity);
+                return RedirectToAction("Chips", "Heat", new { });
+            }
+
+            return View(model);
+        }
+
+        public IActionResult EditChip(int heatId, int chipCode, string userId)
+        {
+            return View();
+        }
+
+        public IActionResult RemoveChip(int heatId, int chipCode, string userId)
+        {
+            return View();
         }
 
     }
