@@ -42,9 +42,9 @@
                                                     <td>@item.LastUserSsn</td>
                                                     <td>@item.Valid</td>
                                                     <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Heat" asp-action="EditChip" asp-route-heatId="@item.HeatId" asp-route-chipCode="@item.ChipCode">Edit</a>
-                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Heat" asp-action="DetailsChip" asp-route-heatId="@item.HeatId" asp-route-chipCode="@item.ChipCode">Details</a>
-                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Heat" asp-action="DeleteChip" asp-route-heatId="@item.HeatId" asp-route-chipCode="@item.ChipCode">Delete</a>
+                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Heat" asp-action="EditChip" asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-chipCode="@item.ChipCode" asp-route-userId="@item.UserId">Edit</a>
+                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Heat" asp-action="DetailsChip" asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-chipCode="@item.ChipCode" asp-route-userId="@item.UserId">Details</a>
+                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Heat" asp-action="RemoveChip" asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-chipCode="@item.ChipCode" asp-route-userId="@item.UserId">Delete</a>
                                                     </td>
                                                 </tr>
                                             }

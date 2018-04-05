@@ -388,18 +388,61 @@ namespace Timataka.Web.Controllers
                 };
 
                 var status = _chipService.AssignChipToUserInHeat(entity);
-                return RedirectToAction("Chips", "Heat", new { });
+                return RedirectToAction("Chips", "Heat", new { heatId = heatId, eventId = eventId, competitionInstanceId = competitionInstanceId, competitionId = competitionId });
             }
 
             return View(model);
         }
 
-        public IActionResult EditChip(int heatId, int chipCode, string userId)
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/EditChip/{userId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/EditChip/{userId}")]
+        public IActionResult EditChip(int competitionId, int competitionInstanceId, int eventId, int heatId, string chipCode, string userId)
+        {
+            var model = _chipService.GetChipInHeatByCodeAndUserId(chipCode, userId, heatId);
+               
+            return View(model);
+        }
+
+        //Post: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/EditChip/{userId}
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/EditChip/{userId}")]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditChip(ChipInHeatViewModel model, int competitionId, int competitionInstanceId, int eventId, int heatId, string chipCode, string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                var entitiy = new ChipInHeat
+                {
+                    ChipCode = model.ChipCode,
+                    HeatId = model.HeatId,
+                    UserId = model.UserId,
+                    Valid = model.Valid
+                };
+
+                var status = _chipService.EditChipInHeat(entitiy);
+                RedirectToAction("Chips","Heat", new { heatId = heatId, eventId = eventId, competitionInstanceId = competitionInstanceId, competitionId = competitionId });
+            }
+            
+            return View(model);
+        }
+
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/DetailsChip/{userId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/DetailsChip/{userId}")]
+        public IActionResult DetailsChip(int competitionId, int competitionInstanceId, int eventId, int heatId, string chipCode, string userId)
         {
             return View();
         }
 
-        public IActionResult RemoveChip(int heatId, int chipCode, string userId)
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/RemoveChip/{userId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/{chipCode}/RemoveChip/{userId}")]
+        public IActionResult RemoveChip(int competitionId, int competitionInstanceId, int eventId, int heatId, string chipCode, string userId)
         {
             return View();
         }
