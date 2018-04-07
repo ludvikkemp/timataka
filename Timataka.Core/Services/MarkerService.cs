@@ -107,7 +107,19 @@ namespace Timataka.Core.Services
                      select x).ToList();
             return r;
         }
-        
 
+        public async Task<Boolean> UnassignMarkerAsync(AssignMarkerToHeatViewModel model)
+        {
+            var result = await _repo.RemoveMarkerInHeatAsync(new MarkerInHeat { HeatId = model.HeatId, MarkerId = model.MarkerId });
+            return result;
+        }
+
+        public IEnumerable<Marker> GetUnAssignedMarkersForHeat(int heatId, int competitionInstanceId)
+        {
+            var markerList = (from m in GetMarkersForCompetitionInstance(competitionInstanceId)
+                             where IsAssigned(m.Id, heatId) == false
+                             select m).ToList();
+            return markerList;
+        }
     }
 }

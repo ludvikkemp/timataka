@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Timataka.Core.Models.Entities.Marker>
+﻿@model Timataka.Core.Models.ViewModels.MarkerViewModels.AssignMarkerToHeatViewModel
 
 @{
     Layout = "_AdminLayout";
@@ -33,7 +33,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model)
+                                            @foreach (var item in ViewBag.AssignedMarkers)
                                             {
                                                 <tr>
                                                     <td>
@@ -46,9 +46,14 @@
                                                         @item.Location
                                                     </td>
                                                     <td>
-                                                        <a asp-controller="Heat" asp-action="AssignMarker" asp-route-markerId="@item.Id" asp-route-heatId="@ViewBag.HeatId" class="btn btn-success-outline btn-sm">Assign</a>
-                                                        <a asp-controller="Heat" asp-action="EditMarker" asp-route-id="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                        <a asp-controller="Heat" asp-action="RemoveMarker" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                        <a asp-controller="Heat"
+                                                           asp-action="UnassignMarker"
+                                                           asp-route-markerId="@item.Id"
+                                                           asp-route-heatId="@ViewBag.HeatId"
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                           class="btn btn-warning-outline btn-sm">Unassign</a>
                                                     </td>
                                                 </tr>
 
@@ -65,5 +70,35 @@
     </div>
 
 
-</section>
+    <h4>Assign Marker</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AssignMarker"
+                asp-route-heatId="@ViewBag.HeatId"
+                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="MarkerId">Marker</label>
+                    <select name="MarkerId" class="form-control">
+                        @foreach (var item in ViewBag.MarkerList)
+                        {
+                             <option value="@item.Id" MarkerId="@item.Id">
+                                @item.Type on @item.Location at @item.Time</option>
+                        }
+                    </select>
+                </div>
+                <input type="hidden" asp-for="HeatId" value="@ViewBag.heatId" />
+                <div class="form-group">
+                    <input type="submit" value="Assign" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
 
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

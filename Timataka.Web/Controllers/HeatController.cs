@@ -288,24 +288,30 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers")]
-        public IActionResult Markers(int competitionId, int compeititionInstanceId, int eventId, int heatId)
+        public IActionResult Markers(int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
-            var assignedMarkers = _markerService.GetMarkersForHeat(heatId);
+            ViewBag.AssignedMarkers = _markerService.GetMarkersForHeat(heatId);
             ViewBag.HeatId = heatId;
-            return View(assignedMarkers);
+            ViewBag.MarkerList = _markerService.GetUnAssignedMarkersForHeat(heatId, competitionInstanceId);
+            return View();
         }
 
-        public IActionResult AssignMarker(AssignMarkerToHeatViewModel model)
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers")]
+        public async Task<IActionResult> AssignMarker(AssignMarkerToHeatViewModel model, int competitionId, int competitionInstanceId, int eventId, int heatId, int markerId)
         {
-            _markerService.AssignMarkerToHeatAsync(model);
-            return RedirectToAction("Markers", "Heat", new { eventId = model.HeatId} );
+            await _markerService.AssignMarkerToHeatAsync(model);
+            return RedirectToAction("Markers", "Heat", new { competitionId, competitionInstanceId, eventId, heatId } );
         }
 
-        public IActionResult UnassignMarker(int id)
+        [HttpGet]
+        [Authorize(Roles ="Admin")]
+        [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers/{markerId}")]
+        public async Task<IActionResult> UnassignMarker(int competitionId, int competitionInstanceId, int eventId, int heatId, int markerId)
         {
-            var markers = _markerService.GetMarkersForHeat(id);
-            ViewBag.HeatId = id;
-            return View(markers);
+            await _markerService.UnassignMarkerAsync(new AssignMarkerToHeatViewModel { HeatId = heatId, MarkerId = markerId });
+            return RedirectToAction("Markers", "Heat",  new { competitionId, competitionInstanceId, eventId, heatId });
         }
 
         #endregion

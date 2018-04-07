@@ -21,8 +21,10 @@ namespace Timataka.Core.Services
         IEnumerable<MarkersInEventViewModel> GetMarkersForEvent(int id);
 
         Task<Boolean>AssignMarkerToHeatAsync(AssignMarkerToHeatViewModel model);
+        Task<Boolean> UnassignMarkerAsync(AssignMarkerToHeatViewModel model);
 
         IEnumerable<EventHeatViewModel> GetEventHeatListForMarker(int markerId, int competitionInstanceId);
+        IEnumerable<Marker> GetUnAssignedMarkersForHeat(int heatId, int competitionInstanceId);
 
     }
 }
