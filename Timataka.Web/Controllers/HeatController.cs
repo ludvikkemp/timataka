@@ -79,10 +79,11 @@ namespace Timataka.Web.Controllers
         //POST: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Edit
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Edit/{heatId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int eventId, Heat entity)
+        public async Task<IActionResult> Edit(int competitionId, int competitionInstanceId, int eventId, int heatId, Heat entity)
         {
-            if (eventId != entity.Id)
+            if (heatId != entity.Id)
             {
                 return NotFound();
             }
