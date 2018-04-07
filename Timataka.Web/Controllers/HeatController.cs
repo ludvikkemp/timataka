@@ -283,17 +283,15 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        #region Markers
 
-        /*** MARKERS IN HEAT ***/
-
-        public IActionResult Markers(int id)
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers")]
+        public IActionResult Markers(int competitionId, int compeititionInstanceId, int eventId, int heatId)
         {
-            var assignedMarkers = _markerService.GetMarkersForHeat(id);
-
-            var instanceID = 1;
-
-            var allMarkers = _markerService.GetMarkersForCompetitionInstance(instanceID);
-            ViewBag.HeatId = id;
+            var assignedMarkers = _markerService.GetMarkersForHeat(heatId);
+            ViewBag.HeatId = heatId;
             return View(assignedMarkers);
         }
 
@@ -303,19 +301,14 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("Markers", "Heat", new { eventId = model.HeatId} );
         }
 
-        public IActionResult EditMarker(int id)
+        public IActionResult UnassignMarker(int id)
         {
             var markers = _markerService.GetMarkersForHeat(id);
             ViewBag.HeatId = id;
             return View(markers);
         }
 
-        public IActionResult RemoveMarker(int id)
-        {
-            var markers = _markerService.GetMarkersForHeat(id);
-            ViewBag.HeatId = id;
-            return View(markers);
-        }
+        #endregion
 
         /*** CHIPS IN HEAT ***/
 
