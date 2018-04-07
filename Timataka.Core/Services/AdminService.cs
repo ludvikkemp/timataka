@@ -49,6 +49,7 @@ namespace Timataka.Core.Services
                 user.Gender = model.Gender;
                 user.Phone = model.Phone;
                 user.Ssn = model.Ssn;
+                user.Email = model.Email;
 
                 IdentityResult result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)

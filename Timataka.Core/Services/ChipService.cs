@@ -35,7 +35,7 @@ namespace Timataka.Core.Services
             return _repo.AssignChipToUserInHeat(c);
         }
 
-        public async Task<ChipInHeat> AssignChipToUserInHeatAsync(ChipInHeat c)
+        public async Task<ChipInHeatViewModel> AssignChipToUserInHeatAsync(ChipInHeat c)
         {
             if (await _repo.AssignChipToUserInHeatAsync(c))
             {
@@ -59,9 +59,9 @@ namespace Timataka.Core.Services
             return result;
         }
 
-        public ChipInHeat GetChipInHeatByCodeAndUserId(string code, string userId, int heatId)
+        public ChipInHeatViewModel GetChipInHeatByCodeAndUserId(string code, string userId, int heatId)
         {
-            var result = (from h in GetChipsInHeats()
+            var result = (from h in GetChipsInHeat(heatId)
                           where h.ChipCode == code && h.UserId == userId && h.HeatId == heatId
                           select h).SingleOrDefault();
             return result;
@@ -71,6 +71,11 @@ namespace Timataka.Core.Services
         {
             return _repo.GetChips();
 
+        }
+
+        public Boolean EditChipInHeat(ChipInHeat c)
+        {
+            return _repo.EditChipInHeat(c);
         }
 
         public IEnumerable<ChipInHeat> GetChipsInHeatsForUser(string userId)
@@ -134,6 +139,11 @@ namespace Timataka.Core.Services
                 }
             }
             return result;
+        }
+
+        public Boolean RemoveChipInHeat(ChipInHeat c)
+        {
+            return _repo.RemoveChipInHeat(c);
         }
 
         public async Task<bool> MarkInvalid(ChipInHeat c)

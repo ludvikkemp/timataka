@@ -1,0 +1,77 @@
+﻿@model Timataka.Core.Models.Dto.AdminDTO.UserDto
+
+@{
+    ViewData["Title"] = "Profile";
+
+    if (User.IsInRole("Admin") || User.IsInRole("Superadmin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
+
+}
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <h4>@ViewData["Title"] of @Model.FirstName @Model.Middlename @Model.LastName</h4>
+            <hr />
+            <dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Username)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Username)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Country)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Country)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateOfBirth)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DateOfBirth)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Phone)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Gender)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Ssn)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Ssn)
+                </dd>
+
+            </dl>
+        </div>
+        <div>
+            <a asp-action="Edit" asp-route-username="@Model.Username" class="btn btn-warning-outline btn-sm">Edit Info</a>
+            <a asp-action="ChangePassword" class="btn btn-warning-outline btn-sm">Change Password</a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

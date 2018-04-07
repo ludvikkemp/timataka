@@ -16,9 +16,11 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="HeatId" value="@ViewContext.RouteData.Values["heatId"]" />
                 <div class="form-group">
-                    <label asp-for="Valid" class="control-label"></label>
-                    <input asp-for="Valid" class="form-control" />
-                    <span asp-validation-for="Valid" class="text-danger"></span>
+                    <label asp-for="Valid"></label>
+                    <select name="Valid" class="form-control">
+                        <option value="true" id="true">True</option>
+                        <option value="false" id="false">False</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label asp-for="UserId"></label>
