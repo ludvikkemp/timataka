@@ -85,8 +85,9 @@ namespace Timataka.Web.Controllers
         //POST: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Edit
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Edit/{eventId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int competitionId, EventViewModel model)
+        public async Task<IActionResult> Edit(int competitionId, int competitionInstanceId, int eventId, EventViewModel model)
         {
             if (competitionId != model.Id)
             {
@@ -94,9 +95,8 @@ namespace Timataka.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-
-                var compInstanceId = await _eventService.EditEventViewModelAsync(model);
-                return RedirectToAction("CompetitionInstance","admin", new { @competitionInstanceId = compInstanceId });
+                await _eventService.EditEventViewModelAsync(model);
+                return RedirectToAction("CompetitionInstance","admin", new { competitionId, competitionInstanceId });
             }
             return View(model);
 
