@@ -149,15 +149,25 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Roles")]
         [Authorize(Roles = "Superadmin")]
-        public IActionResult Roles()
+        public IActionResult Roles(string search)
         {
-            var userManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            ViewData["CurrentFilter"] = search;
             var adminUsers = _adminService.GetAdminUsers();
             var nonAdminUsers = _adminService.GetNonAdminUsers();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                nonAdminUsers = nonAdminUsers.Where(u =>
+                    u.FirstName.ToUpper().Contains(searchToUpper) || 
+                    u.LastName.ToUpper().Contains(searchToUpper) ||
+                    u.Username.ToUpper().Contains(searchToUpper));
+            }
+
             var model = new UserRoleDto
             {
                 Admins = adminUsers,
-                Users = nonAdminUsers
+                Users = nonAdminUsers.Take(10)
             };
             return View(model);
         }
