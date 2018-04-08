@@ -224,7 +224,7 @@ namespace Timataka.Core.Services
                          {
                              Event = _eventService.GetEventByIdAsync(x.EventId).Result,
                              CompetitionInstanceId = _eventService.GetEventByIdAsync(x.EventId).Result.CompetitionInstanceId,
-                             CompetitionId = _competitionService.GetCompetitionInstanceById(_eventService.
+                             CompetitionId = _competitionService.GetCompetitionInstanceByIdAsync(_eventService.
                                                 GetEventByIdAsync(x.EventId).Result.CompetitionInstanceId).Result.CompetitionId
                          }).ToList();
             return result;

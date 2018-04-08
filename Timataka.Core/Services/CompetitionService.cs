@@ -31,7 +31,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="c">CompetitionViewModel</param>
         /// <returns>Returns the newly created competition</returns>
-        public async Task<Competition> Add(CompetitionsViewModel c)
+        public async Task<Competition> AddAsync(CompetitionsViewModel c)
         {
             //TODO: Check if competition exists
             var newComp = new Competition
@@ -55,7 +55,7 @@ namespace Timataka.Core.Services
         /// <param name="c"></param>
         /// <param name="m"></param>
         /// <returns>Edited competition</returns>
-        public async Task<Competition> Edit(Competition c, CompetitionsViewModel m)
+        public async Task<Competition> EditAsync(Competition c, CompetitionsViewModel m)
         {
             c.Description = m.Description;
             c.Email = m.Email;
@@ -82,7 +82,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="competitionId"></param>
         /// <returns>Competition with the given ID if it exists</returns>
-        public async Task<Competition> GetCompetitionById(int competitionId)
+        public async Task<Competition> GetCompetitionByIdAsync(int competitionId)
         {
             //TODO: Check if competition exists
             var c = await _repo.GetByIdAsync(competitionId);
@@ -105,7 +105,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="modelName"></param>
         /// <returns>True if the competition exists, false otherwise.</returns>
-        public async Task<bool> CompetitionExists(string modelName)
+        public async Task<bool> CompetitionExistsAsync(string modelName)
         {
             var result = await _repo.GetCompetitionByNameAsync(modelName);
             if (result == null) return false;
@@ -117,10 +117,10 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="competitionId"></param>
         /// <returns>The ID of the competition removed.</returns>
-        public async Task<int> Remove(int competitionId)
+        public async Task<int> RemoveAsync(int competitionId)
         {
             //TODO: return true/false?
-            var c = await GetCompetitionById(competitionId);
+            var c = await GetCompetitionByIdAsync(competitionId);
             await _repo.RemoveAsync(c);
             return competitionId;
         }
@@ -133,7 +133,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns>The created instance</returns>
-        public async Task<CompetitionInstance> AddInstance(CompetitionsInstanceViewModel model)
+        public async Task<CompetitionInstance> AddInstanceAsync(CompetitionsInstanceViewModel model)
         {
             // TODO: Villu checka, athuga hvort það sé til núþegar
 
@@ -159,7 +159,7 @@ namespace Timataka.Core.Services
         /// <param name="compInstance"></param>
         /// <param name="model"></param>
         /// <returns>Edited instance</returns>
-        public async Task<CompetitionInstance> EditInstance(CompetitionInstance compInstance, CompetitionsInstanceViewModel model)
+        public async Task<CompetitionInstance> EditInstanceAsync(CompetitionInstance compInstance, CompetitionsInstanceViewModel model)
         {
             compInstance.CountryId = model.CountryId;
             compInstance.DateFrom = model.DateFrom;
@@ -176,9 +176,9 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="competitionInstanceId"></param>
         /// <returns>The ID of the instance removed.</returns>
-        public async Task<int> RemoveInstance(int competitionInstanceId)
+        public async Task<int> RemoveInstanceAsync(int competitionInstanceId)
         {
-            var c = await GetCompetitionInstanceById(competitionInstanceId);
+            var c = await GetCompetitionInstanceByIdAsync(competitionInstanceId);
             await _repo.RemoveInstanceAsync(c);
             return competitionInstanceId;
         }
@@ -209,7 +209,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="id">ID of the instance.</param>
         /// <returns>Instance of a competition.</returns>
-        public async Task<CompetitionInstance> GetCompetitionInstanceById(int id)
+        public async Task<CompetitionInstance> GetCompetitionInstanceByIdAsync(int id)
         {
             return await _repo.GetInstanceByIdAsync(id);
         }
@@ -222,6 +222,16 @@ namespace Timataka.Core.Services
         public CompetitionsInstanceViewModel GetCompetitionInstanceViewModelById(int id)
         {
             return _repo.GetCompetitionInstanceById(id);
+        }
+
+        /// <summary>
+        /// Function to get all contestatns in competition instance.
+        /// </summary>
+        /// <param name="id">Competition instance ID</param>
+        /// <returns></returns>
+        public IEnumerable<ContestantsInCompetitionViewModel> GetContestantsInCompetitionInstance(int id)
+        {
+            return _repo.GetAllContestantsInCompetitionInstance(id);
         }
 
         #endregion

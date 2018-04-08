@@ -9,22 +9,23 @@ namespace Timataka.Core.Services
 {
     public interface ICompetitionService
     {
-        Task<Competition> Add(CompetitionsViewModel c);
-        Task<Competition> Edit(Competition c, CompetitionsViewModel m);
-        Task<int> Remove(int competitionId);
+        Task<Competition> AddAsync(CompetitionsViewModel c);
+        Task<Competition> EditAsync(Competition c, CompetitionsViewModel m);
+        Task<int> RemoveAsync(int competitionId);
         IEnumerable<Competition> GetAllCompetitions();
-        Task<Competition> GetCompetitionById(int competitionId);
+        Task<Competition> GetCompetitionByIdAsync(int competitionId);
         CompetitionsViewModel GetCompetitionViewModelById(int id);
-        Task<bool> CompetitionExists(string modelName);
+        Task<bool> CompetitionExistsAsync(string modelName);
 
         //CompetitionInstance
-        Task<CompetitionInstance> AddInstance(CompetitionsInstanceViewModel model);
-        Task<CompetitionInstance> EditInstance(CompetitionInstance c, CompetitionsInstanceViewModel model);
-        Task<int> RemoveInstance(int competitionInstanceId);
+        Task<CompetitionInstance> AddInstanceAsync(CompetitionsInstanceViewModel model);
+        Task<CompetitionInstance> EditInstanceAsync(CompetitionInstance c, CompetitionsInstanceViewModel model);
+        Task<int> RemoveInstanceAsync(int competitionInstanceId);
         IEnumerable<CompetitionInstance> GetAllCompetitionInstances();
         IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int id);
-        Task<CompetitionInstance> GetCompetitionInstanceById(int id);
+        Task<CompetitionInstance> GetCompetitionInstanceByIdAsync(int id);
         CompetitionsInstanceViewModel GetCompetitionInstanceViewModelById(int id);
+        IEnumerable<ContestantsInCompetitionViewModel> GetContestantsInCompetitionInstance(int id);
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);

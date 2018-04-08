@@ -222,7 +222,7 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Competition(int competitionId)
         {
-            var competition = _competitionService.GetCompetitionById(competitionId);
+            var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
             var compDto = new CompetitionDto
             {
@@ -237,7 +237,7 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult CompetitionInstance(int competitionId, int competitionInstanceId)
         {   
-            var instanceTask = _competitionService.GetCompetitionInstanceById(competitionInstanceId);
+            var instanceTask = _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
             instanceTask.Wait();
 
             var instance = new CompetitionsInstanceViewModel
@@ -254,7 +254,7 @@ namespace Timataka.Web.Controllers
             };
             
             var events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
-            var competition = _competitionService.GetCompetitionById(competitionId);
+            var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
             
             var instanceDto = new CompetitionInstanceDTO
@@ -293,9 +293,9 @@ namespace Timataka.Web.Controllers
                 models.Add(model);
             }
 
-            var competition = _competitionService.GetCompetitionById(competitionId);
+            var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
-            var competitionInstance = _competitionService.GetCompetitionInstanceById(competitionInstanceId);
+            var competitionInstance = _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
             competitionInstance.Wait();
 
             var eventDto = new EventDto()
@@ -321,8 +321,8 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var competition = await _competitionService.GetCompetitionById(competitionId);
-            var competitionInstance = await _competitionService.GetCompetitionInstanceById(competitionInstanceId);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
             var instanceEvent = await _eventService.GetEventByIdAsync(eventId);
             var heatDto = new HeatDto()
             {
@@ -341,7 +341,7 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Personnel(int competitionId)
         {
-            var competition = _competitionService.GetCompetitionById(competitionId);
+            var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
 
             var usersDto = _adminService.GetUsers();

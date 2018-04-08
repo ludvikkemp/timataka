@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -197,6 +198,43 @@ namespace Timataka.Core.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public IEnumerable<ContestantsInCompetitionViewModel> GetAllContestantsInCompetitionInstance(int id)
+        {
+            var r = (from e in _context.Events
+                     where e.CompetitionInstanceId == id
+                     join h in _context.Heats on e.Id equals h.EventId
+                     join c in _context.ContestantsInHeats on h.Id equals c.HeatId
+                     join u in _context.Users on c.UserId equals u.Id
+                     select new ContestantsInCompetitionViewModel
+                     {
+                         Id = u.Id,
+                         Name = u.FirstName + " " + u.LastName,
+                         Gender = u.Gender,
+                         EventList = null
+                     }).ToList().Distinct();
+            foreach (var item in r)
+            {
+                item.EventList = GetEventListForContestatnt(item.Id, id);
+            }
+            return r;
+        }
+
+        public IEnumerable<EventDropDownListViewModel> GetEventListForContestatnt(string userId, int competitionInstanceId)
+        {
+            var r = (from e in _context.Events
+                     where e.CompetitionInstanceId == competitionInstanceId
+                     join h in _context.Heats on e.Id equals h.EventId
+                     join c in _context.ContestantsInHeats on h.Id equals c.HeatId
+                     join u in _context.Users on c.UserId equals u.Id
+                     where u.Id == userId
+                     select new EventDropDownListViewModel
+                     {
+                         Id = e.Id,
+                         Name = e.Name
+                     }).ToList();
+            return r;
+        }
+
         //ManagesCompetition
 
         public void AddRole(ManagesCompetition m)
@@ -269,5 +307,7 @@ namespace Timataka.Core.Data.Repositories
                     select x;
             return m;
         }
+
+
     }
 }

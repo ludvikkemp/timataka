@@ -1,0 +1,110 @@
+﻿@model Timataka.Core.Models.Dto.CompetitionInstanceDTO.ContestantsInCompetitionInstanceDTO
+
+@{
+    Layout = "_AdminLayout";
+}
+<section class="content">
+    <div class="title-block">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title">
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="CompetitionInstance"
+                       asp-route-competitionId="@Model.Competition.Id"
+                       asp-route-competitionInstanceId="@Model.CompetitionInstance.Id">@Model.CompetitionInstance.Name</a> / Contestants
+                </span>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <a asp-controller="Event"
+               asp-action="Create"
+               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
+               class="btn btn-primary btn-sm rounded-s">Add Event</a>
+
+            <a asp-controller="CompetitionInstance"
+               asp-action="Devices"
+               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
+               class="btn btn-primary btn-sm rounded-s">Devices</a>
+
+            <a asp-controller="CompetitionInstance"
+               asp-action="Markers"
+               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
+               class="btn btn-primary btn-sm rounded-s">Markers</a>
+            <a asp-controller="CompetitionInstance"
+               asp-action="Contestants"
+               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
+               class="btn btn-primary btn-sm rounded-s">Contestants</a>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>List of events</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.Contestants)
+                                            {
+
+                                                <tr>
+                                                    <td>@item.Name</td>
+                                                    <td>@item.Gender</td>
+                                                    <td>
+                                                         @foreach (var e in item.EventList)
+                                                         { 
+                                                             if(item.EventList.Last() != e)
+                                                             {
+                                                                 @e.Name<text> - </text>
+                                                             }
+                                                             else
+                                                             {
+                                                                 @e.Name
+                                                             }
+                                                         }
+                                                    </td>
+                                                    <td>Actions</td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+</section>

@@ -41,6 +41,11 @@
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
                class="btn btn-primary btn-sm rounded-s">Markers</a>
+            <a asp-controller="CompetitionInstance"
+               asp-action="Contestants"
+               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
+               class="btn btn-primary btn-sm rounded-s">Contestants</a>
         </div>
 
     </div>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
@@ -58,7 +59,7 @@ namespace Timataka.Web.Controllers
             {
                 try
                 {
-                    await _competitionService.AddInstance(model);
+                    await _competitionService.AddInstanceAsync(model);
                 }
                 catch (Exception e)
                 {
@@ -93,8 +94,8 @@ namespace Timataka.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                var compInstance = await _competitionService.GetCompetitionInstanceById(model.Id);
-                await _competitionService.EditInstance(compInstance, model);
+                var compInstance = await _competitionService.GetCompetitionInstanceByIdAsync(model.Id);
+                await _competitionService.EditInstanceAsync(compInstance, model);
                 return RedirectToAction("Competition", "Admin", new { @competitionId = compInstance.CompetitionId });
             }
             return View(model);
@@ -106,7 +107,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Details/{competitionInstanceId}")]
         public async Task<IActionResult> Details(int competitionId, int competitionInstanceId)
         {
-            var c = await _competitionService.GetCompetitionInstanceById(competitionInstanceId);
+            var c = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
 
             if (c == null)
             {
@@ -126,7 +127,7 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var c = await _competitionService.GetCompetitionInstanceById((int)competitionInstanceId);
+            var c = await _competitionService.GetCompetitionInstanceByIdAsync((int)competitionInstanceId);
             if (c == null)
             {
                 return NotFound();
@@ -142,9 +143,9 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId)
         {
-            var instance = _competitionService.GetCompetitionInstanceById(competitionInstanceId);
+            var instance = _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
             var compId = instance.Result.CompetitionId;
-            await _competitionService.RemoveInstance((int)competitionInstanceId);
+            await _competitionService.RemoveInstanceAsync((int)competitionInstanceId);
             return RedirectToAction("Competition", "Admin", new { @competitionId = compId });
 
         }
@@ -159,7 +160,7 @@ namespace Timataka.Web.Controllers
         public IActionResult Devices(int competitionId, int competitionInstanceId)
         {
             var data = _deviceService.GetDevicesInCompetitionInstance(competitionInstanceId);
-            ViewBag.CompetitionInstance = _competitionService.GetCompetitionInstanceById(competitionInstanceId).Result;
+            ViewBag.CompetitionInstance = _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId).Result;
             return View(data);
         }
 
@@ -199,11 +200,12 @@ namespace Timataka.Web.Controllers
         public IActionResult Markers(int competitionId, int competitionInstanceId)
         {
             var data = _markerService.GetMarkersForCompetitionInstance(competitionInstanceId);
-            ViewBag.CompetitionInstance = _competitionService.GetCompetitionInstanceById(competitionInstanceId).Result;
+            ViewBag.CompetitionInstance = _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId).Result;
             return View(data);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignMarker/{markerId}")]
         public IActionResult AssignMarker(int competitionId, int competitionInstanceId, int markerId)
         {
@@ -214,6 +216,7 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignMarker/{markerId}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignMarker(AssignMarkerToHeatViewModel model, int competitionInstanceId, int competitionId, int markerId)
@@ -224,6 +227,29 @@ namespace Timataka.Web.Controllers
 
 
         #endregion
+
+        #region Contestants
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Contestants")]
+        public async Task<IActionResult> Contestants(int competitionInstanceId, int competitionId)
+        {
+            var contestants = _competitionService.GetContestantsInCompetitionInstance(competitionInstanceId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var model = new ContestantsInCompetitionInstanceDTO
+            {
+                Competition = competition,
+                CompetitionInstance = competitionInstance,
+                Contestants = contestants
+            };
+            return View(model);
+        }
+
+
+        #endregion
+
 
     }
 }

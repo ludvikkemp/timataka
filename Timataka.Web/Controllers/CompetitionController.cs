@@ -38,10 +38,10 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid && model.Name != null)
             {
-                var exists = await _competitionService.CompetitionExists(model.Name);
+                var exists = await _competitionService.CompetitionExistsAsync(model.Name);
                 if (!exists)
                 {
-                    await _competitionService.Add(model);
+                    await _competitionService.AddAsync(model);
                     return RedirectToAction("Competitions","Admin");
                 }
             }
@@ -75,8 +75,8 @@ namespace Timataka.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                var competition = await _competitionService.GetCompetitionById(model.Id);
-                await _competitionService.Edit(competition, model);
+                var competition = await _competitionService.GetCompetitionByIdAsync(model.Id);
+                await _competitionService.EditAsync(competition, model);
                 return RedirectToAction("Competitions", "Admin");
             }
             return View(model);
@@ -88,7 +88,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/Details/{competitionId}")]
         public async Task<IActionResult> Details(int competitionId)
         {
-            var c = await _competitionService.GetCompetitionById(competitionId);
+            var c = await _competitionService.GetCompetitionByIdAsync(competitionId);
 
             if (c == null)
             {
@@ -108,7 +108,7 @@ namespace Timataka.Web.Controllers
                 return NotFound();
             }
 
-            var c = await _competitionService.GetCompetitionById((int)competitionId);
+            var c = await _competitionService.GetCompetitionByIdAsync((int)competitionId);
             if (c == null)
             {
                 return NotFound();
@@ -123,7 +123,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/Delete/{competitionId}")]
         public async Task<IActionResult> Delete(int competitionId)
         {
-            var sport = await _competitionService.Remove((int)competitionId);
+            var sport = await _competitionService.RemoveAsync((int)competitionId);
             return RedirectToAction("Competitions", "Admin");
         }
 

@@ -66,7 +66,7 @@ namespace Timataka.Tests
             //Arrange
             int competitionId = 1;
             var serviceMock = new Mock<ICompetitionService>();
-            serviceMock.Setup(x => x.GetCompetitionById(1)).Returns(Task.FromResult(new Competition
+            serviceMock.Setup(x => x.GetCompetitionByIdAsync(1)).Returns(Task.FromResult(new Competition
             {
                 Id = 1,
                 Name = "Vorhlaup",
@@ -111,7 +111,7 @@ namespace Timataka.Tests
                 WebPage = "vorhlaup.is"
             };
             var serviceMock = new Mock<ICompetitionService>();
-            serviceMock.Setup(x => x.Add(cMod)).Returns(Task.FromResult(c));
+            serviceMock.Setup(x => x.AddAsync(cMod)).Returns(Task.FromResult(c));
             var controller = new CompetitionController(serviceMock.Object);
 
             //Act

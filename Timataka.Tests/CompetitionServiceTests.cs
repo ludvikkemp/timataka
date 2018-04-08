@@ -44,7 +44,7 @@ namespace Timataka.Tests
         public async void TestAddCompetition()
         {
             //Arrange
-            await _service.Add(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
+            await _service.AddAsync(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
 
             //Act
             IEnumerable<Competition> result = from x in _context.Competitions
@@ -58,8 +58,8 @@ namespace Timataka.Tests
         public async void TestGetAllCompetitions()
         {
             //Arrange
-            await _service.Add(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
-            await _service.Add(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Önnur keppni", PhoneNumber = "5912345" });
+            await _service.AddAsync(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
+            await _service.AddAsync(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Önnur keppni", PhoneNumber = "5912345" });
 
             //Act
             var result = _service.GetAllCompetitions();
@@ -72,12 +72,12 @@ namespace Timataka.Tests
         public async void  TestGetCompetitionByID()
         {
             //Arrange
-            await _service.Add(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
-            await _service.Add(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Önnur keppni", PhoneNumber = "5912345" });
-            await _service.Add(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Enn önnur keppni", PhoneNumber = "5012345" });
+            await _service.AddAsync(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
+            await _service.AddAsync(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Önnur keppni", PhoneNumber = "5912345" });
+            await _service.AddAsync(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Enn önnur keppni", PhoneNumber = "5012345" });
 
             //Act
-            var result = await _service.GetCompetitionById(2);
+            var result = await _service.GetCompetitionByIdAsync(2);
 
             //Assert
             Assert.Equal(expected: "Önnur keppni", actual: result.Name);
@@ -87,13 +87,13 @@ namespace Timataka.Tests
         public async void TestCompetitionExists()
         {
             //Arrange
-            await _service.Add(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
-            await _service.Add(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Önnur keppni", PhoneNumber = "5912345" });
-            await _service.Add(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Enn önnur keppni", PhoneNumber = "5012345" });
+            await _service.AddAsync(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
+            await _service.AddAsync(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Önnur keppni", PhoneNumber = "5912345" });
+            await _service.AddAsync(new CompetitionsViewModel { Description = "", Email = "email@email.com", Name = "Enn önnur keppni", PhoneNumber = "5012345" });
 
             //Act
-            var result = await _service.CompetitionExists("Önnur keppni");
-            var result2 = await _service.CompetitionExists("Keppni sem er ekki til");
+            var result = await _service.CompetitionExistsAsync("Önnur keppni");
+            var result2 = await _service.CompetitionExistsAsync("Keppni sem er ekki til");
 
             //Assert
             Assert.Equal(expected: true, actual: result);
@@ -104,7 +104,7 @@ namespace Timataka.Tests
         public async void TestAddCompetitionInstance()
         {
             //Arrange
-            await _service.AddInstance(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2017" });
+            await _service.AddInstanceAsync(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2017" });
 
             //Act
             var result = (from x in _context.CompetitionInstances
@@ -118,9 +118,9 @@ namespace Timataka.Tests
         public async void TestGetAllCompetitionInstances()
         {
             //Arrange
-            await _service.AddInstance(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2017" });
-            await _service.AddInstance(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2018" });
-            await _service.AddInstance(new CompetitionsInstanceViewModel { CompetitionId = 2, Name = "Keppnin 2017" });
+            await _service.AddInstanceAsync(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2017" });
+            await _service.AddInstanceAsync(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2018" });
+            await _service.AddInstanceAsync(new CompetitionsInstanceViewModel { CompetitionId = 2, Name = "Keppnin 2017" });
 
             //Act
             var result = _service.GetAllCompetitionInstances().ToList();
@@ -134,9 +134,9 @@ namespace Timataka.Tests
         public async void TestGetAllInstancesOfCompetition()
         {
             //Arrange
-            await _service.AddInstance(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2017" });
-            await _service.AddInstance(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2018" });
-            await _service.AddInstance(new CompetitionsInstanceViewModel { CompetitionId = 2, Name = "Keppnin 2017" });
+            await _service.AddInstanceAsync(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2017" });
+            await _service.AddInstanceAsync(new CompetitionsInstanceViewModel { CompetitionId = 1, Name = "Keppnin 2018" });
+            await _service.AddInstanceAsync(new CompetitionsInstanceViewModel { CompetitionId = 2, Name = "Keppnin 2017" });
 
             //Act
             var result = _service.GetAllInstancesOfCompetition(1);
