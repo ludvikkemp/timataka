@@ -44,8 +44,9 @@ namespace Timataka.Web.Controllers
         //POST: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Create
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(HeatViewModel model)
+        public async Task<IActionResult> Create(int competitionId, int competitionInstanceId, int eventId, HeatViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +58,7 @@ namespace Timataka.Web.Controllers
                 {
                     //Todo: return some error view
                 }
-                return RedirectToAction("Event", "Admin", new { @eventId = model.EventId });
+                return RedirectToAction("Event", "Admin", new { competitionId, competitionInstanceId, eventId });
             }
             return View(model);
         }
@@ -99,13 +100,9 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Delete")]
-        public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int eventId, int? heatId)
+        public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
-            if (heatId == null)
-            {
-                return NotFound();
-            }
-            var entity = await _heatService.GetHeatByIdAsync((int)heatId);
+            var entity = await _heatService.GetHeatByIdAsync(heatId);
             if (entity == null)
             {
                 return NotFound();
@@ -116,13 +113,12 @@ namespace Timataka.Web.Controllers
         //POST: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Delete
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int heatId)
+        public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int eventId, Heat model)
         {
-            var heat = _heatService.GetHeatByIdAsync(heatId);
-            var eventId = heat.Result.EventId;
-            await _heatService.RemoveAsync(heatId);
-            return RedirectToAction("Event", "Admin", new { eventId });
+            await _heatService.RemoveAsync(model.Id);
+            return RedirectToAction("Event", "Admin", new { competitionId, competitionInstanceId, eventId });
 
         }
 
@@ -130,10 +126,10 @@ namespace Timataka.Web.Controllers
         // **************** CONTESTANTS IN HEAT ****************** //
 
 
-        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Delete
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult AddContestant(int heatId, int eventId)
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/AddContestant")]
+        public IActionResult AddContestant(int heatId, int eventId, int competitionId, int competitionInstanceId)
         {
             List<SelectListItem> selectUsersListItems =
                 new List<SelectListItem>();
@@ -156,8 +152,9 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddContestant(ContestantsInHeatViewModel model)
+        public async Task<IActionResult> AddContestant(ContestantsInHeatViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId)
         {
             if (ModelState.IsValid)
             {
@@ -178,12 +175,15 @@ namespace Timataka.Web.Controllers
                 {
                     return new BadRequestResult();
                 }
-                return RedirectToAction("Heat", "Admin", new { eventId = model.HeatId });
+                return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
             }
             return View(model);
         }
 
-        public IActionResult EditContestant(int heatId, string userId)
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/EditContestant/{userId}")]
+        public IActionResult EditContestant(int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
         {
             var entitiy = _heatService.GetContestantInHeatById(heatId,userId);
             
@@ -200,8 +200,9 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditContestant(ContestantsInHeatViewModel model)
+        public async Task<IActionResult> EditContestant(ContestantsInHeatViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId)
         {
             if (ModelState.IsValid)
             {
@@ -222,11 +223,13 @@ namespace Timataka.Web.Controllers
                 {
                     return new BadRequestResult();
                 }
-                return RedirectToAction("Heat", "Admin", new { eventId = model.HeatId });
+                return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
             }
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult RemoveContestant(int heatId, string userId)
         {
             var modelList = _heatService.GetContestantsInHeat(heatId);
@@ -243,6 +246,7 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveContestant(ContestantsInHeatViewModel model)
         {
@@ -263,6 +267,8 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult DetailsContestant(int heatId, string userId)
         {
             if(heatId == 0 || userId == null)

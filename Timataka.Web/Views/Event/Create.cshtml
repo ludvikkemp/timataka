@@ -11,9 +11,12 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Create">
+            <form asp-action="Create"
+                 asp-controller="Event"
+                 asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                 asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="CompetitionInstanceId" value="@ViewBag.InstanceId" />
+                <input type="hidden" asp-for="CompetitionInstanceId" value="@ViewContext.RouteData.Values["competitionInstanceId"]" />
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" />

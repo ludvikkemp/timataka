@@ -12,7 +12,8 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="AddContestant">
+            <form asp-action="AddContestant"
+                  >
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="HeatId" value="@ViewBag.heatId" />
                 <div class="form-group">

@@ -45,8 +45,9 @@ namespace Timataka.Web.Controllers
         //POST: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(EventViewModel model)
+        public async Task<IActionResult> Create(EventViewModel model, int competitionInstanceId, int competitionId)
         {
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
             ViewBag.InstanceId = model.CompetitionInstanceId;
@@ -61,7 +62,7 @@ namespace Timataka.Web.Controllers
                 {
                     //Todo: return some error view
                 }
-                return RedirectToAction("CompetitionInstance","Admin", new { CompetitionInstanceid = model.CompetitionInstanceId });
+                return RedirectToAction("CompetitionInstance","Admin", new { competitionId, competitionInstanceId });
             }
             return View(model);
         }
@@ -89,10 +90,6 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int competitionId, int competitionInstanceId, int eventId, EventViewModel model)
         {
-            if (competitionId != model.Id)
-            {
-                return NotFound();
-            }
             if (ModelState.IsValid)
             {
                 await _eventService.EditEventViewModelAsync(model);
@@ -120,13 +117,9 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Delete/{eventId}")]
-        public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int? eventId)
+        public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int eventId)
         {
-            if (eventId == null)
-            {
-                return NotFound();
-            }
-            var entity = await _eventService.GetEventByIdAsync((int)eventId);;
+            var entity = await _eventService.GetEventByIdAsync(eventId);
             if (entity == null)
             {
                 return NotFound();
@@ -137,11 +130,12 @@ namespace Timataka.Web.Controllers
         //POST: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Delete
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Delete/{eventId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int eventId)
+        public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, Event model)
         {
-            await _eventService.RemoveAsync(eventId);
-            return RedirectToAction("CompetitionInstance", "Admin", new { competitionInstanceId });
+            await _eventService.RemoveAsync(model.Id);
+            return RedirectToAction("CompetitionInstance", "Admin", new { competitionId, competitionInstanceId });
         }
 
 

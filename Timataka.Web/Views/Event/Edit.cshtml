@@ -11,11 +11,7 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Edit"
-                    asp-controller="Event"
-                    asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                    asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                    asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">
+            <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group">
