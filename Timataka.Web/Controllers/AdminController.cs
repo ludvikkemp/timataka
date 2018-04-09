@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -358,6 +359,7 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Heat(string search, int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
+            ViewData["CurrentFilter"] = search;
             var heat = await _heatService.GetHeatByIdAsync(heatId);
 
             if (heat == null)
@@ -398,16 +400,27 @@ namespace Timataka.Web.Controllers
             var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
 
-            var usersDto = _adminService.GetUsers();
+            var usersDto = _adminService.GetUsers().Take(10);
             var assignedRoles = _competitionService.GetAllRolesForCompetition(competitionId);
             var roles = new Role();
+            var newUsersDto = new List<UserDto>();
+
+            //TODO: Þetta tekur alltof langan tíma að loada 3000ms
+            foreach (var item in usersDto)
+            {
+                var y = assignedRoles.FirstOrDefault(x => x.UserId == item.Id);
+                if (y == null)
+                {
+                    newUsersDto.Add(item);
+                }
+            }
 
             var personnelDto = new PersonnelDto()
             {
                 AssignedRoles = assignedRoles,
                 Competition = competition.Result,
                 Roles = roles,
-                Users = usersDto
+                Users = newUsersDto
             };
 
             return View(personnelDto);

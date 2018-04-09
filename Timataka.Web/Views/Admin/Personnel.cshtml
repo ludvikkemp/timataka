@@ -9,11 +9,16 @@
 
 
 <section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> Personnel </span>
+                <span class="title">
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
+                    Personnel
+                </span>
             </div>
         </div>
     </div>
@@ -30,21 +35,32 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>SSN</th>
                                                 <th>Role</th>
-                                                <th></th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var item in Model.AssignedRoles)
                                             {
-                                                <tr>
-                                                    <td>@item.FirstName @item.MiddleName @item.LastName</td>
-                                                    <td>@item.Role</td>
-                                                    <td>
-                                                        <a asp-controller="Competition" asp-action="EditManager" asp-route-competitionId="@item.CompetitionId" asp-route-userId="@item.UserId" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                        <a asp-controller="Competition" asp-action="DeleteManager" asp-route-competitionId="@item.CompetitionId" asp-route-userId="@item.UserId" class="btn btn-warning-outline btn-sm">Delete</a>
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td>@item.FirstName @item.MiddleName @item.LastName</td>
+                                                <td>@item.Ssn</td>
+                                                <td>@item.Role</td>
+                                                <td>
+                                                    <a asp-controller="Competition"
+                                                       asp-action="EditManager"
+                                                       asp-route-competitionId="@item.CompetitionId"
+                                                       asp-route-userId="@item.UserId"
+                                                       class="btn btn-warning-outline btn-sm">Edit</a>
+
+                                                    <a asp-controller="Competition"
+                                                       asp-action="DeleteManager"
+                                                       asp-route-competitionId="@item.CompetitionId"
+                                                       asp-route-userId="@item.UserId"
+                                                       class="btn btn-danger-outline btn-sm">Delete</a>
+                                                </td>
+                                            </tr>
                                             }
                                         </tbody>
                                     </table>
@@ -58,13 +74,11 @@
         </div>
     </div>
 
-    <span class="title"> Add Manager </span>
-
     <div class="row">
-        <div class="col-md-6">
-            <form asp-action="" method="get" class="form-inline">
+        <div class="col-md-5">
+            <form asp-action="Personnel" method="get">
                 <div class="input-group">
-                    <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for user to assign to role...">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s btn-lg" type="submit">
                             <i class="fa fa-search"></i>
@@ -90,18 +104,22 @@
                                                 <th>Username</th>
                                                 <th>SSN</th>
                                                 <th>Role</th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var user in Model.Users)
                                             {
+                                                
                                                 <tr>
                                                     <td>@user.FirstName @user.Middlename @user.LastName</td>
                                                     <td>@user.Username</td>
                                                     <td>@user.Ssn</td>
                                                     <td>
-                                                        <a asp-action="AddRole" asp-controller="Competition" asp-route-competitionId="@Model.Competition.Id" asp-route-userId="@user.Id" class="btn btn-success-outline btn-sm">Assign</a>
+                                                        <a asp-action="AddRole" 
+                                                           asp-controller="Competition" 
+                                                           asp-route-competitionId="@Model.Competition.Id" 
+                                                           asp-route-userId="@user.Id" 
+                                                           class="btn btn-success-outline btn-sm">Assign</a>
                                                     </td>
                                                 </tr>
                                             }
@@ -117,8 +135,5 @@
         </div>
     </div>
 
-    <div>
-        <a asp-controller="Admin" asp-action="Competition" asp-route-competitionId="@Model.Competition.Id" class="btn btn-secondary-outline btn-sm">Back to Competition</a>
-    </div>
 
 </section>
