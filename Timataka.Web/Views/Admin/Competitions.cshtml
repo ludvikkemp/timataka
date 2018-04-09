@@ -5,7 +5,7 @@
     Layout = "_AdminLayout";
 }
 <section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
@@ -17,10 +17,10 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <form asp-action="" method="get" class="form-inline">
+        <div class="col-md-5">
+            <form asp-action="Competitions" method="get">
                 <div class="input-group">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for competition...">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s btn-lg" type="submit">
                             <i class="fa fa-search"></i>
@@ -43,6 +43,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Sponsor</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -51,16 +52,19 @@
                                             {
                                                 if (comp.Deleted == false)
                                                 {
-                                                    <tr>
-                                                        <td>
-                                                            <a asp-controller="Admin" asp-action="Competition" asp-route-competitionId="@comp.Id">@comp.Name</a>
-                                                        </td>
-                                                        <td>
-                                                            <a asp-controller="Competition" asp-action="Edit" asp-route-competitionId="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a> 
-                                                            <a asp-controller="Competition" asp-action="Details" asp-route-competitionId="@comp.Id" class="btn btn-success-outline btn-sm">Details</a> 
-                                                            <a asp-controller="Competition" asp-action="Delete" asp-route-competitionId="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
-                                                        </td>
-                                                    </tr>
+                                            <tr>
+                                                <td>
+                                                    <a asp-controller="Admin" asp-action="Competition" asp-route-competitionId="@comp.Id">@comp.Name</a>
+                                                </td>
+                                                <td>
+                                                    @comp.Sponsor
+                                                </td>
+                                                <td>
+                                                    <a asp-controller="Competition" asp-action="Edit" asp-route-competitionId="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                    <a asp-controller="Competition" asp-action="Details" asp-route-competitionId="@comp.Id" class="btn btn-success-outline btn-sm">Details</a>
+                                                    <a asp-controller="Competition" asp-action="Delete" asp-route-competitionId="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                </td>
+                                            </tr>
                                                 }
                                             }
                                         </tbody>

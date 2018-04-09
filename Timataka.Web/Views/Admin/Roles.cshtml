@@ -7,7 +7,7 @@
 
 <section class="content">
 
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> User Roles </span>
@@ -58,10 +58,10 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <form asp-action="" method="get" class="form-inline">
-                <div class="input-group">
-                    <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for...">
+        <div class="col-md-5">
+            <form asp-action="Roles" method="get">
+                <div class="input-group" style="margin-top:10px;">
+                    <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for non admin user...">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s btn-lg" type="submit">
                             <i class="fa fa-search"></i>

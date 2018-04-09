@@ -101,7 +101,7 @@ namespace Timataka.Web.Controllers
                     || u.Country.ToUpper().Contains(searchToUpper));
             }
 
-            return View(listOfUsers);
+            return View(listOfUsers.Take(10));
         }
 
         [HttpGet]
@@ -149,15 +149,25 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Roles")]
         [Authorize(Roles = "Superadmin")]
-        public IActionResult Roles()
+        public IActionResult Roles(string search)
         {
-            var userManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            ViewData["CurrentFilter"] = search;
             var adminUsers = _adminService.GetAdminUsers();
             var nonAdminUsers = _adminService.GetNonAdminUsers();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                nonAdminUsers = nonAdminUsers.Where(u =>
+                    u.FirstName.ToUpper().Contains(searchToUpper) || 
+                    u.LastName.ToUpper().Contains(searchToUpper) ||
+                    u.Username.ToUpper().Contains(searchToUpper));
+            }
+
             var model = new UserRoleDto
             {
                 Admins = adminUsers,
-                Users = nonAdminUsers
+                Users = nonAdminUsers.Take(10)
             };
             return View(model);
         }
@@ -189,21 +199,38 @@ namespace Timataka.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult Sports()
-        {   
+        public IActionResult Sports(string search)
+        {
+            ViewData["CurrentFilter"] = search;
             var sports = _sportService.GetAllSports();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                sports = sports.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
             return View(sports);
         }
 
         [Authorize(Roles = "Admin")]
         [Route("Admin/Sport/{sportId}")]
-        public IActionResult Sport(int sportId)
+        public IActionResult Sport(string search, int sportId)
         {
+            ViewData["CurrentFilter"] = search;
             var sport = _sportService.GetSportByIdAsync(sportId);
             sport.Wait();
+            var disciplines = _disciplineService.GetDisciplinesBySportId(sportId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                disciplines = disciplines.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
             var dto = new SportDto
             {
-                Disciplines = _disciplineService.GetDisciplinesBySportId(sportId),
+                Disciplines = disciplines,
                 Sport = sport.Result
             };
             return View(dto);
@@ -211,23 +238,40 @@ namespace Timataka.Web.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult Competitions()
+        public IActionResult Competitions(string search)
         {
+            ViewData["CurrentFilter"] = search;
             var competitions = _competitionService.GetAllCompetitions();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                competitions = competitions.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
             return View(competitions);
         }
 
         [HttpGet]
         [Route("Admin/Competition/{competitionId}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Competition(int competitionId)
+        public IActionResult Competition(string search, int competitionId)
         {
+            ViewData["CurrentFilter"] = search;
             var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
+            var competitionInstances = _competitionService.GetAllInstancesOfCompetition(competitionId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                competitionInstances = competitionInstances.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
             var compDto = new CompetitionDto
             {
                 Competiton = competition.Result,
-                Instances = _competitionService.GetAllInstancesOfCompetition(competitionId)
+                Instances = competitionInstances
             };
             return View(compDto);
         }
@@ -312,7 +356,7 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Heat(int competitionId, int competitionInstanceId, int eventId, int heatId)
+        public async Task<IActionResult> Heat(string search, int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
             var heat = await _heatService.GetHeatByIdAsync(heatId);
 
@@ -324,13 +368,23 @@ namespace Timataka.Web.Controllers
             var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
             var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
             var instanceEvent = await _eventService.GetEventByIdAsync(eventId);
+            var contestants = _heatService.GetContestantsInHeat(heat.Id);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                contestants = contestants.Where(u => u.FirstName.ToUpper().Contains(searchToUpper) 
+                    || u.LastName.ToUpper().Contains(searchToUpper) 
+                    || u.Ssn.ToUpper().Contains(searchToUpper));
+            }
+
             var heatDto = new HeatDto()
             {
                 Competition = competition,
                 CompetitionInstance = competitionInstance,
                 Event = instanceEvent,
                 Heat = heat,
-                Contestants = _heatService.GetContestantsInHeat(heat.Id)
+                Contestants = contestants
             };
 
             return View(heatDto);
@@ -370,29 +424,52 @@ namespace Timataka.Web.Controllers
             return View(categories);
         }
 
-
         [Authorize(Roles = "Admin")]
-        public IActionResult Clubs()
+        public IActionResult Clubs(string search)
         {
+            ViewData["CurrentFilter"] = search;
             var clubs = _clubService.GetListOfCLubs();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                clubs = clubs.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+            
             return View(clubs);
         }
 
         [HttpGet]
         [Route("Admin/Courses")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Courses()
+        public IActionResult Courses(string search)
         {
+            ViewData["CurrentFilter"] = search;
             var courses = _courseService.GetListOfCourses();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                courses = courses.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
             return View(courses);
         }
 
         [HttpGet]
         [Route("Admin/Devices")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Devices()
+        public IActionResult Devices(string search)
         {
+            ViewData["CurrentFilter"] = search;
             var devices = _deviceService.GetDevices();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                devices = devices.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
             return View(devices);
 
         }
@@ -400,9 +477,19 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Chips")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Chips()
+        public IActionResult Chips(string search)
         {
+            ViewData["CurrentFilter"] = search;
             var chips = _chipService.GetChips();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                chips = chips.Where(u => u.Code.ToUpper().Contains(searchToUpper)
+                    || u.LastUserSsn.Contains(searchToUpper) 
+                    || u.LastUserName.ToUpper().Contains(searchToUpper));
+            }
+
             return View(chips);
         }
     }

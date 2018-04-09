@@ -5,7 +5,7 @@
     Layout = "_AdminLayout";
 }
 <section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
@@ -17,10 +17,10 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <form asp-action="" method="get" class="form-inline">
+        <div class="col-md-5">
+            <form asp-action="Clubs" method="get" >
                 <div class="input-group">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for clubs...">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s btn-lg" type="submit">
                             <i class="fa fa-search"></i>
@@ -30,31 +30,6 @@
             </form>
         </div>
 
-        <nav class="text-right col-md-6">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href=""> Prev </a>
-                </li>
-                <li class="page-item active">
-                    <a class="page-link" href=""> 1 </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href=""> 2 </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href=""> 3 </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href=""> 4 </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href=""> 5 </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href=""> Next </a>
-                </li>
-            </ul>
-        </nav>
     </div>
 
     <div class="row">
@@ -69,22 +44,24 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Name Abbr.</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var item in Model)
                                             {
-                                                @if (item.Deleted == false)
+                                                if (item.Deleted == false)
                                                 {
-                                                    <tr>
-                                                        <td>@item.Name</td>
-                                                        <td>
-                                                            <a class="btn btn-warning-outline btn-sm" asp-controller="Club" asp-action="Edit" asp-route-clubId="@item.Id">Edit</a>
-                                                            <a class="btn btn-success-outline btn-sm" asp-controller="Club" asp-action="Details" asp-route-clubId="@item.Id">Details</a>
-                                                            <a class="btn btn-danger-outline btn-sm" asp-controller="Club" asp-action="Delete" asp-route-clubId="@item.Id">Delete</a>
-                                                        </td>
-                                                    </tr>
+                                            <tr>
+                                                <td>@item.Name</td>
+                                                <td>@item.NameAbbreviation</td>
+                                                <td>
+                                                    <a class="btn btn-warning-outline btn-sm" asp-controller="Club" asp-action="Edit" asp-route-clubId="@item.Id">Edit</a>
+                                                    <a class="btn btn-success-outline btn-sm" asp-controller="Club" asp-action="Details" asp-route-clubId="@item.Id">Details</a>
+                                                    <a class="btn btn-danger-outline btn-sm" asp-controller="Club" asp-action="Delete" asp-route-clubId="@item.Id">Delete</a>
+                                                </td>
+                                            </tr>
                                                 }
                                             }
                                         </tbody>
