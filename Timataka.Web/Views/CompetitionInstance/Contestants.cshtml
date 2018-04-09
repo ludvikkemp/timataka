@@ -4,7 +4,7 @@
     Layout = "_AdminLayout";
 }
 <section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
@@ -44,11 +44,7 @@
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
                class="btn btn-primary btn-sm rounded-s">Markers</a>
-            <a asp-controller="CompetitionInstance"
-               asp-action="Contestants"
-               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
-               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Contestants</a>
+            
         </div>
 
     </div>

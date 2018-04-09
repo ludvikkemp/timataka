@@ -5,58 +5,90 @@
     Layout = "_AdminLayout";
 }
 <section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Chips Assigned To Heat </span>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Heat" asp-action="AssignChip" asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Assign New</a>
+                <a class="btn btn-primary btn-sm rounded-s"
+                   asp-controller="Heat" asp-action="AssignChip"
+                   asp-route-heatId="@ViewContext.RouteData.Values["heatId"]"
+                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                   asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Assign New</a>
             </div>
         </div>
 
     </div>
-
 
     <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <section class="section">
-                    <div class="col-md-12">
-                        <div class="card" style="margin-top:15px;">
-                            <section class="example">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Code</th>
-                                                <th>User</th>
-                                                <th>Valid</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model)
-                                            {
-                                                <tr>
-                                                    <td>@item.ChipCode</td>
-                                                    <td>@item.LastUserSsn</td>
-                                                    <td>@item.Valid</td>
-                                                    <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Heat" asp-action="EditChip" asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-chipCode="@item.ChipCode" asp-route-userId="@item.UserId">Edit</a>
-                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Heat" asp-action="DetailsChip" asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-chipCode="@item.ChipCode" asp-route-userId="@item.UserId">Details</a>
-                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Heat" asp-action="RemoveChip" asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-chipCode="@item.ChipCode" asp-route-userId="@item.UserId">Delete</a>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </section>
-
-                        </div>
-                    </div>
-                </section>
-            </div>
+        <div class="col-md-6">
+            
         </div>
     </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <section class="section">
+                        <div class="col-md-12">
+                            <div class="card" style="margin-top:15px;">
+                                <section class="example">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Code</th>
+                                                    <th>User</th>
+                                                    <th>Valid</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td>@item.ChipCode</td>
+                                                        <td>@item.LastUserSsn</td>
+                                                        <td>@item.Valid</td>
+                                                        <td>
+                                                            <a class="btn btn-warning-outline btn-sm" asp-controller="Heat"
+                                                               asp-action="EditChip"
+                                                               asp-route-heatId="@ViewContext.RouteData.Values["heatId"]"
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                               asp-route-chipCode="@item.ChipCode"
+                                                               asp-route-userId="@item.UserId">Edit</a>
+
+                                                            <a class="btn btn-success-outline btn-sm" asp-controller="Heat"
+                                                               asp-action="DetailsChip" asp-route-heatId="@ViewContext.RouteData.Values["heatId"]"
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                               asp-route-chipCode="@item.ChipCode"
+                                                               asp-route-userId="@item.UserId">Details</a>
+
+                                                            <a class="btn btn-danger-outline btn-sm" asp-controller="Heat"
+                                                               asp-action="RemoveChip"
+                                                               asp-route-heatId="@ViewContext.RouteData.Values["heatId"]"
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                               asp-route-chipCode="@item.ChipCode"
+                                                               asp-route-userId="@item.UserId">Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
 </section>

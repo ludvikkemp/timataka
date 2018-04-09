@@ -7,25 +7,12 @@
 }
 
 <<section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Devices in @ViewBag.Event.Name </span>
-                <a class="btn btn-primary btn-sm rounded-s" 
-                   asp-controller="Event" 
-                   asp-action="AssignDevice" 
-                   asp-route-eventId="@ViewBag.Event.Id">Assign Device</a>
 
-                <a class="btn btn-primary btn-sm rounded-s" 
-                   asp-controller="Admin" 
-                   asp-action="Event" 
-                   asp-route-eventId="@ViewBag.Event.Id">Event</a>
-
-                <a class="btn btn-primary btn-sm rounded-s" 
-                   asp-controller="Admin" 
-                   asp-action="CompetitionInstance" 
-                   asp-route-competitionInstanceId="@ViewBag.Event.CompetitionInstanceId">Instance</a>
             </div>
         </div>
 
@@ -33,41 +20,18 @@
 
     <div class="row">
         <div class="col-md-6">
-            <form asp-action="" method="get" class="form-inline">
-                <div class="input-group">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
+            <a class="btn btn-primary btn-sm rounded-s"
+               asp-controller="Event"
+               asp-action="AssignDevice"
+               asp-route-eventId="@ViewBag.Event.Id">Assign Device</a>
+
+            <a class="btn btn-primary btn-sm rounded-s"
+               asp-controller="Admin"
+               asp-action="CompetitionInstance"
+               asp-route-competitionInstanceId="@ViewBag.Event.CompetitionInstanceId">Instance</a>
         </div>
 
-        <nav class="text-right col-md-6">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link"
-                       asp-controller="Event" 
-                       asp-action="AssignDevice" 
-                       asp-route-eventId="@ViewBag.Event.Id">Assign Device</a>
-                </li>
-                <li class="page-item active">
-                    <a class="page-link"
-                       asp-controller="Admin" 
-                       asp-action="Event" 
-                       asp-route-eventId="@ViewBag.Event.Id">Event</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link"
-                       asp-controller="Admin" 
-                       asp-action="CompetitionInstance" 
-                       asp-route-competitionInstanceId="@ViewBag.Event.CompetitionInstanceId">Instance</a>
-                </li>
-                
-            </ul>
-        </nav>
+
     </div>
 
     <div class="row">
@@ -93,16 +57,16 @@
                                                     <td>@item.DevicesInEvent.Device.Name</td>
                                                     <td>@item.DevicesInEvent.Device.Active</td>
                                                     <td>
-                                                        <a class="btn btn-warning-outline btn-sm" 
-                                                           asp-controller="Event" 
-                                                           asp-action="UnassignDevice" 
-                                                           asp-route-deviceId="@item.DevicesInEvent.DeviceId" 
+                                                        <a class="btn btn-warning-outline btn-sm"
+                                                           asp-controller="Event"
+                                                           asp-action="UnassignDevice"
+                                                           asp-route-deviceId="@item.DevicesInEvent.DeviceId"
                                                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                            asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                                                            asp-route-eventId="@item.DevicesInEvent.EventId">Unassign</a>
-                                                        <a class="btn btn-success-outline btn-sm" 
-                                                           asp-controller="Device" 
-                                                           asp-action="Details" 
+                                                        <a class="btn btn-success-outline btn-sm"
+                                                           asp-controller="Device"
+                                                           asp-action="Details"
                                                            asp-route-deviceId="@item.DevicesInEvent.DeviceId">Details</a>
                                                     </td>
                                                 </tr>
@@ -117,5 +81,17 @@
                 </section>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            
+            <a class="btn btn-secondary-outline btn-sm"
+               asp-controller="Admin"
+               asp-action="Event"
+               asp-route-eventId="@ViewBag.Event.Id">Back to Event</a>
+
+        </div>
+
+
     </div>
 </section>

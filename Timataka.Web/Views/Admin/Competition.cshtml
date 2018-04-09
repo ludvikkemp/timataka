@@ -4,7 +4,7 @@
     Layout = "_AdminLayout";
 }
 <section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
@@ -15,10 +15,10 @@
 
     <div class="row">
 
-        <div class="col-md-4">
-            <form asp-action="" method="get">
+        <div class="col-md-5">
+            <form asp-action="Com" method="get">
                 <div class="input-group">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for competition instance...">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s btn-lg" type="submit">
                             <i class="fa fa-search"></i>
@@ -27,7 +27,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <a asp-controller="CompetitionInstance" asp-action="Create" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Create Instance </a>
             <a asp-controller="Admin" asp-action="Personnel" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Personnel </a>
         </div>

@@ -4,11 +4,11 @@
     Layout = "_AdminLayout";
 }
 <section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
-                
+
                 <span class="title">
                     <a asp-controller="Admin"
                        asp-action="Competition"
@@ -27,16 +27,16 @@
 
                     Heat Number @Model.Heat.HeatNumber
                 </span>
-                
+
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-4">
-            <form asp-action="" method="get" class="">
+        <div class="col-md-5">
+            <form asp-action="Heat" method="get" class="">
                 <div class="input-group">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for...">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for contestants in heat...">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s btn-lg" type="submit">
                             <i class="fa fa-search"></i>
@@ -45,10 +45,15 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <a asp-controller="Heat" asp-action="AddContestant" asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Add Contestant </a>
             <a asp-controller="Heat" asp-action="Markers" asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Markers </a>
-            <a asp-controller="Heat" asp-action="Chips" asp-route-heatId="@Model.Heat.Id" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" class="btn btn-primary btn-sm rounded-s"> Chips </a>
+            <a asp-controller="Heat" asp-action="Chips"
+               asp-route-heatId="@Model.Heat.Id"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               class="btn btn-primary btn-sm rounded-s">Chips</a>
         </div>
     </div>
     <div class="row">
@@ -64,6 +69,7 @@
                                             <tr>
                                                 <th>BIB</th>
                                                 <th>Contestants</th>
+                                                <th>SSN</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -76,6 +82,9 @@
                                                     </td>
                                                     <td>
                                                         @item.FirstName @item.MiddleName @item.LastName
+                                                    </td>
+                                                    <td>
+                                                        @item.Ssn
                                                     </td>
                                                     <td>
                                                         <a asp-controller="Heat" asp-action="EditContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-warning-outline btn-sm">Edit</a>
@@ -96,7 +105,6 @@
             </div>
         </div>
     </div>
-
 
 </section>
 

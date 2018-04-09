@@ -4,18 +4,18 @@
     Layout = "_AdminLayout";
 }
 <section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
                 <span class="title">
-                    <a asp-controller="Admin" 
-                       asp-action="Competition" 
-                       asp-route-competitionId="@Model.Competition.Id"> @Model.Competition.Name</a> /  
-                    
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
+
                     @Model.CompetitionInstance.Name
                 </span>
-                
+
             </div>
         </div>
 
@@ -62,6 +62,8 @@
                                         <thead>
                                             <tr>
                                                 <th>Events</th>
+                                                <th>Date</th>
+                                                <th>Gender</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -70,33 +72,39 @@
                                             {
                                                 if (item.Deleted == false)
                                                 {
-                                                    <tr>
-                                                        <td>
-                                                            <a asp-controller="Admin" asp-action="Event" 
-                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" 
-                                                               asp-route-competitionInstanceId="@item.CompetitionInstanceId" 
-                                                               asp-route-eventId="@item.Id">@item.Name</a>
-                                                        </td>
-                                                        <td>
-                                                            <a asp-controller="Event" asp-action="Edit" 
-                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" 
-                                                               asp-route-competitionInstanceId="@item.CompetitionInstanceId" 
-                                                               asp-route-eventId="@item.Id" 
-                                                               class="btn btn-warning-outline btn-sm">Edit</a>
+                                            <tr>
+                                                <td>
+                                                    <a asp-controller="Admin" asp-action="Event"
+                                                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                       asp-route-competitionInstanceId="@item.CompetitionInstanceId"
+                                                       asp-route-eventId="@item.Id">@item.Name</a>
+                                                </td>
+                                                <td>
+                                                    @item.DateFrom
+                                                </td>
+                                                <td>
+                                                    @item.Gender
+                                                </td>
+                                                <td>
+                                                    <a asp-controller="Event" asp-action="Edit"
+                                                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                       asp-route-competitionInstanceId="@item.CompetitionInstanceId"
+                                                       asp-route-eventId="@item.Id"
+                                                       class="btn btn-warning-outline btn-sm">Edit</a>
 
-                                                            <a asp-controller="Event" asp-action="Details" 
-                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" 
-                                                               asp-route-competitionInstanceId="@item.CompetitionInstanceId" 
-                                                               asp-route-eventId="@item.Id" 
-                                                               class="btn btn-success-outline btn-sm">Details</a>
+                                                    <a asp-controller="Event" asp-action="Details"
+                                                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                       asp-route-competitionInstanceId="@item.CompetitionInstanceId"
+                                                       asp-route-eventId="@item.Id"
+                                                       class="btn btn-success-outline btn-sm">Details</a>
 
-                                                            <a asp-controller="Event" asp-action="Delete" 
-                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" 
-                                                               asp-route-competitionInstanceId="@item.CompetitionInstanceId" 
-                                                               asp-route-eventId="@item.Id" 
-                                                               class="btn btn-danger-outline btn-sm">Delete</a>
-                                                        </td>
-                                                    </tr>
+                                                    <a asp-controller="Event" asp-action="Delete"
+                                                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                       asp-route-competitionInstanceId="@item.CompetitionInstanceId"
+                                                       asp-route-eventId="@item.Id"
+                                                       class="btn btn-danger-outline btn-sm">Delete</a>
+                                                </td>
+                                            </tr>
                                                 }
                                             }
                                         </tbody>
