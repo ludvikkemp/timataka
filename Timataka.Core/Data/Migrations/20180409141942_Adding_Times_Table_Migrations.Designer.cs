@@ -12,9 +12,10 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180409141942_Adding_Times_Table_Migrations")]
+    partial class Adding_Times_Table_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -586,8 +587,6 @@ namespace Timataka.Core.Data.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("Nationality");
-
-                    b.Property<string>("Notes");
 
                     b.Property<int>("Status");
 

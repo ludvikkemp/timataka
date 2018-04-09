@@ -12,9 +12,10 @@ using Timataka.Core.Models.Entities;
 namespace Timataka.Core.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180409141149_Adding_Results_Table_Migrations")]
+    partial class Adding_Results_Table_Migrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -587,8 +588,6 @@ namespace Timataka.Core.Data.Migrations
 
                     b.Property<string>("Nationality");
 
-                    b.Property<string>("Notes");
-
                     b.Property<int>("Status");
 
                     b.HasKey("HeatId", "UserId");
@@ -608,25 +607,6 @@ namespace Timataka.Core.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sports");
-                });
-
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Time", b =>
-                {
-                    b.Property<int>("HeatId");
-
-                    b.Property<string>("ChipCode");
-
-                    b.Property<int>("RawTime");
-
-                    b.Property<int>("TimeNumber");
-
-                    b.Property<int>("Type");
-
-                    b.HasKey("HeatId", "ChipCode");
-
-                    b.HasAlternateKey("ChipCode", "HeatId");
-
-                    b.ToTable("Times");
                 });
 
             modelBuilder.Entity("Timataka.Core.Models.Entities.UserInClub", b =>
@@ -872,19 +852,6 @@ namespace Timataka.Core.Data.Migrations
                     b.HasOne("Timataka.Core.Models.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Timataka.Core.Models.Entities.Time", b =>
-                {
-                    b.HasOne("Timataka.Core.Models.Entities.Chip", "Chip")
-                        .WithMany()
-                        .HasForeignKey("ChipCode")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Timataka.Core.Models.Entities.Heat", "Heat")
-                        .WithMany()
-                        .HasForeignKey("HeatId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

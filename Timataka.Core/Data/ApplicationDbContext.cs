@@ -30,6 +30,8 @@ namespace Timataka.Core.Data
         public DbSet<Chip> Chips { get; set; }
         public DbSet<ChipInHeat> ChipsInHeats { get; set; }
         public DbSet<MarkerInHeat> MarkersInHeats { get; set; }
+        public DbSet<Result> Results { get; set; }
+        public DbSet<Time> Times { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -54,6 +56,12 @@ namespace Timataka.Core.Data
 
             builder.Entity<MarkerInHeat>()
                 .HasKey(m => new {m.HeatId, m.MarkerId});
+
+            builder.Entity<Result>()
+                .HasKey(r => new { r.HeatId, r.UserId });
+
+            builder.Entity<Time>()
+                .HasKey(r => new { r.HeatId, r.ChipCode });
         }
     }
 }
