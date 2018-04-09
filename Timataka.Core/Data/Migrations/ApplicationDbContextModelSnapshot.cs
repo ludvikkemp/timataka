@@ -565,6 +565,37 @@ namespace Timataka.Core.Data.Migrations
                     b.ToTable("MarkersInHeats");
                 });
 
+            modelBuilder.Entity("Timataka.Core.Models.Entities.Result", b =>
+                {
+                    b.Property<int>("HeatId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("Club");
+
+                    b.Property<string>("Country");
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("FinalTime");
+
+                    b.Property<string>("Gender");
+
+                    b.Property<DateTime>("Modified");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Nationality");
+
+                    b.Property<int>("Status");
+
+                    b.HasKey("HeatId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Results");
+                });
+
             modelBuilder.Entity("Timataka.Core.Models.Entities.Sport", b =>
                 {
                     b.Property<int>("Id")
@@ -575,6 +606,25 @@ namespace Timataka.Core.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sports");
+                });
+
+            modelBuilder.Entity("Timataka.Core.Models.Entities.Time", b =>
+                {
+                    b.Property<int>("HeatId");
+
+                    b.Property<string>("ChipCode");
+
+                    b.Property<int>("RawTime");
+
+                    b.Property<int>("TimeNumber");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("HeatId", "ChipCode");
+
+                    b.HasAlternateKey("ChipCode", "HeatId");
+
+                    b.ToTable("Times");
                 });
 
             modelBuilder.Entity("Timataka.Core.Models.Entities.UserInClub", b =>
@@ -807,6 +857,32 @@ namespace Timataka.Core.Data.Migrations
                     b.HasOne("Timataka.Core.Models.Entities.Marker", "Marker")
                         .WithMany()
                         .HasForeignKey("MarkerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Timataka.Core.Models.Entities.Result", b =>
+                {
+                    b.HasOne("Timataka.Core.Models.Entities.Heat", "Heat")
+                        .WithMany()
+                        .HasForeignKey("HeatId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Timataka.Core.Models.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Timataka.Core.Models.Entities.Time", b =>
+                {
+                    b.HasOne("Timataka.Core.Models.Entities.Chip", "Chip")
+                        .WithMany()
+                        .HasForeignKey("ChipCode")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Timataka.Core.Models.Entities.Heat", "Heat")
+                        .WithMany()
+                        .HasForeignKey("HeatId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
