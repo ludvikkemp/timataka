@@ -153,6 +153,7 @@ namespace Timataka.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/AddContestant")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddContestant(ContestantsInHeatViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId)
         {

@@ -12,8 +12,7 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="AddContestant"
-                  >
+            <form asp-action="AddContestant">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="HeatId" value="@ViewBag.heatId" />
                 <div class="form-group">
@@ -26,18 +25,14 @@
                     <input asp-for="Team" class="form-control" />
                     <span asp-validation-for="Team" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Modified" class="control-label"></label>
-                    <input asp-for="Modified" class="form-control" />
-                    <span asp-validation-for="Modified" class="text-danger"></span>
-                </div>
+                <input type="hidden" asp-for="Modified" value="@DateTime.Now" />
                 <div class="form-group">
                     <label asp-for="UserId"></label>
                     <select asp-for="UserId" name="UserId" class="form-control">
                         @foreach (var item in ViewBag.users)
-                        {
-                            <option value="@item.Value" id="@item.Value">@item.Text</option>
-                        }
+            {
+                <option value="@item.Value" id="@item.Value">@item.Text</option>
+}
                     </select>
                 </div>
                 <div class="form-group">
