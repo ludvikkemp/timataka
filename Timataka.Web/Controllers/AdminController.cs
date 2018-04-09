@@ -399,9 +399,7 @@ namespace Timataka.Web.Controllers
             competition.Wait();
 
             var usersDto = _adminService.GetUsers();
-
             var assignedRoles = _competitionService.GetAllRolesForCompetition(competitionId);
-
             var roles = new Role();
 
             var personnelDto = new PersonnelDto()

@@ -36,6 +36,7 @@ namespace Timataka.Core.Models.Entities
         public string Gender { get; set; }
         public string Name { get; set; }
         public string Club { get; set; }
+        public string Notes { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
     }
