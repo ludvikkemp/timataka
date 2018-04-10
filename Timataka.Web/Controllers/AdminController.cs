@@ -395,21 +395,28 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Competition/{competitionId}/Personnel")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Personnel(int competitionId)
+        public IActionResult Personnel(string search, int competitionId)
         {
+            ViewData["CurrentFilter"] = search;
             var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
-
             var usersDto = _adminService.GetUsers().Take(10);
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                usersDto = usersDto.Where(u => u.FirstName.ToUpper().Contains(searchToUpper)
+                                                     || u.LastName.ToUpper().Contains(searchToUpper)
+                                                     || u.Username.ToUpper().Contains(searchToUpper));
+            }
             var assignedRoles = _competitionService.GetAllRolesForCompetition(competitionId);
             var roles = new Role();
             var newUsersDto = new List<UserDto>();
 
             //TODO: Þetta tekur alltof langan tíma að loada 3000ms
+            //TODO: Þarf mögulega að setja cache virkni hér þegar fleiri users bætast við
             foreach (var item in usersDto)
             {
-                var y = assignedRoles.FirstOrDefault(x => x.UserId == item.Id);
-                if (y == null)
+                if (assignedRoles.FirstOrDefault(x => x.UserId == item.Id) == null)
                 {
                     newUsersDto.Add(item);
                 }
