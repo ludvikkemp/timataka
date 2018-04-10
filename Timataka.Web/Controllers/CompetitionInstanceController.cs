@@ -157,10 +157,17 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Devices")]
-        public IActionResult Devices(int competitionId, int competitionInstanceId)
+        public async Task<IActionResult> Devices(int competitionId, int competitionInstanceId)
         {
-            var data = _deviceService.GetDevicesInCompetitionInstance(competitionInstanceId);
-            ViewBag.CompetitionInstance = _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId).Result;
+            var devices = _deviceService.GetDevicesInCompetitionInstance(competitionInstanceId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var competiton = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var data = new DevicesDto
+            {
+                DeviceInEventViewModels = devices,
+                CompetitionName = competiton.Name,
+                CompetitionInstanceName = competitionInstance.Name
+            };
             return View(data);
         }
 
