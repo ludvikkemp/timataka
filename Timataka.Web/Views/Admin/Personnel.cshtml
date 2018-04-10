@@ -52,13 +52,13 @@
                                                        asp-action="EditManager"
                                                        asp-route-competitionId="@item.CompetitionId"
                                                        asp-route-userId="@item.UserId"
-                                                       class="btn btn-warning-outline btn-sm">Edit</a>
+                                                       class="btn btn-warning-outline btn-sm">Change</a>
 
                                                     <a asp-controller="Competition"
                                                        asp-action="DeleteManager"
                                                        asp-route-competitionId="@item.CompetitionId"
                                                        asp-route-userId="@item.UserId"
-                                                       class="btn btn-danger-outline btn-sm">Delete</a>
+                                                       class="btn btn-danger-outline btn-sm">Remove</a>
                                                 </td>
                                             </tr>
                                             }
@@ -103,7 +103,7 @@
                                                 <th>Name</th>
                                                 <th>Username</th>
                                                 <th>SSN</th>
-                                                <th>Role</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>

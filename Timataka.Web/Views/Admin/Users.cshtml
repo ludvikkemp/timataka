@@ -32,8 +32,40 @@
                 </div>
             </form>
         </div>
-
-
+    <div class="col-md-7">
+        <nav class="text-right">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a asp-controller="Admin"
+                       asp-action="Users"
+                       asp-route-count="10"
+                       asp-route-search="@ViewData["currentFilter"]"
+                       class="page-link"> 10 </a>
+                </li>
+                <li class="page-item">
+                    <a asp-controller="Admin"
+                       asp-action="Users"
+                       asp-route-count="25"
+                       asp-route-search="@ViewData["currentFilter"]"
+                       class="page-link"> 25 </a>
+                </li>
+                <li class="page-item">
+                    <a asp-controller="Admin"
+                       asp-action="Users"
+                       asp-route-count="50"
+                       asp-route-search="@ViewData["currentFilter"]"
+                       class="page-link"> 50 </a>
+                </li>
+                <li class="page-item">
+                    <a asp-controller="Admin"
+                       asp-action="Users"
+                       asp-route-count="100"
+                       asp-route-search="@ViewData["currentFilter"]"
+                       class="page-link"> 100 </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     </div>
 
     <div class="row">

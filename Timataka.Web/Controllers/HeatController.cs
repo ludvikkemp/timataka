@@ -170,7 +170,7 @@ namespace Timataka.Web.Controllers
                     {
                         Bib = model.Bib,
                         HeatId = model.HeatId,
-                        Modified = model.Modified,
+                        Modified = DateTime.Now,
                         Team = model.Team,
                         UserId = model.UserId
                     };

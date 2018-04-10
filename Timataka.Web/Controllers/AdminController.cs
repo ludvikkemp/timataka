@@ -80,7 +80,7 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Users")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Users(string search)
+        public IActionResult Users(string search, int count = 10)
         {
             ViewData["CurrentFilter"] = search;
             if (!_cache.TryGetValue("listOfUsers", out IEnumerable<UserDto> listOfUsers))
@@ -102,7 +102,7 @@ namespace Timataka.Web.Controllers
                     || u.Country.ToUpper().Contains(searchToUpper));
             }
 
-            return View(listOfUsers.Take(10));
+            return View(listOfUsers.Take(count));
         }
 
         [HttpGet]
