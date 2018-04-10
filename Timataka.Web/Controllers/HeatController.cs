@@ -347,11 +347,22 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips")]
-        public IActionResult Chips(int heatId, int eventId, int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> Chips(int heatId, int eventId, int competitionInstanceId, int competitionId)
         {
             var chipsInHeat = _chipService.GetChipsInHeat(heatId);
-            
-            return View(chipsInHeat);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var heat = await _heatService.GetHeatByIdAsync(heatId);
+            var data = new ChipsAssignedToHeatDto
+            {
+                ChipsInHeat = chipsInHeat,
+                CompetitionName = competition.Name,
+                CompetitionInstanceName = competitionInstance.Name,
+                EventName = _event.Name,
+                HeatNumber = heat.HeatNumber
+            };
+            return View(data);
         }
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/AssignChip

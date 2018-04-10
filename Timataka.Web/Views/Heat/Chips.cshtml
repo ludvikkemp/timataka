@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Timataka.Core.Models.ViewModels.ChipViewModels.ChipInHeatViewModel>
+﻿@model Timataka.Core.Models.Dto.HeatDTO.ChipsAssignedToHeatDto
 
 @{
     ViewData["Title"] = "Chips";
@@ -9,13 +9,32 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> Chips Assigned To Heat </span>
-                <a class="btn btn-primary btn-sm rounded-s"
-                   asp-controller="Heat" asp-action="AssignChip"
-                   asp-route-heatId="@ViewContext.RouteData.Values["heatId"]"
-                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                   asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Assign New</a>
+                <span class="title">
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@Model.CompetitionName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="CompetitionInstance"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.CompetitionInstanceName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="Event"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">@Model.EventName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="Heat"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                       asp-route-heatId="@ViewContext.RouteData.Values["heatId"]">Heat Number @Model.HeatNumber</a> /
+
+                    Chips
+                </span>
+                
             </div>
         </div>
 
@@ -23,7 +42,12 @@
 
     <div class="row">
         <div class="col-md-6">
-            
+            <a class="btn btn-primary btn-sm rounded-s"
+               asp-controller="Heat" asp-action="AssignChip"
+               asp-route-heatId="@ViewContext.RouteData.Values["heatId"]"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Assign New</a>
         </div>
     </div>
 
@@ -45,7 +69,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach (var item in Model)
+                                                @foreach (var item in Model.ChipsInHeat)
                                                 {
                                                     <tr>
                                                         <td>@item.ChipCode</td>
