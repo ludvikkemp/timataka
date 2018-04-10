@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Data.Repositories;
+using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
@@ -18,16 +19,19 @@ namespace Timataka.Web.Controllers
         private readonly IDisciplineService _disciplineService;
         private readonly ICourseService _courseService;
         private readonly IDeviceService _deviceService;
+        private readonly ICompetitionService _competitionService;
 
         public EventController(IEventService eventService,
-                               IDisciplineService disciplineService,
-                               ICourseService courseService,
-                               IDeviceService deviceService)
+            IDisciplineService disciplineService,
+            ICourseService courseService,
+            IDeviceService deviceService,
+            ICompetitionService competitionService)
         {
             _disciplineService = disciplineService;
             _eventService = eventService;
             _courseService = courseService;
             _deviceService = deviceService;
+            _competitionService = competitionService;
         }
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create
@@ -145,10 +149,19 @@ namespace Timataka.Web.Controllers
 
         [HttpGet]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Devices")]
-        public IActionResult Devices(int eventId, int competitionId, int competitionInstanceId)
+        public async Task<IActionResult> Devices(int eventId, int competitionId, int competitionInstanceId)
         {
-            var data = _deviceService.GetDevicesInEvent(eventId);
-            ViewBag.Event = _eventService.GetEventByIdAsync(eventId).Result;
+            var devices = _deviceService.GetDevicesInEvent(eventId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var data = new DevicesDto
+            {
+                DeviceInEventViewModels = devices,
+                EventName = _event.Name,
+                CompetitionInstanceName = competitionInstance.Name,
+                CompetitionName = competition.Name
+            };
             return View(data);
         }
 

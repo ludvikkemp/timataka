@@ -436,10 +436,20 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Catagories")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Categories(int competitionId, int competitionInstanceId, int eventId)
+        public async Task<IActionResult> Categories(int competitionId, int competitionInstanceId, int eventId)
         {
             var categories = _categoryService.GetListOfCategoriesByEventId(eventId);
-            return View(categories);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var data = new CategoryDto
+            {
+                CategoryViewModels = categories,
+                CompetitionName = competition.Name,
+                CompetitonInstanceName = competitionInstance.Name,
+                EventName = _event.Name
+            };
+            return View(data);
         }
 
         [Authorize(Roles = "Admin")]
