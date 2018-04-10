@@ -20,16 +20,22 @@ namespace Timataka.Web.Controllers
         private readonly IAdminService _adminService;
         private readonly IMarkerService _markerService;
         private readonly IChipService _chipService;
+        private readonly ICompetitionService _competitionService;
+        private readonly IEventService _eventService;
 
         public HeatController(IHeatService heatService,
-                              IAdminService adminService,
-                              IMarkerService markerService,
-                              IChipService chipService)
+            IAdminService adminService,
+            IMarkerService markerService,
+            IChipService chipService,
+            ICompetitionService competitionService,
+            IEventService eventService)
         {
             _heatService = heatService;
             _adminService = adminService;
             _markerService = markerService;
             _chipService = chipService;
+            _competitionService = competitionService;
+            _eventService = eventService;
         }
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Create
@@ -295,12 +301,24 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers")]
-        public IActionResult Markers(int competitionId, int competitionInstanceId, int eventId, int heatId)
+        public async Task<IActionResult> Markers(int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
-            ViewBag.AssignedMarkers = _markerService.GetMarkersForHeat(heatId);
-            ViewBag.HeatId = heatId;
-            ViewBag.MarkerList = _markerService.GetUnAssignedMarkersForHeat(heatId, competitionInstanceId);
-            return View();
+            var assignedMarkers = _markerService.GetMarkersForHeat(heatId);
+            var markerList = _markerService.GetUnAssignedMarkersForHeat(heatId, competitionInstanceId);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var heat = await _heatService.GetHeatByIdAsync(heatId);
+            var data = new MarkerDto
+            {
+                AssignedMarkers = assignedMarkers,
+                MarkerList = markerList,
+                CompetitionName = competition.Name,
+                CompetitionInstanceName = competitionInstance.Name,
+                EventName = _event.Name,
+                HeatNumber = heat.HeatNumber
+            };
+            return View(data);
         }
 
         [HttpPost]

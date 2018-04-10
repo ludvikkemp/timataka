@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.ViewModels.MarkerViewModels.AssignMarkerToHeatViewModel
+﻿@model Timataka.Core.Models.Dto.HeatDTO.MarkerDto
 
 @{
     Layout = "_AdminLayout";
@@ -9,7 +9,31 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> Markers </span>
+                <span class="title">
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@Model.CompetitionName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="CompetitionInstance"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.CompetitionInstanceName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="Event"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">@Model.EventName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="Heat"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                       asp-route-heatId="@ViewContext.RouteData.Values["heatId"]">Heat Number @Model.HeatNumber</a> /
+
+                    Markers
+                </span>
             </div>
         </div>
     </div>
@@ -33,7 +57,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in ViewBag.AssignedMarkers)
+                                            @foreach (var item in Model.AssignedMarkers)
                                             {
                                                 <tr>
                                                     <td>
@@ -49,7 +73,7 @@
                                                         <a asp-controller="Heat"
                                                            asp-action="UnassignMarker"
                                                            asp-route-markerId="@item.Id"
-                                                           asp-route-heatId="@ViewBag.HeatId"
+                                                           asp-route-heatId="@ViewContext.RouteData.Values["heatId"]"
                                                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                            asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                                                            asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
@@ -71,15 +95,15 @@
     <div class="row">
         <div class="col-md-6">
             <form asp-action="AssignMarker"
-                  asp-route-heatId="@ViewBag.HeatId"
+                  asp-route-heatId="@ViewContext.RouteData.Values["heatId"]"
                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                   asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="MarkerId">Markers</label>
+                    <label asp-for="@Model.AssingnMarkerToHeatViewModel.MarkerId">Available Markers</label>
                     <select name="MarkerId" class="form-control">
-                        @foreach (var item in ViewBag.MarkerList)
+                        @foreach (var item in Model.MarkerList)
                         {
                             <option value="@item.Id" MarkerId="@item.Id">
                                 @item.Type on @item.Location at @item.Time
@@ -87,7 +111,9 @@
                         }
                     </select>
                 </div>
-                <input type="hidden" asp-for="HeatId" value="@ViewBag.heatId" />
+                <input type="hidden" 
+                       asp-for="@Model.AssingnMarkerToHeatViewModel.HeatId" 
+                       value="@ViewContext.RouteData.Values["heatId"]" />
                 <div class="form-group">
                     <input type="submit" value="Assign" class="btn btn-primary" />
                 </div>
