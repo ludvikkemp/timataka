@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.ChipViewModels;
 using Timataka.Core.Models.ViewModels.ClubViewModels;
 using Timataka.Core.Services;
@@ -13,10 +15,14 @@ namespace Timataka.Web.Controllers
     public class ChipController : Controller
     {
         private readonly IChipService _chipService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ChipController(IChipService chipService)
+        public ChipController(
+            IChipService chipService, 
+            UserManager<ApplicationUser> userManager)
         {
             _chipService = chipService;
+            _userManager = userManager;
         }
 
         //GET: /Admin/Chip/Create
@@ -33,10 +39,29 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Chip/Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ChipViewModel model)
+        public async Task<IActionResult> Create(CreateChipViewModel model)
         {
-            //TODO
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User); 
+                var codeExists = await _chipService.GetChipByCodeAsync(model.Code);
+                if (codeExists == null)
+                {
+                    var chip = new Chip
+                    {
+                        Active = model.Active,
+                        Code = model.Code,
+                        LastCompetitionInstanceId = null,
+                        LastSeen = DateTime.Now,
+                        Number = model.Number,
+                        LastUserId = user.Id
+                    };
+                    await _chipService.AddChipAsync(chip);
+                    return RedirectToAction("Chips", "Admin");
+                }
 
+                return Json("Code Already Exists");
+            }
             return View(model);
         }
 

@@ -509,7 +509,6 @@ namespace Timataka.Web.Controllers
         {
             ViewData["CurrentFilter"] = search;
             var chips = _chipService.GetChips();
-
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
@@ -517,7 +516,6 @@ namespace Timataka.Web.Controllers
                     || u.LastUserSsn.Contains(searchToUpper) 
                     || u.LastUserName.ToUpper().Contains(searchToUpper));
             }
-
             return View(chips);
         }
     }
