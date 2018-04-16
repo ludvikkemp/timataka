@@ -35,66 +35,42 @@ namespace Timataka.Core.Data.Repositories
 
         public bool AssignChipToUserInHeat(ChipInHeat c)
         {
-            var result = false;
-            if (_db.ChipsInHeats.Add(c) != null)
-            {
-                result = true;
-            }
+            bool result = _db.ChipsInHeats.Add(c) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> AssignChipToUserInHeatAsync(ChipInHeat c)
         {
-            var result = false;
-            if (await _db.ChipsInHeats.AddAsync(c) != null)
-            {
-                result = true;
-            }
+            bool result = await _db.ChipsInHeats.AddAsync(c) != null;
             await _db.SaveChangesAsync();
             return result;
         }
 
         public bool EditChip(Chip c)
         {
-            var result = false;
-            if (_db.Chips.Update(c) != null)
-            {
-                result = true;
-            }
+            bool result = _db.Chips.Update(c) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> EditChipAsync(Chip c)
         {
-            var result = false;
-            if (_db.Chips.Update(c) != null)
-            {
-                result = true;
-            }
+            bool result = _db.Chips.Update(c) != null;
             await _db.SaveChangesAsync();
             return result;
         }
 
         public bool EditChipInHeat(ChipInHeat c)
         {
-            var result = false;
-            if (_db.ChipsInHeats.Update(c) != null)
-            {
-                result = true;
-            }
+            bool result = _db.ChipsInHeats.Update(c) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> EditChipInHeatAsync(ChipInHeat c)
         {
-            var result = false;
-            if (_db.ChipsInHeats.Update(c) != null)
-            {
-                result = true;
-            }
+            bool result = _db.ChipsInHeats.Update(c) != null;
             await _db.SaveChangesAsync();
             return result;
         }
@@ -201,44 +177,28 @@ namespace Timataka.Core.Data.Repositories
 
         public bool RemoveChip(Chip c)
         {
-            var result = false;
-            if (_db.Chips.Remove(c) != null)
-            {
-                result = true;
-            }
+            bool result = _db.Chips.Remove(c) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> RemoveChipAsync(Chip c)
         {
-            var result = false;
-            if (_db.Chips.Remove(c) != null)
-            {
-                result = true;
-            }
+            bool result = _db.Chips.Remove(c) != null;
             await _db.SaveChangesAsync();
             return result;
         }
 
         public bool RemoveChipInHeat(ChipInHeat c)
         {
-            var result = false;
-            if (_db.ChipsInHeats.Remove(c) != null)
-            {
-                result = true;
-            }
+            bool result = _db.ChipsInHeats.Remove(c) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> RemoveChipInHeatAsync(ChipInHeat c)
         {
-            var result = false;
-            if (_db.ChipsInHeats.Remove(c) != null)
-            {
-                result = true;
-            }
+            bool result = _db.ChipsInHeats.Remove(c) != null;
             await _db.SaveChangesAsync();
             return result;
         }
