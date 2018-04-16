@@ -37,8 +37,9 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid)
             { 
-                var codeExists = await _chipService.GetChipByCodeAsync(model.Code);
-                if (codeExists == null)
+                var code = await _chipService.GetChipByCodeAsync(model.Code);
+                var number = await _chipService.GetChipByNumberAsync(model.Number);
+                if (code == null && number == null)
                 {
                     var chip = new Chip
                     {
@@ -68,7 +69,7 @@ namespace Timataka.Web.Controllers
             {
                 return NotFound();
             }
-            var model = new CreateChipViewModel
+            var model = new EditChipViewModel
             {
                 Code = chip.Code,
                 Number = chip.Number,
@@ -82,45 +83,55 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Chip/Edit/{chipCode}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string chipCode, CreateChipViewModel model)
+        public async Task<IActionResult> Edit(string chipCode, EditChipViewModel model)
         {
-            //TODO
-
+            if (ModelState.IsValid)
+            {
+                var chip = await _chipService.GetChipByCodeAsync(chipCode);
+                var number = await _chipService.GetChipByNumberAsync(model.Number);
+                if (number != null)
+                {
+                    return Json("Chip with this number already exists");
+                }
+                chip.Number = model.Number;
+                chip.Active = model.Active;
+                var success = await _chipService.EditChipAsync(chip);
+                if (success)
+                {
+                    return RedirectToAction("Chips", "Admin");
+                }
+            }
             return View(model);
         }
 
-        //GET: /Admin/Chip/Details{chipCode}
+        //GET: /Admin/Chip/ScanChips/
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Details/{chipCode}")]
-        public IActionResult Details(string chipCode)
+        [Route("/Admin/Chip/ScanChips")]
+        public IActionResult ScanChips()
         {
-            //TODO
-
             return View();
         }
 
-        //GET: /Admin/Chip/Delete{chipCode}
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Delete/{chipCode}")]
-        public IActionResult Delete(string chipCode)
-        {
-            //TODO
-
-            return View();
-        }
-
-        //POST: /Admin/Chip/Delete/{chipCode}
+        //GET: /Admin/Chip/ScanChips/
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Delete/{chipCode}")]
-        public async Task<IActionResult> Delete(string chipCode, CreateChipViewModel model)
+        [Route("/Admin/Chip/ScanChips")]
+        public async Task<IActionResult> ScanChips(ScanChipViewModel model)
         {
-            //TODO
+            if (ModelState.IsValid)
+            {
+                var chip = await _chipService.GetChipByCodeAsync(model.Code);
+                if (chip == null) return Json("Chip with this code does not exist");
 
-            return RedirectToAction("Chips", "Admin");
+                chip.LastUserId = null;
+                chip.LastCompetitionInstanceId = null;
+                var success = await _chipService.EditChipAsync(chip);
+
+                if (success) return RedirectToAction("ScanChips","Chip");
+            }
+
+            return View(model);
         }
-
     }
 }

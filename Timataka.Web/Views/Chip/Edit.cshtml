@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.ViewModels.ChipViewModels.CreateChipViewModel
+﻿@model Timataka.Core.Models.ViewModels.ChipViewModels.EditChipViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,11 +12,6 @@
         <div class="col-md-4">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Code" class="control-label"></label>
-                    <input asp-for="Code" class="form-control" />
-                    <span asp-validation-for="Code" class="text-danger"></span>
-                </div>
                 <div class="form-group">
                     <label asp-for="Number" class="control-label"></label>
                     <input asp-for="Number" class="form-control" />
