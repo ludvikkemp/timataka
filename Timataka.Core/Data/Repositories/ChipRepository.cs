@@ -139,17 +139,19 @@ namespace Timataka.Core.Data.Repositories
         {
             var chips = (from c in _db.Chips
                          join i in _db.CompetitionInstances on c.LastCompetitionInstanceId equals i.Id
+                         into ix from i in ix.DefaultIfEmpty()
                          join u in _db.Users on c.LastUserId equals u.Id
+                         into ux from u in ux.DefaultIfEmpty()
                          select new ChipViewModel
                          {
-                            LastUserId = u.Id,
-                            LastCompetitionInstanceId = i.Id,
+                            LastUserId = u == null ? "" : u.Id,
+                            LastCompetitionInstanceId = i == null ? 0 : i.Id,
                             Active = c.Active,
                             Code = c.Code,
-                            LastCompetitionInstanceName = i.Name,
+                            LastCompetitionInstanceName = i == null ? "" : i.Name,
                             LastSeen = c.LastSeen,
-                            LastUserName = u.FirstName + " " + u.MiddleName + " " + u.LastName,
-                            LastUserSsn = u.Ssn,
+                            LastUserName = u == null ? "" : u.FirstName + " " + u.MiddleName + " " + u.LastName,
+                            LastUserSsn = u == null ? "" : u.Ssn,
                             Number = c.Number
                          }).ToList();
             return chips;
