@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.ChipViewModels;
-using Timataka.Core.Models.ViewModels.ClubViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -15,14 +12,11 @@ namespace Timataka.Web.Controllers
     public class ChipController : Controller
     {
         private readonly IChipService _chipService;
-        private readonly UserManager<ApplicationUser> _userManager;
 
         public ChipController(
-            IChipService chipService, 
-            UserManager<ApplicationUser> userManager)
+            IChipService chipService)
         {
             _chipService = chipService;
-            _userManager = userManager;
         }
 
         //GET: /Admin/Chip/Create
@@ -42,8 +36,7 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> Create(CreateChipViewModel model)
         {
             if (ModelState.IsValid)
-            {
-                var user = await _userManager.GetUserAsync(User); 
+            { 
                 var codeExists = await _chipService.GetChipByCodeAsync(model.Code);
                 if (codeExists == null)
                 {
@@ -54,67 +47,75 @@ namespace Timataka.Web.Controllers
                         LastCompetitionInstanceId = null,
                         LastSeen = DateTime.Now,
                         Number = model.Number,
-                        LastUserId = user.Id
+                        LastUserId = null
                     };
                     await _chipService.AddChipAsync(chip);
                     return RedirectToAction("Chips", "Admin");
                 }
-
                 return Json("Code Already Exists");
             }
             return View(model);
         }
 
-        //GET: /Admin/Chip/Edit/{chipId}
+        //GET: /Admin/Chip/Edit/{chipCode}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Edit/{chipId}")]
-        public IActionResult Edit(int chipId)
+        [Route("/Admin/Chip/Edit/{chipCode}")]
+        public async Task<IActionResult> Edit(string chipCode)
         {
-            //TODO
-
-            return View();
+            var chip = await _chipService.GetChipByCodeAsync(chipCode);
+            if (chip == null)
+            {
+                return NotFound();
+            }
+            var model = new CreateChipViewModel
+            {
+                Code = chip.Code,
+                Number = chip.Number,
+                Active = chip.Active
+            };
+            return View(model);
         }
 
-        //POST: /Admin/Chip/Edit/{chipId}
+        //POST: /Admin/Chip/Edit/{chipCode}
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Edit/{chipId}")]
+        [Route("/Admin/Chip/Edit/{chipCode}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int chipId, ChipViewModel model)
+        public async Task<IActionResult> Edit(string chipCode, CreateChipViewModel model)
         {
             //TODO
 
             return View(model);
         }
 
-        //GET: /Admin/Chip/Details{chipId}
+        //GET: /Admin/Chip/Details{chipCode}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Details/{chipId}")]
-        public IActionResult Details(int chipId)
+        [Route("/Admin/Chip/Details/{chipCode}")]
+        public IActionResult Details(string chipCode)
         {
             //TODO
 
             return View();
         }
 
-        //GET: /Admin/Chip/Delete{chipId}
+        //GET: /Admin/Chip/Delete{chipCode}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Delete/{chipId}")]
-        public IActionResult Delete(int? chipId)
+        [Route("/Admin/Chip/Delete/{chipCode}")]
+        public IActionResult Delete(string chipCode)
         {
             //TODO
 
             return View();
         }
 
-        //POST: /Admin/Chip/Delete/{chipId}
+        //POST: /Admin/Chip/Delete/{chipCode}
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Delete/{chipId}")]
-        public async Task<IActionResult> Delete(int id)
+        [Route("/Admin/Chip/Delete/{chipCode}")]
+        public async Task<IActionResult> Delete(string chipCode, CreateChipViewModel model)
         {
             //TODO
 

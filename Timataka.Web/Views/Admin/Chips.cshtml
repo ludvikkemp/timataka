@@ -21,7 +21,7 @@
         <div class="col-md-5">
             <form asp-action="Chips" method="get">
                 <div class="input-group">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for chip...">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for chip by Code, Number or Last Assigned To...">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s btn-lg" type="submit">
                             <i class="fa fa-search"></i>
@@ -64,9 +64,20 @@
                                                     <td>@item.LastCompetitionInstanceName</td>
                                                     <td>@item.LastSeen</td>
                                                     <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Chip" asp-action="Edit" asp-route-code="@item.Code">Edit</a>
-                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Chip" asp-action="Details" asp-route-code="@item.Code">Details</a>
-                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Chip" asp-action="Delete" asp-route-code="@item.Code">Delete</a>
+                                                        <a class="btn btn-warning-outline btn-sm" 
+                                                           asp-controller="Chip" 
+                                                           asp-action="Edit" 
+                                                           asp-route-chipCode="@item.Code">Edit</a>
+                                                        
+                                                        <a class="btn btn-success-outline btn-sm" 
+                                                           asp-controller="Chip" 
+                                                           asp-action="Details" 
+                                                           asp-route-chipCode="@item.Code">Details</a>
+                                                        
+                                                        <a class="btn btn-danger-outline btn-sm" 
+                                                           asp-controller="Chip" 
+                                                           asp-action="Delete" 
+                                                           asp-route-chipCode="@item.Code">Delete</a>
                                                     </td>
                                                 </tr>
                                             }
