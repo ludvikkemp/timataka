@@ -13,8 +13,8 @@ namespace Timataka.Core.Data.Repositories
 
         IEnumerable<Result> Get();
 
-        Result GetById(int id);
-        Task<Result> GetByIdAsync(int id);
+        Result GetByUserIdAndHeatId(string userId, int heatId);
+        Task<Result> GetByUserIdAndHeatIdAsync(string userId, int heatId);
 
         Boolean Edit(Result r);
         Task<Boolean> EditAsync(Result r);

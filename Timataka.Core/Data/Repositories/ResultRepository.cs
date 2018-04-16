@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
@@ -25,42 +27,74 @@ namespace Timataka.Core.Data.Repositories
 
         public async Task<Result> AddAsync(Result r)
         {
-            throw new NotImplementedException();
+            await _db.Results.AddAsync(r);
+            await _db.SaveChangesAsync();
+            return r;
         }
 
         public bool Edit(Result r)
         {
-            throw new NotImplementedException();
+            var result = false;
+            if (_db.Results.Update(r) != null)
+            {
+                result = true;
+            }
+            _db.SaveChanges();
+            return result;
         }
 
-        public Task<bool> EditAsync(Result r)
+        public async Task<bool> EditAsync(Result r)
         {
-            throw new NotImplementedException();
+            var result = false;
+            if (_db.Results.Update(r) != null)
+            {
+                result = true;
+            }
+            await _db.SaveChangesAsync();
+            return result;
         }
 
         public IEnumerable<Result> Get()
         {
-            throw new NotImplementedException();
+            return _db.Results.ToList();
         }
 
-        public Result GetById(int id)
+        public Result GetByUserIdAndHeatId(string userId, int heatId)
         {
-            throw new NotImplementedException();
+            var result = (from x in _db.Results
+                          where x.UserId == userId && x.HeatId == heatId
+                          select x).SingleOrDefault();
+            return result;
         }
 
-        public Task<Result> GetByIdAsync(int id)
+        public async Task<Result> GetByUserIdAndHeatIdAsync(string userId, int heatId)
         {
-            throw new NotImplementedException();
+            var result = await (from x in _db.Results
+                                where x.UserId == userId && x.HeatId == heatId
+                                select x).SingleOrDefaultAsync();
+            return result;
         }
 
         public bool Remove(Result r)
         {
-            throw new NotImplementedException();
+            var result = false;
+            if (_db.Results.Remove(r) != null)
+            {
+                result = true;
+            }
+            _db.SaveChanges();
+            return result;
         }
 
-        public Task<bool> RemoveAsync(Result r)
+        public async Task<bool> RemoveAsync(Result r)
         {
-            throw new NotImplementedException();
+            var result = false;
+            if (_db.Results.Remove(r) != null)
+            {
+                result = true;
+            }
+            await _db.SaveChangesAsync();
+            return result;
         }
 
         protected virtual void Dispose(bool disposing)
