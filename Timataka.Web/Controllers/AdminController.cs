@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -79,7 +80,7 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Users")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Users(string search)
+        public IActionResult Users(string search, int count = 10)
         {
             ViewData["CurrentFilter"] = search;
             if (!_cache.TryGetValue("listOfUsers", out IEnumerable<UserDto> listOfUsers))
@@ -101,7 +102,7 @@ namespace Timataka.Web.Controllers
                     || u.Country.ToUpper().Contains(searchToUpper));
             }
 
-            return View(listOfUsers.Take(10));
+            return View(listOfUsers.Take(count));
         }
 
         [HttpGet]
@@ -358,6 +359,7 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Heat(string search, int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
+            ViewData["CurrentFilter"] = search;
             var heat = await _heatService.GetHeatByIdAsync(heatId);
 
             if (heat == null)
@@ -392,21 +394,39 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Competition/{competitionId}/Personnel")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Personnel(int competitionId)
+        public IActionResult Personnel(string search, int competitionId)
         {
+            ViewData["CurrentFilter"] = search;
             var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
-
-            var usersDto = _adminService.GetUsers();
+            var usersDto = _adminService.GetUsers().Take(10);
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                usersDto = usersDto.Where(u => u.FirstName.ToUpper().Contains(searchToUpper)
+                                                     || u.LastName.ToUpper().Contains(searchToUpper)
+                                                     || u.Username.ToUpper().Contains(searchToUpper));
+            }
             var assignedRoles = _competitionService.GetAllRolesForCompetition(competitionId);
             var roles = new Role();
+            var newUsersDto = new List<UserDto>();
+
+            //TODO: Þetta tekur alltof langan tíma að loada 3000ms
+            //TODO: Þarf mögulega að setja cache virkni hér þegar fleiri users bætast við
+            foreach (var item in usersDto)
+            {
+                if (assignedRoles.FirstOrDefault(x => x.UserId == item.Id) == null)
+                {
+                    newUsersDto.Add(item);
+                }
+            }
 
             var personnelDto = new PersonnelDto()
             {
                 AssignedRoles = assignedRoles,
                 Competition = competition.Result,
                 Roles = roles,
-                Users = usersDto
+                Users = newUsersDto
             };
 
             return View(personnelDto);
@@ -415,10 +435,20 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Catagories")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Categories(int competitionId, int competitionInstanceId, int eventId)
+        public async Task<IActionResult> Categories(int competitionId, int competitionInstanceId, int eventId)
         {
             var categories = _categoryService.GetListOfCategoriesByEventId(eventId);
-            return View(categories);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var data = new CategoryDto
+            {
+                CategoryViewModels = categories,
+                CompetitionName = competition.Name,
+                CompetitonInstanceName = competitionInstance.Name,
+                EventName = _event.Name
+            };
+            return View(data);
         }
 
         [Authorize(Roles = "Admin")]
@@ -478,7 +508,6 @@ namespace Timataka.Web.Controllers
         {
             ViewData["CurrentFilter"] = search;
             var chips = _chipService.GetChips();
-
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
@@ -486,7 +515,6 @@ namespace Timataka.Web.Controllers
                     || u.LastUserSsn.Contains(searchToUpper) 
                     || u.LastUserName.ToUpper().Contains(searchToUpper));
             }
-
             return View(chips);
         }
     }

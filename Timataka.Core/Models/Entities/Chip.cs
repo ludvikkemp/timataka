@@ -23,7 +23,7 @@ namespace Timataka.Core.Models.Entities
         [ForeignKey(nameof(LastUserId))]
         public virtual ApplicationUser User { get; set; }
 
-        public int LastCompetitionInstanceId { get; set; }
+        public int? LastCompetitionInstanceId { get; set; }
         [ForeignKey(nameof(LastCompetitionInstanceId))]
         public virtual CompetitionInstance CompetitionInstance { get; set; }
 

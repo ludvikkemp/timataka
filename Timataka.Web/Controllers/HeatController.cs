@@ -22,16 +22,22 @@ namespace Timataka.Web.Controllers
         private readonly IAdminService _adminService;
         private readonly IMarkerService _markerService;
         private readonly IChipService _chipService;
+        private readonly ICompetitionService _competitionService;
+        private readonly IEventService _eventService;
 
         public HeatController(IHeatService heatService,
-                              IAdminService adminService,
-                              IMarkerService markerService,
-                              IChipService chipService)
+            IAdminService adminService,
+            IMarkerService markerService,
+            IChipService chipService,
+            ICompetitionService competitionService,
+            IEventService eventService)
         {
             _heatService = heatService;
             _adminService = adminService;
             _markerService = markerService;
             _chipService = chipService;
+            _competitionService = competitionService;
+            _eventService = eventService;
         }
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Create
@@ -188,6 +194,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/EditContestant/{userId}")]
         public async Task<IActionResult> EditContestant(int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
         {
+            //Working on this!!!
             var e = await _heatService.GetContestantInEventViewModelAsync(userId, heatId);
             
             var model = new EditContestantInCompetitionViewModel
@@ -266,12 +273,24 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers")]
-        public IActionResult Markers(int competitionId, int competitionInstanceId, int eventId, int heatId)
+        public async Task<IActionResult> Markers(int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
-            ViewBag.AssignedMarkers = _markerService.GetMarkersForHeat(heatId);
-            ViewBag.HeatId = heatId;
-            ViewBag.MarkerList = _markerService.GetUnAssignedMarkersForHeat(heatId, competitionInstanceId);
-            return View();
+            var assignedMarkers = _markerService.GetMarkersForHeat(heatId);
+            var markerList = _markerService.GetUnAssignedMarkersForHeat(heatId, competitionInstanceId);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var heat = await _heatService.GetHeatByIdAsync(heatId);
+            var data = new MarkerDto
+            {
+                AssignedMarkers = assignedMarkers,
+                MarkerList = markerList,
+                CompetitionName = competition.Name,
+                CompetitionInstanceName = competitionInstance.Name,
+                EventName = _event.Name,
+                HeatNumber = heat.HeatNumber
+            };
+            return View(data);
         }
 
         [HttpPost]
@@ -300,11 +319,22 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips")]
-        public IActionResult Chips(int heatId, int eventId, int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> Chips(int heatId, int eventId, int competitionInstanceId, int competitionId)
         {
             var chipsInHeat = _chipService.GetChipsInHeat(heatId);
-            
-            return View(chipsInHeat);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var heat = await _heatService.GetHeatByIdAsync(heatId);
+            var data = new ChipsAssignedToHeatDto
+            {
+                ChipsInHeat = chipsInHeat,
+                CompetitionName = competition.Name,
+                CompetitionInstanceName = competitionInstance.Name,
+                EventName = _event.Name,
+                HeatNumber = heat.HeatNumber
+            };
+            return View(data);
         }
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips/AssignChip

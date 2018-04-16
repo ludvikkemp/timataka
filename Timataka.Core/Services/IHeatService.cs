@@ -23,7 +23,7 @@ namespace Timataka.Core.Services
         IEnumerable<ContestantInHeatViewModel> GetContestantsInHeat(int id);
         IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id);
         ContestantInHeat GetContestantInHeatById(int heatId, string userId);
-        Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId)
+        Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId);
 
         void EditContestantInHeat(ContestantInHeat h);
         Task EditAsyncContestantInHeat(ContestantInHeat h);

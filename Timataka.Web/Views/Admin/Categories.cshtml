@@ -1,19 +1,45 @@
-﻿@model IEnumerable<Timataka.Core.Models.ViewModels.CategoryViewModels.CategoryViewModel>
+﻿@model Timataka.Core.Models.Dto.AdminDTO.CategoryDto
 
 @{
     Layout = "_AdminLayout";
 }
 <section class="content">
-    <div class="title-block">
+    <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> Categories </span>
-                <a asp-controller="Category" asp-action="Create" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" class="btn btn-primary btn-sm rounded-s"> Add Category </a>
+                <span class="title">
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@Model.CompetitionName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="CompetitionInstance"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.CompetitonInstanceName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="Event"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">@Model.EventName</a> /
+
+                    Categories
+                </span>
+
             </div>
         </div>
     </div>
- 
+    <div class="row">
+        <div class="col-md-12">
+            <a asp-controller="Category" 
+               asp-action="Create" 
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" 
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" 
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" 
+               class="btn btn-primary btn-sm rounded-s"> Add Category </a>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -32,7 +58,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model)
+                                            @foreach (var item in Model.CategoryViewModels)
                                             {
                                                 <tr>
                                                     <td>
@@ -62,10 +88,6 @@
                 </section>
             </div>
         </div>
-    </div>
-
-    <div>
-        <a asp-controller="Admin" asp-action="Event" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" class="btn btn-secondary-outline btn-sm">Back to Event</a>
     </div>
 
 </section>

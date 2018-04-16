@@ -20,11 +20,18 @@
                     <span asp-validation-for="ContestantInEvent.Bib" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+<<<<<<< HEAD
                     <label asp-for="ContestantInEvent.Team" class="control-label"></label>
                     <input asp-for="ContestantInEvent.Team" class="form-control" />
                     <span asp-validation-for="ContestantInEvent.Team" class="text-danger"></span>
                 </div>
                 <input type="hidden" asp-for="ContestantInEvent.Modified" value="@DateTime.Now" />
+=======
+                    <label asp-for="Team" class="control-label"></label>
+                    <input asp-for="Team" class="form-control" />
+                    <span asp-validation-for="Team" class="text-danger"></span>
+                </div>
+>>>>>>> 41092f72602be8e561ba9bedd31465167f8dbdae
                 <div class="form-group">
                     <label asp-for="UserId"></label>
                     <select asp-for="UserId" name="UserId" class="form-control">

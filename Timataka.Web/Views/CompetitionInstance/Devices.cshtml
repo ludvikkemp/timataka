@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Timataka.Core.Models.ViewModels.DeviceViewModels.DeviceInEventViewModel>
+﻿@using Timataka.Core.Models.Dto.CompetitionInstanceDTO
+@model Timataka.Core.Models.Dto.CompetitionInstanceDTO.DevicesDto
 
 @{
     ViewBag.Title = "Devices";
@@ -6,38 +7,37 @@
     Layout = "_AdminLayout";
 }
 
-<<section class="content">
+<section class="content">
     <div class="title-block" style="margin-bottom:15px;">
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title"> Devices in @ViewBag.CompetitionInstance.Name</span>
+                <span class="title">
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@Model.CompetitionName</a> /
 
+                    <a asp-controller="Admin"
+                       asp-action="CompetitionInstance"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.CompetitionInstanceName</a> /
+
+                    Devices
+                </span>
             </div>
         </div>
 
     </div>
 
     <div class="row">
-        <div class="col-md-5">
-            <form asp-action="" method="get">
-                <div class="input-group">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for devices in competition instance...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-7">
+        
+        <div class="col-md-12">
             <a class="btn btn-primary btn-sm rounded-s"
                asp-controller="CompetitionInstance"
                asp-action="AssignDevice"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-               asp-route-competitionInstanceId="@ViewBag.CompetitionInstance.Id">Assign Device</a>
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">Assign Device</a>
 
         </div>
     </div>
@@ -61,7 +61,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model)
+                                            @foreach (var item in Model.DeviceInEventViewModels)
                                             {
                                                 <tr>
                                                     <td>@item.DeviceName</td>
@@ -75,7 +75,7 @@
                                                            asp-route-deviceId="@item.DevicesInEvent.DeviceId"
                                                            asp-route-eventId="@item.DevicesInEvent.EventId"
                                                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                           asp-route-competitionInstanceId="@ViewBag.CompetitionInstance.Id">Unassign</a>
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">Unassign</a>
 
                                                         <a class="btn btn-success-outline btn-sm"
                                                            asp-controller="Device"
@@ -96,14 +96,4 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            
-
-            <a asp-controller="Admin"
-               asp-action="CompetitionInstance"
-               asp-route-competitionInstanceId="@ViewBag.CompetitionInstance.Id"
-               class="btn btn-secondary-outline btn-sm">Back to Events</a>
-        </div>
-    </div>
 </section>

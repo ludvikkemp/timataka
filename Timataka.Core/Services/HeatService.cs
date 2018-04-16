@@ -126,7 +126,7 @@ namespace Timataka.Core.Services
 
         }
 
-        public async Task<ContestantInEventViewModel> GetContestantInEventViewModel(string userId, int heatId)
+        public async Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId)
         {
             var x = GetContestantInHeatById(heatId, userId);
             var h = await GetHeatByIdAsync(heatId);
