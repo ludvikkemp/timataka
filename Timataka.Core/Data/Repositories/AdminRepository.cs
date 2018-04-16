@@ -144,5 +144,31 @@ namespace Timataka.Core.Data.Repositories
             }
             return nonAdmins;
         }
+
+        public UserViewModel GetUserById(string userId)
+        {
+            return (from u in _db.Users
+                    where u.Id == userId
+                    select new UserViewModel
+                    {
+                        Id = u.Id,
+                        DateOfBirth = u.DateOfBirth,
+                        Deleted = u.Deleted,
+                        FirstName = u.FirstName,
+                        Gender = u.Gender,
+                        LastName = u.LastName,
+                        Phone = u.Phone,
+                        Username = u.UserName,
+                        Ssn = u.Ssn,
+                        Country = (int)u.CountryId,
+                        Nationality = (int)u.NationalityId
+                   }).SingleOrDefault();
+        }
+
+        public string GetNationalityById(int id)
+        {
+            var nationality = (from c in _db.Countries where c.Id == id select c.Nationality).ToString();
+            return nationality;
+        }
     }
 }

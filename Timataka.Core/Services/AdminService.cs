@@ -70,6 +70,11 @@ namespace Timataka.Core.Services
             return _repo.GetCountryNameById(id);
         }
 
+        public string GetNationalityById(int id)
+        {
+            return _repo.GetNationalityById(id);
+        }
+
         public IEnumerable<UserViewModel> GetAdminUsers()
         {
             var admins = _repo.GetAdminUsers();
@@ -82,5 +87,10 @@ namespace Timataka.Core.Services
             return nonAdmins;
         }
 
+        public UserViewModel GetUserById(string userId)
+        {
+            var user = _repo.GetUserById(userId);
+            return user;
+        }
     }
 }
