@@ -513,8 +513,9 @@ namespace Timataka.Web.Controllers
             {
                 var searchToUpper = search.ToUpper();
                 chips = chips.Where(u => u.Code.ToUpper().Contains(searchToUpper)
-                    || u.LastUserSsn.Contains(searchToUpper) 
-                    || u.LastUserName.ToUpper().Contains(searchToUpper));
+                    || u.LastUserSsn.Contains(searchToUpper)
+                    || u.Number.ToString().Contains(searchToUpper)
+                    || u.Code.ToUpper().Contains(searchToUpper));
             }
             return View(chips);
         }
