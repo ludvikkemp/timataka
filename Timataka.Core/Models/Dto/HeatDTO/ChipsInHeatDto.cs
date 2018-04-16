@@ -9,7 +9,7 @@ namespace Timataka.Core.Models.Dto.HeatDTO
 {
     public class ChipsInHeatDto
     {
-        public IEnumerable<ContestantsInHeatViewModel> UsersInHeat { get; set; }
+        public IEnumerable<ContestantInHeatViewModel> UsersInHeat { get; set; }
         public IEnumerable<Chip> Chips { get; set; }
         public int HeatId { get; set; }
     }

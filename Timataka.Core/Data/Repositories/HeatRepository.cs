@@ -91,28 +91,20 @@ namespace Timataka.Core.Data.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<ContestantsInHeatViewModel> GetContestantsInHeat(int heatId)
+        public IEnumerable<ContestantInHeatViewModel> GetContestantsInHeat(int heatId)
         {
             var contestants = (from c in _db.ContestantsInHeats
                                join u in _db.Users on c.UserId equals u.Id
                                join h in _db.Heats on heatId equals h.Id
                                where c.HeatId == heatId
-                               select new ContestantsInHeatViewModel
+                               select new ContestantInHeatViewModel
                                {
                                    Bib = c.Bib,
-                                   CountryId = u.CountryId,
                                    DateOfBirth = u.DateOfBirth,
-                                   DeletedHeat = h.Deleted,
-                                   DeletedUser = u.Deleted,
-                                   EventId = h.EventId,
-                                   FirstName = u.FirstName,
+                                   Name = u.FirstName + " " + u.LastName,
                                    Gender = u.Gender,
                                    HeatId = h.Id,
                                    HeatNumber = h.HeatNumber,
-                                   LastName = u.LastName,
-                                   MiddleName = u.MiddleName,
-                                   Modified = c.Modified,
-                                   NationalityId = u.NationalityId,
                                    Phone = u.Phone,
                                    Ssn = u.Ssn,
                                    Team = c.Team,

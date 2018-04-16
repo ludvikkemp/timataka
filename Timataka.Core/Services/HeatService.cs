@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 
 namespace Timataka.Core.Services
@@ -125,7 +126,23 @@ namespace Timataka.Core.Services
 
         }
 
-        public IEnumerable<ContestantsInHeatViewModel> GetContestantsInHeat(int id)
+        public async Task<ContestantInEventViewModel> GetContestantInEventViewModel(string userId, int heatId)
+        {
+            var x = GetContestantInHeatById(heatId, userId);
+            var h = await GetHeatByIdAsync(heatId);
+            var result = new ContestantInEventViewModel
+            {
+                Bib = x.Bib,
+                HeatId = heatId,
+                HeatNumber = h.HeatNumber,
+                Modified = x.Modified,
+                Team = x.Team,
+            };
+            return result;
+
+        }
+
+        public IEnumerable<ContestantInHeatViewModel> GetContestantsInHeat(int id)
         {
             return _repo.GetContestantsInHeat(id);
         }

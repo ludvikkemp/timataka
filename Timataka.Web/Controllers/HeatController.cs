@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Timataka.Core.Models.Dto.HeatDTO;
 using Timataka.Core.Models.ViewModels.ChipViewModels;
 using Timataka.Core.Models.ViewModels.MarkerViewModels;
+using Timataka.Core.Models.ViewModels.EventViewModels;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -155,7 +157,7 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/AddContestant")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddContestant(ContestantsInHeatViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId)
+        public async Task<IActionResult> AddContestant(AddContestantToEventViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId)
         {
             if (ModelState.IsValid)
             {
@@ -163,10 +165,10 @@ namespace Timataka.Web.Controllers
                 {
                     var entitiy = new ContestantInHeat
                     {
-                        Bib = model.Bib,
-                        HeatId = model.HeatId,
-                        Modified = model.Modified,
-                        Team = model.Team,
+                        Bib = model.ContestantInEvent.Bib,
+                        HeatId = model.ContestantInEvent.HeatId,
+                        Modified = DateTime.Now,
+                        Team = model.ContestantInEvent.Team,
                         UserId = model.UserId
                     };
 
@@ -184,39 +186,38 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/EditContestant/{userId}")]
-        public IActionResult EditContestant(int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
+        public async Task<IActionResult> EditContestant(int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
         {
-            var entitiy = _heatService.GetContestantInHeatById(heatId,userId);
+            var e = await _heatService.GetContestantInEventViewModelAsync(userId, heatId);
             
-            var model = new ContestantsInHeatViewModel
+            var model = new EditContestantInCompetitionViewModel
             {
-                Bib = entitiy.Bib,
-                HeatId = entitiy.HeatId,
-                Modified = entitiy.Modified,
-                Team = entitiy.Team,
-                UserId = entitiy.UserId
+                
+
             };
 
-            return View(model);
+            return View();
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditContestant(ContestantsInHeatViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId)
+        public async Task<IActionResult> EditContestant(EditContestantInCompetitionViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var entity = new ContestantInHeat
-                    {
-                        UserId = model.UserId,
-                        HeatId = model.HeatId,
-                        Bib = model.Bib,
-                        Team = model.Team,
-                        Modified = DateTime.Now
-                    };
+                    var entity = (from e in model.Event
+                                 where e.HeatId == heatId
+                                 select new ContestantInHeat
+                                 {
+                                    UserId = model.UserId,
+                                    HeatId = e.HeatId,
+                                    Bib = e.Bib,
+                                    Team = e.Team,
+                                    Modified = DateTime.Now
+                                 }).SingleOrDefault();
 
                     await _heatService.EditAsyncContestantInHeat(entity);
                 }
@@ -233,23 +234,15 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult RemoveContestant(int heatId, string userId)
         {
-            var modelList = _heatService.GetContestantsInHeat(heatId);
-            var model = new ContestantsInHeatViewModel();
+            var model = _heatService.GetContestantInHeatById(heatId, userId);
 
-            foreach(var item in modelList)
-            {
-                if (item.HeatId == heatId && item.UserId == userId)
-                {
-                    model = item;
-                }
-            }
             return View(model);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveContestant(ContestantsInHeatViewModel model)
+        public async Task<IActionResult> RemoveContestant(ContestantInHeat model)
         {
             if (ModelState.IsValid)
             {
@@ -265,29 +258,6 @@ namespace Timataka.Web.Controllers
                 }
                 return RedirectToAction("Heat", "Admin", new { eventId = model.HeatId });
             }
-            return View(model);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public IActionResult DetailsContestant(int heatId, string userId)
-        {
-            if(heatId == 0 || userId == null)
-            {
-                return new BadRequestResult();
-            }
-
-            var modelList = _heatService.GetContestantsInHeat(heatId);
-            var model = new ContestantsInHeatViewModel();
-
-            foreach (var item in modelList)
-            {
-                if(item.HeatId == heatId && item.UserId == userId)
-                {
-                    model = item;
-                }
-            }
-
             return View(model);
         }
 
@@ -357,7 +327,7 @@ namespace Timataka.Web.Controllers
                 selectUsersListItems.Add(
                     new SelectListItem
                     {
-                        Text = item.FirstName + ' ' + item.MiddleName + ' ' + item.LastName + " (" + item.Ssn + ")",
+                        Text = item.Name + " (" + item.Ssn + ")",
                         Value = item.UserId
                     });
             }

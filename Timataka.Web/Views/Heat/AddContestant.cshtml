@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.ContestantsInHeatViewModel
+﻿@model Timataka.Core.Models.ViewModels.EventViewModels.AddContestantToEventViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,18 +13,18 @@
         <div class="col-md-4">
             <form asp-action="AddContestant">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="HeatId" value="@ViewBag.heatId" />
+                <input type="hidden" asp-for="ContestantInEvent.HeatId" value="@ViewBag.heatId" />
                 <div class="form-group">
-                    <label asp-for="Bib" class="control-label"></label>
-                    <input asp-for="Bib" class="form-control" />
-                    <span asp-validation-for="Bib" class="text-danger"></span>
+                    <label asp-for="ContestantInEvent.Bib" class="control-label"></label>
+                    <input asp-for="ContestantInEvent.Bib" class="form-control" />
+                    <span asp-validation-for="ContestantInEvent.Bib" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Team" class="control-label"></label>
-                    <input asp-for="Team" class="form-control" />
-                    <span asp-validation-for="Team" class="text-danger"></span>
+                    <label asp-for="ContestantInEvent.Team" class="control-label"></label>
+                    <input asp-for="ContestantInEvent.Team" class="form-control" />
+                    <span asp-validation-for="ContestantInEvent.Team" class="text-danger"></span>
                 </div>
-                <input type="hidden" asp-for="Modified" value="@DateTime.Now" />
+                <input type="hidden" asp-for="ContestantInEvent.Modified" value="@DateTime.Now" />
                 <div class="form-group">
                     <label asp-for="UserId"></label>
                     <select asp-for="UserId" name="UserId" class="form-control">
