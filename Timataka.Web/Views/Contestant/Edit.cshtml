@@ -4,4 +4,71 @@
     ViewData["Title"] = "Edit";
     Layout = "_AdminLayout";
 }
-<h2>Edit</h2>
+
+<section class="content">
+    <h4>Edit Contestant</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            @using (Html.BeginForm("Edit", "Contestant", FormMethod.Post))
+            {
+                @for (int i = 0; i < @Model.Event.Count(); i++)
+                {
+
+                    @Html.EditorFor(x => @Model.Event[i].Bib, null, "Bib")
+                    
+                    <!-- Chip Kemur Hér -->
+                    
+                    <!-- Á að vera dropdown listi -->
+                    @Html.EditorFor(x => @Model.Event[i].Status, null, "Status")
+                    
+                    <!-- Á að vera dropdown listi -->
+                    @Html.EditorFor(x => @Model.Event[i].HeatId, null, "HeatId")
+                    @Html.EditorFor(x => @Model.Event[i].HeatNumber, null, "HeatNumber")
+                    
+                    @Html.EditorFor(x => @Model.Event[i].Team, null, "Team")
+                    @Html.EditorFor(x => @Model.Event[i].Notes, null, "Notes")
+     
+                }
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+    </div>
+
+    <div>
+        <h4>User Info</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Year)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Year)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Nationality)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Nationality)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+        </dl>
+    </div>
+
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
