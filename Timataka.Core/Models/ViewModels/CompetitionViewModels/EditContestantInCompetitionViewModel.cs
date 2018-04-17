@@ -18,7 +18,7 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
         public string Phone { get; set; }
 
         //Events
-        public List<ContestantInEventViewModel> Event { get; set; }
+        public IEnumerable<ContestantInEventViewModel> Event { get; set; }
 
 
     }
