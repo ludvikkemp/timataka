@@ -16,11 +16,18 @@ namespace Timataka.Core.Services
     {
         private readonly IHeatRepository _repo;
         private readonly IResultService _resultService;
+        private readonly IChipService _chipService;
+        private readonly IEventService _eventService;
 
-        public HeatService(IHeatRepository repo, IResultService resultService)
+        public HeatService(IHeatRepository repo, 
+            IResultService resultService, 
+            IChipService chipService,
+            IEventService eventService)
         {
             _repo = repo;
             _resultService = resultService;
+            _chipService = chipService;
+            _eventService = eventService;
         }
 
         public HeatService()
@@ -133,6 +140,9 @@ namespace Timataka.Core.Services
         {
             var x = GetContestantInHeatById(heatId, userId);
             var h = await GetHeatByIdAsync(heatId);
+            var r = _resultService.GetResult(userId, heatId);
+            var c = _chipService.GetChipsInHeatsForUserInHeat(userId, heatId).SingleOrDefault();
+            var e = _eventService.GetEventById(h.EventId);
             var result = new ContestantInEventViewModel
             {
                 Bib = x.Bib,
@@ -140,6 +150,12 @@ namespace Timataka.Core.Services
                 HeatNumber = h.HeatNumber,
                 Modified = x.Modified,
                 Team = x.Team,
+                Notes = r.Notes,
+                Status = r.Status,
+                ChipCode = c.ChipCode,
+                EventId = h.EventId,
+                EventName = e.Name,
+                HeatsInEvent = GetHeatsForEvent(h.EventId)
             };
             return result;
 
