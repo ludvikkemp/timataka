@@ -97,7 +97,11 @@
                                                              }
                                                          }
                                                     </td>
-                                                    <td>Actions</td>
+                                                    <td><a asp-action="EditContestant"
+                                                           asp-route-competitionId="@Model.Competition.Id"
+                                                           asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+                                                           asp-route-userId="@item.Id" 
+                                                           class="btn btn-warning-outline btn-sm">Edit</a></td>
                                                 </tr>
 
                                             }
