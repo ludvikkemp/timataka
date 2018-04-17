@@ -175,16 +175,26 @@ namespace Timataka.Core.Services
 
         public void RemoveContestantInHeat(ContestantInHeat h)
         {
+            var r = _resultService.GetResult(h.UserId, h.HeatId);
+            _resultService.RemoveAsync(r);
             _repo.RemoveContestantInHeat(h);
         }
         public async Task RemoveAsyncContestantInHeat(ContestantInHeat h)
         {
+            var r = _resultService.GetResult(h.UserId, h.HeatId);
+            await _resultService.RemoveAsync(r);
             await _repo.RemoveAsyncContestantInHeat(h);
         }
 
         public void AddContestantInHeat(ContestantInHeat h)
         {
             _repo.InsertContestantInHeat(h);
+            var result = new CreateResultViewModel
+            {
+                UserId = h.UserId,
+                HeatId = h.HeatId,
+            };
+            _resultService.AddAsync(result);
         }
         public async Task AddAsyncContestantInHeat(ContestantInHeat h)
         {

@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.ContestantsInHeatViewModel
+﻿@model Timataka.Core.Models.Entities.ContestantInHeat
 
 @{
     ViewData["Title"] = "Delete";
@@ -17,15 +17,24 @@
                 Name
             </dt>
             <dd>
-                @Model.FirstName @Model.MiddleName @Model.LastName (@Model.Ssn)
+                @ViewBag.Contestant.FirstName @ViewBag.Contestant.LastName
             </dd>
         </dl>
 
-        <form asp-action="RemoveContestant">
+        <form asp-action="RemoveContestant"
+               asp-route-heatId="@Model.HeatId"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">
             <input type="hidden" asp-for="HeatId" value="@Model.HeatId" />
             <input type="hidden" asp-for="UserId" value="@Model.UserId" />
             <input type="submit" value="Delete" class="btn btn-primary" /> |
-            <a asp-controller="Admin" asp-action="Heat" asp-route-id="@Model.HeatId">Back to List</a>
+            <a asp-controller="Admin" 
+               asp-action="Heat" 
+               asp-route-heatId="@Model.HeatId"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Back to List</a>
         </form>
     </div>
 </section>

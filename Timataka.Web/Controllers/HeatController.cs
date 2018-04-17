@@ -249,17 +249,20 @@ namespace Timataka.Web.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult RemoveContestant(int heatId, string userId)
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/RemoveContestant")]
+        public async Task<IActionResult> RemoveContestant(int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
         {
             var model = _heatService.GetContestantInHeatById(heatId, userId);
+            ViewBag.Contestant = await _adminService.GetUserByIdAsync(userId);
 
             return View(model);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/RemoveContestant")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveContestant(ContestantInHeat model)
+        public async Task<IActionResult> RemoveContestant(ContestantInHeat model, int heatId, int eventId, int competitionId, int competitionInstanceId)
         {
             if (ModelState.IsValid)
             {
@@ -273,7 +276,7 @@ namespace Timataka.Web.Controllers
                 {
                     return new BadRequestResult();
                 }
-                return RedirectToAction("Heat", "Admin", new { eventId = model.HeatId });
+                return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
             }
             return View(model);
         }

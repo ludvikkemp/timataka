@@ -47,5 +47,10 @@ namespace Timataka.Core.Services
         {
             return _repo.GetByUserIdAndHeatId(userId, heatId);
         }
+
+        public async Task RemoveAsync(Result r)
+        {
+            await _repo.RemoveAsync(r);
+        }
     }
 }
