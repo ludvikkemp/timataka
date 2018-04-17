@@ -247,11 +247,19 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Contestants")]
-        public async Task<IActionResult> Contestants(int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> Contestants(string search, int competitionInstanceId, int competitionId)
         {
+            ViewData["CurrentFilter"] = search;
             var contestants = _competitionService.GetContestantsInCompetitionInstance(competitionInstanceId);
             var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
             var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                contestants = contestants.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
             var model = new ContestantsInCompetitionInstanceDTO
             {
                 Competition = competition,
