@@ -12,6 +12,6 @@ namespace Timataka.Core.Models.Dto.AdminDTO
         public CompetitionInstance CompetitionInstance { get; set; }
         public Event Event { get; set; }
         public Heat Heat { get; set; }
-        public IEnumerable<ContestantsInHeatViewModel> Contestants { get; set; }
+        public IEnumerable<ContestantInHeatViewModel> Contestants { get; set; }
     }
 }

@@ -375,8 +375,7 @@ namespace Timataka.Web.Controllers
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
-                contestants = contestants.Where(u => u.FirstName.ToUpper().Contains(searchToUpper) 
-                    || u.LastName.ToUpper().Contains(searchToUpper) 
+                contestants = contestants.Where(u => u.Name.ToUpper().Contains(searchToUpper) 
                     || u.Ssn.ToUpper().Contains(searchToUpper));
             }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 
 namespace Timataka.Core.Services
@@ -19,9 +20,10 @@ namespace Timataka.Core.Services
         Task ReorderHeatsAsync(int eventId);
         
         //Contestants In Heat
-        IEnumerable<ContestantsInHeatViewModel> GetContestantsInHeat(int id);
+        IEnumerable<ContestantInHeatViewModel> GetContestantsInHeat(int id);
         IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id);
         ContestantInHeat GetContestantInHeatById(int heatId, string userId);
+        Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId);
 
         void EditContestantInHeat(ContestantInHeat h);
         Task EditAsyncContestantInHeat(ContestantInHeat h);

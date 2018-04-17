@@ -16,5 +16,7 @@ namespace Timataka.Core.Services
         string GetCountryNameById(int id);
         IEnumerable<UserViewModel> GetAdminUsers();
         IEnumerable<UserViewModel> GetNonAdminUsers();
+        Task<UserViewModel> GetUserByIdAsync(string userId);
+        string GetNationalityById(int nationality);
     }
 }
