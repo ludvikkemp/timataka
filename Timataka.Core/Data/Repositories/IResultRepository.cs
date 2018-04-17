@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.HomeViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -21,5 +22,7 @@ namespace Timataka.Core.Data.Repositories
 
         Boolean Remove(Result r);
         Task<Boolean> RemoveAsync(Result r);
+
+        IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId);
     }
 }

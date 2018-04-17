@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.HomeViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -61,6 +62,20 @@ namespace Timataka.Core.Data.Repositories
         public Task<bool> RemoveAsync(Result r)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId)
+        {
+            var results = (from r in _db.Results
+                               join u in _db.Users on r.UserId equals u.Id
+                               join h in _db.Heats on r.HeatId equals h.Id
+                               where h.EventId == eventId
+                               select new ResultViewModel
+                               {
+                                   Club = r.Club,
+                                   Country = r.Contry
+                               }).ToList();
+            return results;
         }
 
         protected virtual void Dispose(bool disposing)
