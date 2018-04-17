@@ -20,18 +20,25 @@ namespace Timataka.Web.Controllers
         private readonly IDeviceService _deviceService;
         private readonly IEventService _eventService;
         private readonly IMarkerService _markerService;
+        private readonly IAdminService _adminService;
+        private readonly IHeatService _heatService;
 
         public CompetitionInstanceController(ICompetitionService competitionService, 
-                                             IAccountService accountService,
-                                             IDeviceService deviceService,
-                                             IEventService eventService,
-                                             IMarkerService markerService)
+            IAccountService accountService,
+            IDeviceService deviceService,
+            IEventService eventService,
+            IMarkerService markerService,
+            IAdminService adminService,
+            IHeatService heatService
+        )
         {
             _competitionService = competitionService;
             _accountService = accountService;
             _deviceService = deviceService;
             _eventService = eventService;
             _markerService = markerService;
+            _adminService = adminService;
+            _heatService = heatService;
         }
 
         #region CompetitionInstance
@@ -247,11 +254,19 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Contestants")]
-        public async Task<IActionResult> Contestants(int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> Contestants(string search, int competitionInstanceId, int competitionId)
         {
+            ViewData["CurrentFilter"] = search;
             var contestants = _competitionService.GetContestantsInCompetitionInstance(competitionInstanceId);
             var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
             var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                contestants = contestants.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
             var model = new ContestantsInCompetitionInstanceDTO
             {
                 Competition = competition,
@@ -261,6 +276,33 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/EditContestant/{userId}")]
+        public async Task<IActionResult> EditContestant(string userId, int competitionInstanceId, int competitionId)
+        {
+            var user = _adminService.GetUsers().SingleOrDefault(u => u.Id == userId);
+            var events = _eventService.GetEventsByCompetitionInstanceIdAndUserId(competitionInstanceId, userId);
+            
+
+            if (user != null)
+            {
+                var nationality = _adminService.GetCountryNameById((int) user.NationalityId);
+                var model = new EditContestantDto
+                {
+                    ContestantName = user.FirstName + " " + user.Middlename + " " + user.LastName,
+                    DateOfBirth = user.DateOfBirth,
+                    NationId = user.NationalityId,
+                    Phone = user.Phone,
+                    Nationality = nationality,
+                    //TODO: Ná í events:
+                    Events = null
+                };
+                return View();
+            }
+
+            return RedirectToAction("Contestants","CompetitionInstance");
+        }
 
         #endregion
 

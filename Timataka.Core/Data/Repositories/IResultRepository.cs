@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -14,8 +15,8 @@ namespace Timataka.Core.Data.Repositories
 
         IEnumerable<Result> Get();
 
-        Result GetById(int id);
-        Task<Result> GetByIdAsync(int id);
+        Result GetByUserIdAndHeatId(string userId, int heatId);
+        Task<Result> GetByUserIdAndHeatIdAsync(string userId, int heatId);
 
         Boolean Edit(Result r);
         Task<Boolean> EditAsync(Result r);

@@ -21,5 +21,6 @@ namespace Timataka.Core.Data.Repositories
         IEnumerable<EventViewModel> GetEventsForInstance(int Id);
         Task<EventViewModel> GetEventByIdAsync(int id);
         IEnumerable<EventDropDownListViewModel> GetDropDownList();
+        IEnumerable<ContestantInEventViewModel> GetEventByInstanceAndContestantId(int competitionInstanceId, string userId);
     }
 }

@@ -17,5 +17,7 @@ namespace Timataka.Core.Models.ViewModels.AdminViewModels
         public bool Deleted { get; set; }
         public string Role { get; set; }
         public bool SuperAdmin { get; set; }
+        public int Country { get; set; }
+        public int Nationality { get; set; }
     }
 }

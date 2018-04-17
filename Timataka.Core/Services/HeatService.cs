@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 
@@ -14,10 +15,13 @@ namespace Timataka.Core.Services
     public class HeatService : IHeatService
     {
         private readonly IHeatRepository _repo;
+        private readonly IResultService _resultService;
 
-        public HeatService(IHeatRepository repo)
+        public HeatService(IHeatRepository repo, 
+            IResultService resultService)
         {
             _repo = repo;
+            _resultService = resultService;
         }
 
         public HeatService()
@@ -128,8 +132,12 @@ namespace Timataka.Core.Services
 
         public async Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId)
         {
+            
             var x = GetContestantInHeatById(heatId, userId);
             var h = await GetHeatByIdAsync(heatId);
+            var r = _resultService.GetResult(userId, heatId);
+            //var c = _chipService.GetChipsInHeatsForUserInHeat(userId, heatId).SingleOrDefault();
+            //var e = _eventService.GetEventById(h.EventId);
             var result = new ContestantInEventViewModel
             {
                 Bib = x.Bib,
@@ -137,7 +145,14 @@ namespace Timataka.Core.Services
                 HeatNumber = h.HeatNumber,
                 Modified = x.Modified,
                 Team = x.Team,
+                Notes = r.Notes,
+                Status = r.Status,
+                ChipCode = "",
+                EventId = h.EventId,
+                EventName = "",
+                HeatsInEvent = GetHeatsForEvent(h.EventId)
             };
+            
             return result;
 
         }
@@ -161,29 +176,47 @@ namespace Timataka.Core.Services
         public void EditContestantInHeat(ContestantInHeat h)
         {
             _repo.EditContestantInHeat(h);
+            //TODO: Update result for contestant
         }
 
         public async Task EditAsyncContestantInHeat(ContestantInHeat h)
         {
             await _repo.EditAsyncContestantInHeat(h);
+            //TODO: Update result for contestant
         }
 
         public void RemoveContestantInHeat(ContestantInHeat h)
         {
+            var r = _resultService.GetResult(h.UserId, h.HeatId);
+            _resultService.RemoveAsync(r);
             _repo.RemoveContestantInHeat(h);
         }
         public async Task RemoveAsyncContestantInHeat(ContestantInHeat h)
         {
+            var r = _resultService.GetResult(h.UserId, h.HeatId);
+            await _resultService.RemoveAsync(r);
             await _repo.RemoveAsyncContestantInHeat(h);
         }
 
         public void AddContestantInHeat(ContestantInHeat h)
         {
             _repo.InsertContestantInHeat(h);
+            var result = new CreateResultViewModel
+            {
+                UserId = h.UserId,
+                HeatId = h.HeatId,
+            };
+            _resultService.AddAsync(result);
         }
         public async Task AddAsyncContestantInHeat(ContestantInHeat h)
         {
             await _repo.InsertAsyncContestantInHeat(h);
+            var result = new CreateResultViewModel
+            {
+                UserId = h.UserId,
+                HeatId = h.HeatId,
+            };
+            await _resultService.AddAsync(result);
         }
 
     }
