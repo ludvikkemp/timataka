@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
+using Timataka.Core.Models.ViewModels.AdminViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -19,14 +20,14 @@ namespace Timataka.Core.Services
             _adminService = adminService;
         }
 
-        public void Add(CreateResultViewModel model)
+        public async Task AddAsync(CreateResultViewModel model)
         {
-            var u = _adminService.GetUserById(model.UserId);
+            var u = await _adminService.GetUserByIdAsync(model.UserId);
             var c = _adminService.GetCountryNameById(u.Country);
             var n = _adminService.GetNationalityById(u.Nationality);
             var r = new Result
             {
-                UserId = u.Id,
+                UserId = model.UserId,
                 HeatId = model.HeatId,
                 Club = "", //TODO
                 Country = c,
@@ -39,7 +40,7 @@ namespace Timataka.Core.Services
                 Notes = "",
                 Status = 0
             };
-            _repo.Add(r);
+            await _repo.AddAsync(r);
         }
 
         public Result GetResult(string userId, int heatId)

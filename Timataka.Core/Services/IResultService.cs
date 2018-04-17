@@ -9,7 +9,7 @@ namespace Timataka.Core.Services
 {
     public interface IResultService
     {
-        void Add(CreateResultViewModel model);
+        Task AddAsync(CreateResultViewModel model);
         Result GetResult(string userId, int heatId);
     }
 }

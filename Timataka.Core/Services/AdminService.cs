@@ -87,9 +87,9 @@ namespace Timataka.Core.Services
             return nonAdmins;
         }
 
-        public UserViewModel GetUserById(string userId)
+        public async Task<UserViewModel> GetUserByIdAsync(string userId)
         {
-            var user = _repo.GetUserById(userId);
+            UserViewModel user = await _repo.GetUserByIdAsync(userId);
             return user;
         }
     }

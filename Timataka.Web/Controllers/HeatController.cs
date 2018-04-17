@@ -27,7 +27,6 @@ namespace Timataka.Web.Controllers
         private readonly IEventService _eventService;
         private readonly IResultService _resultService;
 
-
         public HeatController(IHeatService heatService,
             IAdminService adminService,
             IMarkerService markerService,
@@ -170,7 +169,6 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddContestant(AddContestantToEventViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId)
         {
-            //TODO: SKOÐA HVERJU VIEWIÐ ER AÐ SKILA!!!
             if (ModelState.IsValid)
             {
                 try
@@ -190,11 +188,6 @@ namespace Timataka.Web.Controllers
                 {
                     return new BadRequestResult();
                 }
-                _resultService.Add(new CreateResultViewModel
-                {
-                    UserId = model.UserId,
-                    HeatId = model.ContestantInEvent.HeatId
-                });
                 return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
             }
             return View(model);
@@ -210,7 +203,7 @@ namespace Timataka.Web.Controllers
             var e = await _heatService.GetContestantInEventViewModelAsync(userId, heatId);
             events.Append(e);
             var r = _resultService.GetResult(userId, heatId);
-            var u = _adminService.GetUserById(userId);
+            var u = await _adminService.GetUserByIdAsync(userId);
             var model = new EditContestantInCompetitionViewModel
             {
                 Name = r.Name,

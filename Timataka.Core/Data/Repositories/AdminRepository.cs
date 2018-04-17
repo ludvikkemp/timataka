@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Dto.AdminDTO;
@@ -11,6 +12,7 @@ namespace Timataka.Core.Data.Repositories
 {
     public class AdminRepository : IAdminRepository
     {
+        private bool _disposed = false;
         private readonly ApplicationDbContext _db;
 
         public AdminRepository(ApplicationDbContext db)
@@ -145,30 +147,48 @@ namespace Timataka.Core.Data.Repositories
             return nonAdmins;
         }
 
-        public UserViewModel GetUserById(string userId)
+        public async Task<UserViewModel> GetUserByIdAsync(string userId)
         {
-            return (from u in _db.Users
-                    where u.Id == userId
-                    select new UserViewModel
-                    {
-                        Id = u.Id,
-                        DateOfBirth = u.DateOfBirth,
-                        Deleted = u.Deleted,
-                        FirstName = u.FirstName,
-                        Gender = u.Gender,
-                        LastName = u.LastName,
-                        Phone = u.Phone,
-                        Username = u.UserName,
-                        Ssn = u.Ssn,
-                        Country = (int)u.CountryId,
-                        Nationality = (int)u.NationalityId
-                   }).SingleOrDefault();
+           var user = await (from u in _db.Users
+                            where u.Id == userId
+                            select new UserViewModel
+                            {
+                                Id = u.Id,
+                                DateOfBirth = u.DateOfBirth,
+                                Deleted = u.Deleted,
+                                FirstName = u.FirstName,
+                                Gender = u.Gender,
+                                LastName = u.LastName,
+                                Phone = u.Phone,
+                                Username = u.UserName,
+                                Ssn = u.Ssn
+                            }).SingleOrDefaultAsync();
+            return user;
         }
 
         public string GetNationalityById(int id)
         {
             var nationality = (from c in _db.Countries where c.Id == id select c.Nationality).ToString();
             return nationality;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    _db.Dispose();
+                }
+            }
+
+            this._disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

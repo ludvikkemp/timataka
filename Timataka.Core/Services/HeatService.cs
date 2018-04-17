@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 
@@ -14,10 +15,12 @@ namespace Timataka.Core.Services
     public class HeatService : IHeatService
     {
         private readonly IHeatRepository _repo;
+        private readonly IResultService _resultService;
 
-        public HeatService(IHeatRepository repo)
+        public HeatService(IHeatRepository repo, IResultService resultService)
         {
             _repo = repo;
+            _resultService = resultService;
         }
 
         public HeatService()
@@ -161,11 +164,13 @@ namespace Timataka.Core.Services
         public void EditContestantInHeat(ContestantInHeat h)
         {
             _repo.EditContestantInHeat(h);
+            //TODO: Update result for contestant
         }
 
         public async Task EditAsyncContestantInHeat(ContestantInHeat h)
         {
             await _repo.EditAsyncContestantInHeat(h);
+            //TODO: Update result for contestant
         }
 
         public void RemoveContestantInHeat(ContestantInHeat h)
@@ -184,6 +189,12 @@ namespace Timataka.Core.Services
         public async Task AddAsyncContestantInHeat(ContestantInHeat h)
         {
             await _repo.InsertAsyncContestantInHeat(h);
+            var result = new CreateResultViewModel
+            {
+                UserId = h.UserId,
+                HeatId = h.HeatId,
+            };
+            await _resultService.AddAsync(result);
         }
 
     }
