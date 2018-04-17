@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.ChipViewModels;
-using Timataka.Core.Models.ViewModels.ClubViewModels;
 using Timataka.Core.Services;
 
 namespace Timataka.Web.Controllers
@@ -15,14 +12,11 @@ namespace Timataka.Web.Controllers
     public class ChipController : Controller
     {
         private readonly IChipService _chipService;
-        private readonly UserManager<ApplicationUser> _userManager;
 
         public ChipController(
-            IChipService chipService, 
-            UserManager<ApplicationUser> userManager)
+            IChipService chipService)
         {
             _chipService = chipService;
-            _userManager = userManager;
         }
 
         //GET: /Admin/Chip/Create
@@ -42,10 +36,10 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> Create(CreateChipViewModel model)
         {
             if (ModelState.IsValid)
-            {
-                var user = await _userManager.GetUserAsync(User); 
-                var codeExists = await _chipService.GetChipByCodeAsync(model.Code);
-                if (codeExists == null)
+            { 
+                var code = await _chipService.GetChipByCodeAsync(model.Code);
+                var number = await _chipService.GetChipByNumberAsync(model.Number);
+                if (code == null && number == null)
                 {
                     var chip = new Chip
                     {
@@ -54,72 +48,90 @@ namespace Timataka.Web.Controllers
                         LastCompetitionInstanceId = null,
                         LastSeen = DateTime.Now,
                         Number = model.Number,
-                        LastUserId = user.Id
+                        LastUserId = null
                     };
                     await _chipService.AddChipAsync(chip);
                     return RedirectToAction("Chips", "Admin");
                 }
-
                 return Json("Code Already Exists");
             }
             return View(model);
         }
 
-        //GET: /Admin/Chip/Edit/{chipId}
+        //GET: /Admin/Chip/Edit/{chipCode}
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Edit/{chipId}")]
-        public IActionResult Edit(int chipId)
+        [Route("/Admin/Chip/Edit/{chipCode}")]
+        public async Task<IActionResult> Edit(string chipCode)
         {
-            //TODO
-
-            return View();
-        }
-
-        //POST: /Admin/Chip/Edit/{chipId}
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Edit/{chipId}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int chipId, ChipViewModel model)
-        {
-            //TODO
-
+            var chip = await _chipService.GetChipByCodeAsync(chipCode);
+            if (chip == null)
+            {
+                return NotFound();
+            }
+            var model = new EditChipViewModel
+            {
+                Code = chip.Code,
+                Number = chip.Number,
+                Active = chip.Active
+            };
             return View(model);
         }
 
-        //GET: /Admin/Chip/Details{chipId}
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Details/{chipId}")]
-        public IActionResult Details(int chipId)
-        {
-            //TODO
-
-            return View();
-        }
-
-        //GET: /Admin/Chip/Delete{chipId}
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Delete/{chipId}")]
-        public IActionResult Delete(int? chipId)
-        {
-            //TODO
-
-            return View();
-        }
-
-        //POST: /Admin/Chip/Delete/{chipId}
+        //POST: /Admin/Chip/Edit/{chipCode}
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Chip/Delete/{chipId}")]
-        public async Task<IActionResult> Delete(int id)
+        [Route("/Admin/Chip/Edit/{chipCode}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string chipCode, EditChipViewModel model)
         {
-            //TODO
-
-            return RedirectToAction("Chips", "Admin");
+            if (ModelState.IsValid)
+            {
+                var chip = await _chipService.GetChipByCodeAsync(chipCode);
+                var number = await _chipService.GetChipByNumberAsync(model.Number);
+                if (number != null)
+                {
+                    return Json("Chip with this number already exists");
+                }
+                chip.Number = model.Number;
+                chip.Active = model.Active;
+                var success = await _chipService.EditChipAsync(chip);
+                if (success)
+                {
+                    return RedirectToAction("Chips", "Admin");
+                }
+            }
+            return View(model);
         }
 
+        //GET: /Admin/Chip/ScanChips/
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Chip/ScanChips")]
+        public IActionResult ScanChips()
+        {
+            return View();
+        }
+
+        //GET: /Admin/Chip/ScanChips/
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Chip/ScanChips")]
+        public async Task<IActionResult> ScanChips(ScanChipViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var chip = await _chipService.GetChipByCodeAsync(model.Code);
+                if (chip == null) return Json("Chip with this code does not exist");
+
+                chip.LastUserId = null;
+                chip.LastCompetitionInstanceId = null;
+                var success = await _chipService.EditChipAsync(chip);
+
+                if (success) return RedirectToAction("ScanChips","Chip");
+            }
+
+            return View(model);
+        }
     }
 }
