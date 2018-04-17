@@ -194,5 +194,10 @@ namespace Timataka.Core.Services
                           }).ToList();
             return result;
         }
+
+        public IEnumerable<ContestantInEventViewModel> GetEventsByCompetitionInstanceIdAndUserId(int competitionInstanceId, string userId)
+        {
+            return _repo.GetEventByInstanceAndContestantId(competitionInstanceId, userId);
+        }
     }
 }
