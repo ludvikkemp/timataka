@@ -283,6 +283,7 @@ namespace Timataka.Web.Controllers
         {
             var user = _adminService.GetUsers().SingleOrDefault(u => u.Id == userId);
 
+            var h = _competitionService.GetHeatsForUserInCompetition(userId, competitionInstanceId);
             //TODO: ForLoopHERE:
 
             if (user != null)
