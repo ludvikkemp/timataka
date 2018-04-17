@@ -108,7 +108,19 @@ namespace Timataka.Core.Data.Repositories
                                where h.EventId == eventId
                                select new ResultViewModel
                                {
-                                   Club = r.Club
+                                   Club = r.Club,
+                                   Country = r.Country,
+                                   Created = r.Created,
+                                   FinalTime = r.FinalTime,
+                                   Gender = r.Gender,
+                                   HeatId = r.HeatId,
+                                   HeatNumber = h.HeatNumber,
+                                   Modified = r.Modified,
+                                   Name = r.Name,
+                                   Nationality = r.Nationality,
+                                   Notes = r.Notes,
+                                   Status = r.Status,
+                                   UserId = r.UserId
                                }).ToList();
             return results;
         }
