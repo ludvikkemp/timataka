@@ -26,7 +26,7 @@
                     <div class="form-group">
                         <label asp-for="@e.Status"></label>
                         <select name="Status" class="form-control">
-                            @if (e.Status == ResultStatus.Valid)
+                            @if (e.Status == Status.Valid)
                             {
                                 <option selected value="0">Valid</option>
                                 <option value="1">Did Not Start</option>

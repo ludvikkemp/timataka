@@ -292,6 +292,7 @@ namespace Timataka.Web.Controllers
                 {
                     CompetitionName = competiton.Name,
                     CompetitionInstanceName = competitionInstance.Name,
+                    UserId = user.Id,
                     FirstName = user.FirstName,
                     MiddleName = user.MiddleName,
                     LastName = user.LastName,
@@ -308,9 +309,31 @@ namespace Timataka.Web.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/EditContestant/{userId}/Event{eventId}")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/EditContestant/{userId}/Event/{eventId}")]
         public async Task<IActionResult> EditContestantInEvent(string userId, int competitionInstanceId, int competitionId, int eventId)
         {
+            var user = await _adminService.GetUserByIdAsync(userId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var competiton = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var heats = _heatService.GetHeatsForEvent(eventId);
+
+            var nationName = _adminService.GetCountryNameById((int)user.Nationality);
+            var model = new EditContestantInEventDto
+            {
+                CompetitionName = competiton.Name,
+                CompetitionInstanceName = competitionInstance.Name,
+                EventName = _event.Name,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
+                NationId = user.Nationality,
+                Nationality = nationName,
+                Phone = user.Phone,
+                
+                HeatsInEvent = heats
+            };
             return View();
         }
 

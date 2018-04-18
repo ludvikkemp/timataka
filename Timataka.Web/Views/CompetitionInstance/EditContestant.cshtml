@@ -86,11 +86,12 @@
                                                             @item.Gender
                                                         </td>
                                                         <td>
-                                                            <a asp-controller="" asp-action=""
+                                                            <a asp-controller="CompetitionInstance" asp-action="EditContestantInEvent"
+                                                               asp-route-userId="@ViewContext.RouteData.Values["userId"]"
                                                                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                                asp-route-competitionInstanceId="@item.CompetitionInstanceId"
                                                                asp-route-eventId="@item.Id"
-                                                               class="btn btn-warning-outline btn-sm">Edit</a>
+                                                               class="btn btn-warning-outline btn-sm">Edit Event</a>
                                                         </td>
                                                     </tr>
                                                 }
