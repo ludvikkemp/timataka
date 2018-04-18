@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 
@@ -29,6 +30,7 @@ namespace Timataka.Core.Data.Repositories
         //CompetitionInstance
 
         void InsertInstance(CompetitionInstance c);
+        EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId);
         Task InsertInstanceAsync(CompetitionInstance c);
 
         IEnumerable<CompetitionInstance> GetInstances();
