@@ -317,7 +317,7 @@ namespace Timataka.Web.Controllers
             var competiton = await _competitionService.GetCompetitionByIdAsync(competitionId);
             var _event = await _eventService.GetEventByIdAsync(eventId);
             var heats = _heatService.GetHeatsForEvent(eventId);
-
+            var dto = _competitionService.GetEditContestantChipHeatResultDtoFor(userId, eventId, competitionInstanceId);
             var nationName = _adminService.GetCountryNameById((int)user.Nationality);
             var model = new EditContestantInEventDto
             {
@@ -331,10 +331,18 @@ namespace Timataka.Web.Controllers
                 NationId = user.Nationality,
                 Nationality = nationName,
                 Phone = user.Phone,
-                
+                HeatNumber = dto.HeatNumber,
+                Bib = dto.Bib,
+                ChipCode = dto.ChipCode,
+                HeatId = dto.HeatId,
+                ResultModified = dto.ResultModified,
+                ContestantInHeatModified = dto.ContestantInHeatModified,
+                Notes = dto.Notes,
+                Status = dto.Status,
+                Team = dto.Team,
                 HeatsInEvent = heats
             };
-            return View();
+            return View(model);
         }
 
         #endregion

@@ -250,6 +250,8 @@ namespace Timataka.Core.Data.Repositories
 
         public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId)
         {
+            //TODO: Skilar fleiri en einu elementi!
+
             var results = (from e in _context.Events
                            where e.Id == eventId
                            join h in _context.Heats on e.Id equals h.EventId
@@ -268,7 +270,7 @@ namespace Timataka.Core.Data.Repositories
                                Notes = r.Notes,
                                Status = r.Status,
                                Team = contestant.Team
-                           }).SingleOrDefault();
+                           }).Distinct().SingleOrDefault();
             return results;
         }
 
