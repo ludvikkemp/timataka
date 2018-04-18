@@ -103,7 +103,7 @@ namespace Timataka.Core.Data.Repositories
         public IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId)
         {
             var results = (from r in _db.Results
-                               join u in _db.Users on r.UserId equals u.Id
+                               //join u in _db.Users on r.UserId equals u.Id
                                join h in _db.Heats on r.HeatId equals h.Id
                                where h.EventId == eventId
                                select new ResultViewModel
