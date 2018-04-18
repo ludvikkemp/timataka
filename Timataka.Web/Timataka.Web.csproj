@@ -18,4 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Timataka.Core\Timataka.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Contestant\" />
+  </ItemGroup>
 </Project>
