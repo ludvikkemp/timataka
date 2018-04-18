@@ -21,6 +21,7 @@ namespace Timataka.Tests
         private readonly ApplicationDbContext _context;
         private readonly IHeatService _service;
         private readonly IHeatRepository _repo;
+        private readonly IResultService _resultService;
 
 
         public HeatServiceTests()
@@ -31,7 +32,7 @@ namespace Timataka.Tests
             var server = new TestServer(builder);
             _context = server.Host.Services.GetService(typeof(ApplicationDbContext)) as ApplicationDbContext;
             _repo = new HeatRepository(_context);
-            _service = new HeatService(_repo);
+            _service = new HeatService(_repo, _resultService);
             Setup();
         }
 
