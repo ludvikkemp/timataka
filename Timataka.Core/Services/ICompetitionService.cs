@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 
@@ -27,6 +28,7 @@ namespace Timataka.Core.Services
         CompetitionsInstanceViewModel GetCompetitionInstanceViewModelById(int id);
         IEnumerable<ContestantsInCompetitionViewModel> GetContestantsInCompetitionInstance(int id);
         IEnumerable<Heat> GetHeatsForUserInCompetition(string userId, int competitionInstanceId);
+        EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId);
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);

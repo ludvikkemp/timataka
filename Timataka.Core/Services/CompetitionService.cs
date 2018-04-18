@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
+using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 
@@ -26,7 +27,8 @@ namespace Timataka.Core.Services
 
         public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId)
         {
-            
+
+            return _repo.GetEditContestantChipHeatResultDtoFor(userId, eventId, competitionInstanceId);
         }
 
         #region Competition
