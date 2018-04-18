@@ -282,9 +282,7 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> EditContestant(string userId, int competitionInstanceId, int competitionId)
         {
             var user = _adminService.GetUsers().SingleOrDefault(u => u.Id == userId);
-
-            var h = _competitionService.GetHeatsForUserInCompetition(userId, competitionInstanceId);
-            //TODO: ForLoopHERE:
+            var events = _eventService.GetEventsByCompetitionInstanceIdAndUserId(competitionInstanceId, userId);
 
             if (user != null)
             {

@@ -16,18 +16,12 @@ namespace Timataka.Core.Services
     {
         private readonly IHeatRepository _repo;
         private readonly IResultService _resultService;
-        //private readonly IChipService _chipService;
-        //private readonly IEventService _eventService;
 
         public HeatService(IHeatRepository repo, 
-            IResultService resultService/*, 
-            IChipService chipService,
-            IEventService eventService*/)
+            IResultService resultService)
         {
             _repo = repo;
             _resultService = resultService;
-            //_chipService = chipService;
-            //_eventService = eventService;
         }
 
         public HeatService()
@@ -137,26 +131,28 @@ namespace Timataka.Core.Services
         }
 
         public async Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId)
-        {
-            /*var x = GetContestantInHeatById(heatId, userId);
+        {         
+            var x = GetContestantInHeatById(heatId, userId);
             var h = await GetHeatByIdAsync(heatId);
             var r = _resultService.GetResult(userId, heatId);
-            var c = _chipService.GetChipsInHeatsForUserInHeat(userId, heatId).SingleOrDefault();
-            var e = _eventService.GetEventById(h.EventId);*/
+            //var c = _chipService.GetChipsInHeatsForUserInHeat(userId, heatId).SingleOrDefault();
+            //var e = _eventService.GetEventById(h.EventId);
+
             var result = new ContestantInEventViewModel
             {
-                /*Bib = x.Bib,
+                Bib = x.Bib,
                 HeatId = heatId,
                 HeatNumber = h.HeatNumber,
                 Modified = x.Modified,
                 Team = x.Team,
                 Notes = r.Notes,
                 Status = r.Status,
-                ChipCode = c.ChipCode,
+                ChipCode = "",
                 EventId = h.EventId,
-                EventName = e.Name,
-                HeatsInEvent = GetHeatsForEvent(h.EventId)*/
+                EventName = "",
+                HeatsInEvent = GetHeatsForEvent(h.EventId)
             };
+            
             return result;
 
         }
