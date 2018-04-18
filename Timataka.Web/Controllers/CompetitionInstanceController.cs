@@ -283,11 +283,15 @@ namespace Timataka.Web.Controllers
         {
             var user = await _adminService.GetUserByIdAsync(userId);
             var events = _eventService.GetEventsByCompetitionInstanceIdAndUserId(competitionInstanceId, userId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var competiton = await _competitionService.GetCompetitionByIdAsync(competitionId);
             if (user != null)
             {
                 var nationName = _adminService.GetCountryNameById((int) user.Nationality);
                 var model = new EditContestantDto
                 {
+                    CompetitionName = competiton.Name,
+                    CompetitionInstanceName = competitionInstance.Name,
                     FirstName = user.FirstName,
                     MiddleName = user.MiddleName,
                     LastName = user.LastName,
