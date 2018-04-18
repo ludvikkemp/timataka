@@ -155,13 +155,14 @@ namespace Timataka.Core.Data.Repositories
         {
             var events = (from e in _context.Events
                             join h in _context.Heats on e.Id equals h.EventId
-                            join u in _context.ContestantsInHeats on userId equals u.UserId
-                            where e.CompetitionInstanceId == competitionInstanceId
+                            join c in _context.ContestantsInHeats on h.Id equals c.HeatId
+                            join u in _context.Users on c.UserId equals u.Id
+                            where e.CompetitionInstanceId == competitionInstanceId && u.Id == userId
                             select e).ToList();
             
             return events;
         }
-
+        
         public Event GetById(int id)
         {
             return _context.Events.SingleOrDefault(x => x.Id == id);
