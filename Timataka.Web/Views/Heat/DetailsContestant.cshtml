@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.ContestantsInHeatViewModel
+﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.ContestantInHeatViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -8,7 +8,7 @@
 <section class="content">
 
     <div>
-        <h4>@Model.FirstName @Model.MiddleName @Model.LastName</h4>
+        <h4>@Model.Name</h4>
         <hr />
         <dl>
             <dt>
@@ -24,18 +24,6 @@
                 @Html.DisplayFor(model => model.DateOfBirth)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.DeletedHeat)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.DeletedHeat)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.DeletedUser)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.DeletedUser)
-            </dd>
-            <dt>
                 @Html.DisplayNameFor(model => model.Gender)
             </dt>
             <dd>
@@ -46,12 +34,6 @@
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.HeatNumber)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Modified)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Modified)
             </dd>
             <dt>
                 @Html.DisplayNameFor(model => model.Phone)
@@ -78,28 +60,10 @@
                 @Html.DisplayFor(model => model.UserId)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.NationalityId)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.NationalityId)
-            </dd>
-            <dt>
                 @Html.DisplayNameFor(model => model.HeatId)
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.HeatId)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.EventId)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.EventId)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.CountryId)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.CountryId)
             </dd>
         </dl>
     </div>
