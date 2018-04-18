@@ -37,6 +37,10 @@ namespace Timataka.Core.Services
 
         public async Task<Category> AddAsync(CategoryViewModel c)
         {
+            if (c.CountryId == 0)
+            {
+                c.CountryId = null;
+            }
             var newCategory = new Category
             {
                 Name = c.Name,
@@ -52,11 +56,15 @@ namespace Timataka.Core.Services
 
         public async Task<Category> EditCategoryAsync(CategoryViewModel m)
         {
+            if (m.CountryId == 0)
+            {
+                m.CountryId = null;
+            }
             var c = await _repo.GetByIdAsync(m.Id);
             c.Name = m.Name;
             c.AgeFrom = m.AgeFrom;
             c.AgeTo = m.AgeTo;
-            c.CountryId = m.CountryId;
+            c.CountryId = (int)m.CountryId;
             c.EventId = m.EventId;
             c.Gender = m.Gender;
             await _repo.EditAsync(c);
@@ -67,12 +75,20 @@ namespace Timataka.Core.Services
         {
             var c = _repo.GetById(id);
             var e = await _eventRepo.GetEventByIdAsync(c.EventId);
-            var n = _accountRepo.GetCountryById(c.CountryId);
+            string n;
+            if (c.CountryId == null)
+            {
+                n = "All";
+            }
+            else
+            {
+                n = _accountRepo.GetCountryById((int)c.CountryId).Name;
+            }
             
             var model = new CategoryViewModel
             {
                 EventName = e.Name,
-                CountryName = n.Name,
+                CountryName = n,
                 Name = c.Name,
                 AgeFrom = c.AgeFrom,
                 AgeTo = c.AgeTo,
