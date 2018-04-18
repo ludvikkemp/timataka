@@ -24,6 +24,11 @@ namespace Timataka.Core.Services
             //For unit tests
         }
 
+        public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId)
+        {
+            
+        }
+
         #region Competition
 
         /// <summary>
