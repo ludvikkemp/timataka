@@ -31,7 +31,7 @@ namespace Timataka.Tests
             var server = new TestServer(builder);
             _context = server.Host.Services.GetService(typeof(ApplicationDbContext)) as ApplicationDbContext;
             _repo = new HeatRepository(_context);
-            _service = new HeatService(_repo);
+            _service = new HeatService(_repo, null);
             Setup();
         }
 

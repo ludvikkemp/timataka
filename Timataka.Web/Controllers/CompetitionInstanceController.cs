@@ -281,26 +281,33 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/EditContestant/{userId}")]
         public async Task<IActionResult> EditContestant(string userId, int competitionInstanceId, int competitionId)
         {
-            var user = _adminService.GetUsers().SingleOrDefault(u => u.Id == userId);
+            var user = await _adminService.GetUserByIdAsync(userId);
             var events = _eventService.GetEventsByCompetitionInstanceIdAndUserId(competitionInstanceId, userId);
-
             if (user != null)
             {
-                var nationality = _adminService.GetCountryNameById((int) user.NationalityId);
+                var nationName = _adminService.GetCountryNameById((int) user.Nationality);
                 var model = new EditContestantDto
                 {
                     FirstName = user.FirstName,
-                    MiddleName = user.Middlename,
+                    MiddleName = user.MiddleName,
                     LastName = user.LastName,
                     DateOfBirth = user.DateOfBirth,
-                    NationId = user.NationalityId,
+                    NationId = user.Nationality,
                     Phone = user.Phone,
-                    Nationality = nationality,
+                    Nationality = nationName,
                     Events = events
                 };
                 return View(model);
             }
             return RedirectToAction("Contestants","CompetitionInstance");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/EditContestant/{userId}/Event{eventId}")]
+        public async Task<IActionResult> EditContestantInEvent(string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            return View();
         }
 
         #endregion

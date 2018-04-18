@@ -46,6 +46,7 @@ namespace Timataka.Core.Data.Repositories
         Task RemoveInstanceAsync(CompetitionInstance c);
 
         IEnumerable<ContestantsInCompetitionViewModel> GetAllContestantsInCompetitionInstance(int id);
+        IEnumerable<Heat> GetHeatsForContestantInCompetitioninstance(string userId, int competitionInstanceId);
 
         //ManagesCompetition
 

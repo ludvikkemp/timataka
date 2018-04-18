@@ -234,6 +234,18 @@ namespace Timataka.Core.Services
             return _repo.GetAllContestantsInCompetitionInstance(id);
         }
 
+        /// <summary>
+        /// Function to get heats for contestant in competition instance.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="competitionInstanceId"></param>
+        /// <returns></returns>
+        public IEnumerable<Heat> GetHeatsForUserInCompetition(string userId, int competitionInstanceId)
+        {
+            return _repo.GetHeatsForContestantInCompetitioninstance(userId, competitionInstanceId);
+        }
+
+
         #endregion
 
         #region User roles for competitions
@@ -320,6 +332,7 @@ namespace Timataka.Core.Services
                                     select x).SingleOrDefault();
             return r.Role;
         }
+
 
 
         #endregion

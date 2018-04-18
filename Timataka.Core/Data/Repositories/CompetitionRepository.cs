@@ -211,7 +211,7 @@ namespace Timataka.Core.Data.Repositories
                          Name = u.FirstName + " " + u.LastName,
                          Gender = u.Gender,
                          EventList = null
-                     }).ToList().Distinct();
+                     }).Distinct().ToList();
             foreach (var item in r)
             {
                 item.EventList = GetEventListForContestatnt(item.Id, id);
@@ -232,6 +232,18 @@ namespace Timataka.Core.Data.Repositories
                          Id = e.Id,
                          Name = e.Name
                      }).ToList();
+            return r;
+        }
+
+        public IEnumerable<Heat> GetHeatsForContestantInCompetitioninstance(string userId, int competitionInstanceId)
+        {
+            var r = (from e in _context.Events
+                     where e.CompetitionInstanceId == competitionInstanceId
+                     join h in _context.Heats on e.Id equals h.EventId
+                     join c in _context.ContestantsInHeats on h.Id equals c.HeatId
+                     join u in _context.Users on c.UserId equals u.Id
+                     where u.Id == userId
+                     select h).ToList();
             return r;
         }
 

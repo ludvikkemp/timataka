@@ -6,101 +6,67 @@
 }
 
 <section class="content">
-    <h4>Edit Instance</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="">
-                @foreach (var e in @Model.Events)
-                {
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="@e.Bib" class="control-label"></label>
-                        <input asp-for="@e.Bib" class="form-control" />
-                        <span asp-validation-for="@e.Bib" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@e.ChipCode" class="control-label"></label>
-                        <input asp-for="@e.ChipCode" class="form-control" />
-                        <span asp-validation-for="@e.ChipCode" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@e.Status"></label>
-                        <select name="Status" class="form-control">
-                            @if (e.Status == ResultStatus.Valid)
-                            {
-                                <option selected value="0">Valid</option>
-                                <option value="1">Did Not Start</option>
-                                <option value="2">Did Not Finish</option>
-                                <option value="3">Disqualified</option>
-                            }
+    <div class="title-block" style="margin-bottom:15px;">
 
-                            @if (e.Status == ResultStatus.DNS)
-                            {
-                                <option value="0">Valid</option>
-                                <option selected value="1">Did Not Start</option>
-                                <option value="2">Did Not Finish</option>
-                                <option value="3">Disqualified</option>
-                            }
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <section class="section">
+                        <div class="col-md-12">
+                            <div class="card" style="margin-top:15px;">
+                                <section class="example">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Events</th>
+                                                <th>Date</th>
+                                                <th>Gender</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach (var item in Model.Events)
+                                            {
+                                                if (item.Deleted == false)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <a asp-controller="Admin" asp-action="Event"
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                               asp-route-competitionInstanceId="@item.CompetitionInstanceId"
+                                                               asp-route-eventId="@item.Id">@item.Name</a>
+                                                        </td>
+                                                        <td>
+                                                            @item.DateFrom
+                                                        </td>
+                                                        <td>
+                                                            @item.Gender
+                                                        </td>
+                                                        <td>
+                                                            <a asp-controller="" asp-action=""
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                               asp-route-competitionInstanceId="@item.CompetitionInstanceId"
+                                                               asp-route-eventId="@item.Id"
+                                                               class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
 
-                            @if (e.Status == ResultStatus.DNF)
-                            {
-                                <option value="0">Valid</option>
-                                <option value="1">Did Not Start</option>
-                                <option selected value="2">Did Not Finish</option>
-                                <option value="3">Disqualified</option>
-                            }
-
-                            @if (e.Status == ResultStatus.DQ)
-                            {
-                                <option selected value="0">Valid</option>
-                                <option value="1">Did Not Start</option>
-                                <option value="2">Did Not Finish</option>
-                                <option selected value="3">Disqualified</option>
-                            }
-
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="@e.HeatId"></label>
-                        <select name="@e.HeatId" class="form-control">
-                            <option value="@e.HeatId"> @e.HeatNumber </option>
-                            @foreach (var item in @e.HeatsInEvent)
-                            {
-                                if (item.Id != @e.HeatId)
-                                {
-                                    <option value="@item.Id">Heat Number @item.HeatNumber</option>
-                                }
-                            }
-
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="@e.Notes" class="control-label"></label>
-                        <input asp-for="@e.Notes" class="form-control" />
-                        <span asp-validation-for="@e.Notes" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
-                    </div>
-                }
-
-            </form>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
-
-    </div>
-
-    <div>
-        <a asp-controller="CompetitionInstance" 
-           asp-action="Contestants" 
-           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-           class="btn btn-secondary-outline btn-sm">Back to </a>
     </div>
 </section>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

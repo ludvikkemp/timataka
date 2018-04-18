@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 
@@ -150,16 +151,15 @@ namespace Timataka.Core.Data.Repositories
             return model;
         }
 
-        public IEnumerable<ContestantInEventViewModel> GetEventByInstanceAndContestantId(int competitionInstanceId, string userId)
+        public IEnumerable<Event> GetEventByInstanceAndContestantId(int competitionInstanceId, string userId)
         {
-            /*
-            var _events = (from e in _context.Events
-                join u in _context.Users
-                    on userId equals u.Id
-                where e.CompetitionInstanceId == competitionInstanceId
-                select e).ToList();
-                */
-            return null;
+            var events = (from e in _context.Events
+                            join h in _context.Heats on e.Id equals h.EventId
+                            join u in _context.ContestantsInHeats on userId equals u.UserId
+                            where e.CompetitionInstanceId == competitionInstanceId
+                            select e).ToList();
+            
+            return events;
         }
 
         public Event GetById(int id)
