@@ -15,6 +15,8 @@ namespace Timataka.Core.Models.Dto.CompetitionInstanceDTO
         public string Nationality { get; set; }
         public int? NationId { get; set; }
         public string Phone { get; set; }
+        public string CompetitionName { get; set; }
+        public string CompetitionInstanceName { get; set; }
     }
 
 }
