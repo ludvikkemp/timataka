@@ -211,7 +211,7 @@ namespace Timataka.Core.Data.Repositories
                          Name = u.FirstName + " " + u.LastName,
                          Gender = u.Gender,
                          EventList = null
-                     }).ToList().Distinct();
+                     }).Distinct().ToList();
             foreach (var item in r)
             {
                 item.EventList = GetEventListForContestatnt(item.Id, id);
