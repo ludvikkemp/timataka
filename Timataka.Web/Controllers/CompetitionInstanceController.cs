@@ -295,7 +295,7 @@ namespace Timataka.Web.Controllers
                     Phone = user.Phone,
                     Nationality = nationality,
                     //TODO: Ná í events:
-                    Events = null
+                    Events = events
                 };
                 return View();
             }
