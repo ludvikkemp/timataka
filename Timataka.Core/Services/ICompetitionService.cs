@@ -26,6 +26,7 @@ namespace Timataka.Core.Services
         Task<CompetitionInstance> GetCompetitionInstanceByIdAsync(int id);
         CompetitionsInstanceViewModel GetCompetitionInstanceViewModelById(int id);
         IEnumerable<ContestantsInCompetitionViewModel> GetContestantsInCompetitionInstance(int id);
+        IEnumerable<Heat> GetHeatsForUserInCompetition(string userId, int competitionInstanceId);
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);

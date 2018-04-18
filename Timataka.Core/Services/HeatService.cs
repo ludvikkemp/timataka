@@ -131,13 +131,13 @@ namespace Timataka.Core.Services
         }
 
         public async Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId)
-        {
-            
+        {         
             var x = GetContestantInHeatById(heatId, userId);
             var h = await GetHeatByIdAsync(heatId);
             var r = _resultService.GetResult(userId, heatId);
             //var c = _chipService.GetChipsInHeatsForUserInHeat(userId, heatId).SingleOrDefault();
             //var e = _eventService.GetEventById(h.EventId);
+
             var result = new ContestantInEventViewModel
             {
                 Bib = x.Bib,

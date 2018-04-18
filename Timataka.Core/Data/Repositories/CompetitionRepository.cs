@@ -235,6 +235,18 @@ namespace Timataka.Core.Data.Repositories
             return r;
         }
 
+        public IEnumerable<Heat> GetHeatsForContestantInCompetitioninstance(string userId, int competitionInstanceId)
+        {
+            var r = (from e in _context.Events
+                     where e.CompetitionInstanceId == competitionInstanceId
+                     join h in _context.Heats on e.Id equals h.EventId
+                     join c in _context.ContestantsInHeats on h.Id equals c.HeatId
+                     join u in _context.Users on c.UserId equals u.Id
+                     where u.Id == userId
+                     select h).ToList();
+            return r;
+        }
+
         //ManagesCompetition
 
         public void AddRole(ManagesCompetition m)

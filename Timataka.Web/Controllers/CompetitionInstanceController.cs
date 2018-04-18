@@ -283,7 +283,6 @@ namespace Timataka.Web.Controllers
         {
             var user = _adminService.GetUsers().SingleOrDefault(u => u.Id == userId);
             var events = _eventService.GetEventsByCompetitionInstanceIdAndUserId(competitionInstanceId, userId);
-            
 
             if (user != null)
             {
@@ -296,7 +295,7 @@ namespace Timataka.Web.Controllers
                     Phone = user.Phone,
                     Nationality = nationality,
                     //TODO: Ná í events:
-                    Events = null
+                    Events = events
                 };
                 return View();
             }
