@@ -152,31 +152,12 @@ namespace Timataka.Core.Data.Repositories
 
         public IEnumerable<ContestantInEventViewModel> GetEventByInstanceAndContestantId(int competitionInstanceId, string userId)
         {
-            //var _events = (from e in _context.Events join u in _context)
             /*
-            var models = (from e in _context.Events
-                          join u in _context.Users on userId equals u.Id
-                          where e.CompetitionInstanceId == competitionInstanceId
-                select new ContestantInEventViewModel
-                {
-                    EventId = e.Id,
-                    EventName = e.Name,
-                    HeatNumber = (from he in _context.Heats
-                                   where he.EventId == e.Id
-                                    select he.HeatNumber).FirstOrDefault(),
-                    HeatId = (from hi in _context.Heats
-                                where hi.EventId == e.Id
-                                select hi.Id).FirstOrDefault(),
-                    Bib = (from r in _context.Results where ),
-                    ChipCode = "",
-                    Modified = ,
-                    Notes = "",
-                    Status = ResultStatus.DNF,
-                    Team = "",
-                    HeatsInEvent = (from h in _context.Heats
-                                    where h.EventId == e.Id
-                                    select h).ToList()
-                }).ToList();
+            var _events = (from e in _context.Events
+                join u in _context.Users
+                    on userId equals u.Id
+                where e.CompetitionInstanceId == competitionInstanceId
+                select e).ToList();
                 */
             return null;
         }

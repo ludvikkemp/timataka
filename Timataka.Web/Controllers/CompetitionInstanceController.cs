@@ -283,24 +283,23 @@ namespace Timataka.Web.Controllers
         {
             var user = _adminService.GetUsers().SingleOrDefault(u => u.Id == userId);
             var events = _eventService.GetEventsByCompetitionInstanceIdAndUserId(competitionInstanceId, userId);
-            
 
             if (user != null)
             {
                 var nationality = _adminService.GetCountryNameById((int) user.NationalityId);
                 var model = new EditContestantDto
                 {
-                    ContestantName = user.FirstName + " " + user.Middlename + " " + user.LastName,
+                    FirstName = user.FirstName,
+                    MiddleName = user.Middlename,
+                    LastName = user.LastName,
                     DateOfBirth = user.DateOfBirth,
                     NationId = user.NationalityId,
                     Phone = user.Phone,
                     Nationality = nationality,
-                    //TODO: Ná í events:
-                    Events = null
+                    Events = events
                 };
-                return View();
+                return View(model);
             }
-
             return RedirectToAction("Contestants","CompetitionInstance");
         }
 
