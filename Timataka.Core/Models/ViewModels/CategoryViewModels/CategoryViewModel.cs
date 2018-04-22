@@ -16,7 +16,7 @@ namespace Timataka.Core.Models.ViewModels.CategoryViewModels
         public string EventName { get; set; }
 
         [Display(Name = "Country")]
-        public int CountryId { get; set; }
+        public int? CountryId { get; set; }
         public string CountryName { get; set; }
 
         public int AgeFrom { get; set; }

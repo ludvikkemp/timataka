@@ -252,6 +252,59 @@ namespace Timataka.Core.Services
             return _repo.GetHeatsForContestantInCompetitioninstance(userId, competitionInstanceId);
         }
 
+        /// <summary>
+        /// Get latest results for all competitions in the sport specified
+        /// </summary>
+        /// <param name="sportId"></param>
+        /// <returns></returns>
+        public IEnumerable<LatestResultsDTO> GetLatestResults(int sportId)
+        {
+            IEnumerable<LatestResultsDTO> result;
+            if (sportId == 0)
+            {
+                result = (
+                    from i in _repo.GetInstances()
+                    where i.Status == Status.Ongoing || i.Status == Status.Finished || i.Status == Status.Closed
+                    join c in _repo.Get() on i.CompetitionId equals c.Id
+                    orderby i.DateFrom descending
+                    select new LatestResultsDTO
+                    {
+                        CompetitionInstanceId = i.Id,
+                        CompetitionId = c.Id,
+                        Date = i.DateFrom,
+                        Name = c.Name,
+                        Live = IsLive(i.Status)
+                    }).ToList().Take(5);
+            }
+            else
+            {
+                result = (
+                    from i in _repo.GetInstances()
+                    where i.Status == Status.Ongoing || i.Status == Status.Finished || i.Status == Status.Closed
+                    join c in _repo.Get() on i.CompetitionId equals c.Id
+                    where (from e in _repo.GetEventsForInstance(i.Id)
+                            where e.SportId == sportId
+                            select e).Count() > 0
+                    orderby i.DateFrom descending
+                    select new LatestResultsDTO
+                    {
+                        CompetitionInstanceId = i.Id,
+                        Date = i.DateFrom,
+                        Name = c.Name,
+                        Live = IsLive(i.Status)
+                    }).ToList().Take(5);
+            }
+            
+            return result;
+                                 
+        }
+
+        public Boolean IsLive(Status s)
+        {
+            if (s == Status.Ongoing)
+                return true;
+            return false;
+        }
 
         #endregion
 

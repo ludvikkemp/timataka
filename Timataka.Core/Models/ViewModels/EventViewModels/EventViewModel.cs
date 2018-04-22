@@ -13,6 +13,7 @@ namespace Timataka.Core.Models.ViewModels.EventViewModels
         public string Name { get; set; }
         [Display(Name = "Discipline")]
         public int DisciplineId { get; set; }
+        public int SportId { get; set; }
         public int CompetitionInstanceId { get; set; }
         [Required]
         public DateTime DateFrom { get; set; }
