@@ -34,7 +34,8 @@ namespace Timataka.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = _competitionService.GetLatestResults(0);
+            return View(model);
         }
 
         [HttpGet]

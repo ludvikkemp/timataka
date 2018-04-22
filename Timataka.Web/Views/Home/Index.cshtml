@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Timataka.Core.Models.Dto.CompetitionInstanceDTO.LatestResultsDTO>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -12,9 +14,21 @@
         </div>
         <!-- /.col-lg-8 -->
         <div class="col-lg-4">
-            <h1>Business Name or Tagline</h1>
-            <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!</p>
-            <a class="btn btn-primary btn-lg" href="#">Call to Action!</a>
+            <h1>Latest Results </h1>
+            <p>
+                @foreach (var item in Model)
+                {
+                    <div>
+                        @item.Date.ToShortDateString() -
+                            <a asp-controller="Home" asp-action="Instance"
+                               asp-route-competitionId="@item.CompetitionId"
+                               asp-route-instanceId="@item.CompetitionInstanceId">@item.Name</a>
+                    </div>
+                }
+                
+            </p>
+            <a class="btn btn-primary btn-lg" 
+               asp-controller="Home" asp-action="Results">All Results</a>
         </div>
         <!-- /.col-md-4 -->
     </div>
@@ -31,8 +45,11 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h2 class="card-title">Card One</h2>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
+                    <h2 class="card-title">Starfsemin</h2>
+                    <p class="card-text">
+                        Við sérhæfum okkur í hvers konar tímatöku með flögutímatökutækjum frá MyLaps og markmyndavélum frá FinishLynx.
+                        Við bjóðum einnig uppá tengjda þjónustu svo sem mótttöku skráninga, ráðgjöf og leigu á búnaði.
+                    </p>
                 </div>
                 <div class="card-footer">
                     <a href="#" class="btn btn-primary">More Info</a>
@@ -43,8 +60,11 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h2 class="card-title">Card Two</h2>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.</p>
+                    <h2 class="card-title">Tæknin</h2>
+                    <p class="card-text">
+                        Tímatökutækin lesa merki frá flögum sem festar eru á keppendur og gefa upplýsingar um tíma keppenda á þeim stað sem tækið er staðsett.
+                        Þetta ásamt sérsmíðaðri lausn okkar gerir mögulegt að birta úrslit í rauntíma.
+                    </p>
                 </div>
                 <div class="card-footer">
                     <a href="#" class="btn btn-primary">More Info</a>
@@ -55,8 +75,11 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h2 class="card-title">Card Three</h2>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
+                    <h2 class="card-title">Nákvæmni</h2>
+                    <p class="card-text">
+                        Við leggjum metnað okkar í að uppfylla allar þær kröfur sem gerðar eru til tímatökutækja í öllum greinum hverju sinni.
+                        Búnaðurinn sem við notum hefur verið í þróun í yfir 20 ár og er alþjóðlega viðurkenndur mælingabúnaður.
+                    </p>
                 </div>
                 <div class="card-footer">
                     <a href="#" class="btn btn-primary">More Info</a>

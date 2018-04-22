@@ -274,6 +274,22 @@ namespace Timataka.Core.Data.Repositories
             return results;
         }
 
+        public IEnumerable<EventViewModel> GetEventsForInstance(int id)
+        {
+            var result = (from e in _context.Events
+                          join d in _context.Disciplines on e.DisciplineId equals d.Id
+                          join s in _context.Sports on d.SportId equals s.Id
+                          where e.CompetitionInstanceId == id
+                          select new EventViewModel
+                          {
+                              Name = e.Name,
+                              DateFrom = e.DateFrom,
+                              CompetitionInstanceId = e.CompetitionInstanceId,
+                              SportId = s.Id
+                          }).ToList();
+            return result;
+        }
+
         //ManagesCompetition
 
         public void AddRole(ManagesCompetition m)
