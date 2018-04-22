@@ -270,8 +270,8 @@ namespace Timataka.Core.Data.Repositories
                                Notes = r.Notes,
                                Status = r.Status,
                                Team = contestant.Team
-                           }).Distinct().SingleOrDefault();
-            return results;
+                           }).ToList();
+            return results[0];
         }
 
         //ManagesCompetition

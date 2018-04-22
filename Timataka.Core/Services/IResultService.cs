@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
