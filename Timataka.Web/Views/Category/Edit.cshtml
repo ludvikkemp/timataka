@@ -63,14 +63,14 @@
                     <label asp-for="CountryId"></label>
                     <select name="CountryId" class="form-control">
                         <option value="@Model.CountryId" id="@Model.CountryId">@Model.CountryName</option>
+                        <option value=0 id=0>All</option>
                         @foreach (var item in ViewBag.Nations)
-    {
-        if (item.Text != Model.CountryName)
-        {
-                    <option value="@item.Value" id="@item.Value">@item.Text</option>
-}
-
-}
+                        {
+                            if (item.Text != Model.CountryName)
+                            {
+                                <option value="@item.Value" id="@item.Value">@item.Text</option>
+                            }
+                        }
                     </select>
                 </div>
                 <div class="form-group">
