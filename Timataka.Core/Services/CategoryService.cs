@@ -64,7 +64,7 @@ namespace Timataka.Core.Services
             c.Name = m.Name;
             c.AgeFrom = m.AgeFrom;
             c.AgeTo = m.AgeTo;
-            c.CountryId = (int)m.CountryId;
+            c.CountryId = m.CountryId;
             c.EventId = m.EventId;
             c.Gender = m.Gender;
             await _repo.EditAsync(c);
