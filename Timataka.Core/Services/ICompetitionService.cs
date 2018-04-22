@@ -30,6 +30,7 @@ namespace Timataka.Core.Services
         IEnumerable<Heat> GetHeatsForUserInCompetition(string userId, int competitionInstanceId);
         EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId);
         IEnumerable<LatestResultsDTO> GetLatestResults(int sportId);
+        IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId);
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);

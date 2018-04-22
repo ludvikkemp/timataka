@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Timataka.Core.Models.Dto.CompetitionInstanceDTO.LatestResultsDTO>
+﻿@model Timataka.Core.Models.ViewModels.HomeViewModels.HomePageViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -16,7 +16,7 @@
         <div class="col-lg-4">
             <h1>Latest Results </h1>
             <p>
-                @foreach (var item in Model)
+                @foreach (var item in Model.LatestResults)
                 {
                     <div>
                         @item.Date.ToShortDateString() -
@@ -27,8 +27,19 @@
                 }
                 
             </p>
-            <a class="btn btn-primary btn-lg" 
+            <a class="btn btn-primary"
                asp-controller="Home" asp-action="Results">All Results</a>
+            <h1>Upcoming events</h1>
+            <p>
+                @foreach (var item in Model.UpcomingEvents)
+                {
+                    <div>
+                        @item.Date.ToShortDateString() - @item.Name
+                    </div>
+
+                }
+            </p>
+            
         </div>
         <!-- /.col-md-4 -->
     </div>

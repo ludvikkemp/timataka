@@ -265,6 +265,7 @@ namespace Timataka.Core.Services
                 result = (
                     from i in _repo.GetInstances()
                     where i.Status == Status.Ongoing || i.Status == Status.Finished || i.Status == Status.Closed
+                    where i.Deleted == false
                     join c in _repo.Get() on i.CompetitionId equals c.Id
                     orderby i.DateFrom descending
                     select new LatestResultsDTO
@@ -281,6 +282,7 @@ namespace Timataka.Core.Services
                 result = (
                     from i in _repo.GetInstances()
                     where i.Status == Status.Ongoing || i.Status == Status.Finished || i.Status == Status.Closed
+                    where i.Deleted == false
                     join c in _repo.Get() on i.CompetitionId equals c.Id
                     where (from e in _repo.GetEventsForInstance(i.Id)
                             where e.SportId == sportId
@@ -304,6 +306,50 @@ namespace Timataka.Core.Services
             if (s == Status.Ongoing)
                 return true;
             return false;
+        }
+
+        public IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId)
+        {
+            IEnumerable<LatestResultsDTO> result;
+            if (sportId == 0)
+            {
+                result = (
+                    from i in _repo.GetInstances()
+                    where i.Status == Status.Pending || i.Status == Status.OpenForRegistration
+                    where i.Deleted == false
+                    join c in _repo.Get() on i.CompetitionId equals c.Id
+                    orderby i.DateFrom ascending
+                    select new LatestResultsDTO
+                    {
+                        CompetitionInstanceId = i.Id,
+                        CompetitionId = c.Id,
+                        Date = i.DateFrom,
+                        Name = c.Name,
+                        Live = IsLive(i.Status)
+                    }).ToList().Take(5);
+            }
+            else
+            {
+                result = (
+                    from i in _repo.GetInstances()
+                    where i.Status == Status.Pending || i.Status == Status.OpenForRegistration
+                    where i.Deleted == false
+                    join c in _repo.Get() on i.CompetitionId equals c.Id
+                    where (from e in _repo.GetEventsForInstance(i.Id)
+                           where e.SportId == sportId
+                           select e).Count() > 0
+                    orderby i.DateFrom ascending
+                    select new LatestResultsDTO
+                    {
+                        CompetitionInstanceId = i.Id,
+                        Date = i.DateFrom,
+                        Name = c.Name,
+                        Live = IsLive(i.Status)
+                    }).ToList().Take(5);
+            }
+
+            return result;
+
         }
 
         #endregion
