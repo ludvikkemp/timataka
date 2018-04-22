@@ -20,6 +20,6 @@ namespace Timataka.Core.Services
         Task<int> EditEventViewModelAsync(EventViewModel model);
         IEnumerable<EventDropDownListViewModel> GetEventDropDownList();
         IEnumerable<EventHeatViewModel> GetEventHeatListForCompetitionInstance(int id);
-        IEnumerable<ContestantInEventViewModel> GetEventsByCompetitionInstanceIdAndUserId(int competitionInstanceId, string userId);
+        IEnumerable<Event> GetEventsByCompetitionInstanceIdAndUserId(int competitionInstanceId, string userId);
     }
 }

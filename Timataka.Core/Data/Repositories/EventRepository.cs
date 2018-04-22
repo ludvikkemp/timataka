@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 
@@ -150,37 +151,18 @@ namespace Timataka.Core.Data.Repositories
             return model;
         }
 
-        public IEnumerable<ContestantInEventViewModel> GetEventByInstanceAndContestantId(int competitionInstanceId, string userId)
+        public IEnumerable<Event> GetEventByInstanceAndContestantId(int competitionInstanceId, string userId)
         {
-            //var _events = (from e in _context.Events join u in _context)
-            /*
-            var models = (from e in _context.Events
-                          join u in _context.Users on userId equals u.Id
-                          where e.CompetitionInstanceId == competitionInstanceId
-                select new ContestantInEventViewModel
-                {
-                    EventId = e.Id,
-                    EventName = e.Name,
-                    HeatNumber = (from he in _context.Heats
-                                   where he.EventId == e.Id
-                                    select he.HeatNumber).FirstOrDefault(),
-                    HeatId = (from hi in _context.Heats
-                                where hi.EventId == e.Id
-                                select hi.Id).FirstOrDefault(),
-                    Bib = (from r in _context.Results where ),
-                    ChipCode = "",
-                    Modified = ,
-                    Notes = "",
-                    Status = ResultStatus.DNF,
-                    Team = "",
-                    HeatsInEvent = (from h in _context.Heats
-                                    where h.EventId == e.Id
-                                    select h).ToList()
-                }).ToList();
-                */
-            return null;
+            var events = (from e in _context.Events
+                            join h in _context.Heats on e.Id equals h.EventId
+                            join c in _context.ContestantsInHeats on h.Id equals c.HeatId
+                            join u in _context.Users on c.UserId equals u.Id
+                            where e.CompetitionInstanceId == competitionInstanceId && u.Id == userId
+                            select e).ToList();
+            
+            return events;
         }
-
+        
         public Event GetById(int id)
         {
             return _context.Events.SingleOrDefault(x => x.Id == id);

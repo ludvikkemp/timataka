@@ -1,0 +1,105 @@
+﻿@using Timataka.Core.Models.Entities
+@model Timataka.Core.Models.Dto.CompetitionInstanceDTO.EditContestantInEventDto
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h4>Edit Instance</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="">
+
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Bib" class="control-label"></label>
+                    <input asp-for="Bib" class="form-control" />
+                    <span asp-validation-for="Bib" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ChipCode" class="control-label"></label>
+                    <input asp-for="ChipCode" class="form-control" />
+                    <span asp-validation-for="ChipCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Status"></label>
+                    <select name="Status" class="form-control">
+                        @if (@Model.Status == ResultStatus.Valid)
+                        {
+                            <option selected value="0">Valid</option>
+                            <option value="1">Did Not Start</option>
+                            <option value="2">Did Not Finish</option>
+                            <option value="3">Disqualified</option>
+                        }
+
+                        @if (@Model.Status == ResultStatus.DNS)
+                        {
+                            <option value="0">Valid</option>
+                            <option selected value="1">Did Not Start</option>
+                            <option value="2">Did Not Finish</option>
+                            <option value="3">Disqualified</option>
+                        }
+
+                        @if (@Model.Status == ResultStatus.DNF)
+                        {
+                            <option value="0">Valid</option>
+                            <option value="1">Did Not Start</option>
+                            <option selected value="2">Did Not Finish</option>
+                            <option value="3">Disqualified</option>
+                        }
+
+                        @if (@Model.Status == ResultStatus.DQ)
+                        {
+                            <option value="0">Valid</option>
+                            <option value="1">Did Not Start</option>
+                            <option value="2">Did Not Finish</option>
+                            <option selected value="3">Disqualified</option>
+                        }
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="HeatId"></label>
+                    <select name="HeatId" class="form-control">
+                        <option value="@Model.HeatId"> @Model.HeatNumber </option>
+                        @foreach (var item in @Model.HeatsInEvent)
+                        {
+                            if (item.Id != @Model.HeatId)
+                            {
+                                <option value="@item.Id">Heat Number @item.HeatNumber</option>
+                            }
+                        }
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Notes" class="control-label"></label>
+                    <input asp-for="Notes" class="form-control" />
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+    <div>
+        <a asp-controller="CompetitionInstance"
+           asp-action="Contestants"
+           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+           class="btn btn-secondary-outline btn-sm">Back to</a>
+    </div>
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

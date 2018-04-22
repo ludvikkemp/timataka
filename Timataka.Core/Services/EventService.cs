@@ -65,11 +65,11 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Get a event by its Name
         /// </summary>
-        /// <param name="EventName"></param>
+        /// <param name="eventName"></param>
         /// <returns></returns>
-        public async Task<Event> GetEventByNameAsync(string EventName)
+        public async Task<Event> GetEventByNameAsync(string eventName)
         {
-            var e = await _repo.GetEventByNameAsync(EventName);
+            var e = await _repo.GetEventByNameAsync(eventName);
             return e;
         }
 
@@ -195,7 +195,7 @@ namespace Timataka.Core.Services
             return result;
         }
 
-        public IEnumerable<ContestantInEventViewModel> GetEventsByCompetitionInstanceIdAndUserId(int competitionInstanceId, string userId)
+        public IEnumerable<Event> GetEventsByCompetitionInstanceIdAndUserId(int competitionInstanceId, string userId)
         {
             return _repo.GetEventByInstanceAndContestantId(competitionInstanceId, userId);
         }

@@ -19,5 +19,6 @@ namespace Timataka.Core.Models.ViewModels.AdminViewModels
         public bool SuperAdmin { get; set; }
         public int Country { get; set; }
         public int Nationality { get; set; }
+        public string MiddleName { get; set; }  
     }
 }

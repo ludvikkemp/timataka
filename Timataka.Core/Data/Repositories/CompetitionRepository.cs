@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
@@ -211,7 +212,7 @@ namespace Timataka.Core.Data.Repositories
                          Name = u.FirstName + " " + u.LastName,
                          Gender = u.Gender,
                          EventList = null
-                     }).ToList().Distinct();
+                     }).Distinct().ToList();
             foreach (var item in r)
             {
                 item.EventList = GetEventListForContestatnt(item.Id, id);
@@ -245,6 +246,32 @@ namespace Timataka.Core.Data.Repositories
                      where u.Id == userId
                      select h).ToList();
             return r;
+        }
+
+        public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId)
+        {
+            //TODO: Skilar fleiri en einu elementi!
+
+            var results = (from e in _context.Events
+                           where e.Id == eventId
+                           join h in _context.Heats on e.Id equals h.EventId
+                           join contestant in _context.ContestantsInHeats on h.Id equals contestant.HeatId
+                           join u in _context.Users on userId equals u.Id
+                           join chips in _context.ChipsInHeats on h.Id equals chips.HeatId
+                           join r in _context.Results on u.Id equals r.UserId
+                           select new EditContestantChipHeatResultDto
+                           {
+                               HeatId = h.Id,
+                               ChipCode = chips.ChipCode,
+                               Bib = contestant.Bib,
+                               HeatNumber = h.HeatNumber,
+                               ResultModified = r.Modified,
+                               ContestantInHeatModified = contestant.Modified,
+                               Notes = r.Notes,
+                               Status = r.Status,
+                               Team = contestant.Team
+                           }).Distinct().SingleOrDefault();
+            return results;
         }
 
         //ManagesCompetition

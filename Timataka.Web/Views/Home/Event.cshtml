@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Timataka.Core.Models.ViewModels.HomeViewModels.ResultViewModel>
+
+@{
+    Layout = "_Layout";
+}
+<section class="content">
+    <div class="title-block" style="margin-bottom:15px;">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title">
+                    <a asp-controller="Home"
+                       asp-action="Competition"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@ViewBag.CompetitionName</a> /
+
+                    <a asp-controller="Home"
+                       asp-action="instance"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]">@ViewBag.CompetitionInstanceName</a> /
+
+                    @ViewBag.EventName
+                </span>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!--
+    <div class="row">
+        <div class="col-md-6">
+
+        SPURNING HVORT ÞAÐ EIGI AÐ BYRTA CATEGORIES
+            <a asp-controller="Admin"
+               asp-action="Categories"
+               asp-route-competitionId="ViewContext.RouteData.Values["competitionId"]"
+               asp-route-competitionInstanceId="ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-eventId="Model.Event.Id"
+               class="btn btn-primary btn-sm rounded-s">Categories</a>
+
+        </div>
+    </div>
+    -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Name</th>
+                                                <th>Club</th>
+                                                <th>Nationality</th>
+                                                <th>Heat Number</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.FinalTime
+                                                    </td>
+                                                    <td>
+                                                        @item.Name
+                                                    </td>
+                                                    <td>
+                                                        @item.Club
+                                                    </td>
+                                                    <td>
+                                                        @item.Nationality
+                                                    </td>
+                                                    <td>
+                                                        @item.HeatNumber
+                                                    </td>
+                                                    <td>
+                                                        @item.Status
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+

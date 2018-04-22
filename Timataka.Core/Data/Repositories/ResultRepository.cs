@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.HomeViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
+
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -96,6 +98,31 @@ namespace Timataka.Core.Data.Repositories
             }
             await _db.SaveChangesAsync();
             return result;
+        }
+
+        public IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId)
+        {
+            var results = (from r in _db.Results
+                               //join u in _db.Users on r.UserId equals u.Id
+                               join h in _db.Heats on r.HeatId equals h.Id
+                               where h.EventId == eventId
+                               select new ResultViewModel
+                               {
+                                   Club = r.Club,
+                                   Country = r.Country,
+                                   Created = r.Created,
+                                   FinalTime = r.FinalTime,
+                                   Gender = r.Gender,
+                                   HeatId = r.HeatId,
+                                   HeatNumber = h.HeatNumber,
+                                   Modified = r.Modified,
+                                   Name = r.Name,
+                                   Nationality = r.Nationality,
+                                   Notes = r.Notes,
+                                   Status = r.Status,
+                                   UserId = r.UserId
+                               }).ToList();
+            return results;
         }
 
         protected virtual void Dispose(bool disposing)

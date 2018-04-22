@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Timataka.Core.Models.Entities;
-using Timataka.Core.Models.ViewModels.ClubViewModels;
-using Timataka.Core.Models.ViewModels.ContestantViewModels;
-using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Core.Models.Dto.CompetitionInstanceDTO
 {
     public class EditContestantDto
     {
-        public IEnumerable<ContestantInEventViewModel> Events { get; set; }
-
-        public string ContestantName { get; set; }
+        public IEnumerable<Event> Events { get; set; }
+        public string UserId { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Nationality { get; set; }
         public int? NationId { get; set; }
         public string Phone { get; set; }
+        public string CompetitionName { get; set; }
+        public string CompetitionInstanceName { get; set; }
     }
 
 }
