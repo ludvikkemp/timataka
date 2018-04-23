@@ -72,5 +72,14 @@ namespace Timataka.Core.Services
         {
             await _repo.RemoveAsync(r);
         }
+
+        public Boolean Edit(Result r)
+        {
+            return _repo.Edit(r);
+        }
+        public async Task<Boolean> EditAsync(Result r)
+        {
+            return await _repo.EditAsync(r);
+        }
     }
 }

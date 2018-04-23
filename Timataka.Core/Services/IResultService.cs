@@ -3,6 +3,7 @@ using Timataka.Core.Models.ViewModels.HomeViewModels;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
+using System;
 
 namespace Timataka.Core.Services
 {
@@ -12,5 +13,7 @@ namespace Timataka.Core.Services
         Task AddAsync(CreateResultViewModel model);
         Result GetResult(string userId, int heatId);
         Task RemoveAsync(Result r);
+        Boolean Edit(Result r);
+        Task<Boolean> EditAsync(Result r);
     }
 }
