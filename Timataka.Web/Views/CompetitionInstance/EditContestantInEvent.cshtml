@@ -6,14 +6,37 @@
 }
 
 <section class="content">
-    <h4>Edit Instance</h4>
-    <hr />
+    <div class="title-block" style="margin-bottom: 15px;">
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title">
+                    <a asp-controller="Admin"
+                       asp-action="Competition"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@Model.CompetitionName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="CompetitionInstance"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.CompetitionInstanceName</a> /
+
+                    <a asp-controller="CompetitionInstance"
+                       asp-action="EditContestant"
+                       asp-route-userId="@ViewContext.RouteData.Values["userId"]"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.FirstName @Model.LastName Events</a> /
+
+                    @Model.EventName
+                </span>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-4">
+            
             <form asp-action="">
 
-
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
                 <div class="form-group">
                     <label asp-for="Bib" class="control-label"></label>
                     <input asp-for="Bib" class="form-control" />
@@ -65,7 +88,7 @@
                 <div class="form-group">
                     <label asp-for="HeatId"></label>
                     <select name="HeatId" class="form-control">
-                        <option value="@Model.HeatId"> @Model.HeatNumber </option>
+                        <option value="@Model.HeatId">Heat Number @Model.HeatNumber </option>
                         @foreach (var item in @Model.HeatsInEvent)
                         {
                             if (item.Id != @Model.HeatId)
@@ -78,8 +101,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label asp-for="Team" class="control-label"></label>
+                    <input asp-for="Team" class="form-control" />
+                    <span asp-validation-for="Team" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
                     <label asp-for="Notes" class="control-label"></label>
-                    <input asp-for="Notes" class="form-control" />
+                    <textarea asp-for="Notes" class="form-control"></textarea>
                     <span asp-validation-for="Notes" class="text-danger"></span>
                 </div>
 
@@ -88,8 +117,47 @@
                 </div>
 
             </form>
+            
         </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input disabled asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input disabled asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
 
+            <div class="form-group">
+                <label asp-for="MiddleName" class="control-label"></label>
+                <input disabled asp-for="MiddleName" class="form-control" />
+                <span asp-validation-for="MiddleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input disabled asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input disabled asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nationality" class="control-label"></label>
+                <input disabled asp-for="Nationality" class="form-control" />
+                <span asp-validation-for="Nationality" class="text-danger"></span>
+            </div>
+            <div>
+                <a asp-controller="Admin"
+                   asp-action="EditUser"
+                   asp-route-username="@Model.UserName"
+                   class="btn btn-primary">Edit User Info</a>
+            </div>
+        </div>
     </div>
 
     <div>
@@ -97,7 +165,7 @@
            asp-action="Contestants"
            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
            asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-           class="btn btn-secondary-outline btn-sm">Back to</a>
+           class="btn btn-secondary-outline btn-sm">Back to Contestants</a>
     </div>
 </section>
 @section Scripts {

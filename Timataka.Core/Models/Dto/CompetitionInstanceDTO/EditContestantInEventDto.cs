@@ -16,17 +16,16 @@ namespace Timataka.Core.Models.Dto.CompetitionInstanceDTO
         public string ChipCode { get; set; }
         public ResultStatus Status { get; set; }
         public int HeatNumber { get; set; }
+        [Display(Name = "Heat Number")]
         public int HeatId { get; set; }
         public string Notes { get; set; }
         public DateTime ResultModified { get; set; }
         public DateTime ContestantInHeatModified { get; set; }
         public string Team { get; set; }
-        [Required]
+        public string UserName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
-        [Required]
         public string LastName { get; set; }
-        [Required]
         public DateTime DateOfBirth { get; set; }
         public string Nationality { get; set; }
         public int? NationId { get; set; }
