@@ -100,7 +100,8 @@ namespace Timataka.Core.Data.Repositories
         {
             var categories = (from c in _db.Categories
                                join e in _db.Events on c.EventId equals e.Id
-                               join country in _db.Countries on c.CountryId equals country.Id
+                               join country in _db.Countries on c.CountryId equals country.Id into cc
+                               from country in cc.DefaultIfEmpty()
                                where c.EventId == eventId
                                select new CategoryViewModel
                                {
@@ -108,8 +109,8 @@ namespace Timataka.Core.Data.Repositories
                                    Id = c.Id,
                                    AgeFrom = c.AgeFrom,
                                    AgeTo = c.AgeTo,
-                                   CountryId = c.CountryId,
-                                   CountryName = country.Name,
+                                   CountryId = c.CountryId.GetValueOrDefault(0),
+                                   CountryName = country.Name ?? "All",
                                    Name = c.Name,
                                    EventName = e.Name,
                                    Gender = c.Gender
