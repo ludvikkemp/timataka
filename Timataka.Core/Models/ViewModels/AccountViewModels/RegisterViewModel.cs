@@ -40,6 +40,9 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
         [Display(Name = "Gender")]
         public string Gender { get; set; }
 
+        [Display(Name = "Pleace Write What Gender You Identify As")]
+        public string OtherGender { get; set; }
+
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone Number (Example: 354-5555555)")]
         public string Phone { get; set; }
@@ -55,7 +58,11 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
         public DateTime DateOfBirth { get; set; }
 
         [Required]
-        [Display(Name = "Country")]
-        public int Country { get; set; }
+        [Display(Name = "Country of Residence")]
+        public int CountryId { get; set; }
+
+        [Required]
+        [Display(Name = "Birthplace (Country of which you are competing for)")]
+        public int NationId { get; set; }
     }
 }
