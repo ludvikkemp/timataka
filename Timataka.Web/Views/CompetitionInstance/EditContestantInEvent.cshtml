@@ -40,7 +40,7 @@
                   asp-route-userId="@ViewContext.RouteData.Values["userId"]">
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                
+                <input type="hidden" asp-for="OldHeatId" />
                 <div class="form-group">
                     <label asp-for="Bib" class="control-label"></label>
                     <input asp-for="Bib" class="form-control" />

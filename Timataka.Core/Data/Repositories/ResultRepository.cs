@@ -39,22 +39,14 @@ namespace Timataka.Core.Data.Repositories
 
         public bool Edit(Result r)
         {
-            var result = false;
-            if (_db.Results.Update(r) != null)
-            {
-                result = true;
-            }
+            bool result = _db.Results.Update(r) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> EditAsync(Result r)
         {
-            var result = false;
-            if (_db.Results.Update(r) != null)
-            {
-                result = true;
-            }
+            bool result = _db.Results.Update(r) != null;
             await _db.SaveChangesAsync();
             return result;
         }

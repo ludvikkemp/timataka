@@ -113,6 +113,14 @@ namespace Timataka.Core.Data.Repositories
             return contestants;
         }
 
+        public ContestantInHeat GetContestantInHeatByUserId(string userId, int heatId)
+        {
+            var result = (from cih in _db.ContestantsInHeats
+                where cih.UserId == userId && cih.HeatId == heatId
+                select cih).FirstOrDefault();
+            return result;
+        }
+
         public IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id)
         {
             var users = (from c in _db.ContestantsInHeats

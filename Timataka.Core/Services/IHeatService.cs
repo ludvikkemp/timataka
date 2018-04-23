@@ -33,6 +33,6 @@ namespace Timataka.Core.Services
 
         void AddContestantInHeat(ContestantInHeat h);
         Task AddAsyncContestantInHeat(ContestantInHeat h);
-        Task<ContestantInHeat> GetContestantsInHeatByUserIdAndEventId(string userId, int eventId);
+        ContestantInHeat GetContestantsInHeatByUserIdAndHeatId(string userId, int heatId);
     }
 }

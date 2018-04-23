@@ -18,6 +18,7 @@ namespace Timataka.Core.Models.Dto.CompetitionInstanceDTO
         public int HeatNumber { get; set; }
         [Display(Name = "Heat Number")]
         public int HeatId { get; set; }
+        public int OldHeatId { get; set; }
         public string Notes { get; set; }
         public DateTime ResultModified { get; set; }
         public DateTime ContestantInHeatModified { get; set; }

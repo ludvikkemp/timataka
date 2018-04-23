@@ -73,6 +73,11 @@ namespace Timataka.Core.Services
             await _repo.RemoveAsync(r);
         }
 
+        public async Task EditAsync(Result r)
+        {
+            await _repo.EditAsync(r);
+        }
+
         public int NumberOfTimes()
         {
             return _repo.NumberOfTimes();
