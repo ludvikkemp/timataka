@@ -22,6 +22,7 @@ namespace Timataka.Web.Controllers
         private readonly IMarkerService _markerService;
         private readonly IAdminService _adminService;
         private readonly IHeatService _heatService;
+        private readonly IResultService _resultService;
 
         public CompetitionInstanceController(ICompetitionService competitionService, 
             IAccountService accountService,
@@ -29,7 +30,8 @@ namespace Timataka.Web.Controllers
             IEventService eventService,
             IMarkerService markerService,
             IAdminService adminService,
-            IHeatService heatService
+            IHeatService heatService,
+            IResultService resultService
         )
         {
             _competitionService = competitionService;
@@ -39,6 +41,7 @@ namespace Timataka.Web.Controllers
             _markerService = markerService;
             _adminService = adminService;
             _heatService = heatService;
+            _resultService = resultService;
         }
 
         #region CompetitionInstance
@@ -334,7 +337,7 @@ namespace Timataka.Web.Controllers
                 Phone = user.Phone,
                 HeatNumber = dto.HeatNumber,
                 Bib = dto.Bib,
-                ChipCode = dto.ChipCode,
+                ChipNumber = dto.ChipNumber,
                 HeatId = dto.HeatId,
                 ContestantInHeatModified = dto.ContestantInHeatModified,
                 Notes = dto.Notes,
@@ -342,6 +345,21 @@ namespace Timataka.Web.Controllers
                 Team = dto.Team,
                 HeatsInEvent = heats
             };
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/EditContestant/{userId}/Event/{eventId}")]
+        public async Task<IActionResult> EditContestantInEvent(EditContestantInEventDto model, string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            if (ModelState.IsValid)
+            {
+                var heat = _heatService.GetContestantsInHeatByUserIdAndEventId(userId, eventId);
+                //var result = _resultService.GetResult(userId, model.)
+
+                return RedirectToAction("Contestants", "CompetitionInstance", new {competitionId, competitionInstanceId});
+            }
             return View(model);
         }
 
