@@ -13,7 +13,7 @@ namespace Timataka.Core.Models.Dto.CompetitionInstanceDTO
         public string EventName { get; set; }
         [Required]
         public int Bib { get; set; }
-        public string ChipCode { get; set; }
+        public int ChipNumber { get; set; }
         public ResultStatus Status { get; set; }
         public int HeatNumber { get; set; }
         [Display(Name = "Heat Number")]
