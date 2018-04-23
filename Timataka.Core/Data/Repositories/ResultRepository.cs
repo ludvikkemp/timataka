@@ -105,7 +105,8 @@ namespace Timataka.Core.Data.Repositories
             var results = (from r in _db.Results
                                //join u in _db.Users on r.UserId equals u.Id
                                join h in _db.Heats on r.HeatId equals h.Id
-                               where h.EventId == eventId
+                               join u in _db.ChipsInHeats on r.UserId equals u.UserId
+                               where h.EventId == eventId && u.HeatId == h.Id
                                select new ResultViewModel
                                {
                                    Club = r.Club,
@@ -120,9 +121,28 @@ namespace Timataka.Core.Data.Repositories
                                    Nationality = r.Nationality,
                                    Notes = r.Notes,
                                    Status = r.Status,
-                                   UserId = r.UserId
+                                   UserId = r.UserId,
+                                   ChipCode = u.ChipCode
                                }).ToList();
+
+            foreach(var result in results)
+            {
+                result.FinalTime = CalculateFinalTime(result.HeatId, result.ChipCode).ToString();
+            }
+
             return results;
+        }
+
+        private int CalculateFinalTime(int heatId, string chipCode)
+        {
+            var startTime = (from t in _db.Times
+                             where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 1
+                             select t.RawTime).SingleOrDefault();
+            var endtime = (from t in _db.Times
+                           where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 2
+                           select t.RawTime).SingleOrDefault();
+
+            return endtime - startTime;
         }
 
         protected virtual void Dispose(bool disposing)
