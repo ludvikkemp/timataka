@@ -33,7 +33,11 @@
     <div class="row">
         <div class="col-md-4">
             
-            <form asp-action="">
+            <form asp-action="EditContestantInEvent" 
+                  asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                  asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                  asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                  asp-route-userId="@ViewContext.RouteData.Values["userId"]">
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 
@@ -43,9 +47,9 @@
                     <span asp-validation-for="Bib" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="ChipCode" class="control-label"></label>
-                    <input asp-for="ChipCode" class="form-control" />
-                    <span asp-validation-for="ChipCode" class="text-danger"></span>
+                    <label asp-for="ChipNumber" class="control-label"></label>
+                    <input asp-for="ChipNumber" class="form-control" />
+                    <span asp-validation-for="ChipNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Status"></label>
