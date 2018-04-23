@@ -72,5 +72,10 @@ namespace Timataka.Core.Services
         {
             await _repo.RemoveAsync(r);
         }
+
+        public int NumberOfTimes()
+        {
+            return _repo.NumberOfTimes();
+        }
     }
 }

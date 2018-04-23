@@ -12,5 +12,6 @@ namespace Timataka.Core.Services
         Task AddAsync(CreateResultViewModel model);
         Result GetResult(string userId, int heatId);
         Task RemoveAsync(Result r);
+        int NumberOfTimes();
     }
 }

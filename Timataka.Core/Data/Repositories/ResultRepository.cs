@@ -15,10 +15,12 @@ namespace Timataka.Core.Data.Repositories
     {
         private bool _disposed = false;
         private readonly ApplicationDbContext _db;
+        private readonly TimingDbContext _tdb;
 
-        public ResultRepository(ApplicationDbContext db)
+        public ResultRepository(ApplicationDbContext db, TimingDbContext tdb)
         {
             _db = db;
+            _tdb = tdb;
         }
 
         public Result Add(Result r)
@@ -123,6 +125,12 @@ namespace Timataka.Core.Data.Repositories
                                    UserId = r.UserId
                                }).ToList();
             return results;
+        }
+
+        public int NumberOfTimes()
+        {
+
+            return _tdb.Results.ToList().Count();
         }
 
         protected virtual void Dispose(bool disposing)
