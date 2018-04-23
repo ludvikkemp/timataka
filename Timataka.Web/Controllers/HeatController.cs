@@ -281,6 +281,34 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/DetailsContestant")]
+        public async Task<IActionResult> DetailsContestant(int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
+        {
+            var entity = _heatService.GetContestantInHeatById(heatId, userId);
+
+            var contestant = await _adminService.GetUserByIdAsync(userId);
+
+            var heat = await _heatService.GetHeatByIdAsync(heatId);
+
+            var model = new ContestantInHeatViewModel
+            {
+                Bib = entity.Bib,
+                HeatId = entity.HeatId,
+                Name = contestant.FirstName + " " + contestant.MiddleName + " " + contestant.LastName,
+                DateOfBirth = contestant.DateOfBirth,
+                Gender = contestant.Gender,
+                HeatNumber = heat.HeatNumber,
+                Phone = contestant.Phone,
+                Ssn = contestant.Ssn,
+                Team = entity.Team,
+                UserId = entity.UserId
+            };
+
+            return View(model);
+        }
+
         #region Markers
 
         [HttpGet]

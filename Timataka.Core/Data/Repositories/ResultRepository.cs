@@ -133,7 +133,7 @@ namespace Timataka.Core.Data.Repositories
             return results;
         }
 
-        private int CalculateFinalTime(int heatId, string chipCode)
+        public int CalculateFinalTime(int heatId, string chipCode)
         {
             var startTime = (from t in _db.Times
                              where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 1
