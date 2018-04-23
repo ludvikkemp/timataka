@@ -25,6 +25,7 @@ namespace Timataka.Core.Models.ViewModels.HomeViewModels
         public string Notes { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
+        public string ChipCode { get; set; }
         
     }
 }

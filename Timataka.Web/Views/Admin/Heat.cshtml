@@ -46,7 +46,7 @@
             </form>
         </div>
         <div class="col-md-7">
-            <a asp-controller="Heat" asp-action="AddContestant" asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Add Contestant </a>
+            <a asp-controller="Heat" asp-action="AddContestant" asp-route-heatId="@Model.Heat.Id" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-primary btn-sm rounded-s"> Add Contestant </a>
             <a asp-controller="Heat" asp-action="Markers" asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Markers </a>
             <a asp-controller="Heat" asp-action="Chips"
                asp-route-heatId="@Model.Heat.Id"
@@ -87,9 +87,9 @@
                                                         @item.Ssn
                                                     </td>
                                                     <td>
-                                                        <a asp-controller="Heat" asp-action="EditContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                        <a asp-controller="Heat" asp-action="DetailsContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-success-outline btn-sm">Details</a>
-                                                        <a asp-controller="Heat" asp-action="RemoveContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                        <a asp-controller="Heat" asp-action="EditContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        <a asp-controller="Heat" asp-action="DetailsContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-success-outline btn-sm">Details</a>
+                                                        <a asp-controller="Heat" asp-action="RemoveContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-danger-outline btn-sm">Delete</a>
                                                     </td>
                                                 </tr>
 
