@@ -219,5 +219,11 @@ namespace Timataka.Core.Services
             await _resultService.AddAsync(result);
         }
 
+        public Task<ContestantInHeat> GetContestantsInHeatByUserIdAndEventId(string userId, int eventId)
+        {
+            //var heats = GetAllHeats().SingleOrDefault(x => x.EventId == eventId && x.);
+            //var ch = GetContestantInHeatById()
+            return null;
+        }
     }
 }
