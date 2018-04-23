@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
+using Timataka.Core.Models.Dto.HeatDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
@@ -258,11 +259,14 @@ namespace Timataka.Core.Data.Repositories
                            join r in _context.Results on u.Id equals r.UserId
                            join chips in _context.ChipsInHeats on h.Id equals chips.HeatId into x
                                from z in x.DefaultIfEmpty()
+                           join c in _context.Chips on z.ChipCode equals c.Code into y
+                               from s in y.DefaultIfEmpty()
                                where e.Id == eventId && contestant.UserId == userId && (z.UserId == userId || z.UserId == null) && r.HeatId == h.Id
                                select new EditContestantChipHeatResultDto
                                {
                                    HeatId = h.Id,
                                    ChipCode = z == null ? "" : z.ChipCode,
+                                   ChipNumber = s == null ? 0 : s.Number,
                                    Bib = contestant.Bib,
                                    HeatNumber = h.HeatNumber,
                                    ResultModified = r.Modified,
