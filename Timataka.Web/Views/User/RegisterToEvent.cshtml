@@ -1,0 +1,44 @@
+﻿@model Timataka.Core.Models.Dto.UserDTO.RegisterToEventDto
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "_UserLayout";
+}
+
+
+<section class="content">
+    <h2>Register</h2>
+
+    <h3>You are registering to:</h3>
+    <div>
+        <h4>Competition</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Instance.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Instance.Name)
+            </dd>
+        </dl>
+        <h4>Event</h4>
+        <hr />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Event.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Event.Name)
+            </dd>
+        </dl>
+
+        <form asp-action="RegisterToEvent">
+            <input type="hidden" asp-for="Instance.Id" value="@Model.Instance.Id" />
+            <input type="hidden" asp-for="Event.Id" value="@Model.Event.Id" />
+            <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+            <input type="submit" value="Register" class="btn btn-danger-outline btn-sm" />
+
+            <a asp-controller="User" asp-action="Events" asp-route-competitionInstanceId="@Model.Instance.Id" class="btn btn-secondary-outline btn-sm">Back to List</a>
+        </form>
+    </div>
+</section>
