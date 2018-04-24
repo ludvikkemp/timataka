@@ -117,6 +117,7 @@ namespace Timataka.Web.Controllers
 
             var userDto = _adminService.GetUserByUsername(username);
             ViewBag.Nations = _accountService.GetNationsListItems();
+            ViewBag.Nationalities = _accountService.GetNationalityListItems();
 
             if (userDto == null)
             {

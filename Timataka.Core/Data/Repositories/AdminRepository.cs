@@ -74,6 +74,9 @@ namespace Timataka.Core.Data.Repositories
                                 where c.Id == u.CountryId
                                 select c.Name).FirstOrDefault(),
                             NationalityId = u.NationalityId,
+                            Nationality = (from c in _db.Countries
+                                where c.Id == u.NationalityId
+                                select c.Nationality).FirstOrDefault(),
                             Deleted = u.Deleted,
                             Roles = (from ur in _db.UserRoles
                                 join r in _db.Roles
