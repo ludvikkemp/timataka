@@ -19,6 +19,11 @@
                        asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                        asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.CompetitionInstanceName</a> /
 
+                    <a asp-controller="CompetitionInstance"
+                       asp-action="Contestants"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">Contestants</a> /
+
                     @Model.FirstName @Model.MiddleName @Model.LastName
                 </span>
             </div>
@@ -27,11 +32,6 @@
         <div class="row">
 
             <div class="col-md-6">
-                <a asp-controller="Event"
-                   asp-action="Create"
-                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                   class="btn btn-primary btn-sm rounded-s">Add Event</a>
 
                 <a asp-controller="CompetitionInstance"
                    asp-action="Devices"
@@ -44,11 +44,7 @@
                    asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                    asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                    class="btn btn-primary btn-sm rounded-s">Markers</a>
-                <a asp-controller="CompetitionInstance"
-                   asp-action="Contestants"
-                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                   class="btn btn-primary btn-sm rounded-s">Contestants</a>
+                
             </div>
 
         </div>

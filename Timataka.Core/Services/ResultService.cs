@@ -73,6 +73,7 @@ namespace Timataka.Core.Services
             await _repo.RemoveAsync(r);
         }
 
+
         public Boolean Edit(Result r)
         {
             return _repo.Edit(r);
@@ -80,6 +81,11 @@ namespace Timataka.Core.Services
         public async Task<Boolean> EditAsync(Result r)
         {
             return await _repo.EditAsync(r);
+        }
+
+        public int NumberOfTimes()
+        {
+            return _repo.NumberOfTimes();
         }
     }
 }

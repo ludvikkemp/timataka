@@ -26,5 +26,7 @@ namespace Timataka.Core.Data.Repositories
 
         IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId);
         int CalculateFinalTime(int heatId, string chipCode);
+        int NumberOfTimes();
+
     }
 }
