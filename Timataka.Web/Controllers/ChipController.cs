@@ -23,9 +23,10 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Chip/Create")]
-        public IActionResult Create()
+        public IActionResult Create(string code = null)
         {
-            return View();
+            CreateChipViewModel model = new CreateChipViewModel { Code = code, Active = false };
+            return View(model);
         }
 
         //POST: /Admin/Chip/Create
@@ -51,7 +52,7 @@ namespace Timataka.Web.Controllers
                         LastUserId = null
                     };
                     await _chipService.AddChipAsync(chip);
-                    return RedirectToAction("Chips", "Admin");
+                    return RedirectToAction("ScanChips", "Chip");
                 }
                 return Json("Code Already Exists");
             }
@@ -122,7 +123,7 @@ namespace Timataka.Web.Controllers
             if (ModelState.IsValid)
             {
                 var chip = await _chipService.GetChipByCodeAsync(model.Code);
-                if (chip == null) return Json("Chip with this code does not exist");
+                if (chip == null) return RedirectToAction("Create", "Chip", new { model.Code });
 
                 chip.LastUserId = null;
                 chip.LastCompetitionInstanceId = null;

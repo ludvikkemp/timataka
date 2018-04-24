@@ -102,9 +102,22 @@
                                 </a>
                             </li>
                             <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Chips">
+                                <a href="#">
                                     <i class="fa fa-microchip"></i> Chips
+                                    <i class="fa arrow"></i>
                                 </a>
+                                <ul class="sidebar-nav">
+                                    <li>
+                                        <a asp-area="" asp-controller="Admin" asp-action="Chips">
+                                            <i class="fa fa-microchip"></i> Chips
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="Chip" asp-action="ScanChips">
+                                            <i class="fa fa-barcode"></i> Scan Chips
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
 
                         </ul>
