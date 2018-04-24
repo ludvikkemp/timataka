@@ -218,6 +218,7 @@ namespace Timataka.Web.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
             ViewBag.Nations = _accountService.GetNationsListItems();
+            ViewBag.Nationalities = _accountService.GetNationalityListItems();
             return View();
         }
 
