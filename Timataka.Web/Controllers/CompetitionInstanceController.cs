@@ -324,7 +324,7 @@ namespace Timataka.Web.Controllers
             var _event = await _eventService.GetEventByIdAsync(eventId);
             var heats = _heatService.GetHeatsForEvent(eventId);
             var dto = _competitionService.GetEditContestantChipHeatResultDtoFor(userId, eventId, competitionInstanceId);
-            var nationName = _adminService.GetCountryNameById((int)user.Nationality);
+            var nationName = _adminService.GetNationalityById((int)user.Nationality);
             var model = new EditContestantInEventDto
             {
                 CompetitionName = competiton.Name,
@@ -347,7 +347,8 @@ namespace Timataka.Web.Controllers
                 Notes = dto.Notes,
                 Status = dto.Status,
                 Team = dto.Team,
-                HeatsInEvent = heats
+                HeatsInEvent = heats,
+                OldChipCode = dto.ChipCode
             };
             return View(model);
         }
@@ -359,44 +360,106 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Get The Chip Contestants in About To Be Connected To
                 var chip = await _chipService.GetChipByNumberAsync(model.ChipNumber);
                 if (chip == null)
                 {
                     return Json("Chip with this Number does not exist");
                 }
 
+                // Edit Fields in Contestants New Chip
                 chip.LastCompetitionInstanceId = competitionInstanceId;
                 chip.LastUserId = userId;
+                chip.LastSeen = DateTime.Now;
                 var chipEdit = await _chipService.EditChipAsync(chip);
                 if (chipEdit != true)
                 {
                     return Json("Edit Chip Failed");
                 }
 
+                // Get oldChipInHeat To Remove
+                var oldChipInHeat = _chipService.GetChipInHeatByCodeUserIdAndHeatId(model.OldChipCode, userId, model.OldHeatId);
+                if (oldChipInHeat != null)
+                {
+                    var chipSuccess = _chipService.RemoveChipInHeat(oldChipInHeat);
+                    if (!chipSuccess)
+                    {
+                        return Json("chipInHeatToRemove not successfully removed");
+                    }
+                }
+
+                // Create New ChipInHeat
+                var newChipInHeat = new ChipInHeat
+                {
+                    UserId = userId,
+                    ChipCode = chip.Code,
+                    HeatId = model.HeatId,
+                    Valid = true
+                };
+
+                // Assigning New ChipInHeat To User
+                var assignChipInHeat = _chipService.AssignChipToUserInHeat(newChipInHeat);
+                if (!assignChipInHeat)
+                {
+                    return Json("Assingning New ChipInHeat To User Not Successful");
+                } 
+
+                // Get ContestantInHeat To Remove
                 var contestantInHeat = _heatService.GetContestantsInHeatByUserIdAndHeatId(userId, model.OldHeatId);
                 if (contestantInHeat == null)
                 {
                     return Json("contestantInHeat does not match this userId and heatId");
                 }
 
-                contestantInHeat.HeatId = model.HeatId;
-                contestantInHeat.Bib = model.Bib;
-                contestantInHeat.Team = model.Team;
-                contestantInHeat.Modified = DateTime.Now;
-                await _heatService.EditAsyncContestantInHeat(contestantInHeat);
-
-
-                var result = _resultService.GetResult(userId, model.OldHeatId);
-                if (result == null)
+                // Get Old Results to keep hold of data before it is deleted
+                var oldResult = _resultService.GetResult(userId, model.OldHeatId);
+                if (oldResult == null)
                 {
-                    return Json("Result with this userId and heatId does not exist");
+                    return Json("Result does not match this userId and heatId");
                 }
 
-                result.Modified = DateTime.Now;
-                result.HeatId = model.HeatId;
-                result.Status = model.Status;
-                result.Notes = model.Notes;
-                await _resultService.EditAsync(result);
+                // Removes ContestantInHeat and Result
+                await _heatService.RemoveAsyncContestantInHeat(contestantInHeat);
+
+                // Create New ContestantIn Heat To Replace The Old One
+                // New Result Will Be Created Automatically
+                var newContestantInHeat = new ContestantInHeat
+                {
+                    HeatId = model.HeatId,
+                    UserId = userId,
+                    Bib = model.Bib,
+                    Team = model.Team,
+                    Modified = DateTime.Now
+                };
+
+                // Save newContestantInHeat In Database
+                await _heatService.AddAsyncContestantInHeat(newContestantInHeat);
+
+                // Get The New Result To Update Its Data
+                var newResult = _resultService.GetResult(userId, newContestantInHeat.HeatId);
+                if (newResult == null)
+                {
+                    return Json("newResult was not created which means newContestantInHeat was not created");
+                }
+
+                // Edit Field That Came From The Model
+                newResult.Modified = DateTime.Now;
+                newResult.HeatId = model.HeatId;
+                newResult.Status = model.Status;
+                newResult.Notes = model.Notes;
+                newResult.UserId = userId;
+
+                // Edit Fields That Came From The Old Result
+                newResult.Name = oldResult.Name;
+                newResult.Club = oldResult.Club;
+                newResult.Country = oldResult.Country;
+                newResult.Created = oldResult.Created;
+                newResult.Gender = oldResult.Gender;
+                newResult.FinalTime = oldResult.FinalTime;
+                newResult.Nationality = oldResult.Nationality;
+
+                // Save newResult In Database
+                await _resultService.EditAsync(newResult);
 
                 return RedirectToAction("Contestants", "CompetitionInstance", new {competitionId, competitionInstanceId});
             }
