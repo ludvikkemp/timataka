@@ -10,7 +10,7 @@ namespace Timataka.Core.Models.ViewModels.ChipViewModels
         [Required]
         public string Code { get; set; }
         [Required]
-        [Range(0, 10000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Range(0, 100000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public int Number { get; set; }
         public Boolean Active { get; set; }
     }
