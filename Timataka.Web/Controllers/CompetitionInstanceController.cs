@@ -22,6 +22,8 @@ namespace Timataka.Web.Controllers
         private readonly IMarkerService _markerService;
         private readonly IAdminService _adminService;
         private readonly IHeatService _heatService;
+        private readonly IResultService _resultService;
+        private readonly IChipService _chipService;
 
         public CompetitionInstanceController(ICompetitionService competitionService, 
             IAccountService accountService,
@@ -29,7 +31,9 @@ namespace Timataka.Web.Controllers
             IEventService eventService,
             IMarkerService markerService,
             IAdminService adminService,
-            IHeatService heatService
+            IHeatService heatService,
+            IResultService resultService,
+            IChipService chipService
         )
         {
             _competitionService = competitionService;
@@ -39,6 +43,8 @@ namespace Timataka.Web.Controllers
             _markerService = markerService;
             _adminService = adminService;
             _heatService = heatService;
+            _resultService = resultService;
+            _chipService = chipService;
         }
 
         #region CompetitionInstance
@@ -318,12 +324,13 @@ namespace Timataka.Web.Controllers
             var _event = await _eventService.GetEventByIdAsync(eventId);
             var heats = _heatService.GetHeatsForEvent(eventId);
             var dto = _competitionService.GetEditContestantChipHeatResultDtoFor(userId, eventId, competitionInstanceId);
-            var nationName = _adminService.GetCountryNameById((int)user.Nationality);
+            var nationName = _adminService.GetNationalityById((int)user.Nationality);
             var model = new EditContestantInEventDto
             {
                 CompetitionName = competiton.Name,
                 CompetitionInstanceName = competitionInstance.Name,
                 EventName = _event.Name,
+                UserName = user.Username,
                 FirstName = user.FirstName,
                 MiddleName = user.MiddleName,
                 LastName = user.LastName,
@@ -333,15 +340,129 @@ namespace Timataka.Web.Controllers
                 Phone = user.Phone,
                 HeatNumber = dto.HeatNumber,
                 Bib = dto.Bib,
-                ChipCode = dto.ChipCode,
+                ChipNumber = dto.ChipNumber,
                 HeatId = dto.HeatId,
-                ResultModified = dto.ResultModified,
+                OldHeatId = dto.HeatId,
                 ContestantInHeatModified = dto.ContestantInHeatModified,
                 Notes = dto.Notes,
                 Status = dto.Status,
                 Team = dto.Team,
-                HeatsInEvent = heats
+                HeatsInEvent = heats,
+                OldChipCode = dto.ChipCode
             };
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/EditContestant/{userId}/Event/{eventId}")]
+        public async Task<IActionResult> EditContestantInEvent(EditContestantInEventDto model, string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get The Chip Contestants in About To Be Connected To
+                var chip = await _chipService.GetChipByNumberAsync(model.ChipNumber);
+                if (chip == null)
+                {
+                    return Json("Chip with this Number does not exist");
+                }
+
+                // Edit Fields in Contestants New Chip
+                chip.LastCompetitionInstanceId = competitionInstanceId;
+                chip.LastUserId = userId;
+                chip.LastSeen = DateTime.Now;
+                var chipEdit = await _chipService.EditChipAsync(chip);
+                if (chipEdit != true)
+                {
+                    return Json("Edit Chip Failed");
+                }
+
+                // Get oldChipInHeat To Remove
+                var oldChipInHeat = _chipService.GetChipInHeatByCodeUserIdAndHeatId(model.OldChipCode, userId, model.OldHeatId);
+                if (oldChipInHeat != null)
+                {
+                    var chipSuccess = _chipService.RemoveChipInHeat(oldChipInHeat);
+                    if (!chipSuccess)
+                    {
+                        return Json("chipInHeatToRemove not successfully removed");
+                    }
+                }
+
+                // Create New ChipInHeat
+                var newChipInHeat = new ChipInHeat
+                {
+                    UserId = userId,
+                    ChipCode = chip.Code,
+                    HeatId = model.HeatId,
+                    Valid = true
+                };
+
+                // Assigning New ChipInHeat To User
+                var assignChipInHeat = _chipService.AssignChipToUserInHeat(newChipInHeat);
+                if (!assignChipInHeat)
+                {
+                    return Json("Assingning New ChipInHeat To User Not Successful");
+                } 
+
+                // Get ContestantInHeat To Remove
+                var contestantInHeat = _heatService.GetContestantsInHeatByUserIdAndHeatId(userId, model.OldHeatId);
+                if (contestantInHeat == null)
+                {
+                    return Json("contestantInHeat does not match this userId and heatId");
+                }
+
+                // Get Old Results to keep hold of data before it is deleted
+                var oldResult = _resultService.GetResult(userId, model.OldHeatId);
+                if (oldResult == null)
+                {
+                    return Json("Result does not match this userId and heatId");
+                }
+
+                // Removes ContestantInHeat and Result
+                await _heatService.RemoveAsyncContestantInHeat(contestantInHeat);
+
+                // Create New ContestantIn Heat To Replace The Old One
+                // New Result Will Be Created Automatically
+                var newContestantInHeat = new ContestantInHeat
+                {
+                    HeatId = model.HeatId,
+                    UserId = userId,
+                    Bib = model.Bib,
+                    Team = model.Team,
+                    Modified = DateTime.Now
+                };
+
+                // Save newContestantInHeat In Database
+                await _heatService.AddAsyncContestantInHeat(newContestantInHeat);
+
+                // Get The New Result To Update Its Data
+                var newResult = _resultService.GetResult(userId, newContestantInHeat.HeatId);
+                if (newResult == null)
+                {
+                    return Json("newResult was not created which means newContestantInHeat was not created");
+                }
+
+                // Edit Field That Came From The Model
+                newResult.Modified = DateTime.Now;
+                newResult.HeatId = model.HeatId;
+                newResult.Status = model.Status;
+                newResult.Notes = model.Notes;
+                newResult.UserId = userId;
+
+                // Edit Fields That Came From The Old Result
+                newResult.Name = oldResult.Name;
+                newResult.Club = oldResult.Club;
+                newResult.Country = oldResult.Country;
+                newResult.Created = oldResult.Created;
+                newResult.Gender = oldResult.Gender;
+                newResult.FinalTime = oldResult.FinalTime;
+                newResult.Nationality = oldResult.Nationality;
+
+                // Save newResult In Database
+                await _resultService.EditAsync(newResult);
+
+                return RedirectToAction("Contestants", "CompetitionInstance", new {competitionId, competitionInstanceId});
+            }
             return View(model);
         }
 

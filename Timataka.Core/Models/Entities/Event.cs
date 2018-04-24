@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Timataka.Core.Models.Entities
 {
-    public enum Gender { Female = 0, Male = 1, Both = 2 }
+    public enum Gender { Female = 0, Male = 1, All = 2 }
     public class Event
     {
         public int Id { get; set; }

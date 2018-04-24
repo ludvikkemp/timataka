@@ -40,8 +40,9 @@ namespace Timataka.Web
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                services.AddTransient<TimingDbContext>(_ => new TimingDbContext(Configuration["ConnectionStrings:TimingConnection"]));
             }
-            
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

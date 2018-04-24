@@ -15,10 +15,12 @@ namespace Timataka.Core.Data.Repositories
     {
         private bool _disposed = false;
         private readonly ApplicationDbContext _db;
+        private readonly TimingDbContext _tdb;
 
-        public ResultRepository(ApplicationDbContext db)
+        public ResultRepository(ApplicationDbContext db, TimingDbContext tdb)
         {
             _db = db;
+            _tdb = tdb;
         }
 
         public Result Add(Result r)
@@ -37,22 +39,14 @@ namespace Timataka.Core.Data.Repositories
 
         public bool Edit(Result r)
         {
-            var result = false;
-            if (_db.Results.Update(r) != null)
-            {
-                result = true;
-            }
+            bool result = _db.Results.Update(r) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> EditAsync(Result r)
         {
-            var result = false;
-            if (_db.Results.Update(r) != null)
-            {
-                result = true;
-            }
+            bool result = _db.Results.Update(r) != null;
             await _db.SaveChangesAsync();
             return result;
         }
@@ -136,13 +130,18 @@ namespace Timataka.Core.Data.Repositories
         public int CalculateFinalTime(int heatId, string chipCode)
         {
             var startTime = (from t in _db.Times
-                             where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 1
-                             select t.RawTime).SingleOrDefault();
+                where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 1
+                select t.RawTime).SingleOrDefault();
             var endtime = (from t in _db.Times
-                           where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 2
-                           select t.RawTime).SingleOrDefault();
+                where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 2
+                select t.RawTime).SingleOrDefault();
 
             return endtime - startTime;
+        }
+
+        public int NumberOfTimes()
+        {
+            return _tdb.Results.ToList().Count();
         }
 
         protected virtual void Dispose(bool disposing)

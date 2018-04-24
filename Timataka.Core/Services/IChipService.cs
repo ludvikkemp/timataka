@@ -31,5 +31,6 @@ namespace Timataka.Core.Services
         Boolean EditChipInHeat(ChipInHeat c);
         Boolean RemoveChipInHeat(ChipInHeat c);
         Task<Chip> GetChipByNumberAsync(int modelNumber);
+        ChipInHeat GetChipInHeatByCodeUserIdAndHeatId(string modelOldChipCode, string userId, int modelOldHeatId);
     }
 }
