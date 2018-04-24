@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Timataka.Core.Models.Entities
+namespace Timataka.Core.Models.ViewModels.ResultViewModels
 {
-    public class _Result
+    public class RawResultViewModel
     {
-        [Key]
-        public int Pid { get; set; }
-        public int? Lap { get; set; }
+        public string ChipCode { get; set; }
         public int CompetitionInstanceId { get; set; }
         public int Time01 { get; set; }
         public int Time02 { get; set; }

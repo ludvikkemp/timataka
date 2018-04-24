@@ -53,6 +53,8 @@ namespace Timataka.Core.Data.Repositories
 
         IEnumerable<EventViewModel> GetEventsForInstance(int id);
 
+        IEnumerable<Heat> GetHeatsInCompetitionInstance(int id);
+
         //ManagesCompetition
 
         void AddRole(ManagesCompetition m);

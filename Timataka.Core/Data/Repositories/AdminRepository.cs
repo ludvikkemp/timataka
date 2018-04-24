@@ -168,7 +168,7 @@ namespace Timataka.Core.Data.Repositories
 
         public string GetNationalityById(int id)
         {
-            var nationality = (from c in _db.Countries where c.Id == id select c.Nationality).ToString();
+            var nationality = (from c in _db.Countries where c.Id == id select c.Nationality).SingleOrDefault();
             return nationality;
         }
 

@@ -352,6 +352,11 @@ namespace Timataka.Core.Services
 
         }
 
+        public IEnumerable<Heat> GetHeatsInCompetitionInstance(int competitionInstanceId)
+        {
+            return _repo.GetHeatsInCompetitionInstance(competitionInstanceId);
+        }
+
         #endregion
 
         #region User roles for competitions

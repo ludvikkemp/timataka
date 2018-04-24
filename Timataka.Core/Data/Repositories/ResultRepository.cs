@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
-
+using Timataka.Core.Models.ViewModels.ResultViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -142,6 +142,35 @@ namespace Timataka.Core.Data.Repositories
         public int NumberOfTimes()
         {
             return _tdb.Results.ToList().Count();
+        }
+
+        /// <summary>
+        /// Get all results from TimingDB
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<RawResultViewModel> GetResultsFromTimingDb()
+        {
+            var result = (from r in _tdb.Results
+                          join c in _tdb.Chips on r.Pid equals c.Pid
+                          select new RawResultViewModel
+                          {
+                              ChipCode = c.Chip,
+                              CompetitionInstanceId = r.CompetitionInstanceId,
+                              Time01 = r.Time01,
+                              Time02 = r.Time02
+                          }).ToList();
+            return result;
+        }
+
+        public Boolean AddTime(Time time)
+        {
+            var result = false;
+            if (_db.Times.Add(time) != null)
+            {
+                result = true;
+            }
+            _db.SaveChanges();
+            return result;
         }
 
         protected virtual void Dispose(bool disposing)

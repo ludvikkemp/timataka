@@ -13,6 +13,9 @@ namespace Timataka.Core.Services
         Result GetResult(string userId, int heatId);
         Task RemoveAsync(Result r);
         Task EditAsync(Result r);
+
         int NumberOfTimes();
+        void GetTimes();
+
     }
 }

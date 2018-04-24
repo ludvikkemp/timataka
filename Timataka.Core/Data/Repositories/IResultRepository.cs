@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
+using Timataka.Core.Models.ViewModels.ResultViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -26,7 +27,11 @@ namespace Timataka.Core.Data.Repositories
 
         IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId);
         int CalculateFinalTime(int heatId, string chipCode);
-        int NumberOfTimes();
 
+        //TimingDB
+        int NumberOfTimes();
+        IEnumerable<RawResultViewModel> GetResultsFromTimingDb();
+
+        Boolean AddTime(Time time);
     }
 }
