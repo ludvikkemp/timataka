@@ -127,6 +127,7 @@ namespace Timataka.Web.Controllers
 
                 chip.LastUserId = null;
                 chip.LastCompetitionInstanceId = null;
+                chip.LastSeen = DateTime.Now;
                 var success = await _chipService.EditChipAsync(chip);
 
                 if (success) return RedirectToAction("ScanChips","Chip");
