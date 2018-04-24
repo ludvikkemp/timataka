@@ -101,7 +101,7 @@ namespace Timataka.Core.Data.Repositories
 
         public string GetCountryNameById(int id)
         {
-            var countryName = (from c in _db.Countries where c.Id == id select c.Name).ToString();
+            var countryName = (from c in _db.Countries where c.Id == id select c.Name).FirstOrDefault();
             return countryName;
         }
 
@@ -161,14 +161,16 @@ namespace Timataka.Core.Data.Repositories
                                 LastName = u.LastName,
                                 Phone = u.Phone,
                                 Username = u.UserName,
-                                Ssn = u.Ssn
+                                Ssn = u.Ssn,
+                                Country = (int)u.CountryId,
+                                Nationality = (int)u.NationalityId
                             }).SingleOrDefaultAsync();
             return user;
         }
 
         public string GetNationalityById(int id)
         {
-            var nationality = (from c in _db.Countries where c.Id == id select c.Nationality).ToString();
+            var nationality = (from c in _db.Countries where c.Id == id select c.Nationality).FirstOrDefault();
             return nationality;
         }
 

@@ -203,6 +203,17 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
+        public ChipInHeat GetChipInHeatByCodeUserIdHeatId(string modelOldChipCode, string userId, int modelOldHeatId)
+        {
+            var result = (from cih in _db.ChipsInHeats
+                where cih.ChipCode == modelOldChipCode &&
+                      cih.UserId == userId && cih.HeatId ==
+                      modelOldHeatId
+                select cih).FirstOrDefault();
+
+            return result;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this._disposed)
