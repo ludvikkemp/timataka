@@ -8,6 +8,7 @@ using Timataka.Core.Models.Entities;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Dto.UserDTO;
 using Microsoft.AspNetCore.Authorization;
+using Timataka.Core.Models.Dto.AdminDTO;
 
 namespace Timataka.Web.Controllers
 {
@@ -17,15 +18,20 @@ namespace Timataka.Web.Controllers
         private readonly ICompetitionService _competitionService;
         private readonly IEventService _eventService;
         private readonly IHeatService _heatService;
+        private readonly IResultService _resultService;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserController(ICompetitionService competitionService, IEventService eventService, IHeatService heatService,
+        public UserController(ICompetitionService competitionService,
+                              IEventService eventService, 
+                              IHeatService heatService,
+                              IResultService resultService,
                               UserManager<ApplicationUser> userManager)
         {
             _competitionService = competitionService;
             _eventService = eventService;
             _heatService = heatService;
             _userManager = userManager;
+            _resultService = resultService;
         }
 
         [Authorize(Roles = "User")]
@@ -132,10 +138,78 @@ namespace Timataka.Web.Controllers
             return View(instances);
         }
 
-        public IActionResult Results()
+        [HttpGet]
+        [Route("User/MyCompetitions/{eventId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> MyEvent(int eventId)
+        {
+            var eventObj = await _eventService.GetEventByIdAsync(eventId);
+            var instance = await _competitionService.GetCompetitionInstanceByIdAsync(eventObj.CompetitionInstanceId);
+            var competition = await _competitionService.GetCompetitionByIdAsync(instance.CompetitionId);
+            
+
+            var model = new EventDto
+            {
+                Competition = competition,
+                CompetitionInstance = instance,
+                Event = eventObj,
+                Heats = null
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("User/Results")]
+        [Authorize(Roles = "User")]
+        public IActionResult Results(string search)
+        {
+            ViewData["CurrentFilter"] = search;
+            var instances = _competitionService.GetAllCompetitionInstances();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                instances = instances.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
+            instances = instances.OrderByDescending(x => x.DateFrom);
+
+            return View(instances);
+        }
+
+        [HttpGet]
+        [Route("User/Results/{competitionInstanceId}/Event")]
+        [Authorize(Roles = "User")]
+        public IActionResult EventsResults(string search, int competitionInstanceId)
+        {
+            ViewData["CurrentFilter"] = search;
+            var events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                events = events.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
+            return View(events);
+        }
+
+        [HttpGet]
+        [Route("User/Results/{competitionInstanceId}/Event/{eventId}")]
+        [Authorize(Roles = "User")]
+        public IActionResult Result(int eventId, int competitionInstanceId)
+        {
+            var model = _resultService.GetResultViewModelsForEvent(eventId);
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("User/MyResults")]
+        [Authorize(Roles = "User")]
+        public IActionResult MyResults(string search)
         {
             return View();
         }
-
     }
 }
