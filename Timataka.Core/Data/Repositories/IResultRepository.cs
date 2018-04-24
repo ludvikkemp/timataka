@@ -25,7 +25,8 @@ namespace Timataka.Core.Data.Repositories
         Task<Boolean> RemoveAsync(Result r);
 
         IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId);
-
+        int CalculateFinalTime(int heatId, string chipCode);
         int NumberOfTimes();
+
     }
 }

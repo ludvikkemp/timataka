@@ -237,10 +237,11 @@ namespace Timataka.Web.Controllers
                     MiddleName = model.MiddleName,
                     LastName = model.LastName,
                     Ssn = model.Ssn,
-                    Gender = model.Gender,
+                    Gender = model.Gender == "other" ? model.OtherGender.ToLower() : model.Gender.ToLower(),
                     Phone = model.Phone,
-                    CountryId = model.Country,
+                    CountryId = model.CountryId,
                     DateOfBirth = model.DateOfBirth,
+                    NationalityId = model.NationId,
                     Deleted = false
                 };
 

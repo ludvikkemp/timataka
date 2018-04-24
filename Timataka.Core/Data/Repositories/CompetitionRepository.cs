@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
+using Timataka.Core.Models.Dto.HeatDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
@@ -250,28 +251,32 @@ namespace Timataka.Core.Data.Repositories
 
         public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId)
         {
-            //TODO: Skilar fleiri en einu elementi!
 
             var results = (from e in _context.Events
-                           where e.Id == eventId
                            join h in _context.Heats on e.Id equals h.EventId
                            join contestant in _context.ContestantsInHeats on h.Id equals contestant.HeatId
                            join u in _context.Users on userId equals u.Id
-                           join chips in _context.ChipsInHeats on h.Id equals chips.HeatId
                            join r in _context.Results on u.Id equals r.UserId
-                           select new EditContestantChipHeatResultDto
-                           {
-                               HeatId = h.Id,
-                               ChipCode = chips.ChipCode,
-                               Bib = contestant.Bib,
-                               HeatNumber = h.HeatNumber,
-                               ResultModified = r.Modified,
-                               ContestantInHeatModified = contestant.Modified,
-                               Notes = r.Notes,
-                               Status = r.Status,
-                               Team = contestant.Team
-                           }).ToList();
-            return results[0];
+                           join chips in _context.ChipsInHeats on h.Id equals chips.HeatId into x
+                               from z in x.DefaultIfEmpty()
+                           join c in _context.Chips on z.ChipCode equals c.Code into y
+                               from s in y.DefaultIfEmpty()
+                               where e.Id == eventId && contestant.UserId == userId && (z.UserId == userId || z.UserId == null) && r.HeatId == h.Id
+                               select new EditContestantChipHeatResultDto
+                               {
+                                   HeatId = h.Id,
+                                   ChipCode = z == null ? "" : z.ChipCode,
+                                   ChipNumber = s == null ? 0 : s.Number,
+                                   Bib = contestant.Bib,
+                                   HeatNumber = h.HeatNumber,
+                                   ResultModified = r.Modified,
+                                   ContestantInHeatModified = contestant.Modified,
+                                   Notes = r.Notes,
+                                   Status = r.Status,
+                                   Team = contestant.Team
+                               }).Distinct().FirstOrDefault();
+
+            return results;
         }
 
         public IEnumerable<EventViewModel> GetEventsForInstance(int id)

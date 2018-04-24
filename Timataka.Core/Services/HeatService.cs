@@ -219,5 +219,9 @@ namespace Timataka.Core.Services
             await _resultService.AddAsync(result);
         }
 
+        public ContestantInHeat GetContestantsInHeatByUserIdAndHeatId(string userId, int heatId)
+        {
+            return _repo.GetContestantInHeatByUserId(userId, heatId);
+        }
     }
 }

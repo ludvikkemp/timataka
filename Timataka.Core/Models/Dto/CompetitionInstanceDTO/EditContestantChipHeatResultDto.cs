@@ -8,6 +8,7 @@ namespace Timataka.Core.Models.Dto.CompetitionInstanceDTO
     public class EditContestantChipHeatResultDto
     {
         public int Bib { get; set; }
+        public int ChipNumber { get; set; }
         public string ChipCode { get; set; }
         public ResultStatus Status { get; set; }
         public int HeatNumber { get; set; }
