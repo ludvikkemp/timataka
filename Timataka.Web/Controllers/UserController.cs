@@ -111,10 +111,25 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        public IActionResult MyCompetitions()
+        [HttpGet]
+        [Route("User/MyCompetitions")]
+        [Authorize(Roles = "User")]
+        public IActionResult MyCompetitions(string search)
         {
+            ViewData["CurrentFilter"] = search;
 
-            return View();
+            var userId = _userManager.GetUserAsync(User).Result.Id;
+
+            var instances = _competitionService.GetAllCompetitionInstancesForUser(userId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                instances = instances.Where(x => x.Instance.Name.ToUpper().Contains(search.ToUpper()));
+            }
+             
+            instances = instances.OrderByDescending(x => x.Instance.DateFrom);
+
+            return View(instances);
         }
 
         public IActionResult Results()

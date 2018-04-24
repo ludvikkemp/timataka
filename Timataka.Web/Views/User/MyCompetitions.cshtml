@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Timataka.Core.Models.ViewModels.UserViewModels.MyCompetitionsViewModel>
+
+
+@{
+    ViewData["Title"] = "MyCompetitions";
+    Layout = "_UserLayout";
+}
+
+<section class="content">
+    <div class="title-block" style="margin-bottom:15px;">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> My Competitions </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-5">
+            <form asp-action="MyCompetitions" method="get">
+                <div class="input-group">
+                    <input type="text" name="search" value="" class="form-control boxed rounded-s" placeholder="Search for competition instance...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Event</th>
+                                                <th>Competition</th>
+                                                <th>Date From</th>
+                                                <th>Date To</th>
+                                                <th>Location</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                if (item.Instance.Deleted == false)
+                                                {
+                                                    @foreach(var eventObj in item.Events)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <a asp-controller="User" asp-action="MyEvent" asp-route-eventId="@eventObj.Id">@eventObj.Name</a>
+                                                            </td>
+                                                            <td>
+                                                                @item.Instance.Name
+                                                            </td>
+                                                            <td>
+                                                                @eventObj.DateFrom
+                                                            </td>
+                                                            <td>
+                                                                @eventObj.DateTo
+                                                            </td>
+                                                            <td>
+                                                                @item.Instance.Location
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+

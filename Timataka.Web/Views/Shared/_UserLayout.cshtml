@@ -61,47 +61,41 @@
                         <ul class="sidebar-menu metismenu" id="sidebar-menu">
 
                             <li>
-                                <a asp-controller="User" asp-action="Competitions">
-                                    <i class="fa fa-home"></i> Competitions
+                                <a asp-area="" asp-controller="" asp-action="">
+                                    <i class="fa fa-home"></i> Dashboard
                                 </a>
                             </li>
 
                             <li>
                                 <a asp-area="" asp-controller="" asp-action="">
-                                    <i class="fa fa-lock"></i> Something
-                                </a>
-                            </li>
-
-
-                            <li>
-                                <a href="#">
-                                    <i class="fa fa-users"></i> Something Else
+                                    <i class="fa fa-table"></i> Competitions
                                     <i class="fa arrow"></i>
                                 </a>
                                 <ul class="sidebar-nav">
                                     <li>
-                                        <a asp-area="" asp-controller="" asp-action=""> Something More </a>
+                                        <a asp-controller="User" asp-action="Competitions"> All Competitions </a>
                                     </li>
                                     <li>
-                                        <a asp-area="" asp-controller="" asp-action=""> Something Even More </a>
+                                        <a asp-controller="User" asp-action="MyCompetitions"> My Competitions </a>
                                     </li>
                                 </ul>
                             </li>
 
                             <li>
                                 <a asp-area="" asp-controller="" asp-action="">
-                                    <i class="fa fa-table"></i> I don't know
+                                    <i class="fa fa-trophy"></i> Results
                                     <i class="fa arrow"></i>
                                 </a>
                                 <ul class="sidebar-nav">
                                     <li>
-                                        <a asp-area="" asp-controller="" asp-action=""> I'm Lost </a>
+                                        <a asp-controller="User" asp-action="Competitions"> All Results </a>
                                     </li>
                                     <li>
-                                        <a asp-area="" asp-controller="" asp-action=""> Down a Rabithole </a>
+                                        <a asp-area="" asp-controller="" asp-action=""> My Results </a>
                                     </li>
                                 </ul>
                             </li>
+
                         </ul>
                     </nav>
                 </div>
