@@ -9,10 +9,14 @@ namespace Timataka.Core.Models.ViewModels.HomeViewModels
     {
         //User Data
         public string UserId { get; set; }
-        
+        public DateTime DateOfBirth { get; set; }
+
         //Heat Data
         public int HeatId { get; set; }
         public int HeatNumber { get; set; }
+
+        // ContestantInHeat Data
+        public int Bib { get; set; }
 
         // Result Data
         public string Country { get; set; }

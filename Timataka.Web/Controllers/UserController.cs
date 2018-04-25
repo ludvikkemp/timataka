@@ -209,7 +209,14 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "User")]
         public IActionResult MyResults(string search)
         {
-            return View();
+            var userId = _userManager.GetUserAsync(User).Result.Id;
+
+            var model = _resultService.GetResultsForUser(userId);
+
+            model = model.OrderBy(x => x.FinalTime);
+            model = model.OrderBy(x => x.DisciplineName);
+
+            return View(model);
         }
     }
 }

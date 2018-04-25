@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
 using System;
+using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Services
 {
     public interface IResultService
     {
         IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId);
+        IEnumerable<MyResultsViewModel> GetResultsForUser(string userId);
         Task AddAsync(CreateResultViewModel model);
         Result GetResult(string userId, int heatId);
         Task RemoveAsync(Result r);

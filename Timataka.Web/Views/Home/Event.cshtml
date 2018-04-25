@@ -53,12 +53,13 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Time</th>
+                                                <th>Rank</th>
+                                                <th>BIB</th>
                                                 <th>Name</th>
+                                                <th>Year of birth</th>
                                                 <th>Club</th>
-                                                <th>Nationality</th>
-                                                <th>Heat Number</th>
-                                                <th>Status</th>
+                                                <th>Country</th>
+                                                <th>Time</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -66,22 +67,25 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        @item.FinalTime
+                                                        Rank
+                                                    </td>
+                                                    <td>
+                                                        @item.Bib
                                                     </td>
                                                     <td>
                                                         @item.Name
                                                     </td>
                                                     <td>
+                                                        @item.DateOfBirth.Year
+                                                    </td>
+                                                    <td>
                                                         @item.Club
                                                     </td>
                                                     <td>
-                                                        @item.Nationality
+                                                        @item.Country
                                                     </td>
                                                     <td>
-                                                        @item.HeatNumber
-                                                    </td>
-                                                    <td>
-                                                        @item.Status
+                                                        @item.FinalTime
                                                     </td>
                                                 </tr>
                                             }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
-
+using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -100,7 +100,9 @@ namespace Timataka.Core.Data.Repositories
                                //join u in _db.Users on r.UserId equals u.Id
                                join h in _db.Heats on r.HeatId equals h.Id
                                join u in _db.ChipsInHeats on r.UserId equals u.UserId
-                               where h.EventId == eventId && u.HeatId == h.Id
+                               join user in _db.Users on u.UserId equals user.Id
+                               join c in _db.ContestantsInHeats on u.UserId equals c.UserId
+                               where h.EventId == eventId && u.HeatId == h.Id && c.HeatId == h.Id
                                select new ResultViewModel
                                {
                                    Club = r.Club,
@@ -116,10 +118,65 @@ namespace Timataka.Core.Data.Repositories
                                    Notes = r.Notes,
                                    Status = r.Status,
                                    UserId = r.UserId,
-                                   ChipCode = u.ChipCode
+                                   ChipCode = u.ChipCode,
+                                   Bib = c.Bib,
+                                   DateOfBirth = user.DateOfBirth
                                }).ToList();
 
             foreach(var result in results)
+            {
+                result.FinalTime = CalculateFinalTime(result.HeatId, result.ChipCode).ToString();
+            }
+
+            return results;
+        }
+
+        public IEnumerable<MyResultsViewModel> GetResultsForUser(string userId)
+        {
+            var results = (from r in _db.Results
+                           join h in _db.Heats on r.HeatId equals h.Id
+                           join u in _db.Users on r.UserId equals u.Id
+                           join e in _db.Events on h.EventId equals e.Id
+                           join i in _db.CompetitionInstances on e.CompetitionInstanceId equals i.Id
+                           join d in _db.Disciplines on e.DisciplineId equals d.Id
+                           join c in _db.Courses on e.CourseId equals c.Id
+                           join ch in _db.ChipsInHeats on u.Id equals ch.UserId
+                           join con in _db.ContestantsInHeats on u.Id equals con.UserId
+                               where u.Id == userId && h.Id == ch.HeatId && con.HeatId == h.Id
+                               select new MyResultsViewModel
+                               {
+                                   CourseId = c.Id,
+                                   Club = r.Club,
+                                   CompetitionInstanceId = i.Id,
+                                   CompetitionInstanceName = i.Name,
+                                   CompetitionInstanceStatus = i.Status,
+                                   HeatId = h.Id,
+                                   Status = r.Status,
+                                   Country = r.Country,
+                                   CourseDistance = c.Distance,
+                                   CourseName = c.Name,
+                                   Created = r.Created,
+                                   DisciplineId = d.Id,
+                                   DisciplineName = d.Name,
+                                   EventDateFrom = e.DateFrom,
+                                   EventDateTo = e.DateTo,
+                                   EventId = e.Id,
+                                   EventName = e.Name,
+                                   FinalTime = r.FinalTime,
+                                   Gender = r.Gender,
+                                   HeatNumber = h.HeatNumber,
+                                   Modified = r.Modified,
+                                   Nationality = r.Nationality,
+                                   Notes = r.Notes,
+                                   SportId = d.SportId,
+                                   UserId = u.Id,
+                                   UserName = u.FirstName + " " + u.MiddleName + " " + u.LastName,
+                                   ChipCode = ch.ChipCode,
+                                   Bib = con.Bib,
+                                   DateOfBirth = u.DateOfBirth
+                               }).Distinct().ToList();
+
+            foreach (var result in results)
             {
                 result.FinalTime = CalculateFinalTime(result.HeatId, result.ChipCode).ToString();
             }
