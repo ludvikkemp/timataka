@@ -24,8 +24,11 @@ namespace Timataka.Core.Models.Entities
         [ForeignKey(nameof(HeatId))]
         public virtual Heat Heat { get; set; }
 
+        [Key]
+        public int TimeNumber { get; set; }
+
         public int RawTime { get; set; }
         public TimeType Type { get; set; }
-        public int TimeNumber { get; set; }
+        
     }
 }

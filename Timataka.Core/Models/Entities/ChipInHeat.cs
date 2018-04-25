@@ -8,7 +8,6 @@ namespace Timataka.Core.Models.Entities
 {
     public class ChipInHeat
     {
-        [Key]
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set;}

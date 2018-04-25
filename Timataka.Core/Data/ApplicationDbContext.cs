@@ -52,7 +52,7 @@ namespace Timataka.Core.Data
                 .HasKey(d => new { d.EventId, d.DeviceId });
 
             builder.Entity<ChipInHeat>()
-                .HasKey(c => new { c.UserId, c.ChipCode });
+                .HasKey(c => new { c.HeatId, c.ChipCode });
 
             builder.Entity<MarkerInHeat>()
                 .HasKey(m => new {m.HeatId, m.MarkerId});
@@ -61,7 +61,7 @@ namespace Timataka.Core.Data
                 .HasKey(r => new { r.HeatId, r.UserId });
 
             builder.Entity<Time>()
-                .HasKey(r => new { r.HeatId, r.ChipCode });
+                .HasKey(r => new { r.HeatId, r.ChipCode, r.TimeNumber });
         }
     }
 }
