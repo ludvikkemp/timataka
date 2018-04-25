@@ -1,0 +1,67 @@
+﻿@model List<Timataka.Core.Models.ViewModels.ContestantViewModels.AddContestantViewModel>
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    
+    <h4>Add Contestant</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AssignDevice">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <table>
+
+                    @for(int i = 0; i < Model.Count(); i++)
+                    {
+                        <tr>
+                            <td>
+                                <label asp-for="@Model[i].Flag" class="control-label"></label>
+                                <input asp-for="@Model[i].Flag" class="form-control" />
+                                <span asp-validation-for="@Model[i].Flag" class="text-danger"></span>
+                            </td>
+
+                            <td>@Model[i].EventName</td>
+
+                            <td>
+                                <label asp-for="@Model[i].HeatId">Heat</label>
+                                <select name="EventId" class="form-control">
+                                    @foreach (var x in @Model[i].Heats)
+                                    {
+                                        <option value="@x.Id" HeatId="@x.Id">@x.HeatNumber</option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <label asp-for="@Model[i].Bib" class="control-label"></label>
+                                <input asp-for="@Model[i].Bib" class="form-control" />
+                                <span asp-validation-for="@Model[i].Bib" class="text-danger"></span>
+                            </td>
+                            <td>
+                                <label asp-for="@Model[i].ChipNumber" class="control-label"></label>
+                                <input asp-for="@Model[i].ChipNumber" class="form-control" />
+                                <span asp-validation-for="@Model[i].ChipNumber" class="text-danger"></span>
+                            </td>
+                            <td>
+                                <label asp-for="@Model[i].Team" class="control-label"></label>
+                                <input asp-for="@Model[i].Team" class="form-control" />
+                                <span asp-validation-for="@Model[i].Team" class="text-danger"></span>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+
+                <div class="form-group">
+                    <input type="submit" value="Register" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+

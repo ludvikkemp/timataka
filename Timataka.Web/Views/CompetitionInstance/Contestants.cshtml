@@ -38,11 +38,11 @@
             </form>
         </div>
         <div class="col-md-7">
-            <a asp-controller="Event"
-               asp-action="Create"
+            <a asp-controller="CompetitionInstance"
+               asp-action="SelectContestant"
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Add Event</a>
+               class="btn btn-primary btn-sm rounded-s">Add Contestant</a>
 
             <a asp-controller="CompetitionInstance"
                asp-action="Devices"

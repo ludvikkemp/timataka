@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Services
@@ -33,6 +34,7 @@ namespace Timataka.Core.Services
         IEnumerable<LatestResultsDTO> GetLatestResults(int sportId);
         IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId);
         IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId);
+        List<AddContestantViewModel> GetAddContestantViewModelByCompetitionInstanceId(int competitionInstanceId, string userId);
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);

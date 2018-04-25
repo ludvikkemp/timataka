@@ -7,6 +7,7 @@ using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Services
@@ -356,6 +357,11 @@ namespace Timataka.Core.Services
         public IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId)
         {
             return _repo.GetAllCompetitionInstancesForUser(userId);
+        }
+
+        public List<AddContestantViewModel> GetAddContestantViewModelByCompetitionInstanceId(int competitionInstanceId, string userId)
+        {
+            return _repo.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
         }
 
         #endregion

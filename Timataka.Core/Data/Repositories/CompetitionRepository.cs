@@ -8,6 +8,7 @@ using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Dto.HeatDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.UserViewModels;
 
@@ -220,6 +221,22 @@ namespace Timataka.Core.Data.Repositories
                 item.EventList = GetEventListForContestatnt(item.Id, id);
             }
             return r;
+        }
+
+        public List<AddContestantViewModel> GetAddContestantViewModelByCompetitionInstanceId(int competitionInstanceId, string userId)
+        {
+            var results = (from e in _context.Events
+                           where e.CompetitionInstanceId == competitionInstanceId
+                           select new AddContestantViewModel
+                           {
+                               EventId = e.Id,
+                               EventName = e.Name,
+                               Heats = (from h in _context.Heats
+                                        where h.EventId == e.Id
+                                        select h),
+                               UserId = userId
+                           }).ToList();
+            return results;
         }
 
         public IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId)

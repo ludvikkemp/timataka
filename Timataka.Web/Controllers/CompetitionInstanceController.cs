@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
 using Timataka.Core.Models.ViewModels.MarkerViewModels;
 using Timataka.Core.Services;
@@ -257,6 +259,8 @@ namespace Timataka.Web.Controllers
 
         #region Contestants
 
+
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Contestants")]
@@ -279,6 +283,38 @@ namespace Timataka.Web.Controllers
                 CompetitionInstance = competitionInstance,
                 Contestants = contestants
             };
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/SelectContestant")]
+        public IActionResult SelectContestant(int competitionInstanceId, int competitionId)
+        {
+            var model = _adminService.GetUsers();
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AddContestant/{userId}")]
+        public IActionResult AddContestant(int competitionInstanceId, int competitionId, string userId)
+        {
+            var model = _competitionService.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AddContestant/{userId}")]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddContestant(IEnumerable<AddContestantViewModel> model, int competitionInstanceId, int competitionId, string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO: Add contestant to events: lykkja
+            }
+
             return View(model);
         }
 
