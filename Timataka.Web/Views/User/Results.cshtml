@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Timataka.Core.Models.Entities.CompetitionInstance>
+
+@{
+    Layout = "_UserLayout";
+}
+<section class="content">
+    <div class="title-block" style="margin-bottom:15px;">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> Competitions </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-5">
+            <form asp-action="Results" method="get">
+                <div class="input-group">
+                    <input type="text" name="search" value="" class="form-control boxed rounded-s" placeholder="Search for competition instance...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                if (item.Deleted == false)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <a asp-controller="User" asp-action="EventsResults" asp-route-competitionInstanceId="@item.Id" >@item.Name</a>
+                                                        </td>
+                                                        <td>
+                                                            @item.DateFrom
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+

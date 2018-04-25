@@ -1,0 +1,29 @@
+﻿@model Timataka.Core.Models.Dto.AdminDTO.EventDto
+
+
+@{
+    ViewData["Title"] = "Events";
+    Layout = "_UserLayout";
+}
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <span class="title">
+                @Model.Competition.Name /
+
+                @Model.CompetitionInstance.Name /
+
+                @Model.Event.Name
+            </span>
+
+
+        </div>
+    </div>
+
+    <a asp-controller="User" asp-action="MyCompetitions" class="btn btn-secondary-outline btn-sm">Back to Competitions</a>
+</section>
+
+
+
+

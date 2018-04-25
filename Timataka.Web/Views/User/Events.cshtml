@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Timataka.Core.Models.ViewModels.EventViewModels.EventViewModel>
+
+
+@{
+    ViewData["Title"] = "Events";
+    Layout = "_UserLayout";
+}
+
+<section class="content">
+    <div class="title-block" style="margin-bottom:15px;">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title"> Events </span>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Event</th>
+                                                <th>Date From</th>
+                                                <th>Date To</th>
+                                                <th>Gender</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                if (item.Deleted == false)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.Name
+                                                        </td>
+                                                        <td>
+                                                            @item.DateFrom
+                                                        </td>
+                                                        <td>
+                                                            @item.DateTo
+                                                        </td>
+                                                        <td>
+                                                            @item.Gender
+                                                        </td>
+                                                        <td>
+                                                            <a asp-controller="User" asp-action="RegisterToEvent"
+                                                               asp-route-eventId="@item.Id"
+                                                               asp-route-userId="@ViewBag.userId"
+                                                               class="btn btn-warning-outline btn-sm">Register</a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+    <a asp-controller="User" asp-action="Competitions" class="btn btn-secondary-outline btn-sm">Back to Competitions</a>
+
+
+</section>
+

@@ -9,6 +9,7 @@ using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
+using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -30,8 +31,14 @@ namespace Timataka.Core.Services
         {
             return _repo.GetResultViewModelsForEvent(eventId);
         }
-        
-       
+
+        public IEnumerable<MyResultsViewModel> GetResultsForUser(string userId)
+        {
+            return _repo.GetResultsForUser(userId);
+        }
+
+
+
         private readonly IAdminService _adminService;
 
         public ResultService(IResultRepository repo, IAdminService adminService)
@@ -72,6 +79,7 @@ namespace Timataka.Core.Services
         {
             await _repo.RemoveAsync(r);
         }
+
 
         public Boolean Edit(Result r)
         {
