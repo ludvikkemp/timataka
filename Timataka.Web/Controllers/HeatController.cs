@@ -544,9 +544,6 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("CompetitionInstance", "Admin", new { competitionId = competitionId, competitionInstanceId = competitionInstanceId });
         }
 
-        #endregion
-
-
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Results/{userId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -604,5 +601,7 @@ namespace Timataka.Web.Controllers
 
             return View(model);
         }
+
+        #endregion
     }
 }
