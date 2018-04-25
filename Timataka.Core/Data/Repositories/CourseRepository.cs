@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.CourseViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -74,6 +75,25 @@ namespace Timataka.Core.Data.Repositories
         public Task<Course> GetCourseByNameAsync(string cName)
         {
             return _db.Courses.SingleOrDefaultAsync(x => x.Name == cName);
+        }
+
+        public IEnumerable<CourseViewModel> GetCourseViewModels()
+        {
+            var results = (from c in _db.Courses
+                select new CourseViewModel
+                {
+                    Name = c.Name,
+                    ExternalCourseId = c.ExternalCourseId,
+                    Id = c.Id,
+                    DisciplineId = c.DisciplineId,
+                    DisciplineName = (from d in _db.Disciplines
+                        where d.Id == c.DisciplineId
+                        select d.Name).FirstOrDefault(),
+                    Distance = c.Distance,
+                    Lap = c.Lap,
+                    Deleted = c.Deleted
+                }).ToList();
+            return results;
         }
 
         protected virtual void Dispose(bool disposing)

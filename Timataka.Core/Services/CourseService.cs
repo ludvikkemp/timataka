@@ -105,5 +105,10 @@ namespace Timataka.Core.Services
             }
             return false;
         }
+
+        public IEnumerable<CourseViewModel> GetListOfCourseViewModels()
+        {
+            return _repo.GetCourseViewModels();
+        }
     }
 }

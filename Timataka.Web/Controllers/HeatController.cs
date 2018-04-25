@@ -14,6 +14,7 @@ using Timataka.Core.Models.ViewModels.MarkerViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels;
+using Timataka.Core.Models.ViewModels.HomeViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -524,6 +525,7 @@ namespace Timataka.Web.Controllers
 
             return View(model);
         }
+
         #endregion
 
         #region Results
@@ -537,5 +539,64 @@ namespace Timataka.Web.Controllers
         }
 
         #endregion
+
+
+        //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Results/{userId}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Results/{userId}")]
+        public IActionResult Results(int competitionId, int competitionInstanceId, int eventId, int heatId, string userId)
+        {
+            var entity = _resultService.GetResult(userId, heatId);
+            var model = new ResultViewModel
+            {
+                UserId = entity.UserId,
+                HeatId = entity.HeatId,
+                Country = entity.Country,
+                Nationality = entity.Nationality,
+                Status = entity.Status,
+                FinalTime = entity.FinalTime,
+                Gender = entity.Gender,
+                Name = entity.Name,
+                Club = entity.Club,
+                Notes = entity.Notes,
+                Created = entity.Created,
+                Modified = entity.Modified
+            };
+
+            return View(model);
+        }
+
+        //Post: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Results/{userId}
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Results/{userId}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Results(ResultViewModel model, int competitionId, int competitionInstanceId, int eventId, int heatId, string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                var entitiy = new Result
+                {
+                    Modified = DateTime.Now,
+                    Created = model.Created,
+                    Notes = model.Notes,
+                    Club = model.Club,
+                    Name = model.Name,
+                    Gender = model.Gender,
+                    Country = model.Country,
+                    FinalTime = model.FinalTime,
+                    HeatId =   model.HeatId,
+                    Nationality = model.Nationality,
+                    Status = model.Status,
+                    UserId = model.UserId
+                };
+
+                var status = await _resultService.EditAsync(entitiy);
+                return RedirectToAction("Heat", "Admin", new { heatId = heatId, eventId = eventId, competitionInstanceId = competitionInstanceId, competitionId = competitionId });
+            }
+
+            return View(model);
+        }
     }
 }

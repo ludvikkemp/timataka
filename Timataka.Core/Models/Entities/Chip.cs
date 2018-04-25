@@ -11,7 +11,7 @@ namespace Timataka.Core.Models.Entities
         [Key]
         public string Code { get; set; }
         public int Number { get; set; }
-        public Boolean Active { get; set; }
+        public Boolean Active { get; set; } 
 
         /// <summary>
         /// Update following when:

@@ -1,0 +1,108 @@
+﻿@model Timataka.Core.Models.ViewModels.HomeViewModels.ResultViewModel
+
+@{
+    ViewData["Title"] = "Results";
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <h4>Results - @Model.Name</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Results">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="HeatId" value="@Model.HeatId" />
+                <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+
+                <div class="form-group">
+                    <label asp-for="Status"></label>
+                    <select name="Status" class="form-control">
+                        @if (Model.Status == Timataka.Core.Models.Entities.ResultStatus.DNF)
+                        {
+                            <option value="0" id="">Valid</option>
+                            <option value="1" id="">Did Not Start</option>
+                            <option selected value="2" id="">Did Not Finish</option>
+                            <option value="3" id="">Disqualified</option>
+                        }
+                        else if (Model.Status == Timataka.Core.Models.Entities.ResultStatus.DNS)
+                        {
+                            <option value="0" id="">Valid</option>
+                            <option selected value="1" id="">Did Not Start</option>
+                            <option value="2" id="">Did Not Finish</option>
+                            <option value="3" id="">Disqualified</option>
+                        }
+                        else if (Model.Status == Timataka.Core.Models.Entities.ResultStatus.DQ)
+                        {
+                            <option value="0" id="">Valid</option>
+                            <option value="1" id="">Did Not Start</option>
+                            <option value="2" id="">Did Not Finish</option>
+                            <option selected value="3" id="">Disqualified</option>
+                        }
+                        else if (Model.Status == Timataka.Core.Models.Entities.ResultStatus.Valid)
+                        {
+                            <option selected value="0" id="">Valid</option>
+                            <option value="1" id="">Did Not Start</option>
+                            <option value="2" id="">Did Not Finish</option>
+                            <option value="3" id="">Disqualified</option>
+                        }
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Country" class="control-label"></label>
+                    <input asp-for="Country" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Nationality" class="control-label"></label>
+                    <input asp-for="Nationality" class="form-control" />
+                    <span asp-validation-for="Nationality" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FinalTime" class="control-label"></label>
+                    <input asp-for="FinalTime" class="form-control" />
+                    <span asp-validation-for="FinalTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <input asp-for="Gender" class="form-control" />
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Club" class="control-label"></label>
+                    <input asp-for="Club" class="form-control" />
+                    <span asp-validation-for="Club" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Notes" class="control-label"></label>
+                    <input asp-for="Notes" class="form-control" />
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+
+        <a asp-controller="Admin"
+           asp-action="Heat"
+           asp-route-heatId="@ViewContext.RouteData.Values["heatId"]"
+           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+           class="btn btn-secondary-outline btn-sm">Back to List</a>
+    </div>
+</section>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,4 +1,4 @@
-﻿@model System.Collections.Generic.IEnumerable<Timataka.Core.Models.Entities.Course>
+﻿@model System.Collections.Generic.IEnumerable<Timataka.Core.Models.ViewModels.CourseViewModels.CourseViewModel>
 
 @{
     ViewBag.Title = "Courses";
@@ -45,20 +45,24 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Discipline</th>
+                                                <th>Distance</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var item in Model)
                                             {
-                                                <tr>
-                                                    <td>@item.Name</td>
-                                                    <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Course" asp-action="Edit" asp-route-courseId="@item.Id">Edit</a>
-                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Course" asp-action="Details" asp-route-courseId="@item.Id">Details</a>
-                                                        <a class="btn btn-danger-outline btn-sm" asp-controller="Course" asp-action="Delete" asp-route-courseId="@item.Id">Delete</a>
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td>@item.Name</td>
+                                                <td>@item.DisciplineName</td>
+                                                <td>@item.Distance m</td>
+                                                <td>
+                                                    <a class="btn btn-warning-outline btn-sm" asp-controller="Course" asp-action="Edit" asp-route-courseId="@item.Id">Edit</a>
+                                                    <a class="btn btn-success-outline btn-sm" asp-controller="Course" asp-action="Details" asp-route-courseId="@item.Id">Details</a>
+                                                    <a class="btn btn-danger-outline btn-sm" asp-controller="Course" asp-action="Delete" asp-route-courseId="@item.Id">Delete</a>
+                                                </td>
+                                            </tr>
                                             }
                                         </tbody>
                                     </table>
