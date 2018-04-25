@@ -9,6 +9,7 @@ using Timataka.Core.Models.Dto.HeatDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
+using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -218,6 +219,42 @@ namespace Timataka.Core.Data.Repositories
             {
                 item.EventList = GetEventListForContestatnt(item.Id, id);
             }
+            return r;
+        }
+
+        public IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId)
+        {
+            var r = (from c in _context.ContestantsInHeats
+                     join h in _context.Heats on c.HeatId equals h.Id
+                     join e in _context.Events on h.EventId equals e.Id
+                     join i in _context.CompetitionInstances on e.CompetitionInstanceId equals i.Id
+                     where c.UserId == userId
+                     select i).Distinct().ToList();
+
+            var model = new List<MyCompetitionsViewModel>();
+
+            foreach (var item in r)
+            {
+                var events = GetEventsForUserInCompetitionInstance(userId, item.Id);
+                var m = new MyCompetitionsViewModel
+                {
+                    Events = events,
+                    Instance = item
+                };
+                model.Add(m);
+            }
+            return model;
+        }
+
+        private IEnumerable<Event> GetEventsForUserInCompetitionInstance(string userId, int competitionInstanceId)
+        {
+            var r = (from e in _context.Events
+                     where e.CompetitionInstanceId == competitionInstanceId
+                     join h in _context.Heats on e.Id equals h.EventId
+                     join c in _context.ContestantsInHeats on h.Id equals c.HeatId
+                     join u in _context.Users on c.UserId equals u.Id
+                     where u.Id == userId
+                     select e).ToList();
             return r;
         }
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -31,7 +32,10 @@ namespace Timataka.Core.Services
         EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId);
         IEnumerable<LatestResultsDTO> GetLatestResults(int sportId);
         IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId);
+
         IEnumerable<Heat> GetHeatsInCompetitionInstance(int competitionInstanceId);
+        IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId);
+
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);

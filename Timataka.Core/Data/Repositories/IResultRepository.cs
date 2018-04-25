@@ -7,6 +7,7 @@ using Timataka.Core.Models.ViewModels.HomeViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
 using Timataka.Core.Models.ViewModels.ResultViewModels;
 using Timataka.Core.Models.ViewModels.ChipViewModels;
+using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -26,6 +27,7 @@ namespace Timataka.Core.Data.Repositories
         Boolean Remove(Result r);
         Task<Boolean> RemoveAsync(Result r);
 
+        IEnumerable<MyResultsViewModel> GetResultsForUser(string userId);
         IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId);
         int CalculateFinalTime(int heatId, string chipCode);
 

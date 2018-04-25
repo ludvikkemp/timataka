@@ -6,6 +6,7 @@ using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
+using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -52,6 +53,7 @@ namespace Timataka.Core.Data.Repositories
         IEnumerable<Heat> GetHeatsForContestantInCompetitioninstance(string userId, int competitionInstanceId);
 
         IEnumerable<EventViewModel> GetEventsForInstance(int id);
+        IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId);
 
         IEnumerable<Heat> GetHeatsInCompetitionInstance(int id);
 

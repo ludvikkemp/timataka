@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Timataka.Core.Models.ViewModels.HomeViewModels.ResultViewModel>
 
 @{
-    Layout = "_Layout";
+    Layout = "_UserLayout";
 }
 <section class="content">
     <div class="title-block" style="margin-bottom:15px;">
@@ -9,38 +9,11 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title">
-                    <a asp-controller="Home"
-                       asp-action="Competition"
-                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@ViewBag.CompetitionName</a> /
-
-                    <a asp-controller="Home"
-                       asp-action="instance"
-                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                       asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]">@ViewBag.CompetitionInstanceName</a> /
-
-                    @ViewBag.EventName
+                    Results
                 </span>
-
-
             </div>
         </div>
     </div>
-
-    <!--
-    <div class="row">
-        <div class="col-md-6">
-
-        SPURNING HVORT ÞAÐ EIGI AÐ BYRTA CATEGORIES
-            <a asp-controller="Admin"
-               asp-action="Categories"
-               asp-route-competitionId="ViewContext.RouteData.Values["competitionId"]"
-               asp-route-competitionInstanceId="ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-eventId="Model.Event.Id"
-               class="btn btn-primary btn-sm rounded-s">Categories</a>
-
-        </div>
-    </div>
-    -->
 
     <div class="row">
         <div class="col-md-12">
@@ -56,7 +29,7 @@
                                                 <th>Rank</th>
                                                 <th>BIB</th>
                                                 <th>Name</th>
-                                                <th>Year of birth</th>
+                                                <th>Year</th>
                                                 <th>Club</th>
                                                 <th>Country</th>
                                                 <th>Time</th>
@@ -101,6 +74,10 @@
         </div>
     </div>
 
+    <a asp-controller="User" 
+       asp-action="EventsResults" 
+       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" 
+       class="btn btn-secondary-outline btn-sm">Back to events</a>
 
 </section>
 

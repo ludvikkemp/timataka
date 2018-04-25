@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Timataka.Core.Models.ViewModels.HomeViewModels.ResultViewModel>
+﻿@model IEnumerable<Timataka.Core.Models.ViewModels.UserViewModels.MyResultsViewModel>
 
 @{
-    Layout = "_Layout";
+    Layout = "_UserLayout";
 }
 <section class="content">
     <div class="title-block" style="margin-bottom:15px;">
@@ -9,38 +9,11 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title">
-                    <a asp-controller="Home"
-                       asp-action="Competition"
-                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@ViewBag.CompetitionName</a> /
-
-                    <a asp-controller="Home"
-                       asp-action="instance"
-                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                       asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]">@ViewBag.CompetitionInstanceName</a> /
-
-                    @ViewBag.EventName
+                    Results: @if(Model.FirstOrDefault() != null){  @Model.FirstOrDefault().UserName }
                 </span>
-
-
             </div>
         </div>
     </div>
-
-    <!--
-    <div class="row">
-        <div class="col-md-6">
-
-        SPURNING HVORT ÞAÐ EIGI AÐ BYRTA CATEGORIES
-            <a asp-controller="Admin"
-               asp-action="Categories"
-               asp-route-competitionId="ViewContext.RouteData.Values["competitionId"]"
-               asp-route-competitionInstanceId="ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-eventId="Model.Event.Id"
-               class="btn btn-primary btn-sm rounded-s">Categories</a>
-
-        </div>
-    </div>
-    -->
 
     <div class="row">
         <div class="col-md-12">
@@ -55,9 +28,10 @@
                                             <tr>
                                                 <th>Rank</th>
                                                 <th>BIB</th>
-                                                <th>Name</th>
-                                                <th>Year of birth</th>
+                                                <th>Year</th>
                                                 <th>Club</th>
+                                                <th>Discipline</th>
+                                                <th>Competition</th>
                                                 <th>Country</th>
                                                 <th>Time</th>
                                             </tr>
@@ -73,13 +47,16 @@
                                                         @item.Bib
                                                     </td>
                                                     <td>
-                                                        @item.Name
-                                                    </td>
-                                                    <td>
                                                         @item.DateOfBirth.Year
                                                     </td>
                                                     <td>
                                                         @item.Club
+                                                    </td>
+                                                    <td>
+                                                        @item.DisciplineName
+                                                    </td>
+                                                    <td>
+                                                        @item.CompetitionInstanceName - @item.EventName
                                                     </td>
                                                     <td>
                                                         @item.Country
@@ -100,7 +77,6 @@
             </div>
         </div>
     </div>
-
 
 </section>
 
