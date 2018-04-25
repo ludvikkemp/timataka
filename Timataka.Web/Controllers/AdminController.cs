@@ -117,6 +117,7 @@ namespace Timataka.Web.Controllers
 
             var userDto = _adminService.GetUserByUsername(username);
             ViewBag.Nations = _accountService.GetNationsListItems();
+            ViewBag.Nationalities = _accountService.GetNationalityListItems();
 
             if (userDto == null)
             {
@@ -472,7 +473,7 @@ namespace Timataka.Web.Controllers
         public IActionResult Courses(string search)
         {
             ViewData["CurrentFilter"] = search;
-            var courses = _courseService.GetListOfCourses();
+            var courses = _courseService.GetListOfCourseViewModels();
 
             if (!String.IsNullOrEmpty(search))
             {

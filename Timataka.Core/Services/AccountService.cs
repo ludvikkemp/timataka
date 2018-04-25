@@ -46,5 +46,36 @@ namespace Timataka.Core.Services
 
             return selectNationsListItems;
         }
+
+        public List<SelectListItem> GetNationalityListItems()
+        {
+            List<SelectListItem> selectNationsListItems =
+                new List<SelectListItem>();
+
+            var listOfNations = _repo.GetNations();
+
+            selectNationsListItems.Add(
+                new SelectListItem
+                {
+                    Text = "Icelandic",
+                    Value = "352"
+                });
+
+            foreach (var item in listOfNations)
+            {
+                if (item.Id != 352)
+                {
+                    selectNationsListItems.Add(
+                        new SelectListItem
+                        {
+                            Text = item.Nationality,
+                            Value = item.Id.ToString()
+                        });
+                }
+
+            }
+
+            return selectNationsListItems;
+        }
     }
 }

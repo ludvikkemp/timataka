@@ -56,15 +56,15 @@ namespace Timataka.Core.Services
             {
                 UserId = model.UserId,
                 HeatId = model.HeatId,
-                Club = "", //TODO
+                Club = null, //TODO
                 Country = c,
                 Created = DateTime.Now,
-                FinalTime = "",
+                FinalTime = null,
                 Gender = u.Gender,
                 Modified = DateTime.Now,
                 Name = u.FirstName + " " + u.LastName,
                 Nationality = n,
-                Notes = "",
+                Notes = null,
                 Status = 0
             };
             await _repo.AddAsync(r);
@@ -85,6 +85,7 @@ namespace Timataka.Core.Services
         {
             return _repo.Edit(r);
         }
+
         public async Task<Boolean> EditAsync(Result r)
         {
             return await _repo.EditAsync(r);
@@ -93,6 +94,7 @@ namespace Timataka.Core.Services
         public int NumberOfTimes()
         {
             return _repo.NumberOfTimes();
+
         }
     }
 }

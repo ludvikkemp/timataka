@@ -34,7 +34,9 @@ namespace Timataka.Core.Models.Dto.AdminDTO
         public bool Deleted { get; set; } = false;
         public int? CountryId { get; set; }
         public string Country { get; set; }
+        [Display(Name = "Nationality")]
         public int? NationalityId { get; set; }
+        public string Nationality { get; set; }
         public List<UserRolesDto> Roles { get; set; }
     }
 }

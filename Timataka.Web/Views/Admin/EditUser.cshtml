@@ -41,28 +41,40 @@
                 <div class="form-group">
                     <label asp-for="Gender"></label>
                     @if (Model.Gender == "female" || Model.Gender == "Female")
-        {
-            <select name="Gender" class="form-control">
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-            </select>
-}
-else
-{
-            <select name="Gender" class="form-control">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-}
+                    {
+                        <select name="Gender" class="form-control">
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                        </select>
+                    }
+                    else
+                    {
+                        <select name="Gender" class="form-control">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    }
                 </div>
+
                 <div class="form-group">
                     <label asp-for="Country"></label>
                     <select name="CountryId" class="form-control" id="country-select">
                         <option value="@Model.CountryId"> @Model.Country </option>
                         @foreach (var item in ViewBag.Nations)
-            {
-                <option value="@item.Value" id="@item.Value">@item.Text</option>
-}
+                        {
+                            <option value="@item.Value" id="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NationalityId"></label>
+                    <select name="NationalityId" class="form-control">
+                        <option value="@Model.NationalityId"> @Model.Nationality </option>
+                        @foreach (var item in ViewBag.Nationalities)
+                        {
+                            <option value="@item.Value" id="@item.Value">@item.Text</option>
+                        }
                     </select>
                 </div>
 

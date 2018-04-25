@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
+using Timataka.Core.Models.ViewModels.CourseViewModels;
 
 namespace Timataka.Core.Data.Repositories
 {
@@ -18,5 +19,6 @@ namespace Timataka.Core.Data.Repositories
         void Remove(Course c);
         Task RemoveAsync(Course c);
         Task<Course> GetCourseByNameAsync(string cName);
+        IEnumerable<CourseViewModel> GetCourseViewModels();
     }
 }

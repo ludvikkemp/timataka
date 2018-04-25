@@ -18,7 +18,7 @@ namespace Timataka.Core.Services
 
         Boolean Edit(Result r);
         Task<Boolean> EditAsync(Result r);
-        
+
         int NumberOfTimes();
 
     }

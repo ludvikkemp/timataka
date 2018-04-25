@@ -14,40 +14,51 @@
         </div>
         <!-- /.col-lg-8 -->
         <div class="col-lg-4">
-            <h1>Latest Results </h1>
-            <p>
-                @foreach (var item in Model.LatestResults)
-                {
-                    <div>
-                        @item.Date.ToShortDateString() -
+
+            <div class="card h-100">
+
+                <div class="card-body">
+                    <h4 class="card-title" style="text-align: center;">Síðustu Úrslit</h4>
+                    @foreach (var item in Model.LatestResults)
+                    {
+                        <div>
+
                             <a asp-controller="Home" asp-action="Instance"
                                asp-route-competitionId="@item.CompetitionId"
-                               asp-route-instanceId="@item.CompetitionInstanceId">@item.Name</a>
-                    </div>
-                }
-                
-            </p>
-            <a class="btn btn-primary"
-               asp-controller="Home" asp-action="Results">All Results</a>
-            <h1>Upcoming events</h1>
-            <p>
-                @foreach (var item in Model.UpcomingEvents)
-                {
-                    <div>
-                        @item.Date.ToShortDateString() - @item.Name
-                    </div>
+                               asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span> <span style="float: right;">@item.Date.ToString()</span></a>
+                        </div>
+                    }
+                </div>
 
-                }
-            </p>
-            
+
+                <div class="card-body">
+                    <h4 class="card-title" style="text-align: center;">Næstu Viðburðir</h4>
+                    @foreach (var item in Model.UpcomingEvents)
+                    {
+                        <div>
+                            @item.Date.ToShortDateString() - @item.Name
+                        </div>
+
+                    }
+                </div>
+
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary btn-sm">More Info</a>
+                </div>
+            </div>
+
+
         </div>
+        
+
+    </div>
         <!-- /.col-md-4 -->
     </div>
     <!-- /.row -->
     <!-- Call to Action Well -->
     <div class="card text-white bg-secondary my-4 text-center">
         <div class="card-body">
-            <p class="text-white m-0">This call to action card is a great place to showcase some important information or display a clever tagline!</p>
+            <p class="text-white m-0">Tímataka, á réttum tíma!</p>
         </div>
     </div>
 
@@ -56,16 +67,15 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h2 class="card-title">Starfsemin</h2>
-                    <p class="card-text">
-                        Við sérhæfum okkur í hvers konar tímatöku með flögutímatökutækjum frá MyLaps og markmyndavélum frá FinishLynx.
-                        Við bjóðum einnig uppá tengjda þjónustu svo sem mótttöku skráninga, ráðgjöf og leigu á búnaði.
-                    </p>
+                    <h4 class="card-title" style="text-align: center;">Hlaup</h4>
+                    <div>
+                        <img class="img-fluid rounded" src="~/images/hlaup.jpg" alt="">
+                    </div>
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-primary"
+                    <a class="btn btn-primary btn-sm"
                        asp-controller="Home" asp-action="Test">More Info</a>
-                    <a href="#" class="btn btn-primary">More Info</a>
+                    <a href="#" class="btn btn-primary btn-sm">More Info</a>
                 </div>
             </div>
         </div>
@@ -73,14 +83,13 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h2 class="card-title">Tæknin</h2>
-                    <p class="card-text">
-                        Tímatökutækin lesa merki frá flögum sem festar eru á keppendur og gefa upplýsingar um tíma keppenda á þeim stað sem tækið er staðsett.
-                        Þetta ásamt sérsmíðaðri lausn okkar gerir mögulegt að birta úrslit í rauntíma.
-                    </p>
+                    <h4 class="card-title" style="text-align: center;">Hjólreiðar</h4>
+                    <div>
+                        <img class="img-fluid rounded" src="~/images/hjol.jpg" alt="">
+                    </div>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-primary">More Info</a>
+                    <a href="#" class="btn btn-primary btn-sm">More Info</a>
                 </div>
             </div>
         </div>
@@ -88,21 +97,69 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h2 class="card-title">Nákvæmni</h2>
-                    <p class="card-text">
-                        Við leggjum metnað okkar í að uppfylla allar þær kröfur sem gerðar eru til tímatökutækja í öllum greinum hverju sinni.
-                        Búnaðurinn sem við notum hefur verið í þróun í yfir 20 ár og er alþjóðlega viðurkenndur mælingabúnaður.
-                    </p>
+                    <h4 class="card-title" style="text-align: center;">Aðrar Íþróttir</h4>
+                    <div>
+                        <img class="img-fluid rounded" src="~/images/swim.gif" alt="">
+                    </div>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-primary">More Info</a>
+                    <a href="#" class="btn btn-primary btn-sm">More Info</a>
                 </div>
             </div>
         </div>
         <!-- /.col-md-4 -->
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title" style="text-align: center;">Starfsemin</h4>
+                        <p class="card-text">
+                            Við sérhæfum okkur í hvers konar tímatöku með flögutímatökutækjum frá MyLaps og markmyndavélum frá FinishLynx.
+                            Við bjóðum einnig uppá tengjda þjónustu svo sem mótttöku skráninga, ráðgjöf og leigu á búnaði.
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary"
+                           asp-controller="Home" asp-action="Test">More Info</a>
+                        <a href="#" class="btn btn-primary btn-sm">More Info</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-4 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title" style="text-align: center;">Tæknin</h4>
+                        <p class="card-text">
+                            Tímatökutækin lesa merki frá flögum sem festar eru á keppendur og gefa upplýsingar um tíma keppenda á þeim stað sem tækið er staðsett.
+                            Þetta ásamt sérsmíðaðri lausn okkar gerir mögulegt að birta úrslit í rauntíma.
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary btn-sm">More Info</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-4 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title" style="text-align: center;">Nákvæmni</h4>
+                        <p class="card-text">
+                            Við leggjum metnað okkar í að uppfylla allar þær kröfur sem gerðar eru til tímatökutækja í öllum greinum hverju sinni.
+                            Búnaðurinn sem við notum hefur verið í þróun í yfir 20 ár og er alþjóðlega viðurkenndur mælingabúnaður.
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary btn-sm">More Info</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-4 -->
+
+        </div>
+        <!-- /.row -->
 
     </div>
-    <!-- /.row -->
-
-</div>
-<!-- /.container -->
+    <!-- /.container -->

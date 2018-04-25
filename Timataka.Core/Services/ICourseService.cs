@@ -16,5 +16,6 @@ namespace Timataka.Core.Services
         CourseViewModel GetCourseViewModelById(int id);
         Task<bool> EditCourseAsync(CourseViewModel model);
         Task<bool> MarkCourseAsDeleted(int modelId);
+        IEnumerable<CourseViewModel> GetListOfCourseViewModels();
     }
 }

@@ -151,6 +151,11 @@ namespace Timataka.Core.Services
             return await _repo.GetChipByNumberAsync(modelNumber);
         }
 
+        public ChipInHeat GetChipInHeatByCodeUserIdAndHeatId(string modelOldChipCode, string userId, int modelOldHeatId)
+        {
+            return _repo.GetChipInHeatByCodeUserIdHeatId(modelOldChipCode, userId, modelOldHeatId);
+        }
+
         public async Task<bool> MarkInvalid(ChipInHeat c)
         {
             c.Valid = false;

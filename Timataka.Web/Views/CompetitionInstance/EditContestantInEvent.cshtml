@@ -33,7 +33,7 @@
     <div class="row">
         <div class="col-md-4">
             
-            <form asp-action="EditContestantInEvent" 
+            <form asp-action="EditContestantInEvent"
                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                   asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
@@ -41,6 +41,7 @@
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="OldHeatId" />
+                <input type="hidden" asp-for="OldChipCode" />
                 <div class="form-group">
                     <label asp-for="Bib" class="control-label"></label>
                     <input asp-for="Bib" class="form-control" />
@@ -55,36 +56,36 @@
                     <label asp-for="Status"></label>
                     <select name="Status" class="form-control">
                         @if (@Model.Status == ResultStatus.Valid)
-                        {
-                            <option selected value="0">Valid</option>
-                            <option value="1">Did Not Start</option>
-                            <option value="2">Did Not Finish</option>
-                            <option value="3">Disqualified</option>
-                        }
+            {
+                <option selected value="0">Valid</option>
+                <option value="1">Did Not Start</option>
+                <option value="2">Did Not Finish</option>
+                <option value="3">Disqualified</option>
+}
 
                         @if (@Model.Status == ResultStatus.DNS)
-                        {
-                            <option value="0">Valid</option>
-                            <option selected value="1">Did Not Start</option>
-                            <option value="2">Did Not Finish</option>
-                            <option value="3">Disqualified</option>
-                        }
+            {
+                <option value="0">Valid</option>
+                <option selected value="1">Did Not Start</option>
+                <option value="2">Did Not Finish</option>
+                <option value="3">Disqualified</option>
+}
 
                         @if (@Model.Status == ResultStatus.DNF)
-                        {
-                            <option value="0">Valid</option>
-                            <option value="1">Did Not Start</option>
-                            <option selected value="2">Did Not Finish</option>
-                            <option value="3">Disqualified</option>
-                        }
+            {
+                <option value="0">Valid</option>
+                <option value="1">Did Not Start</option>
+                <option selected value="2">Did Not Finish</option>
+                <option value="3">Disqualified</option>
+}
 
                         @if (@Model.Status == ResultStatus.DQ)
-                        {
-                            <option value="0">Valid</option>
-                            <option value="1">Did Not Start</option>
-                            <option value="2">Did Not Finish</option>
-                            <option selected value="3">Disqualified</option>
-                        }
+            {
+                <option value="0">Valid</option>
+                <option value="1">Did Not Start</option>
+                <option value="2">Did Not Finish</option>
+                <option selected value="3">Disqualified</option>
+}
 
                     </select>
                 </div>
@@ -94,12 +95,12 @@
                     <select name="HeatId" class="form-control">
                         <option value="@Model.HeatId">Heat Number @Model.HeatNumber </option>
                         @foreach (var item in @Model.HeatsInEvent)
-                        {
-                            if (item.Id != @Model.HeatId)
-                            {
-                                <option value="@item.Id">Heat Number @item.HeatNumber</option>
-                            }
-                        }
+            {
+                if (item.Id != @Model.HeatId)
+                {
+                    <option value="@item.Id">Heat Number @item.HeatNumber</option>
+    }
+}
 
                     </select>
                 </div>
