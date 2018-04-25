@@ -308,11 +308,40 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AddContestant/{userId}")]
         [ValidateAntiForgeryToken]
-        public IActionResult AddContestant(IEnumerable<AddContestantViewModel> model, int competitionInstanceId, int competitionId, string userId)
+        public async Task<IActionResult> AddContestant(IEnumerable<AddContestantViewModel> model, int competitionInstanceId, int competitionId, string userId)
         {
             if (ModelState.IsValid)
             {
-                // TODO: Add contestant to events: lykkja
+                foreach(var item in model)
+                {
+                    if (item.Flag)
+                    {    
+                        var contestantInHeat = new ContestantInHeat
+                        {
+                            Bib = item.Bib,
+                            HeatId = item.HeatId,
+                            Modified = DateTime.Now,
+                            Team = item.Team,
+                            UserId = item.UserId
+                        };
+                        await _heatService.AddAsyncContestantInHeat(contestantInHeat);
+
+                        if(item.ChipNumber > 0)
+                        {
+                            var chip = await _chipService.GetChipByNumberAsync(item.ChipNumber);
+                            var chipinHeat = new ChipInHeat
+                            {
+                                ChipCode = chip.Code,
+                                HeatId = item.HeatId,
+                                UserId = item.UserId,
+                                Valid = true
+                            };
+                            await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
+                        }
+                    }
+                }
+
+                return RedirectToAction("Contestants", "CompetitionInstance", new { @competitionId = competitionId, @competitionInstanceId = competitionInstanceId });
             }
 
             return View(model);
