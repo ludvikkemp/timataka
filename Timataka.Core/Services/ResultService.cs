@@ -43,17 +43,6 @@ namespace Timataka.Core.Services
             _adminService = adminService;
         }
 
-        private readonly ICompetitionService _competitionService;
-        private readonly IChipService _chipService;
-
-        public ResultService(IResultRepository repo, IAdminService adminService, ICompetitionService competitionService, IChipService chipService)
-        {
-            _repo = repo;
-            _competitionService = competitionService;
-            _adminService = adminService;
-            _chipService = chipService;
-        }
-
         public async Task AddAsync(CreateResultViewModel model)
         {
             var u = await _adminService.GetUserByIdAsync(model.UserId);
@@ -109,12 +98,12 @@ namespace Timataka.Core.Services
                 if(competitionInstanceId == 0 || competitionInstanceId != r.CompetitionInstanceId)
                 {
                     competitionInstanceId = r.CompetitionInstanceId;
-                    heats = _competitionService.GetHeatsInCompetitionInstance(r.CompetitionInstanceId);
+                    heats = _repo.GetHeatsInCompetitionInstance(r.CompetitionInstanceId);
                 }
                 foreach (var h in heats)
                 {
                     //Can only have one entry for a single chip
-                    var exists = (from c in _chipService.GetChipsInHeat(h.Id)
+                    var exists = (from c in _repo.GetChipsInHeat(h.Id)
                                   where r.ChipCode == c.ChipCode
                                   select c).SingleOrDefault();
                     if (exists != null)
