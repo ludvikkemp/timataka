@@ -45,6 +45,8 @@ namespace Timataka.Web.Controllers
             _resultService = resultService;
         }
 
+        #region Heats
+
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Create
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -134,9 +136,9 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("Event", "Admin", new { competitionId, competitionInstanceId, eventId });
 
         }
+#endregion
 
-
-        // **************** CONTESTANTS IN HEAT ****************** //
+        #region Contestatnts
 
 
         [HttpGet]
@@ -277,6 +279,12 @@ namespace Timataka.Web.Controllers
                 {
                     return new BadRequestResult();
                 }
+                //Remove all chips in heat entries for this user in the heat
+                var chipInHeat = _chipService.GetChipsInHeatsForUserInHeat(model.UserId, heatId);
+                foreach(var item in chipInHeat)
+                {
+                    _chipService.RemoveChipInHeat(item);
+                }
                 return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
             }
             return View(model);
@@ -309,6 +317,8 @@ namespace Timataka.Web.Controllers
 
             return View(model);
         }
+
+        #endregion
 
         #region Markers
 
@@ -355,7 +365,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        /*** CHIPS IN HEAT ***/
+        #region Chips
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Chips
         [HttpGet]
@@ -522,6 +532,21 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        #endregion
+
+        #region Results
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetTimes(int competitionId, int competitionInstanceId)
+        {
+            _resultService.GetTimes();
+            return RedirectToAction("CompetitionInstance", "Admin", new { competitionId = competitionId, competitionInstanceId = competitionInstanceId });
+        }
+
+        #endregion
+
+
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Results/{userId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -579,6 +604,5 @@ namespace Timataka.Web.Controllers
 
             return View(model);
         }
-
     }
 }

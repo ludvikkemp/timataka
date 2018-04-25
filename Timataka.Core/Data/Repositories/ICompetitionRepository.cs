@@ -57,6 +57,8 @@ namespace Timataka.Core.Data.Repositories
         IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId);
         List<AddContestantViewModel> GetAddContestantViewModelByCompetitionInstanceId(int competitionInstanceId, string userId);
 
+        IEnumerable<Heat> GetHeatsInCompetitionInstance(int id);
+
         //ManagesCompetition
 
         void AddRole(ManagesCompetition m);

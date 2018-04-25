@@ -16,10 +16,12 @@ namespace Timataka.Core.Services
         Result GetResult(string userId, int heatId);
         Task RemoveAsync(Result r);
 
+        int NumberOfTimes();
+        void GetTimes();
+
         Boolean Edit(Result r);
         Task<Boolean> EditAsync(Result r);
 
-        int NumberOfTimes();
 
     }
 }

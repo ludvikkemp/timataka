@@ -354,6 +354,12 @@ namespace Timataka.Core.Services
 
         }
 
+        public IEnumerable<Heat> GetHeatsInCompetitionInstance(int competitionInstanceId)
+        {
+            return _repo.GetHeatsInCompetitionInstance(competitionInstanceId);
+
+        }
+
         public IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId)
         {
             return _repo.GetAllCompetitionInstancesForUser(userId);

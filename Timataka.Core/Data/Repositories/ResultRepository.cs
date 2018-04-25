@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
 using Timataka.Core.Models.ViewModels.AdminViewModels;
+using Timataka.Core.Models.ViewModels.ResultViewModels;
+using Timataka.Core.Models.ViewModels.ChipViewModels;
 using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Data.Repositories
@@ -199,6 +201,77 @@ namespace Timataka.Core.Data.Repositories
         public int NumberOfTimes()
         {
             return _tdb.Results.ToList().Count();
+        }
+
+        /// <summary>
+        /// Get all results from TimingDB
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<RawResultViewModel> GetResultsFromTimingDb()
+        {
+            var result = (from r in _tdb.Results
+                          join c in _tdb.Chips on r.Pid equals c.Pid
+                          select new RawResultViewModel
+                          {
+                              ChipCode = c.Chip,
+                              CompetitionInstanceId = r.CompetitionInstanceId,
+                              Time01 = r.Time01,
+                              Time02 = r.Time02
+                          }).ToList();
+            return result;
+        }
+
+        public Boolean AddTime(Time time)
+        {
+            var result = false;
+            if (_db.Times.Add(time) != null)
+            {
+                result = true;
+            }
+            _db.SaveChanges();
+            return result;
+        }
+
+        /// <summary>
+        /// Return list of heats in an instance
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IEnumerable<Heat> GetHeatsInCompetitionInstance(int id)
+        {
+            var result = (from i in _db.CompetitionInstances
+                          where i.Id == id
+                          join e in _db.Events on i.Id equals e.CompetitionInstanceId
+                          join h in _db.Heats on e.Id equals h.EventId
+                          select h).ToList();
+            return result;
+        }
+
+        public IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId)
+        {
+            var chipsInHeat = (from c in _db.ChipsInHeats
+                               join h in _db.Heats on c.HeatId equals h.Id
+                               join chips in _db.Chips on c.ChipCode equals chips.Code
+                               join i in _db.CompetitionInstances on chips.LastCompetitionInstanceId equals i.Id
+                               join u in _db.Users on chips.LastUserId equals u.Id
+                               select new ChipInHeatViewModel
+                               {
+                                   LastUserId = u.Id,
+                                   LastCompetitionInstanceId = i.Id,
+                                   Active = chips.Active,
+                                   ChipCode = chips.Code,
+                                   LastCompetitionInstanceName = i.Name,
+                                   LastSeen = chips.LastSeen,
+                                   LastUserName = u.FirstName + " " + u.MiddleName + " " + u.LastName,
+                                   LastUserSsn = u.Ssn,
+                                   Number = chips.Number,
+                                   HeatId = h.Id,
+                                   HeatNumber = h.HeatNumber,
+                                   Valid = c.Valid,
+                                   UserId = c.UserId
+                               }).ToList();
+
+            return chipsInHeat;
         }
 
         protected virtual void Dispose(bool disposing)

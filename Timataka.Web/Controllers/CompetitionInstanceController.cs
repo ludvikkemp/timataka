@@ -398,19 +398,9 @@ namespace Timataka.Web.Controllers
             {
                 // Get The Chip Contestants in About To Be Connected To
                 var chip = await _chipService.GetChipByNumberAsync(model.ChipNumber);
-                if (chip == null)
+                if (chip == null && model.ChipNumber != 0)
                 {
-                    return Json("Chip with this Number does not exist");
-                }
-
-                // Edit Fields in Contestants New Chip
-                chip.LastCompetitionInstanceId = competitionInstanceId;
-                chip.LastUserId = userId;
-                chip.LastSeen = DateTime.Now;
-                var chipEdit = await _chipService.EditChipAsync(chip);
-                if (chipEdit != true)
-                {
-                    return Json("Edit Chip Failed");
+                    return Json("Chip with this Number does not exist");  
                 }
 
                 // Get oldChipInHeat To Remove
@@ -424,21 +414,34 @@ namespace Timataka.Web.Controllers
                     }
                 }
 
-                // Create New ChipInHeat
-                var newChipInHeat = new ChipInHeat
+                if(model.ChipNumber != 0)
                 {
-                    UserId = userId,
-                    ChipCode = chip.Code,
-                    HeatId = model.HeatId,
-                    Valid = true
-                };
+                    // Edit Fields in Contestants New Chip
+                    chip.LastCompetitionInstanceId = competitionInstanceId;
+                    chip.LastUserId = userId;
+                    chip.LastSeen = DateTime.Now;
+                    var chipEdit = await _chipService.EditChipAsync(chip);
+                    if (chipEdit != true)
+                    {
+                        return Json("Edit Chip Failed");
+                    }
 
-                // Assigning New ChipInHeat To User
-                var assignChipInHeat = _chipService.AssignChipToUserInHeat(newChipInHeat);
-                if (!assignChipInHeat)
-                {
-                    return Json("Assingning New ChipInHeat To User Not Successful");
-                } 
+                    // Create New ChipInHeat
+                    var newChipInHeat = new ChipInHeat
+                    {
+                        UserId = userId,
+                        ChipCode = chip.Code,
+                        HeatId = model.HeatId,
+                        Valid = true
+                    };
+
+                    // Assigning New ChipInHeat To User
+                    var assignChipInHeat = _chipService.AssignChipToUserInHeat(newChipInHeat);
+                    if (!assignChipInHeat)
+                    {
+                        return Json("Assingning New ChipInHeat To User Not Successful");
+                    }
+                }
 
                 // Get ContestantInHeat To Remove
                 var contestantInHeat = _heatService.GetContestantsInHeatByUserIdAndHeatId(userId, model.OldHeatId);
@@ -447,7 +450,7 @@ namespace Timataka.Web.Controllers
                     return Json("contestantInHeat does not match this userId and heatId");
                 }
 
-                // Get Old Results to keep hold of data before it is deleted
+                // Get Old Results to keep track of data before it is deleted
                 var oldResult = _resultService.GetResult(userId, model.OldHeatId);
                 if (oldResult == null)
                 {

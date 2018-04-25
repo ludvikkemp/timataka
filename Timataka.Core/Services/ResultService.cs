@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 using System.Threading.Tasks;
-using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
-using Timataka.Core.Models.ViewModels.AdminViewModels;
+using System.Linq;
 using Timataka.Core.Models.ViewModels.UserViewModels;
 
 namespace Timataka.Core.Services
@@ -91,9 +88,47 @@ namespace Timataka.Core.Services
             return await _repo.EditAsync(r);
         }
 
+        //TimingDB
+
         public int NumberOfTimes()
         {
             return _repo.NumberOfTimes();
+
+        }
+
+        public void GetTimes()
+        {
+            var results = _repo.GetResultsFromTimingDb();
+            int competitionInstanceId = 0;
+            IEnumerable<Heat> heats = null;
+            foreach(var r in results)
+            {
+                if(competitionInstanceId == 0 || competitionInstanceId != r.CompetitionInstanceId)
+                {
+                    competitionInstanceId = r.CompetitionInstanceId;
+                    heats = _repo.GetHeatsInCompetitionInstance(r.CompetitionInstanceId);
+                }
+                foreach (var h in heats)
+                {
+                    //Can only have one entry for a single chip
+                    var exists = (from c in _repo.GetChipsInHeat(h.Id)
+                                  where r.ChipCode == c.ChipCode
+                                  select c).SingleOrDefault();
+                    if (exists != null)
+                    {
+                        if (r.Time01 != 0)
+                        {
+                            Time time01 = new Time { ChipCode = exists.ChipCode, HeatId = h.Id, RawTime = r.Time01, TimeNumber = 1, Type = TimeType.Start };
+                            _repo.AddTime(time01);
+                        }
+                        if (r.Time02 != 0)
+                        {
+                            Time time02 = new Time { ChipCode = exists.ChipCode, HeatId = h.Id, RawTime = r.Time02, TimeNumber = 2, Type = TimeType.Finish };
+                            _repo.AddTime(time02);
+                        }
+                    }
+                }
+            }
 
         }
     }

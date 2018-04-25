@@ -33,8 +33,11 @@ namespace Timataka.Core.Services
         EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId);
         IEnumerable<LatestResultsDTO> GetLatestResults(int sportId);
         IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId);
+
+        IEnumerable<Heat> GetHeatsInCompetitionInstance(int competitionInstanceId);
         IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId);
         List<AddContestantViewModel> GetAddContestantViewModelByCompetitionInstanceId(int competitionInstanceId, string userId);
+
 
         //ManagesCompetition
         Task<ManagesCompetition> AddRole(ManagesCompetition m);
@@ -44,5 +47,8 @@ namespace Timataka.Core.Services
         IEnumerable<ManagesCompetitionViewModel> GetAllRolesForCompetition(int id);
         IEnumerable<ManagesCompetition> GetAllRolesForUser(string id);
         Role GetRole(string userId, int competitionId);
+
+        //ChipInHeat
+
     }
 }
