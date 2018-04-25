@@ -249,7 +249,9 @@ namespace Timataka.Core.Data.Repositories
             return r;
         }
 
-        public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId)
+
+        // Eldri útgáfa, virkar ekki ef chip er null
+        public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor2(string userId, int eventId, int competitionInstanceId)
         {
 
             var results = (from e in _context.Events
@@ -275,6 +277,46 @@ namespace Timataka.Core.Data.Repositories
                                    Status = r.Status,
                                    Team = contestant.Team
                                }).Distinct().FirstOrDefault();
+
+            return results;
+        }
+
+        public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId)
+        {
+            var chipCode = "";
+            var chipNumber = 0;
+            var chip = (from c in _context.Chips
+                            join cih in _context.ChipsInHeats on c.Code equals cih.ChipCode
+                            join h in _context.Heats on cih.HeatId equals h.Id
+                            where h.EventId == eventId && cih.UserId == userId
+                            select c).SingleOrDefault();
+
+
+            if(chip != null)
+            {
+                chipCode = chip.Code;
+                chipNumber = chip.Number;
+            }
+
+            var results = (from contInHeat in _context.ContestantsInHeats
+                           join h in _context.Heats on contInHeat.HeatId equals h.Id
+                           join e in _context.Events on h.EventId equals e.Id
+                           join r in _context.Results on contInHeat.UserId equals r.UserId
+                           where contInHeat.UserId == userId && e.Id == eventId
+
+                           select new EditContestantChipHeatResultDto
+                           {
+                               HeatId = h.Id,
+                               ChipCode = chipCode,
+                               ChipNumber = chipNumber,
+                               Bib = contInHeat.Bib,
+                               HeatNumber = h.HeatNumber,
+                               ResultModified = r.Modified,
+                               ContestantInHeatModified = contInHeat.Modified,
+                               Notes = r.Notes,
+                               Status = r.Status,
+                               Team = contInHeat.Team
+                           }).SingleOrDefault();
 
             return results;
         }

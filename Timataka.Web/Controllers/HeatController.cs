@@ -279,6 +279,12 @@ namespace Timataka.Web.Controllers
                 {
                     return new BadRequestResult();
                 }
+                //Remove all chips in heat entries for this user in the heat
+                var chipInHeat = _chipService.GetChipsInHeatsForUserInHeat(model.UserId, heatId);
+                foreach(var item in chipInHeat)
+                {
+                    _chipService.RemoveChipInHeat(item);
+                }
                 return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
             }
             return View(model);
