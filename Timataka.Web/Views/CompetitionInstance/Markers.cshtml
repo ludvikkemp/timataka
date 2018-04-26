@@ -27,35 +27,23 @@
         </div>
     </div>
     <div class="row">
-
-
-
-            <div class="col-md-6">
-                <a asp-controller="Event"
-                   asp-action="Create"
-                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                   class="btn btn-primary btn-sm rounded-s">Add Event</a>
-
-                <a asp-controller="CompetitionInstance"
-                   asp-action="Devices"
-                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                   class="btn btn-primary btn-sm rounded-s">Devices</a>
-
-                <a asp-controller="CompetitionInstance"
-                   asp-action="Markers"
-                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                   class="btn btn-primary btn-sm rounded-s">Markers</a>
-                <a asp-controller="CompetitionInstance"
-                   asp-action="Contestants"
-                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                   class="btn btn-primary btn-sm rounded-s">Contestants</a>
-            </div>
-
-
+        <div class="col-md-12">
+            <a asp-controller="Admin"
+               asp-action="CompetitionInstance"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               class="btn btn-primary btn-sm rounded-s">Events</a>
+            <a asp-controller="CompetitionInstance"
+               asp-action="Contestants"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               class="btn btn-primary btn-sm rounded-s">Contestants</a>
+            <a asp-controller="CompetitionInstance"
+               asp-action="Devices"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               class="btn btn-primary btn-sm rounded-s">Devices</a>
+        </div>
 
     </div>
 

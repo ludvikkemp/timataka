@@ -32,7 +32,6 @@ namespace Timataka.Core.Data.Repositories
         int CalculateFinalTime(int heatId, string chipCode);
 
         //TimingDB
-        int NumberOfTimes();
         IEnumerable<RawResultViewModel> GetResultsFromTimingDb();
 
         Boolean AddTime(Time time);

@@ -208,11 +208,6 @@ namespace Timataka.Core.Data.Repositories
             return endtime - startTime;
         }
 
-        public int NumberOfTimes()
-        {
-            return _tdb.Results.ToList().Count();
-        }
-
         /// <summary>
         /// Get all results from TimingDB
         /// </summary>

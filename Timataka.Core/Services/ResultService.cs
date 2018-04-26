@@ -91,12 +91,6 @@ namespace Timataka.Core.Services
 
         //TimingDB
 
-        public int NumberOfTimes()
-        {
-            return _repo.NumberOfTimes();
-
-        }
-
         public void GetTimes()
         {
             var results = _repo.GetResultsFromTimingDb();

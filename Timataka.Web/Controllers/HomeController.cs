@@ -38,12 +38,6 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
-        public IActionResult Test()
-        {
-            var r = _resultService.NumberOfTimes();
-            return RedirectToAction("Index");
-        }
-
         [HttpGet]
         [Route("Results")]
         public IActionResult Results(string search)

@@ -28,24 +28,22 @@
                asp-action="Create"
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Add Event</a>
-
+               class="btn btn-success btn-sm rounded-s">Add Event</a>
             <a asp-controller="CompetitionInstance"
-               asp-action="Devices"
+               asp-action="Contestants"
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Devices</a>
-
+               class="btn btn-primary btn-sm rounded-s">Contestants</a>
             <a asp-controller="CompetitionInstance"
                asp-action="Markers"
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
                class="btn btn-primary btn-sm rounded-s">Markers</a>
             <a asp-controller="CompetitionInstance"
-               asp-action="Contestants"
+               asp-action="Devices"
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Contestants</a>
+               class="btn btn-primary btn-sm rounded-s">Devices</a>
             <a asp-controller="Heat"
                asp-action="GetTimes"
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"

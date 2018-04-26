@@ -15,12 +15,12 @@ namespace Timataka.Core.Services
         Task AddAsync(CreateResultViewModel model);
         Result GetResult(string userId, int heatId);
         Task RemoveAsync(Result r);
-
-        int NumberOfTimes();
-        void GetTimes();
-
         Boolean Edit(Result r);
         Task<Boolean> EditAsync(Result r);
+
+        void GetTimes();
+
+
 
 
     }
