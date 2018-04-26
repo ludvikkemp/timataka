@@ -31,7 +31,7 @@
             <a asp-controller="Heat"
                asp-action="Create"
                asp-route-eventId="@Model.Event.Id"
-               class="btn btn-primary btn-sm rounded-s">Add Heat</a>
+               class="btn btn-success btn-sm rounded-s">Add Heat</a>
 
             <a asp-controller="Event"
                asp-action="Devices"
@@ -75,7 +75,7 @@
                                                                asp-route-heatId="@item.Id" 
                                                                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                                                                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">Heat Number @item.HeatNumber</a>
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">Heat @item.HeatNumber</a>
                                                         </td>
                                                         <td>
                                                             @item.NumberOfContestants

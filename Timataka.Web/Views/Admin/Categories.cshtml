@@ -32,12 +32,20 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <a asp-controller="Category" 
-               asp-action="Create" 
-               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" 
-               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" 
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" 
-               class="btn btn-primary btn-sm rounded-s"> Add Category </a>
+            <a asp-controller="Category"
+               asp-action="Create"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+               class="btn btn-success btn-sm rounded-s">Add Category</a>
+            <a asp-controller="Admin"
+               asp-action="Event"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+               class="btn btn-primary btn-sm rounded-s">Heats</a>
+            <a asp-controller="Event"
+               asp-action="Devices"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+               class="btn btn-primary btn-sm rounded-s">Devices</a>
         </div>
     </div>
     <div class="row">

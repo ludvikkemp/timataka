@@ -36,10 +36,18 @@
 
     <div class="row">
         <div class="col-md-6">
-            <a class="btn btn-primary btn-sm rounded-s"
+            <a class="btn btn-success btn-sm rounded-s"
                asp-controller="Event"
                asp-action="AssignDevice"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Assign Device</a>
+            <a class="btn btn-primary btn-sm rounded-s"
+               asp-controller="Admin"
+               asp-action="Event"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Heats</a>
+            <a class="btn btn-primary btn-sm rounded-s"
+               asp-controller="Admin"
+               asp-action="Categories"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Categories</a>
         </div>
 
 

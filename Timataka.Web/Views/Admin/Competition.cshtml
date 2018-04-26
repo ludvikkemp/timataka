@@ -14,7 +14,10 @@
     </div>
 
     <div class="row">
-
+        <div class="col-md-7">
+            <a asp-controller="CompetitionInstance" asp-action="Create" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-success btn-sm rounded-s"> Create Instance </a>
+            <a asp-controller="Admin" asp-action="Personnel" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Personnel </a>
+        </div>
         <div class="col-md-5">
             <form asp-action="Com" method="get">
                 <div class="input-group">
@@ -27,10 +30,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-7">
-            <a asp-controller="CompetitionInstance" asp-action="Create" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Create Instance </a>
-            <a asp-controller="Admin" asp-action="Personnel" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Personnel </a>
-        </div>
+
 
     </div>
 
