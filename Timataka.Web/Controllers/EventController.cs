@@ -34,6 +34,8 @@ namespace Timataka.Web.Controllers
             _competitionService = competitionService;
         }
 
+        #region Event
+
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -142,8 +144,7 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("CompetitionInstance", "Admin", new { competitionId, competitionInstanceId });
         }
 
-
-        // **************** DEVICES FOR EVENTS ****************** //
+        #endregion
 
         #region DEVICES FOR EVENTS
 
@@ -177,7 +178,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/AssignDevice")]
         public async Task<IActionResult> AssignDevice(int eventId, int competitionId, int competitionInstanceId)
         {
-            ViewBag.Devices = _deviceService.GetDevices();
+            ViewBag.Devices = _deviceService.GetUnassignedDevicesForEvent(eventId);
             ViewBag.Event = await _eventService.GetEventByIdAsync(eventId);
             return View();
         }
