@@ -32,7 +32,10 @@
                asp-action="Create"
                asp-route-eventId="@Model.Event.Id"
                class="btn btn-success btn-sm rounded-s">Add Heat</a>
-
+            <a asp-controller="Event"
+               asp-action="Contestants"
+               asp-route-eventId="@Model.Event.Id"
+               class="btn btn-primary btn-sm rounded-s">Contestants</a>
             <a asp-controller="Event"
                asp-action="Devices"
                asp-route-eventId="@Model.Event.Id"

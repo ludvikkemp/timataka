@@ -10,6 +10,7 @@ using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
+using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -146,7 +147,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region DEVICES FOR EVENTS
+        #region Devices
 
         [HttpGet]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Devices")]
@@ -189,6 +190,45 @@ namespace Timataka.Web.Controllers
         {
             await _deviceService.AddDeviceInEventAsync(model.DeviceId, model.EventId);
             return RedirectToAction("Devices", model.EventId);
+        }
+
+        #endregion
+
+        #region Contestants
+
+        [HttpGet]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Contestants")]
+        public async Task<IActionResult> Contestants(string search, int eventId, int competitionId, int competitionInstanceId)
+        {
+            ViewBag.EventName =  _eventService.GetEventById(eventId).Name;
+            ViewData["CurrentFilter"] = search;
+            var contestants = _competitionService.GetContestantsInCompetitionInstance(competitionInstanceId);
+            var filteredContestants = (from c in contestants
+                                       where ((from e in c.EventList
+                                               where e.Id == eventId
+                                               select e).ToList().Count()) == 1
+                                       select c).ToList();
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                contestants = contestants.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+            }
+
+            var model = new ContestantsInCompetitionInstanceDTO
+            {
+                Competition = competition,
+                CompetitionInstance = competitionInstance,
+                Contestants = filteredContestants
+            };
+            return View(model);
+        }
+
+        private IActionResult view(List<ContestantsInCompetitionViewModel> result)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

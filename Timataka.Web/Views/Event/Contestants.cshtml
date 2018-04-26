@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.Dto.AdminDTO.CategoryDto
+﻿@model Timataka.Core.Models.Dto.CompetitionInstanceDTO.ContestantsInCompetitionInstanceDTO
 
 @{
     Layout = "_AdminLayout";
@@ -11,27 +11,29 @@
                 <span class="title">
                     <a asp-controller="Admin"
                        asp-action="Competition"
-                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@Model.CompetitionName</a> /
+                       asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
 
                     <a asp-controller="Admin"
                        asp-action="CompetitionInstance"
-                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.CompetitonInstanceName</a> /
-
+                       asp-route-competitionId="@Model.Competition.Id"
+                       asp-route-competitionInstanceId="@Model.CompetitionInstance.Id">@Model.CompetitionInstance.Name</a> / 
+                    
                     <a asp-controller="Admin"
                        asp-action="Event"
                        asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                        asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">@Model.EventName</a> /
+                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">@ViewBag.EventName</a> /
 
-                    Categories
+                    Contestants
                 </span>
 
             </div>
         </div>
+
     </div>
+
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-7">
             <a asp-controller="Category"
                asp-action="Create"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
@@ -43,15 +45,31 @@
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                class="btn btn-primary btn-sm rounded-s">Heats</a>
             <a asp-controller="Event"
-               asp-action="Contestants"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-               class="btn btn-primary btn-sm rounded-s">Contestants</a>
-            <a asp-controller="Event"
                asp-action="Devices"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                class="btn btn-primary btn-sm rounded-s">Devices</a>
+            <a asp-controller="Admin"
+               asp-action="Categories"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+               class="btn btn-primary btn-sm rounded-s">Categories</a>
         </div>
+        <div class="col-md-5">
+            <form asp-action="Contestants" method="get" class="">
+                <div class="input-group">
+                    <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for user by Name...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+
     </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -64,31 +82,24 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Age</th>
                                                 <th>Gender</th>
-                                                <th>Country</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model.CategoryViewModels)
+                                            @foreach (var item in Model.Contestants)
                                             {
+
                                                 <tr>
+                                                    <td>@item.Name</td>
+                                                    <td>@item.Gender</td>
                                                     <td>
-                                                        @item.Name
-                                                    </td>
-                                                    <td>
-                                                        @item.AgeFrom - @item.AgeTo
-                                                    </td>
-                                                    <td>
-                                                        @item.Gender
-                                                    </td>
-                                                    <td>
-                                                        @item.CountryName
-                                                    </td>
-                                                    <td>
-                                                        <a asp-controller="Category" asp-action="Edit" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-categoryId="@item.Id" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                        <a asp-controller="Category" asp-action="Delete" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-categoryId="@item.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                        <a asp-controller="CompetitionInstance" asp-action="EditContestantInEvent"
+                                                           asp-route-userId="@item.Id"
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                           class="btn btn-warning-outline btn-sm">Edit</a>
                                                     </td>
                                                 </tr>
 
@@ -105,5 +116,5 @@
         </div>
     </div>
 
-</section>
 
+</section>

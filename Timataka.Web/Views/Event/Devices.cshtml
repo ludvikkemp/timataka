@@ -44,6 +44,10 @@
                asp-controller="Admin"
                asp-action="Event"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Heats</a>
+            <a asp-controller="Event"
+               asp-action="Contestants"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+               class="btn btn-primary btn-sm rounded-s">Contestants</a>
             <a class="btn btn-primary btn-sm rounded-s"
                asp-controller="Admin"
                asp-action="Categories"
