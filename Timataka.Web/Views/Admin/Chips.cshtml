@@ -17,13 +17,18 @@
     </div>
 
     <div class="row">
+        <div class="col-md-7">
+            <a class="btn btn-primary btn-sm rounded-s"
+               asp-controller="Chip"
+               asp-action="ScanChips">Scan and/or Register Chips</a>
+        </div>
         <div class="col-md-5">
             <form asp-action="Chips" method="get">
                 <div class="input-group">
-                    <input type="text" 
-                           name="Search" 
-                           value="" 
-                           class="form-control boxed rounded-s" 
+                    <input type="text"
+                           name="Search"
+                           value=""
+                           class="form-control boxed rounded-s"
                            placeholder="Search for chip by Code, Number or Last Assigned To...">
 
                     <span class="input-group-btn">
@@ -34,12 +39,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-7">
-            
-            <a class="btn btn-primary btn-sm rounded-s"
-               asp-controller="Chip"
-               asp-action="ScanChips">Scan and/or Register Chips</a>
-        </div>
+
     </div>
 
     <div class="row">

@@ -10,13 +10,16 @@
         <div class="row">
             <div class="col-md-12">
                 <span class="title"> Clubs </span>
-                <a class="btn btn-primary btn-sm rounded-s" asp-controller="Club" asp-action="Create">Create New</a>
+                
             </div>
         </div>
 
     </div>
 
     <div class="row">
+        <div class="col-md-7">
+            <a class="btn btn-success btn-sm rounded-s" asp-controller="Club" asp-action="Create">Create New</a>
+        </div>
         <div class="col-md-5">
             <form asp-action="Clubs" method="get" >
                 <div class="input-group">
