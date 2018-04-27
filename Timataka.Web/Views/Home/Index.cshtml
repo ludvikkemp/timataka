@@ -1,4 +1,5 @@
-﻿@model Timataka.Core.Models.ViewModels.HomeViewModels.HomePageViewModel
+﻿@using System.Globalization
+@model Timataka.Core.Models.ViewModels.HomeViewModels.HomePageViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -16,35 +17,118 @@
         <div class="col-lg-4">
 
             <div class="card h-100">
+                <div class="">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active show" data-toggle="tab" href="#home">Hlaup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#profile">Hjólreiðar</a>
+                        </li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active show" id="athletics">
+                            <div class="card-body">
+                                <h4 class="card-title" style="text-align: center;">Síðustu Úrslit</h4>
 
-                <div class="card-body">
-                    <h4 class="card-title" style="text-align: center;">Síðustu Úrslit</h4>
-                    @foreach (var item in Model.LatestResults)
-                    {
-                        <div>
 
-                            <a asp-controller="Home" asp-action="Instance"
-                               asp-route-competitionId="@item.CompetitionId"
-                               asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span> <span style="float: right;">@item.Date.ToString()</span></a>
+                                <div>
+                                    <table style="width: 100%">
+                                        @foreach (var item in Model.LatestResults)
+                                        {
+                                            <tr>
+                                                <th>
+                                                    <a asp-controller="Home" asp-action="Instance"
+                                                       asp-route-competitionId="@item.CompetitionId"
+                                                       asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
+                                                </th>
+                                                <th><span style="float: right;">@item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                                            </tr>
+                                        }
+
+
+                                    </table>
+
+
+                                </div>
+
+
+                                <h4 class="card-title" style="text-align: center;margin-top:12px;">Næstu Viðburðir</h4>
+
+
+                                <table style="width: 100%">
+                                    @foreach (var item in Model.UpcomingEvents)
+                                    {
+                                        <tr>
+                                            <th>
+                                                <a asp-controller="Home" asp-action="Instance"
+                                                   asp-route-competitionId="@item.CompetitionId"
+                                                   asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
+                                            </th>
+                                            <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                                        </tr>
+                                    }
+
+
+                                </table>
+
+
+                            </div>
                         </div>
-                    }
-                </div>
+                        <div class="tab-pane fade" id="profile">
+                            <div class="card-body">
+                                <h4 class="card-title" style="text-align: center;">Síðustu Úrslit</h4>
 
 
-                <div class="card-body">
-                    <h4 class="card-title" style="text-align: center;">Næstu Viðburðir</h4>
-                    @foreach (var item in Model.UpcomingEvents)
-                    {
-                        <div>
-                            @item.Date.ToShortDateString() - @item.Name
+                                <div>
+                                    <table style="width: 100%">
+                                        @foreach (var item in Model.LatestResults)
+            {
+                            <tr>
+                                <th>
+                                    <a asp-controller="Home" asp-action="Instance"
+                                       asp-route-competitionId="@item.CompetitionId"
+                                       asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
+                                </th>
+                                <th><span style="float: right;">@item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                            </tr>
+}
+
+
+                                    </table>
+
+
+                                </div>
+
+
+                                <h4 class="card-title" style="text-align: center;margin-top:12px;">Næstu Viðburðir</h4>
+
+
+                                <table style="width: 100%">
+                                    @foreach (var item in Model.UpcomingEvents)
+        {
+                            <tr>
+                                <th>
+                                    <a asp-controller="Home" asp-action="Instance"
+                                       asp-route-competitionId="@item.CompetitionId"
+                                       asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
+                                </th>
+                                <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                            </tr>
+}
+
+
+                                </table>
+
+
+                            </div>
                         </div>
 
-                    }
+                    </div>
                 </div>
+                
 
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary btn-sm">More Info</a>
-                </div>
+
             </div>
 
 
