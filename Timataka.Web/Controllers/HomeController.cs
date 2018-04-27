@@ -20,11 +20,15 @@ namespace Timataka.Web.Controllers
         private readonly IEventService _eventService;
         private readonly IHeatService _heatService;
         private readonly IResultService _resultService;
+        private const int AthleticsId = 1;
+        private const int CyclingId = 2;
 
-        public HomeController(ICompetitionService competitionService,
-                              IEventService eventService,
-                              IHeatService heatService,
-                              IResultService resultService)
+
+        public HomeController(
+            ICompetitionService competitionService,
+            IEventService eventService,
+            IHeatService heatService,
+            IResultService resultService)
         {
             _competitionService = competitionService;
             _eventService = eventService;
@@ -34,7 +38,15 @@ namespace Timataka.Web.Controllers
 
         public IActionResult Index()
         {
-            var model = new HomePageViewModel { LatestResults = _competitionService.GetLatestResults(0), UpcomingEvents = _competitionService.GetUpcomingEvents(0) };
+            var model = new HomePageViewModel
+            {
+                LatestAthleticsResults = _competitionService.GetLatestResults(AthleticsId),
+                UpcomingAthleticsEvents = _competitionService.GetUpcomingEvents(AthleticsId),
+                LatestCyclingResults = _competitionService.GetLatestResults(CyclingId),
+                UpcomingCyclingEvents = _competitionService.GetUpcomingEvents(CyclingId),
+                LatestOtherResults = _competitionService.GetLatestResults(-1),
+                UpcomingOtherEvents = _competitionService.GetUpcomingEvents(-1)
+            };
             return View(model);
         }
 

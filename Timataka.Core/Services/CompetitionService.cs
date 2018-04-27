@@ -261,7 +261,7 @@ namespace Timataka.Core.Services
         public IEnumerable<LatestResultsDTO> GetLatestResults(int sportId)
         {
             IEnumerable<LatestResultsDTO> result;
-            if (sportId == 0)
+            if (sportId == 0) // All Sports
             {
                 result = (
                     from i in _repo.GetInstances()
@@ -287,11 +287,12 @@ namespace Timataka.Core.Services
                     join c in _repo.Get() on i.CompetitionId equals c.Id
                     where (from e in _repo.GetEventsForInstance(i.Id)
                             where e.SportId == sportId
-                            select e).Count() > 0
+                            select e).Any()
                     orderby i.DateFrom descending
                     select new LatestResultsDTO
                     {
                         CompetitionInstanceId = i.Id,
+                        CompetitionId = c.Id,
                         Date = i.DateFrom,
                         Name = c.Name,
                         Live = IsLive(i.Status)
@@ -338,11 +339,12 @@ namespace Timataka.Core.Services
                     join c in _repo.Get() on i.CompetitionId equals c.Id
                     where (from e in _repo.GetEventsForInstance(i.Id)
                            where e.SportId == sportId
-                           select e).Count() > 0
+                           select e).Any()
                     orderby i.DateFrom ascending
                     select new LatestResultsDTO
                     {
                         CompetitionInstanceId = i.Id,
+                        CompetitionId = c.Id,
                         Date = i.DateFrom,
                         Name = c.Name,
                         Live = IsLive(i.Status)
