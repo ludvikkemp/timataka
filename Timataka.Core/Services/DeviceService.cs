@@ -270,7 +270,7 @@ namespace Timataka.Core.Services
         /// <returns>List of devices</returns>
         public IEnumerable<Device> GetUnassignedDevicesForEvent(int eventId)
         {
-            return (from d in GetDevices()
+            return (from d in GetDevicesByType(_eventService.GetEventById(eventId).ActiveChip)
                     where DeviceAssigned(new DevicesInEvent { DeviceId = d.Id, EventId = eventId }) == false
                     select d).ToList();
         }
