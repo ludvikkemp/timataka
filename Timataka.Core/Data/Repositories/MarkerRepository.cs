@@ -12,10 +12,12 @@ namespace Timataka.Core.Data.Repositories
     {
         private bool _disposed = false;
         private readonly ApplicationDbContext _db;
+        private readonly TimingDbContext _tdb;
 
-        public MarkerRepository(ApplicationDbContext db)
+        public MarkerRepository(ApplicationDbContext db, TimingDbContext tdb)
         {
             _db = db;
+            _tdb = tdb;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -161,6 +163,19 @@ namespace Timataka.Core.Data.Repositories
                 result = true;
             }
             await _db.SaveChangesAsync();
+            return result;
+        }
+
+        public IEnumerable<Marker> GetMarkersFromTimingDb()
+        {
+            var result = (from m in _tdb.Markers
+                          select new Marker
+                          {
+                              CompetitionInstanceId = m.CompetitionInstanceId,
+                              Location = m.Location,
+                              Time = m.MilliSecs,
+                              Type = (m.Type == "Gun" ? Models.Entities.Type.Gun : Models.Entities.Type.Marker)
+                          }).ToList();
             return result;
         }
     }

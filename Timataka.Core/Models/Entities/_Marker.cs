@@ -15,5 +15,6 @@ namespace Timataka.Core.Models.Entities
         public DateTime MarkerTime { get; set; }
         public int MilliSecs { get; set; }
         public string Type { get; set; }
+        public int CompetitionInstanceId { get; set; }
     }
 }
