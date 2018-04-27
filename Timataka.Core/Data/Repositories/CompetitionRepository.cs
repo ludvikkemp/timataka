@@ -355,7 +355,7 @@ namespace Timataka.Core.Data.Repositories
             var results = (from contInHeat in _context.ContestantsInHeats
                            join h in _context.Heats on contInHeat.HeatId equals h.Id
                            join e in _context.Events on h.EventId equals e.Id
-                           join r in _context.Results on contInHeat.UserId equals r.UserId
+                           join r in _context.Results on new { contInHeat.UserId, contInHeat.HeatId } equals new { r.UserId, r.HeatId }
                            where contInHeat.UserId == userId && e.Id == eventId
 
                            select new EditContestantChipHeatResultDto

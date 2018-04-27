@@ -22,6 +22,7 @@ namespace Timataka.Core.Services
 
         Task<DevicesInEvent> AddDeviceInEventAsync(int dId, int eId);
         IEnumerable<DeviceInEventViewModel> GetDevicesInEvent(int id);
+        IEnumerable<Device> GetUnassignedDevicesForEvent(int eventId);
         IEnumerable<DeviceInEventViewModel> GetDevicesInCompetitionInstance(int id);
         IEnumerable<EventListForDevicesViewModel> GetEventsForADevice(int id);
         Task<Boolean> RemoveDeviceInEventAsync(DevicesInEvent d);

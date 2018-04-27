@@ -262,5 +262,17 @@ namespace Timataka.Core.Services
         {
             return await _repo.RemoveDeviceInEventAsync(d);
         }
+
+        /// <summary>
+        /// Get list of devices that have not been assigned to an event.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns>List of devices</returns>
+        public IEnumerable<Device> GetUnassignedDevicesForEvent(int eventId)
+        {
+            return (from d in GetDevicesByType(_eventService.GetEventById(eventId).ActiveChip)
+                    where DeviceAssigned(new DevicesInEvent { DeviceId = d.Id, EventId = eventId }) == false
+                    select d).ToList();
+        }
     }
 }

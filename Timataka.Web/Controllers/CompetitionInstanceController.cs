@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.MarkerViewModels;
 using Timataka.Core.Services;
 
@@ -198,9 +200,23 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AssignDevice")]
         public IActionResult AssignDevice(int competitionId, int competitionInstanceId)
         {
-            ViewBag.Devices = _deviceService.GetDevices();
-            ViewBag.Events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
+            List<EventViewModel> events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId).ToList();
+            events.Insert(0, new EventViewModel { Id = 0, Name = "Select" });
+            ViewBag.Events = events;
+            List<Device> devices = new List<Device> { new Device { Active = false, Id = 0, Name = "Select" } };
+            ViewBag.Devices = devices;
             return View();
+        }
+
+        public JsonResult GetUnassignedDevices(int eventId)
+        {
+            List<Device> devices = _deviceService.GetUnassignedDevicesForEvent(eventId).ToList();
+            if(devices.Count() != 0)
+            {
+                devices.Insert(0, new Device { Active = false, Id = 0, Name = "Select" });
+            }
+            ViewBag.Devices = devices;
+            return Json(new SelectList(devices, "Id", "Name"));
         }
 
         [HttpPost]

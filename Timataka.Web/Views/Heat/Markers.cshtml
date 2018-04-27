@@ -30,7 +30,7 @@
                        asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                        asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                        asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-                       asp-route-heatId="@ViewContext.RouteData.Values["heatId"]">Heat Number @Model.HeatNumber</a> /
+                       asp-route-heatId="@ViewContext.RouteData.Values["heatId"]">Heat @Model.HeatNumber</a> /
 
                     Markers
                 </span>
@@ -38,6 +38,16 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <a asp-controller="Admin"
+               asp-action="Event"
+               asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" class="btn btn-primary btn-sm rounded-s">Heats</a>
+            <a asp-controller="Admin"
+               asp-action="Heat"
+               asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" class="btn btn-primary btn-sm rounded-s">Contestants</a>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-12">
@@ -111,8 +121,8 @@
                         }
                     </select>
                 </div>
-                <input type="hidden" 
-                       asp-for="@Model.AssingnMarkerToHeatViewModel.HeatId" 
+                <input type="hidden"
+                       asp-for="@Model.AssingnMarkerToHeatViewModel.HeatId"
                        value="@ViewContext.RouteData.Values["heatId"]" />
                 <div class="form-group">
                     <input type="submit" value="Assign" class="btn btn-primary" />

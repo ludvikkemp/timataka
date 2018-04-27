@@ -96,6 +96,11 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
+        DateTime RoundUp(DateTime dt, TimeSpan d)
+        {
+            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
+        }
+
         public IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId)
         {
             var results = (from r in _db.Results
@@ -127,7 +132,9 @@ namespace Timataka.Core.Data.Repositories
 
             foreach(var result in results)
             {
-                result.FinalTime = CalculateFinalTime(result.HeatId, result.ChipCode).ToString();
+                int rawTime = CalculateFinalTime(result.HeatId, result.ChipCode);
+                TimeSpan finalTime = TimeSpan.FromMilliseconds(rawTime);
+                result.FinalTime = finalTime.ToString(@"hh\:mm\:ss");
             }
 
             return results;
@@ -180,7 +187,10 @@ namespace Timataka.Core.Data.Repositories
 
             foreach (var result in results)
             {
-                result.FinalTime = CalculateFinalTime(result.HeatId, result.ChipCode).ToString();
+                int rawTime = CalculateFinalTime(result.HeatId, result.ChipCode);
+                DateTime finalTimeDateTime = new DateTime(1970, 1, 1).AddMilliseconds(rawTime);
+                String finalTime = finalTimeDateTime.TimeOfDay.ToString();
+                result.FinalTime = finalTime;
             }
 
             return results;
@@ -196,11 +206,6 @@ namespace Timataka.Core.Data.Repositories
                 select t.RawTime).SingleOrDefault();
 
             return endtime - startTime;
-        }
-
-        public int NumberOfTimes()
-        {
-            return _tdb.Results.ToList().Count();
         }
 
         /// <summary>
@@ -274,6 +279,25 @@ namespace Timataka.Core.Data.Repositories
             return chipsInHeat;
         }
 
+        public Time GetTime(int heatId, string chipCode, int timeNumber)
+        {
+            return (from t in _db.Times
+                   where t.HeatId == heatId && t.ChipCode == chipCode && t.TimeNumber == timeNumber
+                   select t).SingleOrDefault();
+        }
+
+        public Boolean Remove(int heatId, string chipCode, int timeNumber)
+        {
+            Boolean result = false;
+            var time = GetTime(heatId, chipCode, timeNumber);
+            if (_db.Times.Remove(time) != null)
+            {
+                result = true;
+            }
+            _db.SaveChanges();
+            return result;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this._disposed)
@@ -292,5 +316,7 @@ namespace Timataka.Core.Data.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+
     }
 }

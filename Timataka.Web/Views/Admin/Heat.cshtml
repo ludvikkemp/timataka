@@ -25,7 +25,7 @@
                        asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                        asp-route-eventId="@Model.Event.Id">@Model.Event.Name</a> /
 
-                    Heat Number @Model.Heat.HeatNumber
+                    Heat @Model.Heat.HeatNumber
                 </span>
 
             </div>
@@ -33,6 +33,20 @@
     </div>
 
     <div class="row">
+        <div class="col-md-7">
+            <a asp-controller="Heat"
+               asp-action="AddContestant"
+               asp-route-heatId="@Model.Heat.Id"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-success btn-sm rounded-s">Add Contestant</a>
+            <a asp-controller="Admin"
+               asp-action="Event"
+               asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s">Heats</a>
+            <a asp-controller="Heat"
+               asp-action="Markers"
+               asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s">Markers</a>
+        </div>
         <div class="col-md-5">
             <form asp-action="Heat" method="get" class="">
                 <div class="input-group">
@@ -44,16 +58,6 @@
                     </span>
                 </div>
             </form>
-        </div>
-        <div class="col-md-7">
-            <a asp-controller="Heat" asp-action="AddContestant" asp-route-heatId="@Model.Heat.Id" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-primary btn-sm rounded-s"> Add Contestant </a>
-            <a asp-controller="Heat" asp-action="Markers" asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s"> Markers </a>
-            <a asp-controller="Heat" asp-action="Chips"
-               asp-route-heatId="@Model.Heat.Id"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-               class="btn btn-primary btn-sm rounded-s">Chips</a>
         </div>
     </div>
     <div class="row">

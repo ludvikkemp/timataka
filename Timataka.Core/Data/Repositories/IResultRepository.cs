@@ -32,12 +32,13 @@ namespace Timataka.Core.Data.Repositories
         int CalculateFinalTime(int heatId, string chipCode);
 
         //TimingDB
-        int NumberOfTimes();
         IEnumerable<RawResultViewModel> GetResultsFromTimingDb();
 
         Boolean AddTime(Time time);
 
         IEnumerable<Heat> GetHeatsInCompetitionInstance(int id);
         IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId);
+        Time GetTime(int heatId, string chipCode, int timeNumber);
+        Boolean Remove(int heatId, string chipCode, int timeNumber);
     }
 }

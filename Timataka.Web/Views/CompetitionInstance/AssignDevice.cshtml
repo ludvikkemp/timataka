@@ -1,5 +1,4 @@
 ﻿@model Timataka.Core.Models.ViewModels.DeviceViewModels.CreateDeviceInEventViewModel
-
 @{
     ViewData["Title"] = "AssignDevice";
     Layout = "_AdminLayout";
@@ -13,22 +12,15 @@
             <form asp-action="AssignDevice">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="DeviceId">Device</label>
-                    <select name="DeviceId" class="form-control">
-                        @foreach (var item in ViewBag.Devices)
-                         {
-                            <option value="@item.Id" DeviceId="@item.Id">@item.Name</option>
-                         }
-                    </select>
-                </div>
-                <div class="form-group">
                     <label asp-for="EventId">Event</label>
-                    <select name="EventId" class="form-control">
-                        @foreach (var item in ViewBag.Events)
-                        {
-                            <option value="@item.Id" EventId="@item.Id">@item.Name</option>
-                        }
-                    </select>
+                    <select asp-for="EventId" class="form-control"
+                            asp-items="@(new SelectList(@ViewBag.Events, "Id", "Name"))"></select>
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="DeviceId">Device</label>
+                    <select class="form-control" id="DeviceId" name="DeviceId" asp-for="DeviceId"
+                            asp-items="@(new SelectList(@ViewBag.Devices, "Id", "Name"))"></select>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Assign" class="btn btn-primary" />
@@ -38,11 +30,35 @@
     </div>
 
     <div>
-        <a asp-controller="CompetitionInstance" 
-           asp-action="Devices" 
+        <a asp-controller="CompetitionInstance"
+           asp-action="Devices"
            asp-route-competitionInstanceId=@ViewContext.RouteData.Values["competitionInstanceId"] class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 </section>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#EventId').change(function () {
+                var url = '@Url.Content("~/")' + "CompetitionInstance/GetUnassignedDevices";
+                var ddlsource = "#EventId";
+                $.getJSON(url, { EventId: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $("#DeviceId").empty();
+                    $.each(data, function (i, device) {
+                        items = items + "<option value='" + device.value + "'>" + device.text + "</option>";
+                    });
+                    $('#DeviceId').html(items);
+                });
+            });
+        });
+    </script>
+
 }
+
+

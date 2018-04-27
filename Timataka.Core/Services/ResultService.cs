@@ -7,6 +7,7 @@ using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
 using System.Linq;
 using Timataka.Core.Models.ViewModels.UserViewModels;
+using Timataka.Core.Models.ViewModels.ChipViewModels;
 
 namespace Timataka.Core.Services
 {
@@ -90,12 +91,6 @@ namespace Timataka.Core.Services
 
         //TimingDB
 
-        public int NumberOfTimes()
-        {
-            return _repo.NumberOfTimes();
-
-        }
-
         public void GetTimes()
         {
             var results = _repo.GetResultsFromTimingDb();
@@ -108,24 +103,61 @@ namespace Timataka.Core.Services
                     competitionInstanceId = r.CompetitionInstanceId;
                     heats = _repo.GetHeatsInCompetitionInstance(r.CompetitionInstanceId);
                 }
+                int counter = 0;
                 foreach (var h in heats)
                 {
                     //Can only have one entry for a single chip
-                    var exists = (from c in _repo.GetChipsInHeat(h.Id)
-                                  where r.ChipCode == c.ChipCode
-                                  select c).SingleOrDefault();
-                    if (exists != null)
+                    IEnumerable<ChipInHeatViewModel> exists = (from c in _repo.GetChipsInHeat(h.Id)
+                                                      where r.ChipCode == c.ChipCode
+                                                      select c).ToList();
+                    if(exists.Count() == 0)
+                    {
+                        break;
+                    }
+                    var existsInHeat = (from e in exists
+                                  where e.HeatId == h.Id
+                                  select e).SingleOrDefault();
+                    if (existsInHeat != null)
                     {
                         if (r.Time01 != 0)
                         {
-                            Time time01 = new Time { ChipCode = exists.ChipCode, HeatId = h.Id, RawTime = r.Time01, TimeNumber = 1, Type = TimeType.Start };
-                            _repo.AddTime(time01);
+                            Time time01 = new Time { ChipCode = existsInHeat.ChipCode, HeatId = h.Id, RawTime = r.Time01, TimeNumber = 1, Type = TimeType.Start };
+                            Time time = _repo.GetTime(h.Id, existsInHeat.ChipCode, 1);
+                            //Add time if it does not exist
+                            if (time == null)
+                            {
+                                _repo.AddTime(time01);
+                            }
+                            //Update time if different
+                            else if (time01.RawTime != time.RawTime)
+                            {
+                                _repo.Remove(h.Id, existsInHeat.ChipCode, 1);
+                                _repo.AddTime(time01);
+                            }
+                            
                         }
                         if (r.Time02 != 0)
                         {
-                            Time time02 = new Time { ChipCode = exists.ChipCode, HeatId = h.Id, RawTime = r.Time02, TimeNumber = 2, Type = TimeType.Finish };
-                            _repo.AddTime(time02);
+                            Time time02 = new Time { ChipCode = existsInHeat.ChipCode, HeatId = h.Id, RawTime = r.Time02, TimeNumber = 2, Type = TimeType.Finish };
+                            Time time = _repo.GetTime(h.Id, existsInHeat.ChipCode, 2);
+                            //Add time if it does not exist
+                            if (time == null)
+                            {
+                                _repo.AddTime(time02);
+                            }
+                            //Update time if different
+                            else if (time02.RawTime != time.RawTime)
+                            {
+                                _repo.Remove(h.Id, existsInHeat.ChipCode, 1);
+                                _repo.AddTime(time02);
+                            }
                         }
+                        counter++;
+                    }
+                    if (counter == exists.Count())
+                    {
+                        counter = 0;
+                        break;
                     }
                 }
             }
