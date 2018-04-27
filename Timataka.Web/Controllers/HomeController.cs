@@ -44,8 +44,8 @@ namespace Timataka.Web.Controllers
                 UpcomingAthleticsEvents = _competitionService.GetUpcomingEvents(AthleticsId),
                 LatestCyclingResults = _competitionService.GetLatestResults(CyclingId),
                 UpcomingCyclingEvents = _competitionService.GetUpcomingEvents(CyclingId),
-                LatestOtherResults = _competitionService.GetLatestResults(-1),
-                UpcomingOtherEvents = _competitionService.GetUpcomingEvents(-1)
+                LatestOtherResults = _competitionService.GetLatestResults(0),
+                UpcomingOtherEvents = _competitionService.GetUpcomingEvents(0)
             };
             return View(model);
         }

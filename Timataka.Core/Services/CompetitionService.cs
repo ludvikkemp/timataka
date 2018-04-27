@@ -268,6 +268,9 @@ namespace Timataka.Core.Services
                     where i.Status == Status.Ongoing || i.Status == Status.Finished || i.Status == Status.Closed
                     where i.Deleted == false
                     join c in _repo.Get() on i.CompetitionId equals c.Id
+                    where (from e in _repo.GetEventsForInstance(i.Id)
+                        where e.SportId != 1 && e.SportId != 2
+                        select e).Any()
                     orderby i.DateFrom descending
                     select new LatestResultsDTO
                     {
@@ -320,6 +323,9 @@ namespace Timataka.Core.Services
                     where i.Status == Status.Pending || i.Status == Status.OpenForRegistration
                     where i.Deleted == false
                     join c in _repo.Get() on i.CompetitionId equals c.Id
+                    where (from e in _repo.GetEventsForInstance(i.Id)
+                        where e.SportId != 1 && e.SportId != 2
+                           select e).Any()
                     orderby i.DateFrom ascending
                     select new LatestResultsDTO
                     {

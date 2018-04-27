@@ -149,7 +149,9 @@
                                         {
                                             <tr>
                                                 <th>
-                                                    Test
+                                                    <a asp-controller="Home" asp-action="Instance"
+                                                       asp-route-competitionId="@item.CompetitionId"
+                                                       asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
                                                 </th>
                                                 <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
                                             </tr>
