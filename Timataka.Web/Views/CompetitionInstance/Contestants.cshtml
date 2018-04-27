@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-md-7">
             <a asp-controller="CompetitionInstance"
-               asp-action="AddContestant"
+               asp-action="SelectContestant"
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
                class="btn btn-success btn-sm rounded-s">Add Contestant</a>
@@ -58,27 +58,6 @@
                     </span>
                 </div>
             </form>
-        </div>
-
-        <div class="col-md-7">
-            <a asp-controller="CompetitionInstance"
-               asp-action="SelectContestant"
-               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
-               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Add Contestant</a>
-
-            <a asp-controller="CompetitionInstance"
-               asp-action="Devices"
-               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
-               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Devices</a>
-
-            <a asp-controller="CompetitionInstance"
-               asp-action="Markers"
-               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
-               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Markers</a>
-
         </div>
 
     </div>
