@@ -338,6 +338,7 @@ body {
             opacity: 1;
             background-color: transparent;
             border-color: transparent; }
+
   .card.card-default > .card-header {
     background-color: #fff;
     color: inherit; }

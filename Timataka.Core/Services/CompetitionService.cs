@@ -18,7 +18,6 @@ namespace Timataka.Core.Services
         public CompetitionService(ICompetitionRepository repo)
         {
             _repo = repo;
-
         }
 
         public CompetitionService()
@@ -28,7 +27,6 @@ namespace Timataka.Core.Services
 
         public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId)
         {
-
             return _repo.GetEditContestantChipHeatResultDtoFor(userId, eventId, competitionInstanceId);
         }
 
@@ -364,7 +362,6 @@ namespace Timataka.Core.Services
         public IEnumerable<Heat> GetHeatsInCompetitionInstance(int competitionInstanceId)
         {
             return _repo.GetHeatsInCompetitionInstance(competitionInstanceId);
-
         }
 
         public IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId)

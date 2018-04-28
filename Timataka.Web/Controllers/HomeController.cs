@@ -135,7 +135,6 @@ namespace Timataka.Web.Controllers
         [Route("Results/Competition/{competitionId}/Instance/{instanceId}/Event/{eventId}/Result")]
         public IActionResult Event(int competitionId, int instanceId, int eventId)
         {
-            
             var eventObj = _eventService.GetEventByIdAsync(eventId);
             eventObj.Wait();
             ViewBag.EventName = eventObj.Result.Name;

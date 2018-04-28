@@ -126,28 +126,19 @@ namespace Timataka.Core.Data.Repositories
             return admins;
         }
 
-        // This Function May Cause Problems Where Users Become In The Thousands
-        // Algorythm is x'2
         public IEnumerable<UserViewModel> GetNonAdminUsers()
         {
             var users = GetUsers();
-            var nonAdmins = new List<UserViewModel>();
-            foreach (var user in users)
-            {
-                // Checks if user is only in "User" role
-                if (user.Roles.Count == 1)
+            return (from user in users
+                where user.Roles.Count == 1
+                select new UserViewModel
                 {
-                    nonAdmins.Add(new UserViewModel
-                    {
-                        Id = user.Id,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Username = user.Username,
-                        Role = "User"
-                    });
-                }
-            }
-            return nonAdmins;
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Username = user.Username,
+                    Role = "User"
+                }).ToList();
         }
 
         public async Task<UserViewModel> GetUserByIdAsync(string userId)

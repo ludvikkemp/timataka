@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Reflection.Emit;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
-using Remotion.Linq.Clauses;
 using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
-using Timataka.Core.Models.ViewModels.AccountViewModels;
-using Timataka.Core.Models.ViewModels.AdminViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
-using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 
 namespace Timataka.Web.Controllers
