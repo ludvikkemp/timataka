@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Timataka.Core.Models.ViewModels.UserViewModels.MyCompetitionsViewModel>
+﻿@using System.Globalization
+@model IEnumerable<Timataka.Core.Models.ViewModels.UserViewModels.MyCompetitionsViewModel>
 
 
 @{
@@ -48,7 +49,6 @@
                                                 <th>Event</th>
                                                 <th>Competition</th>
                                                 <th>Date From</th>
-                                                <th>Date To</th>
                                                 <th>Location</th>
                                             </tr>
                                         </thead>
@@ -57,7 +57,7 @@
                                             {
                                                 if (item.Instance.Deleted == false)
                                                 {
-                                                    @foreach(var eventObj in item.Events)
+                                                    foreach(var eventObj in item.Events)
                                                     {
                                                         <tr>
                                                             <td>
@@ -67,10 +67,7 @@
                                                                 @item.Instance.Name
                                                             </td>
                                                             <td>
-                                                                @eventObj.DateFrom
-                                                            </td>
-                                                            <td>
-                                                                @eventObj.DateTo
+                                                                @item.Instance.DateFrom.ToString("dd. MMM yyyy kl: hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))
                                                             </td>
                                                             <td>
                                                                 @item.Instance.Location

@@ -157,9 +157,12 @@
                 <span asp-validation-for="Nationality" class="text-danger"></span>
             </div>
             <div>
-                <a asp-controller="Admin"
-                   asp-action="EditUser"
-                   asp-route-username="@Model.UserName"
+                <a asp-controller="CompetitionInstance"
+                   asp-action="EditUserInfo"
+                   asp-route-userId="@ViewContext.RouteData.Values["userId"]"
+                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                   asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                    class="btn btn-primary">Edit User Info</a>
             </div>
         </div>
@@ -170,7 +173,13 @@
            asp-action="Contestants"
            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
            asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-           class="btn btn-secondary-outline btn-sm">Back to Contestants</a>
+           class="btn btn-secondary-outline btn-sm">Contestants in Competition</a>
+        <a asp-controller="Event"
+           asp-action="Contestants"
+           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+           class="btn btn-secondary-outline btn-sm">Contestants in Event</a>
     </div>
 </section>
 @section Scripts {

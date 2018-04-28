@@ -23,11 +23,11 @@
 
     </environment>
 </head>
-<body>
+<body style="background-color:#e8eef4">
 
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Timataka</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" >Tímataka</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -37,18 +37,18 @@
                 <ul class="navbar-nav mr-auto">
                     @if (User.IsInRole("Admin") || User.IsInRole("Superadmin"))
     {
-                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index">MyAdmin</a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
 }
 
                     @if (User.IsInRole("User"))
     {
-                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">MySite</a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Mín Síða</a></li>
 }
 
 
-                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Results">Results</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Results">Úrslit</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">Um Okkur</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Hafa Samband</a></li>
 
                 </ul>
 
@@ -59,7 +59,7 @@
     </nav>
 
 
-    <div class="container body-content" style="padding-top: 20px;">
+    <div class="container body-content" style="padding-top: 20px;background-color:rgba(0, 0, 0, 0.01)">
         @RenderBody()
         <hr />
         <footer>

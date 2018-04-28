@@ -1,4 +1,5 @@
-﻿@model Timataka.Core.Models.Dto.AdminDTO.UserRoleDto
+﻿@using Timataka.Core.Models.Entities
+@model Timataka.Core.Models.Dto.AdminDTO.UserRoleDto
 
 @{
     ViewBag.Title = "title";
@@ -35,6 +36,7 @@
                                     <tbody>
                                         @foreach (var item in Model.Admins)
                                         {
+                                            
                                             <tr>
                                                 
                                                     <td>@item.FirstName @item.LastName</td>
