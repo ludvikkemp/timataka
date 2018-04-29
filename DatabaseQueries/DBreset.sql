@@ -39,8 +39,8 @@ DROP TABLE dbo.Clubs
 DROP TABLE dbo.Sports;
 
 CREATE TABLE [dbo].[Sports] (
-    [Id]   INT            IDENTITY (1, 1) NOT NULL,
-    [Name] NVARCHAR (MAX) NULL,
+    [Id]      INT            IDENTITY (1, 1) NOT NULL,
+    [Name]    NVARCHAR (MAX) NULL,	
     CONSTRAINT [PK_Sports] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -61,6 +61,7 @@ CREATE TABLE [dbo].[Clubs] (
     [NameAbbreviation] NVARCHAR (MAX) NULL,
     [Phone]            NVARCHAR (MAX) NULL,
     [Webpage]          NVARCHAR (MAX) NULL,
+
     CONSTRAINT [PK_Clubs] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -88,6 +89,7 @@ CREATE TABLE [dbo].[Disciplines] (
     [Id]      INT            IDENTITY (1, 1) NOT NULL,
     [Name]    NVARCHAR (MAX) NULL,
     [SportId] INT            NOT NULL,
+	[Deleted] BIT            NOT NULL,	
     CONSTRAINT [PK_Disciplines] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Disciplines_Sports_SportId] FOREIGN KEY ([SportId]) REFERENCES [dbo].[Sports] ([Id]) ON DELETE CASCADE
 );
@@ -97,26 +99,26 @@ CREATE NONCLUSTERED INDEX [IX_Disciplines_SportId]
     ON [dbo].[Disciplines]([SportId] ASC);
 
 SET IDENTITY_INSERT [dbo].[Disciplines] ON
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('1','Track & Fields',1)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('2','Road Running',1)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('3','Race Walking',1)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('4','Cross Country Running',1)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('5','Mountain Running',1)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('6','Trail Running',1)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('7','Road Racing',2)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('8','Track Cycling',2)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('9','Cyclo Cross',2)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('10','Mountain Bike Racing',2)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('11','BMX racing',2)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('12','Swimming',3)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('13','Open Water Swimming',3)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('14','Sled Dog Racing',5)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('15','Alpine Skiing',4)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('16','Nordic Skiing',4)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('17','Freestyle Skiing',4)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('18','Snowboarding',4)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('19','Triathlon',6)
-INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId]) VALUES ('20','Biathlon',7)
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('1','Track & Fields',1,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('2','Road Running',1,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('3','Race Walking',1,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('4','Cross Country Running',1,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('5','Mountain Running',1,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('6','Trail Running',1,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('7','Road Racing',2,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('8','Track Cycling',2,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('9','Cyclo Cross',2,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('10','Mountain Bike Racing',2,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('11','BMX racing',2,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('12','Swimming',3,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('13','Open Water Swimming',3,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('14','Sled Dog Racing',5,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('15','Alpine Skiing',4,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('16','Nordic Skiing',4,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('17','Freestyle Skiing',4,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('18','Snowboarding',4,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('19','Triathlon',6,'False')
+INSERT INTO [dbo].[Disciplines] ([Id], [Name], [SportId], [Deleted]) VALUES ('20','Biathlon',7,'False')
 SET IDENTITY_INSERT [dbo].[Disciplines] OFF
 
 CREATE TABLE [dbo].[Courses] (
@@ -126,17 +128,19 @@ CREATE TABLE [dbo].[Courses] (
     [ExternalCourseId] NVARCHAR (MAX) NULL,
     [Lap]              BIT            NOT NULL,
     [Name]             NVARCHAR (MAX) NULL,
+	[Deleted]		   BIT            NOT NULL,		   
     CONSTRAINT [PK_Courses] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Courses_Disciplines_DisciplineId] FOREIGN KEY ([DisciplineId]) REFERENCES [dbo].[Disciplines] ([Id]) ON DELETE CASCADE
 );
 
-INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap]) VALUES ('Gleðibankahlaup 2017', '2', '5000', '1R501', 'FALSE')
-INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap]) VALUES ('Gleðibankahlaup 2017', '2', '10000', '1R1001', 'FALSE')
-INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap]) VALUES ('Vorhlaup 2017', '2', '1000', '1R101', 'TRUE')
-INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap]) VALUES ('Vorhlaup 2018', '2', '1000', '1R102', 'TRUE')
-INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap]) VALUES ('Laugavegurinn', '5', '50000', '1M5001', 'TRUE')
-INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap]) VALUES ('Jökulílan', '7', '160000', '1C1001', 'TRUE')
-INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap]) VALUES ('Urriðavatnssundið', '13', '1500', '1OWS01', 'TRUE')
+INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap], [Deleted]) VALUES ('Gleðibankahlaup 2017', '2', '5000', '1R501', 'FALSE', 'False')
+INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap], [Deleted]) VALUES ('Gleðibankahlaup 2017', '2', '10000', '1R1001', 'FALSE', 'False')
+INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap], [Deleted]) VALUES ('Vorhlaup 2017', '2', '1000', '1R101', 'TRUE', 'False')
+INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap], [Deleted]) VALUES ('Vorhlaup 2018', '2', '1000', '1R102', 'TRUE', 'False')
+INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap], [Deleted]) VALUES ('Laugavegurinn', '5', '50000', '1M5001', 'TRUE', 'False')
+INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap], [Deleted]) VALUES ('Jökulílan', '7', '160000', '1C1001', 'TRUE', 'False')
+INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap], [Deleted]) VALUES ('Urriðavatnssundið', '13', '1500', '1OWS01', 'TRUE', 'False')
+INSERT INTO [dbo].[Courses] ([Name], [DisciplineId], [Distance], [ExternalCourseId], [Lap], [Deleted]) VALUES ('Heimaeyjarhringurinn', '6', '20000', '1TR01', 'TRUE', 'False')
 
 CREATE TABLE [dbo].[Competitions] (
     [Id]          INT            IDENTITY (1, 1) NOT NULL,

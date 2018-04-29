@@ -174,7 +174,7 @@ namespace Timataka.Core.Data.Repositories
                               CompetitionInstanceId = m.CompetitionInstanceId,
                               Location = m.Location,
                               Time = m.MilliSecs,
-                              Type = (m.Type == "Gun" ? Models.Entities.Type.Gun : Models.Entities.Type.Marker)
+                              Type = (m.Type == "Gunshot" ? Models.Entities.Type.Gun : Models.Entities.Type.Marker)
                           }).ToList();
             return result;
         }

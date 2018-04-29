@@ -111,11 +111,13 @@ namespace Timataka.Core.Data.Repositories
                                join c in _db.ContestantsInHeats on u.UserId equals c.UserId
                                where h.EventId == eventId && u.HeatId == h.Id && c.HeatId == h.Id
                                select new ResultViewModel
-                               {
+                               { 
                                    Club = r.Club,
                                    Country = r.Country,
                                    Created = r.Created,
-                                   FinalTime = r.FinalTime,
+                                   RawGunTime = 0,
+                                   GunTime = r.FinalTime,
+                                   ChipTime = "",
                                    Gender = r.Gender,
                                    HeatId = r.HeatId,
                                    HeatNumber = h.HeatNumber,
@@ -132,12 +134,24 @@ namespace Timataka.Core.Data.Repositories
 
             foreach(var result in results)
             {
-                int rawTime = CalculateFinalTime(result.HeatId, result.ChipCode);
+                int rawTime = CalculateGuntime(result.HeatId, result.ChipCode);
+                result.RawGunTime = rawTime;
                 TimeSpan finalTime = TimeSpan.FromMilliseconds(rawTime);
-                result.FinalTime = finalTime.ToString(@"hh\:mm\:ss");
-            }
+                if (rawTime % 1000 != 0)
+                {
+                    finalTime += TimeSpan.FromSeconds(1);
+                }
+                result.GunTime = finalTime.ToString(@"hh\:mm\:ss");
 
-            return results;
+                rawTime = CalculateChipTime(result.HeatId, result.ChipCode);
+                TimeSpan chipTime = TimeSpan.FromMilliseconds(rawTime);
+                if (rawTime % 1000 != 0)
+                {
+                    chipTime += TimeSpan.FromSeconds(1);
+                }
+                result.ChipTime = chipTime.ToString(@"hh\:mm\:ss");
+            }
+            return results.OrderBy(o => o.RawGunTime);
         }
 
         public IEnumerable<MyResultsViewModel> GetResultsForUser(string userId)
@@ -171,7 +185,8 @@ namespace Timataka.Core.Data.Repositories
                                    EventDateTo = e.DateTo,
                                    EventId = e.Id,
                                    EventName = e.Name,
-                                   FinalTime = r.FinalTime,
+                                   GunTime = r.FinalTime,
+                                   ChipTime = "",
                                    Gender = r.Gender,
                                    HeatNumber = h.HeatNumber,
                                    Modified = r.Modified,
@@ -187,25 +202,49 @@ namespace Timataka.Core.Data.Repositories
 
             foreach (var result in results)
             {
-                int rawTime = CalculateFinalTime(result.HeatId, result.ChipCode);
-                DateTime finalTimeDateTime = new DateTime(1970, 1, 1).AddMilliseconds(rawTime);
-                String finalTime = finalTimeDateTime.TimeOfDay.ToString();
-                result.FinalTime = finalTime;
+                int rawTime = CalculateGuntime(result.HeatId, result.ChipCode);
+                TimeSpan finalTime = TimeSpan.FromMilliseconds(rawTime);
+                if (rawTime % 1000 != 0)
+                {
+                    finalTime += TimeSpan.FromSeconds(1);
+                }
+                result.GunTime = finalTime.ToString(@"hh\:mm\:ss");
+
+                rawTime = CalculateChipTime(result.HeatId, result.ChipCode);
+                TimeSpan chipTime = TimeSpan.FromMilliseconds(rawTime);
+                if (rawTime % 1000 != 0)
+                {
+                    chipTime += TimeSpan.FromSeconds(1);
+                }
+                result.ChipTime = chipTime.ToString(@"hh\:mm\:ss");
             }
 
             return results;
         }
 
-        public int CalculateFinalTime(int heatId, string chipCode)
+        public int CalculateGuntime(int heatId, string chipCode)
         {
-            var startTime = (from t in _db.Times
-                where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 1
-                select t.RawTime).SingleOrDefault();
-            var endtime = (from t in _db.Times
+            var guntime = (from mih in _db.MarkersInHeats
+                             where mih.HeatId == heatId
+                             join m in _db.Markers on mih.MarkerId equals m.Id
+                             where m.Type == Models.Entities.Type.Gun
+                             select m.Time).SingleOrDefault();
+            var finishtime = (from t in _db.Times
                 where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 2
                 select t.RawTime).SingleOrDefault();
 
-            return endtime - startTime;
+            return finishtime - guntime;
+        }
+
+        public int CalculateChipTime(int heatId, string chipCode)
+        {
+            var chiptime = (from t in _db.Times
+                            where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 1
+                            select t.RawTime).SingleOrDefault();
+            var finishtime = (from t in _db.Times
+                           where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 2
+                           select t.RawTime).SingleOrDefault();
+            return finishtime - chiptime;
         }
 
         /// <summary>
@@ -220,8 +259,8 @@ namespace Timataka.Core.Data.Repositories
                           {
                               ChipCode = c.Chip,
                               CompetitionInstanceId = r.CompetitionInstanceId,
-                              Time01 = r.Time01,
-                              Time02 = r.Time02
+                              Time01 = r.Time01 == null ? 0 : (int)r.Time01,
+                              Time02 = r.Time02 == null ? 0 : (int)r.Time02
                           }).ToList();
             return result;
         }

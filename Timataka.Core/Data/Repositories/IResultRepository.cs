@@ -29,7 +29,7 @@ namespace Timataka.Core.Data.Repositories
 
         IEnumerable<MyResultsViewModel> GetResultsForUser(string userId);
         IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId);
-        int CalculateFinalTime(int heatId, string chipCode);
+        int CalculateGuntime(int heatId, string chipCode);
 
         //TimingDB
         IEnumerable<RawResultViewModel> GetResultsFromTimingDb();

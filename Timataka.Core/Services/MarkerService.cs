@@ -127,7 +127,12 @@ namespace Timataka.Core.Services
             var results = _repo.GetMarkersFromTimingDb();
             foreach (var item in results)
             {
-                await AddAsync(item);
+                if((from m in GetMarkersForCompetitionInstance(item.CompetitionInstanceId)
+                    where m.Time == item.Time
+                    select m).SingleOrDefault() == null)
+                {
+                    await AddAsync(item);
+                }
             }
         }
     }

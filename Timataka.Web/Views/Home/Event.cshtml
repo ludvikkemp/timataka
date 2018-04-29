@@ -59,15 +59,16 @@
                                                 <th>Year of birth</th>
                                                 <th>Club</th>
                                                 <th>Country</th>
-                                                <th>Time</th>
+                                                <th>Guntime (Chiptime)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @{int i = 1;}
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
                                                     <td>
-                                                        Rank
+                                                        @i
                                                     </td>
                                                     <td>
                                                         @item.Bib
@@ -85,9 +86,10 @@
                                                         @item.Country
                                                     </td>
                                                     <td>
-                                                        @item.FinalTime
+                                                        @item.GunTime (@item.ChipTime)
                                                     </td>
                                                 </tr>
+                                                i++;
                                             }
                                         </tbody>
                                     </table>

@@ -49,6 +49,11 @@
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
                class="btn btn-primary btn-sm rounded-s">GetTimes</a>
+            <a asp-controller="Heat"
+               asp-action="GetMarkers"
+               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
+               class="btn btn-primary btn-sm rounded-s">GetMarkers</a>
 
         </div>
 

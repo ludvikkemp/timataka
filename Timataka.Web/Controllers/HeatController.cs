@@ -375,6 +375,14 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("CompetitionInstance", "Admin", new { competitionId = competitionId, competitionInstanceId = competitionInstanceId });
         }
 
+        [HttpGet]
+        [Authorize(Roles= "Admin")]
+        public async Task<IActionResult> GetMarkers(int competitionId, int competitionInstanceId)
+        {
+            await _markerService.GetMarkersFromTimingDb();
+            return RedirectToAction("CompetitionInstance", "Admin", new { competitionId = competitionId, competitionInstanceId = competitionInstanceId });
+        }
+
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Results/{userId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -389,7 +397,7 @@ namespace Timataka.Web.Controllers
                 Country = entity.Country,
                 Nationality = entity.Nationality,
                 Status = entity.Status,
-                FinalTime = entity.FinalTime,
+                GunTime = entity.FinalTime,
                 Gender = entity.Gender,
                 Name = entity.Name,
                 Club = entity.Club,
@@ -419,7 +427,7 @@ namespace Timataka.Web.Controllers
                     Name = model.Name,
                     Gender = model.Gender,
                     Country = model.Country,
-                    FinalTime = model.FinalTime,
+                    FinalTime = model.GunTime,
                     HeatId =   model.HeatId,
                     Nationality = model.Nationality,
                     Status = model.Status,
