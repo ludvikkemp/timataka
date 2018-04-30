@@ -127,6 +127,15 @@ namespace Timataka.Core.Data.Repositories
 
         public async Task<MarkerInHeat> AddMarkerInHeatAsync(MarkerInHeat m)
         {
+            var Guntime = (from mih in _db.MarkersInHeats
+                           where mih.HeatId == m.HeatId
+                           join mar in _db.Markers on mih.MarkerId equals mar.Id
+                           where mar.Type == Models.Entities.Type.Gun
+                           select mar).SingleOrDefault();
+            if(Guntime != null)
+            {
+                return null;
+            }
             await _db.MarkersInHeats.AddAsync(m);
             await _db.SaveChangesAsync();
             return m;

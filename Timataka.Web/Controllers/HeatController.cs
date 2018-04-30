@@ -350,7 +350,10 @@ namespace Timataka.Web.Controllers
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers")]
         public async Task<IActionResult> AssignMarker(AssignMarkerToHeatViewModel model, int competitionId, int competitionInstanceId, int eventId, int heatId, int markerId)
         {
-            await _markerService.AssignMarkerToHeatAsync(model);
+            if(await _markerService.AssignMarkerToHeatAsync(model) == false)
+            {
+                return Json("Guntime already assigned");
+            }
             return RedirectToAction("Markers", "Heat", new { competitionId, competitionInstanceId, eventId, heatId } );
         }
 
