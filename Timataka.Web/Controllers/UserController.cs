@@ -213,7 +213,7 @@ namespace Timataka.Web.Controllers
 
             var model = _resultService.GetResultsForUser(userId);
 
-            model = model.OrderBy(x => x.FinalTime);
+            model = model.OrderBy(x => x.GunTime);
             model = model.OrderBy(x => x.DisciplineName);
 
             return View(model);

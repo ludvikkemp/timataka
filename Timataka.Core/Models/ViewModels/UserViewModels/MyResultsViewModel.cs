@@ -44,7 +44,8 @@ namespace Timataka.Core.Models.ViewModels.UserViewModels
         public string Country { get; set; }
         public string Nationality { get; set; }
         public ResultStatus Status { get; set; }
-        public string FinalTime { get; set; }
+        public string GunTime { get; set; }
+        public string ChipTime { get; set; }
         public string Gender { get; set; }
         public string Club { get; set; }
         public string Notes { get; set; }

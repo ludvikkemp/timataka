@@ -264,13 +264,13 @@ namespace Timataka.Core.Services
         }
 
         /// <summary>
-        /// Get list of devices that have not been assigned to an event.
+        /// Get list of devices that have not been assigned to an event and match the type of the event.
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns>List of devices</returns>
         public IEnumerable<Device> GetUnassignedDevicesForEvent(int eventId)
         {
-            return (from d in GetDevices()
+            return (from d in GetDevicesByType(_eventService.GetEventById(eventId).ActiveChip)
                     where DeviceAssigned(new DevicesInEvent { DeviceId = d.Id, EventId = eventId }) == false
                     select d).ToList();
         }

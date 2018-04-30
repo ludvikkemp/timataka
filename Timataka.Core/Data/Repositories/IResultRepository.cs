@@ -29,16 +29,15 @@ namespace Timataka.Core.Data.Repositories
 
         IEnumerable<MyResultsViewModel> GetResultsForUser(string userId);
         IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId);
-        int CalculateFinalTime(int heatId, string chipCode);
+        int CalculateGuntime(int heatId, string chipCode);
 
         //TimingDB
         IEnumerable<RawResultViewModel> GetResultsFromTimingDb();
-
         Boolean AddTime(Time time);
-
         IEnumerable<Heat> GetHeatsInCompetitionInstance(int id);
         IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId);
         Time GetTime(int heatId, string chipCode, int timeNumber);
         Boolean Remove(int heatId, string chipCode, int timeNumber);
+        
     }
 }

@@ -11,7 +11,7 @@ namespace Timataka.Core.Models.Entities
         public int Pid { get; set; }
         public int? Lap { get; set; }
         public int CompetitionInstanceId { get; set; }
-        public int Time01 { get; set; }
-        public int Time02 { get; set; }
+        public int? Time01 { get; set; }
+        public int? Time02 { get; set; }
     }
 }
