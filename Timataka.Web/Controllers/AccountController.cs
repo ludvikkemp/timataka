@@ -254,13 +254,18 @@ namespace Timataka.Web.Controllers
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
                     await _userManager.AddToRoleAsync(user, "User");
-                    _cache.Remove("listOfUsers");
+                    _logger.LogInformation("User created a new account with password.");
 
-                    return RedirectToLocal(returnUrl);
+                    var user2 = await _userManager.GetUserAsync(User);
+                    if (user2 == null)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _cache.Remove("listOfUsers");
+                        return RedirectToLocal(returnUrl);
+                    }
+                    _cache.Remove("listOfUsers");
+                    return RedirectToAction("Users", "Admin");
                 }
                 AddErrors(result);
             }

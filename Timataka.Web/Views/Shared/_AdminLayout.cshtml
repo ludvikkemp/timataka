@@ -35,7 +35,7 @@
                         <i class="fa fa-home"></i>
                         <span>Home Page</span>
                     </a>
-                    <a asp-area="" asp-controller="User" asp-action="Index" class="btn btn-sm header-btn">
+                    <a asp-area="" asp-controller="User" asp-action="Competitions" class="btn btn-sm header-btn">
                         <i class="fa fa-user"></i>
                         <span>User Page</span>
                     </a>
@@ -54,11 +54,6 @@
                     <nav class="menu">
                         <ul class="sidebar-menu metismenu" id="sidebar-menu">
 
-                            <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Index">
-                                    <i class="fa fa-home"></i> Dashboard
-                                </a>
-                            </li>
                             @if (User.IsInRole("Superadmin"))
     {
                         <li>
@@ -75,30 +70,9 @@
                                     <i class="fa fa-users"></i> Users
                                 </a>
                             </li>
-
-                            <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Sports">
-                                    <i class="fa fa-table"></i> Sports
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Clubs">
-                                    <i class="fa fa-handshake-o"></i> Clubs
-                                </a>
-                            </li>
                             <li>
                                 <a asp-area="" asp-controller="Admin" asp-action="Competitions">
                                     <i class="fa fa-trophy"></i> Competitions
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Courses">
-                                    <i class="fa fa-bicycle"></i> Courses
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Admin" asp-action="Devices">
-                                    <i class="fa fa-briefcase"></i> Devices
                                 </a>
                             </li>
                             <li>
@@ -119,6 +93,24 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="Devices">
+                                    <i class="fa fa-briefcase"></i> Devices
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="Sports">
+                                    <i class="fa fa-table"></i> Sports
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-area="" asp-controller="Admin" asp-action="Courses">
+                                    <i class="fa fa-bicycle"></i> Courses
+                                </a>
+                            </li>
+
+
 
                         </ul>
                     </nav>

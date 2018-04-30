@@ -38,7 +38,7 @@
                         </a>
                         @if (User.IsInRole("Admin") || User.IsInRole("Superadmin"))
                         {
-                        <a asp-area="" asp-controller="Admin" asp-action="Index" class="btn btn-sm header-btn">
+                        <a asp-area="" asp-controller="Admin" asp-action="Competitions" class="btn btn-sm header-btn">
                         <i class="fa fa-lock"></i>
                         <span>Admin Page</span>
                         </a>
@@ -57,14 +57,9 @@
                             </div> MySite
                         </div>
                     </div>
-                    <nav class="menu">
+                    <nav>
                         <ul class="sidebar-menu metismenu" id="sidebar-menu">
 
-                            <li>
-                                <a asp-area="" asp-controller="" asp-action="">
-                                    <i class="fa fa-home"></i> Dashboard
-                                </a>
-                            </li>
 
                             <li>
                                 <a asp-area="" asp-controller="" asp-action="">

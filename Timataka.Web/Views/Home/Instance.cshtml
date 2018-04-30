@@ -1,4 +1,6 @@
-﻿@model Timataka.Core.Models.Dto.AdminDTO.CompetitionInstanceDTO
+﻿@using System.Globalization
+@using Timataka.Core.Models.Entities
+@model Timataka.Core.Models.Dto.AdminDTO.CompetitionInstanceDTO
 
 @{
     Layout = "_Layout";
@@ -8,99 +10,100 @@
 
         <div class="row">
             <div class="col-md-12">
-                <span class="title">
-                    <a asp-controller="Home"
-                       asp-action="Competition"
-                       asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
+                <h4>
+                    <span class="title">
+                        <a asp-controller="Home"
+                           asp-action="Competition"
+                           asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
 
-                    @Model.CompetitionInstance.Name
-                </span>
-
+                        @Model.CompetitionInstance.Name
+                    </span>
+                </h4>
             </div>
         </div>
 
     </div>
+    @foreach (var e in Model.Events)
+    {
+        if (e.Deleted == false)
+        {
+            <div class="row" style="margin-bottom:20px;">
+                <div class="col-md-12">
+                    <div class="card">
+                        <section class="section">
+                            <div class="col-md-12">
+                                <h5 class="title" style="margin-top:12px; margin:12px;"><a asp-controller="Home" asp-action="Event"
+                                                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                                                           asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]"
+                                                                                           asp-route-eventId="@e.Id">@e.Name</a> - @e.DateFrom.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</h5>
+                                
+                                <div class="card" style="margin-top: 10px; margin-bottom: 15px;">
 
-    <div class="row">
+                                    <section class="example">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
 
-        <div class="col-md-5">
-            <form asp-action="Instance" method="get">
-                <div class="input-group">
-                    <input type="hidden" value="@Model.Competition.Id" name="competitionId" />
-                    <input type="hidden" value="@Model.CompetitionInstance.Id" name="instanceId" />
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for event...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
-        </div>
-
-    </div>
-    <!--
-    <div class="row">
-
-        <div class="col-md-6">
-            <a asp-controller="CompetitionInstance"
-               asp-action="Contestants"
-               asp-route-competitionInstanceId="Model.CompetitionInstance.Id"
-               asp-route-competitionId="Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Contestants</a>
-        </div>
-
-    </div>
-    -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <section class="section">
-                    <div class="col-md-12">
-                        <div class="card" style="margin-top:15px;">
-                            <section class="example">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Events</th>
-                                                <th>Date</th>
-                                                <th>Gender</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model.Events)
-                                            {
-                                                if (item.Deleted == false)
+                                                <thead>
+                                                <tr>
+                                                    <th>Flokkar</th>
+                                                    <th>Aldursbil</th>
+                                                    <th>Kyn</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach (var item in @e.Categories)
                                                 {
+
                                                     <tr>
                                                         <td>
                                                             <a asp-controller="Home" asp-action="Event"
                                                                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                               asp-route-instanceId="@item.CompetitionInstanceId"
+                                                               asp-route-instanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                                                                asp-route-eventId="@item.Id">@item.Name</a>
                                                         </td>
                                                         <td>
-                                                            @item.DateFrom
+                                                            @item.AgeFrom - @item.AgeTo
                                                         </td>
-                                                        <td>
-                                                            @item.Gender
-                                                        </td>
+
+                                                        @if (item.Gender == Gender.Male)
+                                                        {
+                                                            <td>
+                                                                KK
+                                                            </td>
+                                                        }
+                                                        @if (item.Gender == Gender.Female)
+                                                        {
+                                                            <td>
+                                                                KVK
+                                                            </td>
+                                                        }
+                                                        @if (item.Gender == Gender.All)
+                                                        {
+                                                            <td>
+                                                                Öll
+                                                            </td>
+                                                        }
+
+
                                                     </tr>
+                                                    
                                                 }
-                                            }
-                                        </tbody>
-                                    </table>
+                                                </tbody>
+
+
+                                            </table>
+                                        </div>
+
+                                    </section>
+
                                 </div>
-                            </section>
-
-                        </div>
+                            </div>
+                        </section>
                     </div>
-                </section>
+                </div>
             </div>
-        </div>
-    </div>
-
+        }
+    }
 
 </section>
 
