@@ -50,6 +50,7 @@ namespace Timataka.Web.Controllers
                 LatestOtherResults = _competitionService.GetLatestResults(0, true),
                 UpcomingOtherEvents = _competitionService.GetUpcomingEvents(0, true)
             };
+
             return View(model);
         }
 
