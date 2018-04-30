@@ -30,5 +30,6 @@ namespace Timataka.Core.Models.ViewModels.EventViewModels
         public bool ActiveChip { get; set; }
         public string DisciplineName { get; set; }
         public Boolean Deleted { get; set; }
+        public IEnumerable<Category> Categories { get; set; }
     }
 }
