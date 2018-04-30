@@ -257,7 +257,7 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="sportId"></param>
         /// <returns></returns>
-        public IEnumerable<LatestResultsDTO> GetLatestResults(int sportId)
+        public IEnumerable<LatestResultsDTO> GetLatestResults(int sportId, bool topFive)
         {
             IEnumerable<LatestResultsDTO> result;
             if (sportId == 0) // All Sports
@@ -278,7 +278,7 @@ namespace Timataka.Core.Services
                         Date = i.DateFrom,
                         Name = c.Name,
                         Live = IsLive(i.Status)
-                    }).ToList().Take(5);
+                    }).ToList();
             }
             else
             {
@@ -288,8 +288,8 @@ namespace Timataka.Core.Services
                     where i.Deleted == false
                     join c in _repo.Get() on i.CompetitionId equals c.Id
                     where (from e in _repo.GetEventsForInstance(i.Id)
-                            where e.SportId == sportId
-                            select e).Any()
+                        where e.SportId == sportId
+                        select e).Any()
                     orderby i.DateFrom descending
                     select new LatestResultsDTO
                     {
@@ -298,11 +298,10 @@ namespace Timataka.Core.Services
                         Date = i.DateFrom,
                         Name = c.Name,
                         Live = IsLive(i.Status)
-                    }).ToList().Take(5);
+                    }).ToList();
             }
-            
-            return result;
-                                 
+
+            return topFive ? result.Take(5) : result;
         }
 
         public Boolean IsLive(Status s)
@@ -312,7 +311,7 @@ namespace Timataka.Core.Services
             return false;
         }
 
-        public IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId)
+        public IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId, bool topFive)
         {
             IEnumerable<LatestResultsDTO> result;
             if (sportId == 0)
@@ -333,7 +332,7 @@ namespace Timataka.Core.Services
                         Date = i.DateFrom,
                         Name = c.Name,
                         Live = IsLive(i.Status)
-                    }).ToList().Take(5);
+                    }).ToList();
             }
             else
             {
@@ -353,11 +352,10 @@ namespace Timataka.Core.Services
                         Date = i.DateFrom,
                         Name = c.Name,
                         Live = IsLive(i.Status)
-                    }).ToList().Take(5);
+                    }).ToList();
             }
 
-            return result;
-
+            return topFive ? result.Take(5) : result;
         }
 
         public IEnumerable<Heat> GetHeatsInCompetitionInstance(int competitionInstanceId)

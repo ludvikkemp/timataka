@@ -31,8 +31,8 @@ namespace Timataka.Core.Services
         IEnumerable<ContestantsInCompetitionViewModel> GetContestantsInCompetitionInstance(int id);
         IEnumerable<Heat> GetHeatsForUserInCompetition(string userId, int competitionInstanceId);
         EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId);
-        IEnumerable<LatestResultsDTO> GetLatestResults(int sportId);
-        IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId);
+        IEnumerable<LatestResultsDTO> GetLatestResults(int sportId, bool takeFive);
+        IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId, bool takeFive);
 
         IEnumerable<Heat> GetHeatsInCompetitionInstance(int competitionInstanceId);
         IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId);
