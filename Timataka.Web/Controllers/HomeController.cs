@@ -20,6 +20,7 @@ namespace Timataka.Web.Controllers
         private readonly IEventService _eventService;
         private readonly IHeatService _heatService;
         private readonly IResultService _resultService;
+        private readonly ICategoryService _categoryService;
         private const int AthleticsId = 1;
         private const int CyclingId = 2;
 
@@ -28,12 +29,14 @@ namespace Timataka.Web.Controllers
             ICompetitionService competitionService,
             IEventService eventService,
             IHeatService heatService,
-            IResultService resultService)
+            IResultService resultService,
+            ICategoryService categoryService)
         {
             _competitionService = competitionService;
             _eventService = eventService;
             _heatService = heatService;
             _resultService = resultService;
+            _categoryService = categoryService;
         }
 
         public IActionResult Index()
@@ -151,7 +154,37 @@ namespace Timataka.Web.Controllers
 
             return View(models);
         }
-        
+
+        [HttpGet]
+        [Route("Results/Competition/{competitionId}/Instance/{instanceId}/Event/{eventId}/Category/{categoryId}/Result")]
+        public async Task<IActionResult> Category(int competitionId, int instanceId, int eventId, int categoryId)
+        {
+            var eventObj = _eventService.GetEventByIdAsync(eventId);
+            eventObj.Wait();
+            ViewBag.EventName = eventObj.Result.Name;
+
+            var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
+            competition.Wait();
+            ViewBag.CompetitionName = competition.Result.Name;
+
+            var competitionInstance = _competitionService.GetCompetitionInstanceByIdAsync(instanceId);
+            competitionInstance.Wait();
+            ViewBag.CompetitionInstanceName = competitionInstance.Result.Name;
+
+            var models = _resultService.GetResultViewModelsForEvent(eventId);
+
+            var category = await _categoryService.GetCategoryViewModelById(categoryId);
+            ViewBag.CategoryName = category.Name;
+
+            var model = (from r in models
+                         where category.AgeFrom <= r.DateOfBirth.Year &&
+                         category.AgeTo >= r.DateOfBirth.Year &&
+                         (category.Gender.ToString() == r.Gender || category.Gender.ToString() == "All")
+                         select r).ToList();
+
+            return View(model);
+        }
+
 
         public IActionResult About()
         {
