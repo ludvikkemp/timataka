@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Caching.Memory;
+using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
@@ -28,8 +30,10 @@ namespace Timataka.Web.Controllers
         private readonly IHeatService _heatService;
         private readonly IResultService _resultService;
         private readonly IChipService _chipService;
+        private readonly IMemoryCache _cache;
 
-        public CompetitionInstanceController(ICompetitionService competitionService, 
+        public CompetitionInstanceController(ICompetitionService competitionService,
+            IMemoryCache cache,
             IAccountService accountService,
             IDeviceService deviceService,
             IEventService eventService,
@@ -41,6 +45,7 @@ namespace Timataka.Web.Controllers
         )
         {
             _competitionService = competitionService;
+            _cache = cache;
             _accountService = accountService;
             _deviceService = deviceService;
             _eventService = eventService;
@@ -551,6 +556,47 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/EditUserInfo/{userId}/Event/{eventId}")]
+        public async Task<IActionResult> EditUserInfo(string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            if (userId == null)
+            {
+                return new BadRequestObjectResult(null);
+            }
+
+            var user = await _adminService.GetUserByIdAsync(userId);
+            var userDto = _adminService.GetUserByUsername(user.Username);
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            ViewBag.Nationalities = _accountService.GetNationalityListItems();
+
+            if (userDto == null)
+            {
+                return new BadRequestResult();
+            }
+
+            return View(userDto);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/EditUserInfo/{userId}/Event/{eventId}")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditUserInfo(string userId, int competitionInstanceId, int competitionId, int eventId, UserDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _adminService.UpdateUser(model);
+                if (result)
+                {
+                    _cache.Remove("listOfUsers");
+                    return RedirectToAction("EditContestantInEvent", "CompetitionInstance", new { competitionId, competitionInstanceId, userId, eventId });
+                }
+            }
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            return View(model);
+        }
         #endregion
 
 

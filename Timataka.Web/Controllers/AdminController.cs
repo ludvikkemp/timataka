@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Reflection.Emit;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,11 +9,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
-using Timataka.Core.Models.ViewModels.AccountViewModels;
-using Timataka.Core.Models.ViewModels.AdminViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Services;
-using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 
 namespace Timataka.Web.Controllers
@@ -37,6 +31,7 @@ namespace Timataka.Web.Controllers
         private readonly IServiceProvider _serviceProvider;
         private readonly ICategoryService _categoryService;
         private readonly IChipService _chipService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public AdminController(IAdminService adminService,
             IAccountService accountService,
@@ -51,7 +46,8 @@ namespace Timataka.Web.Controllers
             IDeviceService deviceService,
             IServiceProvider serviceProvider,
             ICategoryService categoryService,
-            IChipService chipService)
+            IChipService chipService,
+            UserManager<ApplicationUser> userManager)
 
         {
             _adminService = adminService;
@@ -68,6 +64,7 @@ namespace Timataka.Web.Controllers
             _serviceProvider = serviceProvider;
             _categoryService = categoryService;
             _chipService = chipService;
+            _userManager = userManager;
         }
             
         [HttpGet]
@@ -151,10 +148,11 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Roles")]
         [Authorize(Roles = "Superadmin")]
-        public IActionResult Roles(string search)
+        public async Task<IActionResult> Roles(string search)
         {
+            var user = await _userManager.GetUserAsync(User);
             ViewData["CurrentFilter"] = search;
-            var adminUsers = _adminService.GetAdminUsers();
+            var adminUsers = _adminService.GetAdminUsers().Where(x => x.Username != user.UserName).ToList();
             var nonAdminUsers = _adminService.GetNonAdminUsers();
 
             if (!String.IsNullOrEmpty(search))

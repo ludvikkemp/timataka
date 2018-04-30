@@ -36,7 +36,7 @@
             <input type="hidden" asp-for="Instance.Id" value="@Model.Instance.Id" />
             <input type="hidden" asp-for="Event.Id" value="@Model.Event.Id" />
             <input type="hidden" asp-for="UserId" value="@Model.UserId" />
-            <input type="submit" value="Register" class="btn btn-danger-outline btn-sm" />
+            <input type="submit" value="Register" class="btn btn-success btn-sm" />
 
             <a asp-controller="User" asp-action="Events" asp-route-competitionInstanceId="@Model.Instance.Id" class="btn btn-secondary-outline btn-sm">Back to List</a>
         </form>
