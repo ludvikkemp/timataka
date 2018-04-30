@@ -141,7 +141,14 @@ namespace Timataka.Core.Data.Repositories
                 {
                     finalTime += TimeSpan.FromSeconds(1);
                 }
-                result.GunTime = finalTime.ToString(@"hh\:mm\:ss");
+                if (rawTime == 0)
+                {
+                    result.GunTime = "";
+                }
+                else
+                {
+                    result.GunTime = finalTime.ToString(@"hh\:mm\:ss");
+                }
 
                 rawTime = CalculateChipTime(result.HeatId, result.ChipCode);
                 TimeSpan chipTime = TimeSpan.FromMilliseconds(rawTime);
@@ -149,7 +156,14 @@ namespace Timataka.Core.Data.Repositories
                 {
                     chipTime += TimeSpan.FromSeconds(1);
                 }
-                result.ChipTime = chipTime.ToString(@"hh\:mm\:ss");
+                if (rawTime == 0)
+                {
+                    result.GunTime = "";
+                }
+                else
+                {
+                    result.ChipTime = chipTime.ToString(@"hh\:mm\:ss");
+                }
             }
             return results.OrderBy(o => o.RawGunTime);
         }
