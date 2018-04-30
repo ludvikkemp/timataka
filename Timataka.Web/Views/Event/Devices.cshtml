@@ -87,10 +87,6 @@
                                                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                            asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                                                            asp-route-eventId="@item.DevicesInEvent.EventId">Unassign</a>
-                                                        <a class="btn btn-success-outline btn-sm"
-                                                           asp-controller="Device"
-                                                           asp-action="Details"
-                                                           asp-route-deviceId="@item.DevicesInEvent.DeviceId">Details</a>
                                                     </td>
                                                 </tr>
                                             }
