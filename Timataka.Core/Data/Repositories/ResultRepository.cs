@@ -208,15 +208,29 @@ namespace Timataka.Core.Data.Repositories
                 {
                     finalTime += TimeSpan.FromSeconds(1);
                 }
-                result.GunTime = finalTime.ToString(@"hh\:mm\:ss");
-
+                if(rawTime == 0)
+                {
+                    result.GunTime = "";
+                }
+                else
+                {
+                    result.GunTime = finalTime.ToString(@"hh\:mm\:ss");
+                }
+                
                 rawTime = CalculateChipTime(result.HeatId, result.ChipCode);
                 TimeSpan chipTime = TimeSpan.FromMilliseconds(rawTime);
                 if (rawTime % 1000 != 0)
                 {
                     chipTime += TimeSpan.FromSeconds(1);
                 }
-                result.ChipTime = chipTime.ToString(@"hh\:mm\:ss");
+                if (rawTime == 0)
+                {
+                    result.GunTime = "";
+                }
+                else
+                {
+                    result.ChipTime = chipTime.ToString(@"hh\:mm\:ss");
+                }
             }
 
             return results;
@@ -229,6 +243,10 @@ namespace Timataka.Core.Data.Repositories
                              join m in _db.Markers on mih.MarkerId equals m.Id
                              where m.Type == Models.Entities.Type.Gun
                              select m.Time).SingleOrDefault();
+            if(guntime == 0)
+            {
+                return 0;
+            }
             var finishtime = (from t in _db.Times
                 where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 2
                 select t.RawTime).SingleOrDefault();
@@ -244,6 +262,10 @@ namespace Timataka.Core.Data.Repositories
             var finishtime = (from t in _db.Times
                            where t.ChipCode == chipCode && t.HeatId == heatId && t.TimeNumber == 2
                            select t.RawTime).SingleOrDefault();
+            if(finishtime == 0 || chiptime == 0)
+            {
+                return 0;
+            }
             return finishtime - chiptime;
         }
 
