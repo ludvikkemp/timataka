@@ -2,7 +2,7 @@ import $ from 'jquery'
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v4.1.0): util.js
+ * Bootstrap (v4.0.0): util.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -14,25 +14,35 @@ const Util = (($) => {
    * ------------------------------------------------------------------------
    */
 
-  const TRANSITION_END = 'transitionend'
+  let transition = false
+
   const MAX_UID = 1000000
-  const MILLISECONDS_MULTIPLIER = 1000
 
   // Shoutout AngusCroll (https://goo.gl/pxwQGp)
   function toType(obj) {
-    return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase()
+    return {}.toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
   }
 
   function getSpecialTransitionEndEvent() {
     return {
-      bindType: TRANSITION_END,
-      delegateType: TRANSITION_END,
+      bindType: transition.end,
+      delegateType: transition.end,
       handle(event) {
         if ($(event.target).is(this)) {
           return event.handleObj.handler.apply(this, arguments) // eslint-disable-line prefer-rest-params
         }
         return undefined // eslint-disable-line no-undefined
       }
+    }
+  }
+
+  function transitionEndTest() {
+    if (typeof window !== 'undefined' && window.QUnit) {
+      return false
+    }
+
+    return {
+      end: 'transitionend'
     }
   }
 
@@ -53,8 +63,22 @@ const Util = (($) => {
   }
 
   function setTransitionEndSupport() {
+    transition = transitionEndTest()
+
     $.fn.emulateTransitionEnd = transitionEndEmulator
-    $.event.special[Util.TRANSITION_END] = getSpecialTransitionEndEvent()
+
+    if (Util.supportsTransitionEnd()) {
+      $.event.special[Util.TRANSITION_END] = getSpecialTransitionEndEvent()
+    }
+  }
+
+  function escapeId(selector) {
+    // We escape IDs in case of special selectors (selector = '#myId:something')
+    // $.escapeSelector does not exist in jQuery < 3
+    selector = typeof $.escapeSelector === 'function' ? $.escapeSelector(selector).substr(1)
+      : selector.replace(/(:|\.|\[|\]|,|=|@)/g, '\\$1')
+
+    return selector
   }
 
   /**
@@ -81,6 +105,11 @@ const Util = (($) => {
         selector = element.getAttribute('href') || ''
       }
 
+      // If it's an ID
+      if (selector.charAt(0) === '#') {
+        selector = escapeId(selector)
+      }
+
       try {
         const $selector = $(document).find(selector)
         return $selector.length > 0 ? selector : null
@@ -89,37 +118,16 @@ const Util = (($) => {
       }
     },
 
-    getTransitionDurationFromElement(element) {
-      if (!element) {
-        return 0
-      }
-
-      // Get transition-duration of the element
-      let transitionDuration = $(element).css('transition-duration')
-      const floatTransitionDuration = parseFloat(transitionDuration)
-
-      // Return 0 if element or transition duration is not found
-      if (!floatTransitionDuration) {
-        return 0
-      }
-
-      // If multiple durations are defined, take the first
-      transitionDuration = transitionDuration.split(',')[0]
-
-      return parseFloat(transitionDuration) * MILLISECONDS_MULTIPLIER
-    },
-
     reflow(element) {
       return element.offsetHeight
     },
 
     triggerTransitionEnd(element) {
-      $(element).trigger(TRANSITION_END)
+      $(element).trigger(transition.end)
     },
 
-    // TODO: Remove in v5
     supportsTransitionEnd() {
-      return Boolean(TRANSITION_END)
+      return Boolean(transition)
     },
 
     isElement(obj) {
