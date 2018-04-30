@@ -43,12 +43,12 @@ namespace Timataka.Web.Controllers
         {
             var model = new HomePageViewModel
             {
-                LatestAthleticsResults = _competitionService.GetLatestResults(AthleticsId),
-                UpcomingAthleticsEvents = _competitionService.GetUpcomingEvents(AthleticsId),
-                LatestCyclingResults = _competitionService.GetLatestResults(CyclingId),
-                UpcomingCyclingEvents = _competitionService.GetUpcomingEvents(CyclingId),
-                LatestOtherResults = _competitionService.GetLatestResults(0),
-                UpcomingOtherEvents = _competitionService.GetUpcomingEvents(0)
+                LatestAthleticsResults = _competitionService.GetLatestResults(AthleticsId, true),
+                UpcomingAthleticsEvents = _competitionService.GetUpcomingEvents(AthleticsId, true),
+                LatestCyclingResults = _competitionService.GetLatestResults(CyclingId, true),
+                UpcomingCyclingEvents = _competitionService.GetUpcomingEvents(CyclingId, true),
+                LatestOtherResults = _competitionService.GetLatestResults(0, true),
+                UpcomingOtherEvents = _competitionService.GetUpcomingEvents(0, true)
             };
             return View(model);
         }
@@ -124,6 +124,8 @@ namespace Timataka.Web.Controllers
             var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
 
+            events = events.OrderByDescending(x => x.DateFrom);
+
             var instanceDto = new CompetitionInstanceDTO
             {
                 Competition = competition.Result,
@@ -177,12 +179,24 @@ namespace Timataka.Web.Controllers
             ViewBag.CategoryName = category.Name;
 
             var model = (from r in models
-                         where category.AgeFrom <= r.DateOfBirth.Year &&
-                         category.AgeTo >= r.DateOfBirth.Year &&
-                         (category.Gender.ToString() == r.Gender || category.Gender.ToString() == "All")
+                         where category.AgeFrom <= (DateTime.Now.Year - r.DateOfBirth.Year) &&
+                         category.AgeTo >= (DateTime.Now.Year - r.DateOfBirth.Year) &&
+                         (category.Gender.ToString().ToLower() == r.Gender.ToLower() || category.Gender.ToString().ToLower() == "all")
                          select r).ToList();
 
             return View(model);
+        }
+
+        [HttpGet]
+        [Route("Results/AthleticsEvents")]
+        public async Task<IActionResult> Athletics(int competitionId, int instanceId, int eventId, int categoryId)
+        {
+            var model = new DisplayResultsViewModel
+            {
+                LatestResults = _competitionService.GetLatestResults(AthleticsId, false),
+                UpcomingEvents = _competitionService.GetUpcomingEvents(AthleticsId, false),
+            };
+            return null;
         }
 
 

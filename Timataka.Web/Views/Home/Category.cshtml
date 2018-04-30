@@ -18,8 +18,8 @@
                        asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                        asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]">@ViewBag.CompetitionInstanceName</a> /
 
-                    @ViewBag.EventName / 
-                    @ViewBag.CategoryName
+                    @ViewBag.EventName
+                    
                 </span>
 
 
@@ -27,71 +27,58 @@
         </div>
     </div>
 
-    <!--
-    <div class="row">
-        <div class="col-md-6">
 
-        SPURNING HVORT ÞAÐ EIGI AÐ BYRTA CATEGORIES
-            <a asp-controller="Admin"
-               asp-action="Categories"
-               asp-route-competitionId="ViewContext.RouteData.Values["competitionId"]"
-               asp-route-competitionInstanceId="ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-eventId="Model.Event.Id"
-               class="btn btn-primary btn-sm rounded-s">Categories</a>
-
-        </div>
-    </div>
-    -->
 
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <section class="section">
                     <div class="col-md-12">
-                        <div class="card" style="margin-top:15px;">
+                        <h5 class="title" style="margin-top:12px; margin:12px;"> @ViewBag.CategoryName</h5>
+                        <div class="card" style="margin-top: 10px; margin-bottom: 15px;">
                             <section class="example">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
-                                            <tr>
-                                                <th>Rank</th>
-                                                <th>BIB</th>
-                                                <th>Name</th>
-                                                <th>Year of birth</th>
-                                                <th>Club</th>
-                                                <th>Country</th>
-                                                <th>Guntime (Chiptime)</th>
-                                            </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>BIB</th>
+                                            <th>Nafn</th>
+                                            <th>Fæðingarár</th>
+                                            <th>Klúbbur</th>
+                                            <th>Þjóð</th>
+                                            <th>Byssutími (Flagartími)</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            @{int i = 1;}
-                                            @foreach (var item in Model)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        @i
-                                                    </td>
-                                                    <td>
-                                                        @item.Bib
-                                                    </td>
-                                                    <td>
-                                                        @item.Name
-                                                    </td>
-                                                    <td>
-                                                        @item.DateOfBirth.Year
-                                                    </td>
-                                                    <td>
-                                                        @item.Club
-                                                    </td>
-                                                    <td>
-                                                        @item.Country
-                                                    </td>
-                                                    <td>
-                                                        @item.GunTime (@item.ChipTime)
-                                                    </td>
-                                                </tr>
-                                                i++;
-                                            }
+                                        @{int i = 1;}
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @i
+                                                </td>
+                                                <td>
+                                                    @item.Bib
+                                                </td>
+                                                <td>
+                                                    @item.Name
+                                                </td>
+                                                <td>
+                                                    @item.DateOfBirth.Year
+                                                </td>
+                                                <td>
+                                                    @item.Club
+                                                </td>
+                                                <td>
+                                                    @item.Country
+                                                </td>
+                                                <td>
+                                                    @item.GunTime (@item.ChipTime)
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
                                         </tbody>
                                     </table>
                                 </div>

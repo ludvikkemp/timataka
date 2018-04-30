@@ -56,10 +56,11 @@
 
                                                     <tr>
                                                         <td>
-                                                            <a asp-controller="Home" asp-action="Event"
+                                                            <a asp-controller="Home" asp-action="Category"
                                                                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                               asp-route-instanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                                                               asp-route-eventId="@item.Id">@item.Name</a>
+                                                               asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]"
+                                                               asp-route-eventId="@e.Id"
+                                                               asp-route-categoryId="@item.Id">@item.Name</a>
                                                         </td>
                                                         <td>
                                                             @item.AgeFrom - @item.AgeTo
