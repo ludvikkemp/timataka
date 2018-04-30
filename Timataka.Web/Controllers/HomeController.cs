@@ -125,6 +125,8 @@ namespace Timataka.Web.Controllers
             var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
 
+            events = events.OrderByDescending(x => x.DateFrom);
+
             var instanceDto = new CompetitionInstanceDTO
             {
                 Competition = competition.Result,
@@ -178,8 +180,8 @@ namespace Timataka.Web.Controllers
             ViewBag.CategoryName = category.Name;
 
             var model = (from r in models
-                         where category.AgeFrom <= r.DateOfBirth.Year &&
-                         category.AgeTo >= r.DateOfBirth.Year &&
+                         where category.AgeFrom <= DateTime.Now.Year - r.DateOfBirth.Year &&
+                         category.AgeTo >= DateTime.Now.Year - r.DateOfBirth.Year &&
                          (category.Gender.ToString() == r.Gender || category.Gender.ToString() == "All")
                          select r).ToList();
 
