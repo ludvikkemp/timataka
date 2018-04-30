@@ -34,12 +34,12 @@
 
     <div class="row">
         <div class="col-md-7">
-            <a asp-controller="Category"
-               asp-action="Create"
+            <a asp-controller="Event"
+               asp-action="AddContestant"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-               class="btn btn-success btn-sm rounded-s">Add Category</a>
+               class="btn btn-success btn-sm rounded-s">Add Contestant</a>
             <a asp-controller="Admin"
                asp-action="Event"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
