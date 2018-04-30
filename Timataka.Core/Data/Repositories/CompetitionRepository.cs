@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Dto.HeatDTO;
@@ -233,7 +234,7 @@ namespace Timataka.Core.Data.Repositories
                                EventName = e.Name,
                                Heats = (from h in _context.Heats
                                         where h.EventId == e.Id
-                                        select h),
+                                        select new SelectListItem { Value = h.Id.ToString(), Text = h.HeatNumber.ToString() }).ToList(),
                                UserId = userId
                            }).ToList();
             return results;

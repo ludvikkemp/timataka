@@ -18,6 +18,7 @@
 
                     @for(int i = 0; i < Model.Count(); i++)
                     {
+                        <input type="hidden" asp-for="@Model[i].UserId" value="@Model[i].UserId"/>
                         <tr>
                             <td>
                                 <div class="form-group">
@@ -31,13 +32,8 @@
 
                             <td>
                                 <div class="form-group">
-                                <label asp-for="@Model[i].HeatId">Heat</label>
-                                    <select name="EventId" class="form-control">
-                                        @foreach (var x in @Model[i].Heats)
-                                        {
-                                            <option value="@x.Id" HeatId="@x.Id">@x.HeatNumber</option>
-                                        }
-                                    </select>
+                                    <label asp-for="@Model[i].HeatId">Heat</label>
+                                    <select asp-for="@Model[i].HeatId" asp-items="@Model[i].Heats"></select>
                                 </div>
                             </td>
                             <td>

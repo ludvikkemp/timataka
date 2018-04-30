@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Timataka.Core.Models.Entities;
@@ -13,7 +14,7 @@ namespace Timataka.Core.Models.ViewModels.ContestantViewModels
         // Event Data
         public int EventId { get; set; }
         public string EventName { get; set; }
-        public IEnumerable<Heat> Heats { get; set; }
+        public List<SelectListItem> Heats { get; set; }
 
         // ContestantInHeat Data
         public string UserId { get; set; }

@@ -317,6 +317,7 @@ namespace Timataka.Web.Controllers
         public IActionResult AddContestant(int competitionInstanceId, int competitionId, string userId)
         {
             var model = _competitionService.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
+            
             return View(model);
         }
 
