@@ -1,5 +1,4 @@
-/* global workbox:false */
-
 self.importScripts('/assets/js/vendor/{fileName}')
 
-workbox.precaching.precacheAndRoute([])
+const workboxSW = new self.WorkboxSW()
+workboxSW.precache([])

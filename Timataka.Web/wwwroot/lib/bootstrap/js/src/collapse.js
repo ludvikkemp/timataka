@@ -3,7 +3,7 @@ import Util from './util'
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v4.1.0): collapse.js
+ * Bootstrap (v4.0.0): collapse.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16,11 +16,12 @@ const Collapse = (($) => {
    */
 
   const NAME                = 'collapse'
-  const VERSION             = '4.1.0'
+  const VERSION             = '4.0.0'
   const DATA_KEY            = 'bs.collapse'
   const EVENT_KEY           = `.${DATA_KEY}`
   const DATA_API_KEY        = '.data-api'
   const JQUERY_NO_CONFLICT  = $.fn[NAME]
+  const TRANSITION_DURATION = 600
 
   const Default = {
     toggle : true,
@@ -182,13 +183,17 @@ const Collapse = (($) => {
         $(this._element).trigger(Event.SHOWN)
       }
 
+      if (!Util.supportsTransitionEnd()) {
+        complete()
+        return
+      }
+
       const capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1)
       const scrollSize = `scroll${capitalizedDimension}`
-      const transitionDuration = Util.getTransitionDurationFromElement(this._element)
 
       $(this._element)
         .one(Util.TRANSITION_END, complete)
-        .emulateTransitionEnd(transitionDuration)
+        .emulateTransitionEnd(TRANSITION_DURATION)
 
       this._element.style[dimension] = `${this._element[scrollSize]}px`
     }
@@ -241,11 +246,15 @@ const Collapse = (($) => {
       }
 
       this._element.style[dimension] = ''
-      const transitionDuration = Util.getTransitionDurationFromElement(this._element)
+
+      if (!Util.supportsTransitionEnd()) {
+        complete()
+        return
+      }
 
       $(this._element)
         .one(Util.TRANSITION_END, complete)
-        .emulateTransitionEnd(transitionDuration)
+        .emulateTransitionEnd(TRANSITION_DURATION)
     }
 
     setTransitioning(isTransitioning) {
