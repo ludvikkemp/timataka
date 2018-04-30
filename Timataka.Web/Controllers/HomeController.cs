@@ -174,6 +174,7 @@ namespace Timataka.Web.Controllers
             var models = _resultService.GetResultViewModelsForEvent(eventId);
 
             var category = await _categoryService.GetCategoryViewModelById(categoryId);
+            ViewBag.CategoryName = category.Name;
 
             var model = (from r in models
                          where category.AgeFrom <= r.DateOfBirth.Year &&
