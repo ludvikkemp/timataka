@@ -8,6 +8,7 @@
 
         <div class="row">
             <div class="col-md-12">
+                <h4>
                 <span class="title">
                     <a asp-controller="Home"
                        asp-action="Competition"
@@ -15,49 +16,18 @@
 
                     @Model.CompetitionInstance.Name
                 </span>
-
+                </h4>
             </div>
         </div>
 
     </div>
 
     <div class="row">
-
-        <div class="col-md-5">
-            <form asp-action="Instance" method="get">
-                <div class="input-group">
-                    <input type="hidden" value="@Model.Competition.Id" name="competitionId" />
-                    <input type="hidden" value="@Model.CompetitionInstance.Id" name="instanceId" />
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for event...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
-        </div>
-
-    </div>
-    <!--
-    <div class="row">
-
-        <div class="col-md-6">
-            <a asp-controller="CompetitionInstance"
-               asp-action="Contestants"
-               asp-route-competitionInstanceId="Model.CompetitionInstance.Id"
-               asp-route-competitionId="Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Contestants</a>
-        </div>
-
-    </div>
-    -->
-    <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <section class="section">
                     <div class="col-md-12">
-                        <div class="card" style="margin-top:15px;">
+                        <div class="card" style="margin-top:15px;margin-bottom:15px;">
                             <section class="example">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
