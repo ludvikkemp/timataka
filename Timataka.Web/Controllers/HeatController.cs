@@ -374,7 +374,7 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult GetTimes(int competitionId, int competitionInstanceId)
         {
-            _resultService.GetTimes();
+            _resultService.GetTimes(competitionInstanceId);
             return RedirectToAction("CompetitionInstance", "Admin", new { competitionId = competitionId, competitionInstanceId = competitionInstanceId });
         }
 
@@ -382,7 +382,7 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles= "Admin")]
         public async Task<IActionResult> GetMarkers(int competitionId, int competitionInstanceId)
         {
-            await _markerService.GetMarkersFromTimingDb();
+            await _markerService.GetMarkersFromTimingDb(competitionInstanceId);
             return RedirectToAction("CompetitionInstance", "Admin", new { competitionId = competitionId, competitionInstanceId = competitionInstanceId });
         }
 

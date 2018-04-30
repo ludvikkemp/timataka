@@ -13,6 +13,8 @@ namespace Timataka.Core.Data.Repositories
 {
     public interface IResultRepository : IDisposable
     {
+        Status GetCompetitionInstanceStatus(int competitionInstanceId);
+
         Result Add(Result r);
         Task<Result> AddAsync(Result r);
 
@@ -32,7 +34,7 @@ namespace Timataka.Core.Data.Repositories
         int CalculateGuntime(int heatId, string chipCode);
 
         //TimingDB
-        IEnumerable<RawResultViewModel> GetResultsFromTimingDb();
+        IEnumerable<RawResultViewModel> GetResultsFromTimingDb(int competitionInstanceId);
         Boolean AddTime(Time time);
         IEnumerable<Heat> GetHeatsInCompetitionInstance(int id);
         IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId);

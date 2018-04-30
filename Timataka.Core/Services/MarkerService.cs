@@ -122,14 +122,16 @@ namespace Timataka.Core.Services
             return markerList;
         }
 
-        public async Task GetMarkersFromTimingDb()
+        public async Task GetMarkersFromTimingDb(int competitionInstanceId)
         {
-            var results = _repo.GetMarkersFromTimingDb();
+            var results = (from m in _repo.GetMarkersFromTimingDb()
+                            where m.CompetitionInstanceId == competitionInstanceId
+                            select m).ToList();
             foreach (var item in results)
             {
-                if((from m in GetMarkersForCompetitionInstance(item.CompetitionInstanceId)
-                    where m.Time == item.Time
-                    select m).SingleOrDefault() == null)
+                if ((from m in GetMarkersForCompetitionInstance(competitionInstanceId)
+                        where m.Time == item.Time
+                        select m).SingleOrDefault() == null)
                 {
                     await AddAsync(item);
                 }
