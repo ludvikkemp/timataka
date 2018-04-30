@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Dto.HeatDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.UserViewModels;
 
@@ -220,6 +222,22 @@ namespace Timataka.Core.Data.Repositories
                 item.EventList = GetEventListForContestatnt(item.Id, id);
             }
             return r;
+        }
+
+        public List<AddContestantViewModel> GetAddContestantViewModelByCompetitionInstanceId(int competitionInstanceId, string userId)
+        {
+            var results = (from e in _context.Events
+                           where e.CompetitionInstanceId == competitionInstanceId
+                           select new AddContestantViewModel
+                           {
+                               EventId = e.Id,
+                               EventName = e.Name,
+                               Heats = (from h in _context.Heats
+                                        where h.EventId == e.Id
+                                        select new SelectListItem { Value = h.Id.ToString(), Text = h.HeatNumber.ToString() }).ToList(),
+                               UserId = userId
+                           }).ToList();
+            return results;
         }
 
         public IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId)

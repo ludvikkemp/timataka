@@ -106,7 +106,10 @@ namespace Timataka.Core.Data.Repositories
                               Name = e.Name,
                               Splits = e.Splits,
                               StartInterval = e.StartInterval,
-                              Deleted = e.Deleted
+                              Deleted = e.Deleted,
+                              Categories = (from c in _context.Categories
+                                            where c.EventId == e.Id
+                                            select c).ToList()
                           }).ToList();
             return events;
         }

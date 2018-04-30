@@ -44,6 +44,7 @@ namespace Timataka.Web.Controllers
                     await _competitionService.AddAsync(model);
                     return RedirectToAction("Competitions","Admin");
                 }
+                return Json("Competition with this name already exists");
             }
             return View(model);
         }

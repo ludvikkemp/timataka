@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Timataka.Core.Models.Dto.AdminDTO.UserDto>
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<section class="content">
+    <div class="title-block" style="margin-bottom:15px;">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title">
+                    Select Contestant
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+            <form asp-action="SelectContestant" method="get" class="">
+                <div class="input-group">
+                    <input type="hidden" name="competitionInstanceId" value="@ViewContext.RouteData.Values["competitionInstanceId"]" />
+                    <input type="hidden" name="competitionId" value="@ViewContext.RouteData.Values["competitionId"]" />
+                    <input type="text" name="search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for user by Name...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary rounded-s btn-lg" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>SSN</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+
+                                                <tr>
+                                                    <td>@item.FirstName @item.Middlename @item.LastName</td>
+                                                    <td>@item.Ssn</td>
+                                                    <td>
+                                                        <a asp-action="AddContestant"
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                           asp-route-userId="@item.Id"
+                                                           class="btn btn-success-outline btn-sm">Select Contestant</a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+</section>

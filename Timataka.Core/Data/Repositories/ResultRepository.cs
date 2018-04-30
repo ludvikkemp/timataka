@@ -287,10 +287,11 @@ namespace Timataka.Core.Data.Repositories
         /// Get all results from TimingDB
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<RawResultViewModel> GetResultsFromTimingDb()
+        public IEnumerable<RawResultViewModel> GetResultsFromTimingDb(int competitionInstanceId)
         {
             var result = (from r in _tdb.Results
                           join c in _tdb.Chips on r.Pid equals c.Pid
+                          where r.CompetitionInstanceId == competitionInstanceId
                           select new RawResultViewModel
                           {
                               ChipCode = c.Chip,
@@ -373,6 +374,13 @@ namespace Timataka.Core.Data.Repositories
             }
             _db.SaveChanges();
             return result;
+        }
+
+        public Status GetCompetitionInstanceStatus(int competitionInstanceId)
+        {
+            return (from c in _db.CompetitionInstances
+                    where c.Id == competitionInstanceId
+                    select c.Status).SingleOrDefault();
         }
 
         protected virtual void Dispose(bool disposing)

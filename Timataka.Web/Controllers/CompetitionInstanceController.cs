@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
@@ -10,6 +12,7 @@ using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.MarkerViewModels;
@@ -281,6 +284,8 @@ namespace Timataka.Web.Controllers
 
         #region Contestants
 
+
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Contestants")]
@@ -303,6 +308,68 @@ namespace Timataka.Web.Controllers
                 CompetitionInstance = competitionInstance,
                 Contestants = contestants
             };
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/SelectContestant")]
+        public IActionResult SelectContestant(int competitionInstanceId, int competitionId)
+        {
+            var model = _adminService.GetUsers();
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AddContestant/{userId}")]
+        public IActionResult AddContestant(int competitionInstanceId, int competitionId, string userId)
+        {
+            var model = _competitionService.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AddContestant/{userId}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddContestant(IEnumerable<AddContestantViewModel> model, int competitionInstanceId, int competitionId, string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach(var item in model)
+                {
+                    if (item.Flag)
+                    {    
+                        var contestantInHeat = new ContestantInHeat
+                        {
+                            Bib = item.Bib,
+                            HeatId = item.HeatId,
+                            Modified = DateTime.Now,
+                            Team = item.Team,
+                            UserId = item.UserId
+                        };
+                        await _heatService.AddAsyncContestantInHeat(contestantInHeat);
+
+                        if(item.ChipNumber > 0)
+                        {
+                            var chip = await _chipService.GetChipByNumberAsync(item.ChipNumber);
+                            var chipinHeat = new ChipInHeat
+                            {
+                                ChipCode = chip.Code,
+                                HeatId = item.HeatId,
+                                UserId = item.UserId,
+                                Valid = true
+                            };
+                            await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
+                        }
+                    }
+                }
+
+                return RedirectToAction("Contestants", "CompetitionInstance", new { @competitionId = competitionId, @competitionInstanceId = competitionInstanceId });
+            }
+
             return View(model);
         }
 

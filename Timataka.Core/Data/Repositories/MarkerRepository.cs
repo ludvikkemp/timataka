@@ -187,5 +187,12 @@ namespace Timataka.Core.Data.Repositories
                           }).ToList();
             return result;
         }
+
+        public Status GetCompetitionInstanceStatus(int competitionInstanceId)
+        {
+            return (from c in _db.CompetitionInstances
+                    where c.Id == competitionInstanceId
+                    select c.Status).SingleOrDefault();
+        }
     }
 }
