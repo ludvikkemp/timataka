@@ -31,5 +31,8 @@ namespace Timataka.Core.Data.Repositories
 
         Boolean RemoveMarkerInHeat(MarkerInHeat m);
         Task<Boolean> RemoveMarkerInHeatAsync(MarkerInHeat m);
+
+        IEnumerable<Marker> GetMarkersFromTimingDb();
+        Status GetCompetitionInstanceStatus(int competitionInstanceId);
     }
 }

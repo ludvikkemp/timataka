@@ -264,7 +264,7 @@ namespace Timataka.Core.Services
         }
 
         /// <summary>
-        /// Get list of devices that have not been assigned to an event.
+        /// Get list of devices that have not been assigned to an event and match the type of the event.
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns>List of devices</returns>

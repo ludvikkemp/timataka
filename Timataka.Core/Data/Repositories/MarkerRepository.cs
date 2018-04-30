@@ -12,10 +12,12 @@ namespace Timataka.Core.Data.Repositories
     {
         private bool _disposed = false;
         private readonly ApplicationDbContext _db;
+        private readonly TimingDbContext _tdb;
 
-        public MarkerRepository(ApplicationDbContext db)
+        public MarkerRepository(ApplicationDbContext db, TimingDbContext tdb)
         {
             _db = db;
+            _tdb = tdb;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -125,6 +127,15 @@ namespace Timataka.Core.Data.Repositories
 
         public async Task<MarkerInHeat> AddMarkerInHeatAsync(MarkerInHeat m)
         {
+            var Guntime = (from mih in _db.MarkersInHeats
+                           where mih.HeatId == m.HeatId
+                           join mar in _db.Markers on mih.MarkerId equals mar.Id
+                           where mar.Type == Models.Entities.Type.Gun
+                           select mar).SingleOrDefault();
+            if(Guntime != null)
+            {
+                return null;
+            }
             await _db.MarkersInHeats.AddAsync(m);
             await _db.SaveChangesAsync();
             return m;
@@ -162,6 +173,26 @@ namespace Timataka.Core.Data.Repositories
             }
             await _db.SaveChangesAsync();
             return result;
+        }
+
+        public IEnumerable<Marker> GetMarkersFromTimingDb()
+        {
+            var result = (from m in _tdb.Markers
+                          select new Marker
+                          {
+                              CompetitionInstanceId = m.CompetitionInstanceId,
+                              Location = m.Location,
+                              Time = m.MilliSecs,
+                              Type = (m.Type == "Gunshot" ? Models.Entities.Type.Gun : Models.Entities.Type.Marker)
+                          }).ToList();
+            return result;
+        }
+
+        public Status GetCompetitionInstanceStatus(int competitionInstanceId)
+        {
+            return (from c in _db.CompetitionInstances
+                    where c.Id == competitionInstanceId
+                    select c.Status).SingleOrDefault();
         }
     }
 }

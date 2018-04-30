@@ -350,7 +350,10 @@ namespace Timataka.Web.Controllers
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers")]
         public async Task<IActionResult> AssignMarker(AssignMarkerToHeatViewModel model, int competitionId, int competitionInstanceId, int eventId, int heatId, int markerId)
         {
-            await _markerService.AssignMarkerToHeatAsync(model);
+            if(await _markerService.AssignMarkerToHeatAsync(model) == false)
+            {
+                return Json("Guntime already assigned");
+            }
             return RedirectToAction("Markers", "Heat", new { competitionId, competitionInstanceId, eventId, heatId } );
         }
 
@@ -371,7 +374,15 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult GetTimes(int competitionId, int competitionInstanceId)
         {
-            _resultService.GetTimes();
+            _resultService.GetTimes(competitionInstanceId);
+            return RedirectToAction("CompetitionInstance", "Admin", new { competitionId = competitionId, competitionInstanceId = competitionInstanceId });
+        }
+
+        [HttpGet]
+        [Authorize(Roles= "Admin")]
+        public async Task<IActionResult> GetMarkers(int competitionId, int competitionInstanceId)
+        {
+            await _markerService.GetMarkersFromTimingDb(competitionInstanceId);
             return RedirectToAction("CompetitionInstance", "Admin", new { competitionId = competitionId, competitionInstanceId = competitionInstanceId });
         }
 
@@ -389,7 +400,7 @@ namespace Timataka.Web.Controllers
                 Country = entity.Country,
                 Nationality = entity.Nationality,
                 Status = entity.Status,
-                FinalTime = entity.FinalTime,
+                GunTime = entity.FinalTime,
                 Gender = entity.Gender,
                 Name = entity.Name,
                 Club = entity.Club,
@@ -419,7 +430,7 @@ namespace Timataka.Web.Controllers
                     Name = model.Name,
                     Gender = model.Gender,
                     Country = model.Country,
-                    FinalTime = model.FinalTime,
+                    FinalTime = model.GunTime,
                     HeatId =   model.HeatId,
                     Nationality = model.Nationality,
                     Status = model.Status,

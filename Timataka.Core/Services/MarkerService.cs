@@ -121,5 +121,21 @@ namespace Timataka.Core.Services
                              select m).ToList();
             return markerList;
         }
+
+        public async Task GetMarkersFromTimingDb(int competitionInstanceId)
+        {
+            var results = (from m in _repo.GetMarkersFromTimingDb()
+                            where m.CompetitionInstanceId == competitionInstanceId
+                            select m).ToList();
+            foreach (var item in results)
+            {
+                if ((from m in GetMarkersForCompetitionInstance(competitionInstanceId)
+                        where m.Time == item.Time
+                        select m).SingleOrDefault() == null)
+                {
+                    await AddAsync(item);
+                }
+            }
+        }
     }
 }

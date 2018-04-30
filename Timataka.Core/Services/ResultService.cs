@@ -91,32 +91,26 @@ namespace Timataka.Core.Services
 
         //TimingDB
 
-        public void GetTimes()
+        public void GetTimes(int competitionInstanceId)
         {
-            var results = _repo.GetResultsFromTimingDb();
-            int competitionInstanceId = 0;
-            IEnumerable<Heat> heats = null;
-            foreach(var r in results)
+            IEnumerable<Heat> heats = heats = _repo.GetHeatsInCompetitionInstance((int)competitionInstanceId);
+            var results = _repo.GetResultsFromTimingDb(competitionInstanceId);
+            foreach (var r in results)
             {
-                if(competitionInstanceId == 0 || competitionInstanceId != r.CompetitionInstanceId)
-                {
-                    competitionInstanceId = r.CompetitionInstanceId;
-                    heats = _repo.GetHeatsInCompetitionInstance(r.CompetitionInstanceId);
-                }
                 int counter = 0;
                 foreach (var h in heats)
                 {
                     //Can only have one entry for a single chip
                     IEnumerable<ChipInHeatViewModel> exists = (from c in _repo.GetChipsInHeat(h.Id)
-                                                      where r.ChipCode == c.ChipCode
-                                                      select c).ToList();
-                    if(exists.Count() == 0)
+                                                                where r.ChipCode == c.ChipCode
+                                                                select c).ToList();
+                    if (exists.Count() == 0)
                     {
                         break;
                     }
                     var existsInHeat = (from e in exists
-                                  where e.HeatId == h.Id
-                                  select e).SingleOrDefault();
+                                        where e.HeatId == h.Id
+                                        select e).SingleOrDefault();
                     if (existsInHeat != null)
                     {
                         if (r.Time01 != 0)
@@ -134,7 +128,7 @@ namespace Timataka.Core.Services
                                 _repo.Remove(h.Id, existsInHeat.ChipCode, 1);
                                 _repo.AddTime(time01);
                             }
-                            
+
                         }
                         if (r.Time02 != 0)
                         {
@@ -161,7 +155,6 @@ namespace Timataka.Core.Services
                     }
                 }
             }
-
         }
     }
 }

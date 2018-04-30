@@ -22,7 +22,8 @@ namespace Timataka.Core.Models.ViewModels.HomeViewModels
         public string Country { get; set; }
         public string Nationality { get; set; }
         public ResultStatus Status { get; set; }
-        public string FinalTime { get; set; }
+        public string GunTime { get; set; }
+       
         public string Gender { get; set; }
         public string Name { get; set; }
         public string Club { get; set; }
@@ -30,6 +31,11 @@ namespace Timataka.Core.Models.ViewModels.HomeViewModels
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
         public string ChipCode { get; set; }
-        
+
+        //Extra data
+        public int RawGunTime { get; set; }
+        public string ChipTime { get; set; }
+        public int Rank { get; set; }
+
     }
 }

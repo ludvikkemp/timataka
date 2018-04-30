@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -271,7 +272,10 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignMarker(AssignMarkerToHeatViewModel model, int competitionInstanceId, int competitionId, int markerId)
         {
-            await _markerService.AssignMarkerToHeatAsync(model);
+            if(await _markerService.AssignMarkerToHeatAsync(model) == false)
+            {
+                return Json("Guntime already set for heat");
+            }
             return RedirectToAction("Markers", new { competitionInstanceId, competitionId });
         }
 
