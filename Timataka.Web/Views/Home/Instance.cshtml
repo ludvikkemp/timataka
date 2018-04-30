@@ -1,4 +1,6 @@
-﻿@model Timataka.Core.Models.Dto.AdminDTO.CompetitionInstanceDTO
+﻿@using System.Globalization
+@using Timataka.Core.Models.Entities
+@model Timataka.Core.Models.Dto.AdminDTO.CompetitionInstanceDTO
 
 @{
     Layout = "_Layout";
@@ -25,12 +27,16 @@
     {
         if (e.Deleted == false)
         {
-            <div class="row">
+            <div class="row" style="margin-bottom:20px;">
                 <div class="col-md-12">
                     <div class="card">
                         <section class="section">
                             <div class="col-md-12">
-                                <h5 class="title" style="margin-top:12px; margin:12px;">@e.Name</h5>
+                                <h5 class="title" style="margin-top:12px; margin:12px;"><a asp-controller="Home" asp-action="Event"
+                                                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                                                           asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]"
+                                                                                           asp-route-eventId="@e.Id">@e.Name</a> - @e.DateFrom.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</h5>
+                                
                                 <div class="card" style="margin-top: 10px; margin-bottom: 15px;">
 
                                     <section class="example">
@@ -39,32 +45,52 @@
 
                                                 <thead>
                                                 <tr>
-                                                    <th>Events</th>
-                                                    <th>Date</th>
-                                                    <th>Gender</th>
+                                                    <th>Flokkar</th>
+                                                    <th>Aldursbil</th>
+                                                    <th>Kyn</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach (var item in Model.Events.Categories)
+                                                @foreach (var item in @e.Categories)
                                                 {
 
-                                                        <tr>
+                                                    <tr>
+                                                        <td>
+                                                            <a asp-controller="Home" asp-action="Event"
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                               asp-route-instanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                               asp-route-eventId="@item.Id">@item.Name</a>
+                                                        </td>
+                                                        <td>
+                                                            @item.AgeFrom - @item.AgeTo
+                                                        </td>
+
+                                                        @if (item.Gender == Gender.Male)
+                                                        {
                                                             <td>
-                                                                <a asp-controller="Home" asp-action="Event"
-                                                                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                                   asp-route-instanceId="@item.CompetitionInstanceId"
-                                                                   asp-route-eventId="@item.Id">@item.Name</a>
+                                                                KK
                                                             </td>
+                                                        }
+                                                        @if (item.Gender == Gender.Female)
+                                                        {
                                                             <td>
-                                                                @item.DateFrom
+                                                                KVK
                                                             </td>
+                                                        }
+                                                        @if (item.Gender == Gender.All)
+                                                        {
                                                             <td>
-                                                                @item.Gender
+                                                                Öll
                                                             </td>
-                                                        </tr>
+                                                        }
+
+
+                                                    </tr>
                                                     
                                                 }
                                                 </tbody>
+
+
                                             </table>
                                         </div>
 
