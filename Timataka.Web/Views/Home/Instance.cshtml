@@ -9,68 +9,75 @@
         <div class="row">
             <div class="col-md-12">
                 <h4>
-                <span class="title">
-                    <a asp-controller="Home"
-                       asp-action="Competition"
-                       asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
+                    <span class="title">
+                        <a asp-controller="Home"
+                           asp-action="Competition"
+                           asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
 
-                    @Model.CompetitionInstance.Name
-                </span>
+                        @Model.CompetitionInstance.Name
+                    </span>
                 </h4>
             </div>
         </div>
 
     </div>
+    @foreach (var e in Model.Events)
+    {
+        if (e.Deleted == false)
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <section class="section">
+                            <div class="col-md-12">
+                                <h5 class="title" style="margin-top:12px; margin:12px;">@e.Name</h5>
+                                <div class="card" style="margin-top: 10px; margin-bottom: 15px;">
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <section class="section">
-                    <div class="col-md-12">
-                        <div class="card" style="margin-top:15px;margin-bottom:15px;">
-                            <section class="example">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Events</th>
-                                                <th>Date</th>
-                                                <th>Gender</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model.Events)
-                                            {
-                                                if (item.Deleted == false)
+                                    <section class="example">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+
+                                                <thead>
+                                                <tr>
+                                                    <th>Events</th>
+                                                    <th>Date</th>
+                                                    <th>Gender</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach (var item in Model.Events.Categories)
                                                 {
-                                                    <tr>
-                                                        <td>
-                                                            <a asp-controller="Home" asp-action="Event"
-                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                               asp-route-instanceId="@item.CompetitionInstanceId"
-                                                               asp-route-eventId="@item.Id">@item.Name</a>
-                                                        </td>
-                                                        <td>
-                                                            @item.DateFrom
-                                                        </td>
-                                                        <td>
-                                                            @item.Gender
-                                                        </td>
-                                                    </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <a asp-controller="Home" asp-action="Event"
+                                                                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                                   asp-route-instanceId="@item.CompetitionInstanceId"
+                                                                   asp-route-eventId="@item.Id">@item.Name</a>
+                                                            </td>
+                                                            <td>
+                                                                @item.DateFrom
+                                                            </td>
+                                                            <td>
+                                                                @item.Gender
+                                                            </td>
+                                                        </tr>
+                                                    
                                                 }
-                                            }
-                                        </tbody>
-                                    </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </section>
+
                                 </div>
-                            </section>
-
-                        </div>
+                            </div>
+                        </section>
                     </div>
-                </section>
+                </div>
             </div>
-        </div>
-    </div>
-
+        }
+    }
 
 </section>
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Timataka.Core.Models.Entities;
 using System.Threading.Tasks;
+using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Core.Services
