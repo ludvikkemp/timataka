@@ -255,7 +255,7 @@ namespace Timataka.Core.Services
         /// <summary>
         /// Get latest results for all competitions in the sport specified
         /// </summary>
-        /// <param name="sportId"></param>
+        /// <param name="sportId" topFive="topFive"></param>
         /// <returns></returns>
         public IEnumerable<LatestResultsDTO> GetLatestResults(int sportId, bool topFive)
         {

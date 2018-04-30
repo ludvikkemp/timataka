@@ -1,0 +1,116 @@
+﻿@using System.Globalization
+@model Timataka.Core.Models.ViewModels.HomeViewModels.DisplayResultsViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<section class="content">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active show" data-toggle="tab" href="#results">Úrslit</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#upcoming">Næstu Viðburðir</a>
+        </li>
+
+    </ul>
+
+
+    <div class="row">
+        <div id="myTabContent" class="tab-content" style="width:100%">
+            <div class="col-md-12 tab-pane fade active show" id="results">
+                <div class="card">
+                    <section class="section">
+                        <div class="col-md-12">
+                            <h5 style="margin-top: 12px; margin: 12px;">Síðustu Úrslit í Hjólum</h5>
+                            <div class="card" style="margin-top: 15px; margin-bottom: 15px;">
+                                <section class="example">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nafn</th>
+                                                    <th>Dags.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var comp in Model.LatestResults)
+                                                {
+
+
+                                                    <tr>
+                                                        <td>
+                                                            <a asp-controller="Home"
+                                                               asp-action="Instance"
+                                                               asp-route-competitionId="@comp.CompetitionId"
+                                                               asp-route-instanceId="@comp.CompetitionInstanceId">@comp.Name</a>
+                                                        </td>
+                                                        <td>
+                                                            @comp.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="col-md-12 tab-pane fade" id="upcoming">
+                <div class="card">
+                    <section class="section">
+                        <div class="col-md-12">
+                            <h5 style="margin-top: 12px; margin: 12px;">Næstu Viðburðir í Hjólum</h5>
+                            <div class="card" style="margin-top: 15px; margin-bottom: 15px;">
+                                <section class="example">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nafn</th>
+                                                    <th>Dags.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var comp in Model.UpcomingEvents)
+                                                {
+
+
+                                                    <tr>
+                                                        <td>
+                                                            <a asp-controller="Home"
+                                                               asp-action="Instance"
+                                                               asp-route-competitionId="@comp.CompetitionId"
+                                                               asp-route-instanceId="@comp.CompetitionInstanceId">@comp.Name</a>
+                                                        </td>
+                                                        <td>
+                                                            @comp.Date.ToString("dd MMMM yyyy kl: hh:mm ", CultureInfo.CreateSpecificCulture("is-IS"))
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</section>
