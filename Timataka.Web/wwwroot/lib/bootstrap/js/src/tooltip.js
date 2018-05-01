@@ -4,7 +4,7 @@ import Util from './util'
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v4.1.0): tooltip.js
+ * Bootstrap (v4.0.0): tooltip.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -16,12 +16,13 @@ const Tooltip = (($) => {
    * ------------------------------------------------------------------------
    */
 
-  const NAME               = 'tooltip'
-  const VERSION            = '4.1.0'
-  const DATA_KEY           = 'bs.tooltip'
-  const EVENT_KEY          = `.${DATA_KEY}`
-  const JQUERY_NO_CONFLICT = $.fn[NAME]
-  const CLASS_PREFIX       = 'bs-tooltip'
+  const NAME                = 'tooltip'
+  const VERSION             = '4.0.0'
+  const DATA_KEY            = 'bs.tooltip'
+  const EVENT_KEY           = `.${DATA_KEY}`
+  const JQUERY_NO_CONFLICT  = $.fn[NAME]
+  const TRANSITION_DURATION = 150
+  const CLASS_PREFIX        = 'bs-tooltip'
   const BSCLS_PREFIX_REGEX = new RegExp(`(^|\\s)${CLASS_PREFIX}\\S+`, 'g')
 
   const DefaultType = {
@@ -316,7 +317,7 @@ const Tooltip = (($) => {
         // only needed because of broken event delegation on iOS
         // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
         if ('ontouchstart' in document.documentElement) {
-          $(document.body).children().on('mouseover', null, $.noop)
+          $('body').children().on('mouseover', null, $.noop)
         }
 
         const complete = () => {
@@ -333,12 +334,10 @@ const Tooltip = (($) => {
           }
         }
 
-        if ($(this.tip).hasClass(ClassName.FADE)) {
-          const transitionDuration = Util.getTransitionDurationFromElement(this.tip)
-
+        if (Util.supportsTransitionEnd() && $(this.tip).hasClass(ClassName.FADE)) {
           $(this.tip)
             .one(Util.TRANSITION_END, complete)
-            .emulateTransitionEnd(transitionDuration)
+            .emulateTransitionEnd(Tooltip._TRANSITION_DURATION)
         } else {
           complete()
         }
@@ -376,19 +375,18 @@ const Tooltip = (($) => {
       // If this is a touch-enabled device we remove the extra
       // empty mouseover listeners we added for iOS support
       if ('ontouchstart' in document.documentElement) {
-        $(document.body).children().off('mouseover', null, $.noop)
+        $('body').children().off('mouseover', null, $.noop)
       }
 
       this._activeTrigger[Trigger.CLICK] = false
       this._activeTrigger[Trigger.FOCUS] = false
       this._activeTrigger[Trigger.HOVER] = false
 
-      if ($(this.tip).hasClass(ClassName.FADE)) {
-        const transitionDuration = Util.getTransitionDurationFromElement(tip)
-
+      if (Util.supportsTransitionEnd() &&
+          $(this.tip).hasClass(ClassName.FADE)) {
         $(tip)
           .one(Util.TRANSITION_END, complete)
-          .emulateTransitionEnd(transitionDuration)
+          .emulateTransitionEnd(TRANSITION_DURATION)
       } else {
         complete()
       }

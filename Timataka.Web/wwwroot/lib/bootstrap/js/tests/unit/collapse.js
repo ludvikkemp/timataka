@@ -45,14 +45,10 @@ $(function () {
 
   QUnit.test('should show a collapsed element', function (assert) {
     assert.expect(2)
-    var done = assert.async()
-    var $el = $('<div class="collapse"/>')
+    var $el = $('<div class="collapse"/>').bootstrapCollapse('show')
 
-    $el.one('shown.bs.collapse', function () {
-      assert.ok($el.hasClass('show'), 'has class "show"')
-      assert.ok(!/height/i.test($el.attr('style')), 'has height reset')
-      done()
-    }).bootstrapCollapse('show')
+    assert.ok($el.hasClass('show'), 'has class "show"')
+    assert.ok(!/height/i.test($el.attr('style')), 'has height reset')
   })
 
   QUnit.test('should show multiple collapsed elements', function (assert) {

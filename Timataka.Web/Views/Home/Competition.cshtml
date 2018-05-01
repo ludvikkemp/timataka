@@ -1,10 +1,11 @@
-﻿@model Timataka.Core.Models.Dto.AdminDTO.CompetitionDto
+﻿@using System.Globalization
+@model Timataka.Core.Models.Dto.AdminDTO.CompetitionDto
 
 @{
     Layout = "_Layout";
 }
 <section class="content">
-    <div class="title-block" style="margin-bottom:15px;">
+    <div class="title-block" style="margin:10px;">
 
         <div class="row">
             <div class="col-md-12">
@@ -52,7 +53,7 @@
                                                             <a asp-controller="Home" asp-action="Instance" asp-route-instanceId="@item.Id" asp-route-competitionId="@item.CompetitionId">@item.Name</a>
                                                         </td>
                                                         <td>
-                                                            @item.DateFrom
+                                                            @item.DateFrom.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))
                                                         </td>
                                                     </tr>
                                                 }

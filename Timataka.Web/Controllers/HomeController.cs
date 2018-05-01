@@ -189,17 +189,40 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Results/AthleticsEvents")]
-        public async Task<IActionResult> Athletics(int competitionId, int instanceId, int eventId, int categoryId)
+        [Route("Athletics")]
+        public IActionResult Athletics()
         {
             var model = new DisplayResultsViewModel
             {
                 LatestResults = _competitionService.GetLatestResults(AthleticsId, false),
                 UpcomingEvents = _competitionService.GetUpcomingEvents(AthleticsId, false),
             };
-            return null;
+            return View(model);
         }
 
+        [HttpGet]
+        [Route("Cycling")]
+        public IActionResult Cycling()
+        {
+            var model = new DisplayResultsViewModel
+            {
+                LatestResults = _competitionService.GetLatestResults(CyclingId, false),
+                UpcomingEvents = _competitionService.GetUpcomingEvents(CyclingId, false),
+            };
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("OtherSports")]
+        public IActionResult OtherSports()
+        {
+            var model = new DisplayResultsViewModel
+            {
+                LatestResults = _competitionService.GetLatestResults(0, false),
+                UpcomingEvents = _competitionService.GetUpcomingEvents(0, false),
+            };
+            return View(model);
+        }
 
         public IActionResult About()
         {

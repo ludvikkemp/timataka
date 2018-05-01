@@ -10,16 +10,16 @@
     <link rel="icon" href="~/images/timatakaLogo.png">
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-spacelab.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap-spacelab.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-spacelab.css" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-spacelab.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap-spacelab.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-spacelab.css" asp-append-version="true" />
 
     </environment>
 </head>
@@ -45,7 +45,7 @@
                 <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="User" asp-action="Competitions">Mín Síða</a></li>
 }
 
-                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Results">Úrslit</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Results">Öll Úrslit</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">Um Okkur</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Hafa Samband</a></li>
 
@@ -58,7 +58,7 @@
     </nav>
 
 
-    <div class="container body-content" style="padding-top: 30px;background-color:rgba(0, 0, 0, 0.01)">
+    <div class="container body-content" style="padding-top: 65px;background-color:rgba(0, 0, 0, 0.01)">
         @RenderBody()
         <hr />
         <footer>
