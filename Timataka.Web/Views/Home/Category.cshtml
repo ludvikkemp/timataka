@@ -56,7 +56,7 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    @{if (item.GunTime != "")
+                                                    @{if (item.GunTime != "" && item.Status == 0)
                                                         {
                                                            @i
                                                         }
@@ -78,7 +78,11 @@
                                                     @item.Country
                                                 </td>
                                                 <td>
-                                                    @item.GunTime (@item.ChipTime)
+                                                    @{if (item.RawGunTime > 0 && item.Status == 0)
+                                                        {@item.GunTime @(" (" + item.ChipTime + ")")}
+                                                      else if(item.Status != 0)
+                                                        {@item.Status};
+                                                    }
                                                 </td>
                                             </tr>
                                             i++;
