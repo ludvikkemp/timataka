@@ -16,26 +16,17 @@ const workboxSWDestMapPath = `${workboxSWDestPath}.map`
 fs.createReadStream(workboxSWSrcPath).pipe(fs.createWriteStream(workboxSWDestPath))
 fs.createReadStream(workboxSWSrcMapPath).pipe(fs.createWriteStream(workboxSWDestMapPath))
 
-const updateUrl = (manifestEntries) => {
-  const manifest = manifestEntries.map((entry) => {
-    if (entry.url.startsWith(buildPrefix)) {
-      const regex = new RegExp(buildPrefix, 'g')
-      entry.url = entry.url.replace(regex, '')
-    }
-    return entry
-  })
-  return {
-    manifest,
-    warnings: []
+const updateUrl = (manifestEntries) => manifestEntries.map((entry) => {
+  if (entry.url.startsWith(buildPrefix)) {
+    const regex = new RegExp(buildPrefix, 'g')
+    entry.url = entry.url.replace(regex, '')
   }
-}
+  return entry
+})
 
 config.manifestTransforms = [updateUrl]
 
-swBuild.injectManifest(config).then(({
-  count,
-  size
-}) => {
+swBuild.injectManifest(config).then(() => {
   const wbSwRegex = /{fileName}/g
   fs.readFile(config.swDest, 'utf8', (err, data) => {
     if (err) {
@@ -43,9 +34,7 @@ swBuild.injectManifest(config).then(({
     }
     const swFileContents = data.replace(wbSwRegex, wbFileName)
     fs.writeFile(config.swDest, swFileContents, () => {
-      console.log(`Pre-cache Manifest generated. Pre-cached ${count} files, totalling ${size} bytes.`)
+      console.log('Pre-cache Manifest generated.')
     })
   })
-}).catch((error) => {
-  console.error(`Something went wrong: ${error}`)
 })
