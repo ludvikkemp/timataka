@@ -76,6 +76,11 @@ namespace Timataka.Core.Services
             return _repo.GetNationalityById(id);
         }
 
+        public IEnumerable<UserDto> GetUsersNotInHeatId(int heatId, int competitionInstanceId)
+        {
+            return _repo.GetUserNotInHeatId(heatId, competitionInstanceId);
+        }
+
         public IEnumerable<UserViewModel> GetAdminUsers()
         {
             var admins = _repo.GetAdminUsers();

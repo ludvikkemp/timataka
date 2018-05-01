@@ -17,5 +17,6 @@ namespace Timataka.Core.Data.Repositories
         IEnumerable<UserViewModel> GetAdminUsers();
         IEnumerable<UserViewModel> GetNonAdminUsers();
         string GetNationalityById(int id);
+        IEnumerable<UserDto> GetUserNotInHeatId(int heatId, int competitionInstanceId);
     }
 }
