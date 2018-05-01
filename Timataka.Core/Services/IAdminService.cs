@@ -18,5 +18,6 @@ namespace Timataka.Core.Services
         IEnumerable<UserViewModel> GetNonAdminUsers();
         Task<UserViewModel> GetUserByIdAsync(string userId);
         string GetNationalityById(int nationality);
+        IEnumerable<UserDto> GetUsersNotInHeatId(int heatId, int competitionInstanceId);
     }
 }
