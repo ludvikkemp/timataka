@@ -46,7 +46,7 @@
                                             <th>Nafn</th>
                                             <th>Fæðingarár</th>
                                             <th>Félag</th>
-                                            <th>Land</th>
+                                            <th>Lands</th>
                                             <th>Byssutími (Flögutími)</th>
                                         </tr>
                                         </thead>
@@ -56,7 +56,11 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    @i
+                                                    @{if (item.GunTime != "")
+                                                        {
+                                                           @i
+                                                        }
+                                                      }
                                                 </td>
                                                 <td>
                                                     @item.Bib
