@@ -40,44 +40,52 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Rank</th>
+                                                <th>#</th>
                                                 <th>BIB</th>
-                                                <th>Name</th>
-                                                <th>Year of birth</th>
-                                                <th>Club</th>
-                                                <th>Country</th>
-                                                <th>Guntime (Chiptime)</th>
+                                                <th>Nafn</th>
+                                                <th>Fæðingaár</th>
+                                                <th>Félag</th>
+                                                <th>Land</th>
+                                                <th>Byssutími (Flögutími)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @{int i = 1;}
                                             @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @i
-                                </td>
-                                <td>
-                                    @item.Bib
-                                </td>
-                                <td>
-                                    @item.Name
-                                </td>
-                                <td>
-                                    @item.DateOfBirth.Year
-                                </td>
-                                <td>
-                                    @item.Club
-                                </td>
-                                <td>
-                                    @item.Country
-                                </td>
-                                <td>
-                                    @item.GunTime (@item.ChipTime)
-                                </td>
-                            </tr>
-        i++;
-    }
+                                            {
+                                            <tr>
+                                                <td>
+                                                    @{if (item.GunTime != "" && item.Status == 0)
+                                                        {
+                                                         @i
+                                                        }
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @item.Bib
+                                                </td>
+                                                <td>
+                                                    @item.Name
+                                                </td>
+                                                <td>
+                                                    @item.DateOfBirth.Year
+                                                </td>
+                                                <td>
+                                                    @item.Club
+                                                </td>
+                                                <td>
+                                                    @item.Country
+                                                </td>
+                                                <td>
+                                                    @{if (item.RawGunTime > 0 && item.Status == 0)
+                                                        {@item.GunTime @(" (" + item.ChipTime + ")")}
+                                                    else if (item.Status != 0)
+                                                        {@item.Status};
+                                                    }
+                                                </td>
+                                            </tr>
+                                            i++;
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
