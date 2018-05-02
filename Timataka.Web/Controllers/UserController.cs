@@ -46,7 +46,7 @@ namespace Timataka.Web.Controllers
         public IActionResult Competitions(string search)
         {
             ViewData["CurrentFilter"] = search;
-            var instances = _competitionService.GetAllCompetitionInstances() ;
+            var instances = _competitionService.GetAllCompetitionInstances(Status.OpenForRegistration) ;
 
             if(!String.IsNullOrEmpty(search))
             {
