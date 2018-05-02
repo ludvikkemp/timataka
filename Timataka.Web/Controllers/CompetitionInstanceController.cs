@@ -290,7 +290,7 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Contestants")]
-        public async Task<IActionResult> Contestants(string search, int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> Contestants(string search, int competitionInstanceId, int competitionId, int count = 10)
         {
             ViewData["CurrentFilter"] = search;
             var contestants = _competitionService.GetContestantsInCompetitionInstance(competitionInstanceId);
@@ -307,7 +307,7 @@ namespace Timataka.Web.Controllers
             {
                 Competition = competition,
                 CompetitionInstance = competitionInstance,
-                Contestants = contestants
+                Contestants = contestants.OrderBy(x => x.Name).Take(count)
             };
             return View(model);
         }
@@ -332,7 +332,7 @@ namespace Timataka.Web.Controllers
 
             var model = new SelectContestantViewModel
             {
-                Users = users.Take(count),
+                Users = users.OrderBy(x => x.FirstName).Take(count),
                 CompetitionName = competition.Name,
                 CompetitionInstanceName = competitionInstance.Name
             };
