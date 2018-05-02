@@ -90,6 +90,7 @@ namespace Timataka.Core.Data.Repositories
         public IEnumerable<EventViewModel> GetEventsForInstance(int id)
         {
             var events = (from e in _context.Events
+                          join d in _context.Disciplines on e.DisciplineId equals d.Id
                           where e.CompetitionInstanceId == id
                           select new EventViewModel
                           {
@@ -99,6 +100,7 @@ namespace Timataka.Core.Data.Repositories
                               DateFrom = e.DateFrom,
                               DateTo = e.DateTo,
                               DisciplineId = e.DisciplineId,
+                              DisciplineName = d.Name,
                               DistanceOffset = e.DistanceOffset,
                               Gender = e.Gender,
                               Id = e.Id,
