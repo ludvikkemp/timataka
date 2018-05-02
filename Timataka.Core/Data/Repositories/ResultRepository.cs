@@ -165,7 +165,7 @@ namespace Timataka.Core.Data.Repositories
                     result.ChipTime = chipTime.ToString(@"hh\:mm\:ss");
                 }
             }
-            return results.OrderBy(o => o.RawGunTime);
+            return results.OrderBy(o=> o.Status != ResultStatus.Valid).ThenBy(o => o.RawGunTime <= 0).ThenBy(o => o.RawGunTime);
         }
 
         public IEnumerable<MyResultsViewModel> GetResultsForUser(string userId)

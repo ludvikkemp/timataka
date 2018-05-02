@@ -507,13 +507,11 @@ namespace Timataka.Web.Controllers
         {
             ViewData["CurrentFilter"] = search;
             var chips = _chipService.GetChips();
+
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
-                chips = chips.Where(u => u.Code.ToUpper().Contains(searchToUpper)
-                    || u.LastUserSsn.Contains(searchToUpper)
-                    || u.Number.ToString().Contains(searchToUpper)
-                    || u.Code.ToUpper().Contains(searchToUpper));
+                chips = chips.Where(u => u.Number.ToString().ToUpper().Contains(searchToUpper));
             }
             return View(chips);
         }
