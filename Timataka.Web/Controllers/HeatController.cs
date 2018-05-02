@@ -146,20 +146,14 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/AddContestant")]
         public IActionResult AddContestant(int heatId, int eventId, int competitionId, int competitionInstanceId)
         {
-            var selectUsersListItems =
-                new List<SelectListItem>();
-
             var listOfUsers = _adminService.GetUsersNotInHeatId(heatId, competitionInstanceId).OrderBy(x => x.FirstName);
 
-            foreach (var item in listOfUsers)
-            {
-                selectUsersListItems.Add(
-                    new SelectListItem
-                    {
-                        Text = item.FirstName + ' ' + item.Middlename + ' ' + item.LastName + " (" + item.Ssn + ")",
-                        Value = item.Id
-                    });
-            }
+            var selectUsersListItems = listOfUsers.Select(item => new SelectListItem
+                {
+                    Text = item.FirstName + ' ' + item.Middlename + ' ' + item.LastName + " (" + item.Ssn + ")",
+                    Value = item.Id
+                })
+                .ToList();
 
             ViewBag.heatId = heatId;
             ViewBag.users = selectUsersListItems;
