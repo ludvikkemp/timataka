@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
+using Timataka.Core.Models.Dto.Contestant;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.ContestantViewModels;
@@ -341,11 +342,17 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AddContestant/{userId}")]
-        public IActionResult AddContestant(int competitionInstanceId, int competitionId, string userId)
+        public async Task<IActionResult> AddContestant(int competitionInstanceId, int competitionId, string userId)
         {
-            var model = _competitionService.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
-            
-            return View(model);
+            var models = _competitionService.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
+            var user = await _adminService.GetUserByIdAsync(userId);
+            var dto = new AddContestantDto
+            {
+                AddContestantViewModels = models,
+                FullName = user.FirstName + " " + user.MiddleName + " " + user.LastName
+            };
+
+            return View(dto);
         }
 
         [HttpPost]

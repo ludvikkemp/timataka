@@ -1,4 +1,4 @@
-﻿@model List<Timataka.Core.Models.ViewModels.ContestantViewModels.AddContestantViewModel>
+﻿@model Timataka.Core.Models.Dto.Contestant.AddContestantDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,8 +6,8 @@
 }
 
 <section class="content">
-    
-    <h4>Add Contestant</h4>
+
+    <h4>@Model.FullName</h4>
     <hr />
     <div class="row">
         <div class="col-md-12">
@@ -16,44 +16,44 @@
 
                 <table>
 
-                    @for(int i = 0; i < Model.Count(); i++)
+                    @for (int i = 0; i < Model.AddContestantViewModels.Count(); i++)
                     {
-                        <input type="hidden" asp-for="@Model[i].UserId" value="@Model[i].UserId"/>
+                        <input type="hidden" asp-for="@Model.AddContestantViewModels[i].UserId" value="@Model.AddContestantViewModels[i].UserId" />
                         <tr>
                             <td>
                                 <div class="form-group">
-                                    <label asp-for="@Model[i].Add" class="control-label"></label>
-                                    <input asp-for="@Model[i].Add" class="form-control" />
-                                    <span asp-validation-for="@Model[i].Add" class="text-danger"></span>
+                                    <label asp-for="@Model.AddContestantViewModels[i].Add" class="control-label"></label>
+                                    <input asp-for="@Model.AddContestantViewModels[i].Add" class="form-control" />
+                                    <span asp-validation-for="@Model.AddContestantViewModels[i].Add" class="text-danger"></span>
                                 </div>
 
                             </td>
-                            <td>  @Model[i].EventName  </td>
+                            <td>  @Model.AddContestantViewModels[i].EventName  </td>
                             <td>
                                 <div class="form-group">
-                                    <label asp-for="@Model[i].HeatId">Heat</label>
-                                    <select class="form-control" asp-for="@Model[i].HeatId" asp-items="@Model[i].Heats"></select>
+                                    <label asp-for="@Model.AddContestantViewModels[i].HeatId">Heat</label>
+                                    <select class="form-control" asp-for="@Model.AddContestantViewModels[i].HeatId" asp-items="@Model.AddContestantViewModels[i].Heats"></select>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <label asp-for="@Model[i].Bib" class="control-label"></label>
-                                    <input asp-for="@Model[i].Bib" class="form-control" />
-                                    <span asp-validation-for="@Model[i].Bib" class="text-danger"></span>
+                                    <label asp-for="@Model.AddContestantViewModels[i].Bib" class="control-label"></label>
+                                    <input asp-for="@Model.AddContestantViewModels[i].Bib" class="form-control" />
+                                    <span asp-validation-for="@Model.AddContestantViewModels[i].Bib" class="text-danger"></span>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <label asp-for="@Model[i].ChipNumber" class="control-label"></label>
-                                    <input asp-for="@Model[i].ChipNumber" class="form-control" />
-                                    <span asp-validation-for="@Model[i].ChipNumber" class="text-danger"></span>
+                                    <label asp-for="@Model.AddContestantViewModels[i].ChipNumber" class="control-label"></label>
+                                    <input asp-for="@Model.AddContestantViewModels[i].ChipNumber" class="form-control" />
+                                    <span asp-validation-for="@Model.AddContestantViewModels[i].ChipNumber" class="text-danger"></span>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <label asp-for="@Model[i].Team" class="control-label"></label>
-                                    <input asp-for="@Model[i].Team" class="form-control" />
-                                    <span asp-validation-for="@Model[i].Team" class="text-danger"></span>
+                                    <label asp-for="@Model.AddContestantViewModels[i].Team" class="control-label"></label>
+                                    <input asp-for="@Model.AddContestantViewModels[i].Team" class="form-control" />
+                                    <span asp-validation-for="@Model.AddContestantViewModels[i].Team" class="text-danger"></span>
                                 </div>
                             </td>
                         </tr>
@@ -62,10 +62,13 @@
                 </table>
 
                 <div class="form-group">
-                    <input type="submit" value="Register" class="btn btn-primary" />
+                    <input type="submit" value="Add To Events" class="btn btn-primary" />
                 </div>
             </form>
         </div>
+    </div>
+    <div>
+        <a asp-controller="CompetitionInstance" asp-action="SelectContestant" class="btn btn-secondary-outline btn-sm">Back to List</a>
     </div>
 
 </section>

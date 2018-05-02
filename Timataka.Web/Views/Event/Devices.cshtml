@@ -40,10 +40,7 @@
                asp-controller="Event"
                asp-action="AssignDevice"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Assign Device</a>
-            <a class="btn btn-primary btn-sm rounded-s"
-               asp-controller="Admin"
-               asp-action="Event"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Heats</a>
+            
             <a asp-controller="Event"
                asp-action="Contestants"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
@@ -67,29 +64,29 @@
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Active</th>
-                                                <th>Actions</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Active</th>
+                                            <th>Actions</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model.DeviceInEventViewModels)
-                                            {
-                                                <tr>
-                                                    <td>@item.DevicesInEvent.Device.Name</td>
-                                                    <td>@item.DevicesInEvent.Device.Active</td>
-                                                    <td>
-                                                        <a class="btn btn-warning-outline btn-sm"
-                                                           asp-controller="Event"
-                                                           asp-action="UnassignDevice"
-                                                           asp-route-deviceId="@item.DevicesInEvent.DeviceId"
-                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                                                           asp-route-eventId="@item.DevicesInEvent.EventId">Unassign</a>
-                                                    </td>
-                                                </tr>
-                                            }
+                                        @foreach (var item in Model.DeviceInEventViewModels)
+                                        {
+                                            <tr>
+                                                <td>@item.DevicesInEvent.Device.Name</td>
+                                                <td>@item.DevicesInEvent.Device.Active</td>
+                                                <td>
+                                                    <a class="btn btn-warning-outline btn-sm"
+                                                       asp-controller="Event"
+                                                       asp-action="UnassignDevice"
+                                                       asp-route-deviceId="@item.DevicesInEvent.DeviceId"
+                                                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                       asp-route-eventId="@item.DevicesInEvent.EventId">Unassign</a>
+                                                </td>
+                                            </tr>
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
@@ -100,5 +97,12 @@
                 </section>
             </div>
         </div>
+    </div>
+    <div>
+        <a class="btn btn-secondary-outline btn-sm"
+           asp-controller="Admin"
+           asp-action="Event"
+           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Back to Heats</a>
+        
     </div>
 </section>

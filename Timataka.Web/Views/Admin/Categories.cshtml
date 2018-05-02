@@ -38,10 +38,7 @@
                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                class="btn btn-success btn-sm rounded-s">Add Category</a>
-            <a asp-controller="Admin"
-               asp-action="Event"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-               class="btn btn-primary btn-sm rounded-s">Heats</a>
+            
             <a asp-controller="Event"
                asp-action="Contestants"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
@@ -104,6 +101,11 @@
             </div>
         </div>
     </div>
-
+    <div>
+        <a asp-controller="Admin"
+           asp-action="Event"
+           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+           class="btn btn-secondary-outline btn-sm">Back to Heats</a>
+    </div>
 </section>
 
