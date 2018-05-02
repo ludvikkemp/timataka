@@ -314,9 +314,27 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/SelectContestant")]
-        public IActionResult SelectContestant(int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> SelectContestant(string search, int competitionInstanceId, int competitionId, int count = 10)
         {
-            var model = _adminService.GetUsers();
+            ViewData["CurrentFilter"] = search;
+            var users = _adminService.GetUsers();
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                users = users.Where(u => u.Username.ToUpper().Contains(searchToUpper)
+                                                     || u.FirstName.ToUpper().Contains(searchToUpper)
+                                                     || u.LastName.ToUpper().Contains(searchToUpper));
+            }
+
+            var model = new SelectContestantViewModel
+            {
+                Users = users.Take(count),
+                CompetitionName = competition.Name,
+                CompetitionInstanceName = competitionInstance.Name
+            };
             return View(model);
         }
 
@@ -340,7 +358,7 @@ namespace Timataka.Web.Controllers
             {
                 foreach(var item in model)
                 {
-                    if (item.Flag)
+                    if (item.Add)
                     {    
                         var contestantInHeat = new ContestantInHeat
                         {

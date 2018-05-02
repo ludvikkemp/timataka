@@ -10,7 +10,7 @@
     <h4>Add Contestant</h4>
     <hr />
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <form asp-action="AddContestant" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -22,18 +22,17 @@
                         <tr>
                             <td>
                                 <div class="form-group">
-                                    <label asp-for="@Model[i].Flag" class="control-label"></label>
-                                    <input asp-for="@Model[i].Flag" class="form-control" />
-                                    <span asp-validation-for="@Model[i].Flag" class="text-danger"></span>
+                                    <label asp-for="@Model[i].Add" class="control-label"></label>
+                                    <input asp-for="@Model[i].Add" class="form-control" />
+                                    <span asp-validation-for="@Model[i].Add" class="text-danger"></span>
                                 </div>
+
                             </td>
-
                             <td>  @Model[i].EventName  </td>
-
                             <td>
                                 <div class="form-group">
                                     <label asp-for="@Model[i].HeatId">Heat</label>
-                                    <select asp-for="@Model[i].HeatId" asp-items="@Model[i].Heats"></select>
+                                    <select class="form-control" asp-for="@Model[i].HeatId" asp-items="@Model[i].Heats"></select>
                                 </div>
                             </td>
                             <td>

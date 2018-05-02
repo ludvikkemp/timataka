@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Timataka.Core.Models.Entities;
 
@@ -8,8 +9,8 @@ namespace Timataka.Core.Models.ViewModels.ContestantViewModels
 {
     public class AddContestantViewModel
     {
-        // Flag == true if event is selected
-        public bool Flag { get; set; }
+        // Add == true if event is selected
+        public bool Add{ get; set; }
 
         // Event Data
         public int EventId { get; set; }
