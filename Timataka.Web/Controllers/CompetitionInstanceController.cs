@@ -346,20 +346,15 @@ namespace Timataka.Web.Controllers
         {
             var models = _competitionService.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
             var user = await _adminService.GetUserByIdAsync(userId);
-            var dto = new AddContestantDto
-            {
-                AddContestantViewModels = models,
-                FullName = user.FirstName + " " + user.MiddleName + " " + user.LastName
-            };
-
-            return View(dto);
+            ViewBag.UserName = user.FirstName + " " + user.MiddleName + " " + user.LastName;
+            return View(models);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AddContestant/{userId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddContestant(IEnumerable<AddContestantViewModel> model, int competitionInstanceId, int competitionId, string userId)
+        public async Task<IActionResult> AddContestant(List<AddContestantViewModel> model, int competitionInstanceId, int competitionId, string userId)
         {
             if (ModelState.IsValid)
             {
@@ -394,7 +389,8 @@ namespace Timataka.Web.Controllers
 
                 return RedirectToAction("Contestants", "CompetitionInstance", new { @competitionId = competitionId, @competitionInstanceId = competitionInstanceId });
             }
-
+            var user = await _adminService.GetUserByIdAsync(userId);
+            ViewBag.UserName = user.FirstName + " " + user.MiddleName + " " + user.LastName;
             return View(model);
         }
 
