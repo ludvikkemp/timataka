@@ -434,7 +434,6 @@ namespace Timataka.Core.Services
         /// <param name="id"></param>
         /// <returns>All roles for a given competitions</returns>
         public IEnumerable<ManagesCompetitionViewModel> GetAllRolesForCompetition(int id)
-
         {
             var m = _repo.GetRolesForCompetition(id);
             return m;

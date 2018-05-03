@@ -101,6 +101,23 @@ namespace Timataka.Tests
         }
 
         [Fact]
+        public async void TestEditCompetition()
+        {
+            //Arrange
+            await _service.AddAsync(new CompetitionsViewModel {Id = 1, Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
+            await _service.AddAsync(new CompetitionsViewModel {Id = 1, Description = "", Email = "email@email.com", Name = "Önnur keppni", PhoneNumber = "5912345" });
+
+            //Act
+            var competition = await _service.GetCompetitionByIdAsync(1);
+            competition.Name = "NewName";
+            var result = await _service.EditAsync(competition, new CompetitionsViewModel {
+            Name = competition.Name, Description = competition.Description, Email = competition.Email, Id = competition.Id, PhoneNumber = competition.Phone, Sponsor = competition.Sponsor, WebPage = competition.WebPage});
+
+            //Assert
+            Assert.Equal(expected: "NewName", actual: result.Name);
+        }
+
+        [Fact]
         public async void TestAddCompetitionInstance()
         {
             //Arrange
@@ -163,11 +180,14 @@ namespace Timataka.Tests
             Assert.Equal(expected: 1, actual: result.Last().CompetitionId);
         }
 
-        /*
+        
         [Fact]
         public async void TestGetRolesForCompetition()
         {
             //Arrange
+            await _service.AddAsync(new CompetitionsViewModel { Id = 1, Description = "", Email = "email@email.com", Name = "Keppnin", PhoneNumber = "5812345" });
+            await _service.AddAsync(new CompetitionsViewModel { Id = 2, Description = "", Email = "email@email.com", Name = "Önnur keppni", PhoneNumber = "5912345" });
+            await _service.AddAsync(new CompetitionsViewModel { Id = 3, Description = "", Email = "email@email.com", Name = "Enn Önnur keppni", PhoneNumber = "5912345" });
             _context.Users.Add(new ApplicationUser { Id = "ABC", FirstName = "Jon", LastName = "Jonsson", CountryId = 352, Email = "jon@jonsson.is", Ssn = "2501003310", Gender = "1" });
             _context.Users.Add(new ApplicationUser { Id = "ABCD", FirstName = "Jon", LastName = "Jonsson", CountryId = 352, Email = "jon@jonsson.is", Ssn = "2501003310", Gender = "1" });
             _context.Users.Add(new ApplicationUser { Id = "ABCE", FirstName = "Jon", LastName = "Jonsson", CountryId = 352, Email = "jon@jonsson.is", Ssn = "2501003310", Gender = "1" });
@@ -179,11 +199,10 @@ namespace Timataka.Tests
 
             //Act
             int result = _service.GetAllRolesForCompetition(2).Count();
-            Returns null, has something to do with new view model used
 
             //Assert
             Assert.Equal(expected: 3, actual: result);
-        }*/
+        }
 
         [Fact]
         public async void TestGetRolesForUser()
@@ -220,7 +239,5 @@ namespace Timataka.Tests
             //Assert
             Assert.Equal(expected: Role.Staff, actual: result);
         }
-        //TODO test functionality for roles...
-
     }
 }
