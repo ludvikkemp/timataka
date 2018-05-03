@@ -194,9 +194,15 @@ namespace Timataka.Core.Services
         /// Function to get all competition instances.
         /// </summary>
         /// <returns>All instances.</returns>
-        public IEnumerable<CompetitionInstance> GetAllCompetitionInstances()
+        public IEnumerable<CompetitionInstance> GetAllCompetitionInstances(Status? status = null)
         {
             var instances = _repo.GetInstances();
+            if(status != null)
+            {
+                instances = (from i in instances
+                             where i.Status == status
+                             select i).OrderBy(o => o.DateFrom).ToList();
+            }
             return instances;
         }
 
@@ -428,7 +434,6 @@ namespace Timataka.Core.Services
         /// <param name="id"></param>
         /// <returns>All roles for a given competitions</returns>
         public IEnumerable<ManagesCompetitionViewModel> GetAllRolesForCompetition(int id)
-
         {
             var m = _repo.GetRolesForCompetition(id);
             return m;

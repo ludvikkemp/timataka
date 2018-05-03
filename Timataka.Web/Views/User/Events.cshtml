@@ -31,7 +31,8 @@
                                         <thead>
                                             <tr>
                                                 <th>Event</th>
-                                                <th>Date From</th>
+                                                <th>Discipline</th>
+                                                <th>Date</th>
                                                 <th>Gender</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -44,6 +45,9 @@
                                                     <tr>
                                                         <td>
                                                             @item.Name
+                                                        </td>
+                                                        <td>
+                                                            @item.DisciplineName
                                                         </td>
                                                         <td>
                                                             @item.DateFrom.ToString("dd. MMM yyyy kl: hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))
