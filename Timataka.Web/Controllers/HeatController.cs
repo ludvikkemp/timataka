@@ -14,6 +14,7 @@ using Timataka.Core.Models.ViewModels.MarkerViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels;
+using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
 
 namespace Timataka.Web.Controllers
@@ -45,7 +46,7 @@ namespace Timataka.Web.Controllers
             _resultService = resultService;
         }
 
-        #region Heats
+        #region HEATS
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/Create
         [HttpGet]
@@ -136,58 +137,86 @@ namespace Timataka.Web.Controllers
             return RedirectToAction("Event", "Admin", new { competitionId, competitionInstanceId, eventId });
 
         }
-#endregion
+        #endregion
 
-        #region Contestatnts
-
+        #region CONTESTANTS
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/AddContestant")]
-        public IActionResult AddContestant(int heatId, int eventId, int competitionId, int competitionInstanceId)
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/SelectContestant")]
+        public async Task<IActionResult> SelectContestant(string search, int heatId, int eventId, int competitionInstanceId, int competitionId, int count = 10)
         {
-            var listOfUsers = _adminService.GetUsersNotInHeatId(heatId, competitionInstanceId).OrderBy(x => x.FirstName);
+            ViewData["CurrentFilter"] = search;
+            var users = _adminService.GetUsers();
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var heat = await _heatService.GetHeatByIdAsync(heatId);
 
-            var selectUsersListItems = listOfUsers.Select(item => new SelectListItem
-                {
-                    Text = item.FirstName + ' ' + item.Middlename + ' ' + item.LastName + " (" + item.Ssn + ")",
-                    Value = item.Id
-                })
-                .ToList();
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                users = users.Where(u => u.Username.ToUpper().Contains(searchToUpper)
+                                         || u.FirstName.ToUpper().Contains(searchToUpper)
+                                         || u.LastName.ToUpper().Contains(searchToUpper));
+            }
 
-            ViewBag.heatId = heatId;
-            ViewBag.users = selectUsersListItems;
+            var model = new SelectContestantViewModel
+            {
+                Users = users.OrderBy(x => x.FirstName).Take(count),
+                CompetitionName = competition.Name,
+                CompetitionInstanceName = competitionInstance.Name,
+                EventName = _event.Name,
+                HeatNumber = heat.HeatNumber
+            };
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/AddContestant/{userId}")]
+        public async Task<IActionResult> AddContestant(int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
+        {
+            var user = await _adminService.GetUserByIdAsync(userId);
+            ViewBag.UserName = user.FirstName + " " + user.LastName;
             return View(); 
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/AddContestant")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/AddContestant/{userId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddContestant(AddContestantToEventViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId)
+        public async Task<IActionResult> AddContestant(AddContestantToHeatViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var entitiy = new ContestantInHeat
-                    {
-                        Bib = model.ContestantInEvent.Bib,
-                        HeatId = model.ContestantInEvent.HeatId,
-                        Modified = DateTime.Now,
-                        Team = model.ContestantInEvent.Team,
-                        UserId = model.UserId
-                    };
+            if (!ModelState.IsValid) return View(model);
 
-                    await _heatService.AddAsyncContestantInHeat(entitiy);
-                }
-                catch(Exception e)
+            var entitiy = new ContestantInHeat
+            {
+                Bib = model.Bib,
+                HeatId = heatId,
+                Modified = DateTime.Now,
+                Team = model.Team,
+                UserId = model.UserId
+            };
+            await _heatService.AddAsyncContestantInHeat(entitiy);
+
+            if (model.ChipNumber > 0)
+            {
+                var chip = await _chipService.GetChipByNumberAsync(model.ChipNumber);
+                if (chip == null)
                 {
-                    return new BadRequestResult();
+                    return Json("Chipnumber Does Not Exist");
                 }
-                return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
+                var chipinHeat = new ChipInHeat
+                {
+                    ChipCode = chip.Code,
+                    HeatId = heatId,
+                    UserId = model.UserId,
+                    Valid = true
+                };
+                await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
             }
-            return View(model);
+            return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
         }
 
         [HttpGet]
@@ -314,7 +343,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Markers
+        #region MARKERS
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -362,7 +391,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Results
+        #region RESULTS
 
         [HttpGet]
         [Authorize(Roles = "Admin")]

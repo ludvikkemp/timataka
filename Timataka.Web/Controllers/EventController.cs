@@ -23,13 +23,17 @@ namespace Timataka.Web.Controllers
         private readonly IDeviceService _deviceService;
         private readonly ICompetitionService _competitionService;
         private readonly IAdminService _adminService;
+        private readonly IChipService _chipService;
+        private readonly IHeatService _heatService;
 
         public EventController(IEventService eventService,
             IDisciplineService disciplineService,
             ICourseService courseService,
             IDeviceService deviceService,
             ICompetitionService competitionService,
-            IAdminService adminService)
+            IAdminService adminService,
+            IChipService chipService,
+            IHeatService heatService)
         {
             _disciplineService = disciplineService;
             _eventService = eventService;
@@ -37,6 +41,8 @@ namespace Timataka.Web.Controllers
             _deviceService = deviceService;
             _competitionService = competitionService;
             _adminService = adminService;
+            _chipService = chipService;
+            _heatService = heatService;
         }
 
         #region Event
@@ -255,10 +261,62 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
-        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/AddContestant")]
-        public async Task<IActionResult> AddContestant(string search, int eventId, int competitionId, int competitionInstanceId, int count)
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/AddContestant/{userId}")]
+        public async Task<IActionResult> AddContestant(int competitionInstanceId, int competitionId, int eventId, string userId)
         {
-            return View();
+            var models = _competitionService.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
+            var user = await _adminService.GetUserByIdAsync(userId);
+            ViewBag.UserName = user.FirstName + " " + user.MiddleName + " " + user.LastName;
+            return View(models);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/AddContestant/{userId}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddContestant(List<AddContestantViewModel> model, int competitionInstanceId, int competitionId, int eventId, string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var item in model)
+                {
+                    if (item.Add)
+                    {
+                        var contestantInHeat = new ContestantInHeat
+                        {
+                            Bib = item.Bib,
+                            HeatId = item.HeatId,
+                            Modified = DateTime.Now,
+                            Team = item.Team,
+                            UserId = item.UserId
+                        };
+                        await _heatService.AddAsyncContestantInHeat(contestantInHeat);
+
+                        if (item.ChipNumber > 0)
+                        {
+                            var chip = await _chipService.GetChipByNumberAsync(item.ChipNumber);
+                            if (chip == null)
+                            {
+                                return Json("Chipnumber Does Not Exist");
+                            }
+                            var chipinHeat = new ChipInHeat
+                            {
+                                ChipCode = chip.Code,
+                                HeatId = item.HeatId,
+                                UserId = item.UserId,
+                                Valid = true
+                            };
+                            await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
+                        }
+                    }
+                }
+
+                return RedirectToAction("Contestants", "Event", new {competitionId, competitionInstanceId, @eventId = eventId });
+            }
+            var user = await _adminService.GetUserByIdAsync(userId);
+            ViewBag.UserName = user.FirstName + " " + user.MiddleName + " " + user.LastName;
+            return View(model);
         }
 
 
