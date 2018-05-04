@@ -180,6 +180,8 @@ namespace Timataka.Web.Controllers
         {
             var user = await _adminService.GetUserByIdAsync(userId);
             ViewBag.UserName = user.FirstName + " " + user.LastName;
+            var heat = await _heatService.GetHeatByIdAsync(heatId);
+            ViewBag.HeatId = heat.HeatNumber;
             return View(); 
         }
 
@@ -189,7 +191,14 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddContestant(AddContestantToHeatViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+            {
+                var user = await _adminService.GetUserByIdAsync(userId);
+                ViewBag.UserName = user.FirstName + " " + user.LastName;
+                var heat = await _heatService.GetHeatByIdAsync(heatId);
+                ViewBag.HeatId = heat.HeatNumber;
+                return View(model);
+            }
 
             var entitiy = new ContestantInHeat
             {
