@@ -62,11 +62,28 @@
 
                 </table>
 
-                <div class="form-group">
-                    <input type="submit" value="Register" class="btn btn-primary" />
-                </div>
+                @if (Model.Count == 0)
+                {
+                    <div class="form-group">
+                        <h4>No Events Available</h4>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <input type="submit" value="Add to Events" class="btn btn-primary" />
+                    </div>
+                }
+
             </form>
         </div>
+    </div>
+    <div>
+        <a asp-controller="CompetitionInstance"
+           asp-action="SelectContestant"
+           class="btn btn-secondary-outline btn-sm"
+           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">Back to Contestants</a>
     </div>
 
 </section>
