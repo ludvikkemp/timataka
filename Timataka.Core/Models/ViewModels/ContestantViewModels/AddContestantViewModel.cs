@@ -25,6 +25,7 @@ namespace Timataka.Core.Models.ViewModels.ContestantViewModels
         public string Team { get; set; }
 
         // Chip Data
+        [Range(0, int.MaxValue, ErrorMessage = "ChipNumber must be a positive number")]
         public int ChipNumber { get; set; }
     }
 }

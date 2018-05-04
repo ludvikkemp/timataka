@@ -375,6 +375,10 @@ namespace Timataka.Web.Controllers
                         if(item.ChipNumber > 0)
                         {
                             var chip = await _chipService.GetChipByNumberAsync(item.ChipNumber);
+                            if (chip == null)
+                            {
+                                return Json("Chipnumber Does Not Exist");
+                            }
                             var chipinHeat = new ChipInHeat
                             {
                                 ChipCode = chip.Code,
@@ -384,6 +388,7 @@ namespace Timataka.Web.Controllers
                             };
                             await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
                         }
+                        
                     }
                 }
 
