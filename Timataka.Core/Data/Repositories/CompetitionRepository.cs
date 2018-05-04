@@ -237,7 +237,25 @@ namespace Timataka.Core.Data.Repositories
                                         select new SelectListItem { Value = h.Id.ToString(), Text = h.HeatNumber.ToString() }).ToList(),
                                UserId = userId
                            }).ToList();
-            return results;
+
+
+            var finalResults = new List<AddContestantViewModel>();
+
+            foreach (var item in results)
+            {
+                var heatsThatContestantIsIn = (from h in _context.Heats
+                                     join c in _context.ContestantsInHeats on h.Id equals c.HeatId
+                                     where h.EventId == item.EventId && c.UserId == userId
+                                     select h).ToList();
+
+                if(heatsThatContestantIsIn.Count == 0)
+                {
+                    finalResults.Add(item);
+                }
+                
+            }
+
+            return finalResults;
         }
 
         public IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId)
