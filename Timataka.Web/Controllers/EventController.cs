@@ -11,6 +11,7 @@ using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
+using Timataka.Core.Models.ViewModels.ContestantViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -21,18 +22,21 @@ namespace Timataka.Web.Controllers
         private readonly ICourseService _courseService;
         private readonly IDeviceService _deviceService;
         private readonly ICompetitionService _competitionService;
+        private readonly IAdminService _adminService;
 
         public EventController(IEventService eventService,
             IDisciplineService disciplineService,
             ICourseService courseService,
             IDeviceService deviceService,
-            ICompetitionService competitionService)
+            ICompetitionService competitionService,
+            IAdminService adminService)
         {
             _disciplineService = disciplineService;
             _eventService = eventService;
             _courseService = courseService;
             _deviceService = deviceService;
             _competitionService = competitionService;
+            _adminService = adminService;
         }
 
         #region Event
@@ -217,6 +221,35 @@ namespace Timataka.Web.Controllers
                 Competition = competition,
                 CompetitionInstance = competitionInstance,
                 Contestants = contestants.OrderBy(x => x.Name).Take(count)
+            };
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/SelectContestant")]
+        public async Task<IActionResult> SelectContestant(string search, int eventId, int competitionInstanceId, int competitionId, int count = 10)
+        {
+            ViewData["CurrentFilter"] = search;
+            var users = _adminService.GetUsers();
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                users = users.Where(u => u.Username.ToUpper().Contains(searchToUpper)
+                                         || u.FirstName.ToUpper().Contains(searchToUpper)
+                                         || u.LastName.ToUpper().Contains(searchToUpper));
+            }
+
+            var model = new SelectContestantViewModel
+            {
+                Users = users.OrderBy(x => x.FirstName).Take(count),
+                CompetitionName = competition.Name,
+                CompetitionInstanceName = competitionInstance.Name,
+                EventName = _event.Name
             };
             return View(model);
         }

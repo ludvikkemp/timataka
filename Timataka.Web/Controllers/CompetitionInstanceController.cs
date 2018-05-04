@@ -388,7 +388,6 @@ namespace Timataka.Web.Controllers
                             };
                             await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
                         }
-                        
                     }
                 }
 

@@ -1,61 +1,46 @@
-﻿@model Timataka.Core.Models.Dto.CompetitionInstanceDTO.ContestantsInCompetitionInstanceDTO
+﻿@model Timataka.Core.Models.ViewModels.ContestantViewModels.SelectContestantViewModel
 
 @{
     Layout = "_AdminLayout";
 }
-<section class="content">
-    <div class="title-block" style="margin-bottom:15px;">
 
+<section class="content">
+    <div class="title-block" style="margin-bottom: 15px;">
         <div class="row">
             <div class="col-md-12">
                 <span class="title">
                     <a asp-controller="Admin"
                        asp-action="Competition"
-                       asp-route-competitionId="@Model.Competition.Id">@Model.Competition.Name</a> /
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]">@Model.CompetitionName</a> /
 
                     <a asp-controller="Admin"
                        asp-action="CompetitionInstance"
-                       asp-route-competitionId="@Model.Competition.Id"
-                       asp-route-competitionInstanceId="@Model.CompetitionInstance.Id">@Model.CompetitionInstance.Name</a> /
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.CompetitionInstanceName</a> /
 
                     <a asp-controller="Admin"
-                       asp-action="Event"
+                       asp-action="CompetitionInstance"
                        asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                        asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">@ViewBag.EventName</a> /
+                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">@Model.EventName</a> /
 
-                    Contestants
+                    <a asp-controller="CompetitionInstance"
+                       asp-action="Contestants"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">Contestants</a> /
+
+                    Add Contestant
                 </span>
-
             </div>
         </div>
-
     </div>
 
-    <div class="row">
-        <div class="col-md-7 pt-2">
-            <a asp-controller="Event"
-               asp-action="SelectContestant"
-               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-               class="btn btn-success btn-sm rounded-s">Add Contestants</a>
 
-            <a asp-controller="Event"
-               asp-action="Devices"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-               class="btn btn-primary btn-sm rounded-s">Devices</a>
-            <a asp-controller="Admin"
-               asp-action="Categories"
-               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-               class="btn btn-primary btn-sm rounded-s">Categories</a>
-        </div>
-        <div class="col-md-3">
-            <form asp-action="Contestants" method="get" class="">
+    <div class="row">
+        <div class="col-md-5">
+            <form asp-action="SelectContestant" method="get" class="">
                 <div class="input-group">
-                    <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for user by Name...">
+                    <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for user...">
                     <span class="input-group-btn">
                         <button class="btn btn-secondary rounded-s btn-lg" type="submit">
                             <i class="fa fa-search"></i>
@@ -64,33 +49,33 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-7">
             <nav class="text-right">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a asp-controller="Event"
-                           asp-action="Contestants"
+                        <a asp-controller="CompetitionInstance"
+                           asp-action="SelectContestant"
                            asp-route-count="10"
                            asp-route-search="@ViewData["currentFilter"]"
                            class="page-link">10</a>
                     </li>
                     <li class="page-item">
-                        <a asp-controller="Event"
-                           asp-action="Contestants"
+                        <a asp-controller="CompetitionInstance"
+                           asp-action="SelectContestant"
                            asp-route-count="25"
                            asp-route-search="@ViewData["currentFilter"]"
                            class="page-link">25</a>
                     </li>
                     <li class="page-item">
-                        <a asp-controller="Event"
-                           asp-action="Contestants"
+                        <a asp-controller="CompetitionInstance"
+                           asp-action="SelectContestant"
                            asp-route-count="50"
                            asp-route-search="@ViewData["currentFilter"]"
                            class="page-link">50</a>
                     </li>
                     <li class="page-item">
-                        <a asp-controller="Event"
-                           asp-action="Contestants"
+                        <a asp-controller="CompetitionInstance"
+                           asp-action="SelectContestant"
                            asp-route-count="100"
                            asp-route-search="@ViewData["currentFilter"]"
                            class="page-link">100</a>
@@ -105,31 +90,32 @@
             <div class="card">
                 <section class="section">
                     <div class="col-md-12">
-                        <div class="card" style="margin-top:15px;">
+                        <div class="card" style="margin-top: 15px;">
                             <section class="example">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Gender</th>
+                                                <th>SSN</th>
+                                                <th>Username</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model.Contestants)
+                                            @foreach (var item in Model.Users)
                                             {
 
                                                 <tr>
-                                                    <td>@item.Name</td>
-                                                    <td>@item.Gender</td>
+                                                    <td>@item.FirstName @item.Middlename @item.LastName</td>
+                                                    <td>@item.Ssn</td>
+                                                    <td>@item.Username</td>
                                                     <td>
-                                                        <a asp-controller="CompetitionInstance" asp-action="EditContestantInEvent"
-                                                           asp-route-userId="@item.Id"
+                                                        <a asp-action="AddContestant"
                                                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                            asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                                                           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-                                                           class="btn btn-warning-outline btn-sm">Edit Contestant</a>
+                                                           asp-route-userId="@item.Id"
+                                                           class="btn btn-success-outline btn-sm">Select Contestant</a>
                                                     </td>
                                                 </tr>
 
@@ -145,10 +131,6 @@
             </div>
         </div>
     </div>
-    <div>
-        <a asp-controller="Admin"
-           asp-action="Event"
-           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-           class="btn btn-secondary-outline btn-sm">Back to Heats</a>
-    </div>
+
+
 </section>
