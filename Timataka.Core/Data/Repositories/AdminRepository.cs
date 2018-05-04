@@ -168,6 +168,42 @@ namespace Timataka.Core.Data.Repositories
             return nationality;
         }
 
+        public IEnumerable<UserDto> GetUserNotInHeatId(int heatId, int competitionInstanceId)
+        {
+            var users = (from u in _db.Users
+                join cih in _db.ContestantsInHeats on u.Id equals cih.UserId
+                where cih.HeatId != heatId
+                select new UserDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    Middlename = u.MiddleName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    Username = u.UserName,
+                    Ssn = u.Ssn,
+                    Phone = u.Phone,
+                    DateOfBirth = u.DateOfBirth,
+                    Gender = u.Gender,
+                    CountryId = u.CountryId,
+                    Country = (from c in _db.Countries
+                        where c.Id == u.CountryId
+                        select c.Name).FirstOrDefault(),
+                    NationalityId = u.NationalityId,
+                    Deleted = u.Deleted,
+                    Roles = (from ur in _db.UserRoles
+                        join r in _db.Roles
+                            on ur.RoleId equals r.Id
+                        where u.Id == ur.UserId
+                        select new UserRolesDto
+                        {
+                            Id = ur.RoleId,
+                            Name = r.Name
+                        }).ToList()
+                }).Distinct().ToList();
+            return users;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this._disposed)

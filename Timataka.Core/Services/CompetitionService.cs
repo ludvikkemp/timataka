@@ -247,6 +247,16 @@ namespace Timataka.Core.Services
             return _repo.GetAllContestantsInCompetitionInstance(id);
         }
 
+        public IEnumerable<ContestantsInCompetitionViewModel> GetContestantsInCompetitionInstanceAndEvent(int competitionInstanceId, int eventId)
+        {
+            var filteredContestants = (from c in _repo.GetAllContestantsInCompetitionInstance(competitionInstanceId)
+            where ((from e in c.EventList
+                          where e.Id == eventId
+                          select e).ToList().Count()) == 1
+                select c).ToList();
+            return filteredContestants;
+        }
+
         /// <summary>
         /// Function to get heats for contestant in competition instance.
         /// </summary>

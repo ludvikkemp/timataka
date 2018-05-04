@@ -39,18 +39,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <a asp-controller="Admin"
-               asp-action="Event"
-               asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" class="btn btn-primary btn-sm rounded-s">Heats</a>
-            <a asp-controller="Admin"
-               asp-action="Heat"
-               asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" class="btn btn-primary btn-sm rounded-s">Contestants</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mt-3">
             <div class="card">
                 <section class="section">
                     <div class="col-md-12">
@@ -130,7 +119,12 @@
             </form>
         </div>
     </div>
-
+    <div>
+        <a asp-controller="Admin"
+           asp-action="Heat"
+           asp-route-heatId="@ViewContext.RouteData.Values["heatId"]" 
+           class="btn btn-secondary-outline btn-sm">Back to Contestants</a>
+    </div>
 
 </section>
 @section Scripts {

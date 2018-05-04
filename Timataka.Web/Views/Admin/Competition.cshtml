@@ -14,12 +14,12 @@
     </div>
 
     <div class="row">
-        <div class="col-md-7">
-            <a asp-controller="CompetitionInstance" asp-action="Create" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-success btn-sm rounded-s"> Create Instance </a>
+        <div class="col-md-7 pt-2">
+            <a asp-controller="CompetitionInstance" asp-action="Create" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-success btn-sm rounded-s"> Add Instance </a>
             <a asp-controller="Admin" asp-action="Personnel" asp-route-competitionId="@Model.Competiton.Id" class="btn btn-primary btn-sm rounded-s"> Personnel </a>
         </div>
         <div class="col-md-5">
-            <form asp-action="Com" method="get">
+            <form asp-action="Competition" method="get">
                 <div class="input-group">
                     <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Search for competition instance...">
                     <span class="input-group-btn">

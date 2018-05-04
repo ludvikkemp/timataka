@@ -31,17 +31,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 pt-2">
             <a asp-controller="Category"
                asp-action="Create"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                class="btn btn-success btn-sm rounded-s">Add Category</a>
-            <a asp-controller="Admin"
-               asp-action="Event"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-               class="btn btn-primary btn-sm rounded-s">Heats</a>
+            
             <a asp-controller="Event"
                asp-action="Contestants"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
@@ -53,7 +50,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mt-3">
             <div class="card">
                 <section class="section">
                     <div class="col-md-12">
@@ -104,6 +101,11 @@
             </div>
         </div>
     </div>
-
+    <div>
+        <a asp-controller="Admin"
+           asp-action="Event"
+           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+           class="btn btn-secondary-outline btn-sm">Back to Heats</a>
+    </div>
 </section>
 

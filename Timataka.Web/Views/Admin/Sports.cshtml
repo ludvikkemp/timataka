@@ -16,7 +16,7 @@
     </div>
     
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-7 pt-2">
             <a class="btn btn-success btn-sm rounded-s" asp-controller="Sport" asp-action="Create">Create New</a>
         </div>
         <div class="col-md-5">
@@ -57,8 +57,7 @@
                                             <td><a asp-controller="Admin" asp-action="Sport" asp-route-id="@item.Id">@item.Name</a></td>
                                             <td>
                                                 <a class="btn btn-warning-outline btn-sm" asp-controller="Sport" asp-action="Edit" asp-route-sportId="@item.Id">Edit</a>
-                                                <a class="btn btn-success-outline btn-sm" asp-controller="Sport" asp-action="Details" asp-route-sportId="@item.Id">Details</a>
-                                                <!--<a class="btn btn-danger-outline btn-sm" asp-controller="Sport" asp-action="Delete" asp-route-sportId="item.Id">Delete</a>-->
+                                                <a class="btn btn-success-outline btn-sm" asp-controller="Sport" asp-action="Details" asp-route-sportId="@item.Id">Details</a>                                               
                                             </td>
                                         </tr>
                                     }

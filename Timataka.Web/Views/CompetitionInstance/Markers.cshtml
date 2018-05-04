@@ -27,12 +27,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <a asp-controller="Admin"
-               asp-action="CompetitionInstance"
-               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-               class="btn btn-primary btn-sm rounded-s">Events</a>
+        <div class="col-md-12 pt-2">
+            
             <a asp-controller="CompetitionInstance"
                asp-action="Contestants"
                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
@@ -48,7 +44,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mt-3">
             <div class="card">
                 <section class="section">
                     <div class="col-md-12">
@@ -57,30 +53,30 @@
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
-                                            <tr>
-                                                <th>Time</th>
-                                                <th>Location</th>
-                                                <th>Type</th>
-                                                <th>Actions</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Location</th>
+                                            <th>Type</th>
+                                            <th>Actions</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model.Markers)
-                                            {
-                                                <tr>
-                                                    <td>@item.Time</td>
-                                                    <td>@item.Location</td>
-                                                    <td>@item.Type</td>
-                                                    <td>
-                                                        <a class="btn btn-warning-outline btn-sm"
-                                                           asp-controller="CompetitionInstance"
-                                                           asp-action="AssignMarker"
-                                                           asp-route-markerId="@item.Id"
-                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">Assign</a>
-                                                    </td>
-                                                </tr>
-                                            }
+                                        @foreach (var item in Model.Markers)
+                                        {
+                                            <tr>
+                                                <td>@item.Time</td>
+                                                <td>@item.Location</td>
+                                                <td>@item.Type</td>
+                                                <td>
+                                                    <a class="btn btn-warning-outline btn-sm"
+                                                       asp-controller="CompetitionInstance"
+                                                       asp-action="AssignMarker"
+                                                       asp-route-markerId="@item.Id"
+                                                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">Assign</a>
+                                                </td>
+                                            </tr>
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
@@ -91,5 +87,12 @@
                 </section>
             </div>
         </div>
+    </div>
+    <div>
+        <a asp-controller="Admin"
+           asp-action="CompetitionInstance"
+           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+           class="btn btn-secondary-outline btn-sm">Back to Events</a>
     </div>
 </section>

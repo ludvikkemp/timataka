@@ -80,6 +80,8 @@ namespace Timataka.Web.Controllers
         public IActionResult Users(string search, int count = 10)
         {
             ViewData["CurrentFilter"] = search;
+
+            // Keeping list of all users in cache for 8 hours
             if (!_cache.TryGetValue("listOfUsers", out IEnumerable<UserDto> listOfUsers))
             {
                 listOfUsers = _adminService.GetUsers();
@@ -99,7 +101,7 @@ namespace Timataka.Web.Controllers
                     || u.Country.ToUpper().Contains(searchToUpper));
             }
 
-            return View(listOfUsers.Take(count));
+            return View(listOfUsers.OrderBy(x => x.FirstName).Take(count));
         }
 
         [HttpGet]
@@ -166,8 +168,8 @@ namespace Timataka.Web.Controllers
 
             var model = new UserRoleDto
             {
-                Admins = adminUsers,
-                Users = nonAdminUsers.Take(10)
+                Admins = adminUsers.OrderBy(x => x.FirstName),
+                Users = nonAdminUsers.OrderBy(x => x.FirstName).Take(10)
             };
             return View(model);
         }
@@ -384,7 +386,7 @@ namespace Timataka.Web.Controllers
                 CompetitionInstance = competitionInstance,
                 Event = instanceEvent,
                 Heat = heat,
-                Contestants = contestants
+                Contestants = contestants.OrderBy(x => x.Name)
             };
 
             return View(heatDto);
@@ -507,13 +509,11 @@ namespace Timataka.Web.Controllers
         {
             ViewData["CurrentFilter"] = search;
             var chips = _chipService.GetChips();
+
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
-                chips = chips.Where(u => u.Code.ToUpper().Contains(searchToUpper)
-                    || u.LastUserSsn.Contains(searchToUpper)
-                    || u.Number.ToString().Contains(searchToUpper)
-                    || u.Code.ToUpper().Contains(searchToUpper));
+                chips = chips.Where(u => u.Number.ToString().ToUpper().Contains(searchToUpper));
             }
             return View(chips);
         }

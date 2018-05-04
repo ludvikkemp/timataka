@@ -25,17 +25,13 @@
     </div>
 
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-7 pt-2">
             <a asp-controller="CompetitionInstance"
                asp-action="SelectContestant"
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-success btn-sm rounded-s">Add Contestant</a>
-            <a asp-controller="Admin"
-               asp-action="CompetitionInstance"
-               asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
-               asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
-               class="btn btn-primary btn-sm rounded-s">Events</a>
+               class="btn btn-success btn-sm rounded-s">Add Contestants</a>
+
             <a asp-controller="CompetitionInstance"
                asp-action="Markers"
                asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
@@ -47,7 +43,7 @@
                asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
                class="btn btn-primary btn-sm rounded-s">Devices</a>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-3">
             <form asp-action="Contestants" method="get" class="">
                 <div class="input-group">
                     <input type="text" name="Search" value="@ViewData["currentFilter"]" class="form-control boxed rounded-s" placeholder="Search for user by Name...">
@@ -59,6 +55,40 @@
                 </div>
             </form>
         </div>
+    <div class="col-md-2">
+        <nav class="text-right">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a asp-controller="CompetitionInstance"
+                       asp-action="Contestants"
+                       asp-route-count="10"
+                       asp-route-search="@ViewData["currentFilter"]"
+                       class="page-link">10</a>
+                </li>
+                <li class="page-item">
+                    <a asp-controller="CompetitionInstance"
+                       asp-action="Contestants"
+                       asp-route-count="25"
+                       asp-route-search="@ViewData["currentFilter"]"
+                       class="page-link">25</a>
+                </li>
+                <li class="page-item">
+                    <a asp-controller="CompetitionInstance"
+                       asp-action="Contestants"
+                       asp-route-count="50"
+                       asp-route-search="@ViewData["currentFilter"]"
+                       class="page-link">50</a>
+                </li>
+                <li class="page-item">
+                    <a asp-controller="CompetitionInstance"
+                       asp-action="Contestants"
+                       asp-route-count="100"
+                       asp-route-search="@ViewData["currentFilter"]"
+                       class="page-link">100</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
     </div>
 
@@ -84,11 +114,11 @@
 
                                                 <tr>
                                                     <td>
-                                                        <a asp-action="EditContestant" 
+                                                        <a asp-action="EditContestant"
                                                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" 
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                                                            asp-route-userId="@item.Id">@item.Name</a>
-                                                            
+
                                                     </td>
                                                     <td>@item.Gender</td>
                                                     <td>
@@ -128,6 +158,11 @@
             </div>
         </div>
     </div>
-
-
+    <div>
+    <a asp-controller="Admin"
+       asp-action="CompetitionInstance"
+       asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+       asp-route-competitionId="@Model.CompetitionInstance.CompetitionId"
+       class="btn btn-secondary-outline btn-sm">Back to Events</a>
+    </div>
 </section>
