@@ -26,13 +26,11 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Rank</th>
-                                                <th>BIB</th>
-                                                <th>Year</th>
-                                                <th>Club</th>
-                                                <th>Discipline</th>
                                                 <th>Competition</th>
-                                                <th>Country</th>
+                                                <th>Event</th>
+                                                <th>Discipline</th>
+                                                <th>Date</th>
+                                                <th>Over All Rank</th>
                                                 <th>Guntime (Chiptime)</th>
                                             </tr>
                                         </thead>
@@ -41,25 +39,21 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        Rank
+                                                        @item.CompetitionInstanceName
                                                     </td>
                                                     <td>
-                                                        @item.Bib
-                                                    </td>
-                                                    <td>
-                                                        @item.DateOfBirth.Year
-                                                    </td>
-                                                    <td>
-                                                        @item.Club
+                                                        <a asp-controller="User" asp-action="Result"
+                                                           asp-route-competitionInstanceId="@item.CompetitionInstanceId"
+                                                           asp-route-eventId="@item.EventId">@item.EventName</a>
                                                     </td>
                                                     <td>
                                                         @item.DisciplineName
                                                     </td>
                                                     <td>
-                                                        @item.CompetitionInstanceName - @item.EventName
+                                                        @item.EventDateFrom
                                                     </td>
                                                     <td>
-                                                        @item.Country
+                                                        @item.Rank
                                                     </td>
                                                     <td>
                                                         @item.GunTime (@item.ChipTime)

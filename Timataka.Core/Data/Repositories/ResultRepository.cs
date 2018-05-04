@@ -168,6 +168,23 @@ namespace Timataka.Core.Data.Repositories
             return results.OrderBy(o=> o.Status != ResultStatus.Valid).ThenBy(o => o.RawGunTime <= 0).ThenBy(o => o.RawGunTime);
         }
 
+
+        private int GetRank(int eventId, int heatId, string userId)
+        {
+            var results = GetResultViewModelsForEvent(eventId);
+
+            for(int i = 0; i < results.Count(); i++)
+            {
+                if(results.ElementAt(i).HeatId == heatId && results.ElementAt(i).UserId == userId)
+                {
+                    return i + 1;
+                }
+            }
+
+            return 0;
+
+        }
+
         public IEnumerable<MyResultsViewModel> GetResultsForUser(string userId)
         {
             var results = (from r in _db.Results
@@ -216,6 +233,7 @@ namespace Timataka.Core.Data.Repositories
 
             foreach (var result in results)
             {
+                result.Rank = GetRank(result.EventId, result.HeatId, result.UserId);
                 int rawTime = CalculateGuntime(result.HeatId, result.ChipCode);
                 TimeSpan finalTime = TimeSpan.FromMilliseconds(rawTime);
                 if (rawTime % 1000 != 0)

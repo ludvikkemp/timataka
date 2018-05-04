@@ -53,5 +53,6 @@ namespace Timataka.Core.Models.ViewModels.UserViewModels
         public DateTime Modified { get; set; }
 
         public string ChipCode { get; set; }
+        public int Rank { get; set; }
     }
 }

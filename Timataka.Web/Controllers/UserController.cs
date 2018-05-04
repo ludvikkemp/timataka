@@ -182,6 +182,10 @@ namespace Timataka.Web.Controllers
                 instances = instances.Where(u => u.Name.ToUpper().Contains(searchToUpper));
             }
 
+            instances = instances.Where(x => (x.Status.ToString().ToLower() == "ongoing") ||
+                                             (x.Status.ToString().ToLower() == "finished") ||
+                                             (x.Status.ToString().ToLower() == "closed"));
+            
             instances = instances.OrderByDescending(x => x.DateFrom);
 
             return View(instances);
