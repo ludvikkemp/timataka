@@ -18,10 +18,17 @@
                        asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                        asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">@Model.CompetitionInstanceName</a> /
 
-                    <a asp-controller="CompetitionInstance"
-                       asp-action="Contestants"
+                    <a asp-controller="Admin"
+                       asp-action="Event"
                        asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">Contestants</a> /
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">@Model.EventName</a> /
+
+                    <a asp-controller="Admin"
+                       asp-action="Heat"
+                       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Heat @Model.HeatNumber</a> /
 
                     Add Contestant
                 </span>
@@ -110,6 +117,7 @@
                                                     <a asp-action="AddContestant"
                                                        asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                        asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                                                        asp-route-userId="@item.Id"
                                                        class="btn btn-success-outline btn-sm">Select Contestant</a>
                                                 </td>

@@ -11,6 +11,8 @@ namespace Timataka.Core.Models.ViewModels.CourseViewModels
         [Required]
         public string Name { get; set; }
         public Boolean Lap { get; set; }
+        [Display(Name = "Distance (m)")]
+        [Range(0, int.MaxValue, ErrorMessage = "Distance must be a positive number")]
         public int Distance { get; set; }
         [Display(Name = "Discipline")]
         public int DisciplineId { get; set; }

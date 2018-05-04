@@ -400,7 +400,7 @@ namespace Timataka.Web.Controllers
             ViewData["CurrentFilter"] = search;
             var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
-            var usersDto = _adminService.GetUsers().Take(10);
+            var usersDto = _adminService.GetUsers();
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
@@ -424,10 +424,10 @@ namespace Timataka.Web.Controllers
 
             var personnelDto = new PersonnelDto()
             {
-                AssignedRoles = assignedRoles,
+                AssignedRoles = assignedRoles.OrderBy(x => x.FirstName),
                 Competition = competition.Result,
                 Roles = roles,
-                Users = newUsersDto
+                Users = newUsersDto.OrderBy(x => x.FirstName).Take(10)
             };
 
             return View(personnelDto);
@@ -505,7 +505,7 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Chips")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Chips(string search)
+        public IActionResult Chips(string search, int count = 10)
         {
             ViewData["CurrentFilter"] = search;
             var chips = _chipService.GetChips();
@@ -515,7 +515,7 @@ namespace Timataka.Web.Controllers
                 var searchToUpper = search.ToUpper();
                 chips = chips.Where(u => u.Number.ToString().ToUpper().Contains(searchToUpper));
             }
-            return View(chips);
+            return View(chips.OrderBy(x => x.Number).Take(count));
         }
     }
 }
