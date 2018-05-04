@@ -505,7 +505,7 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Route("Admin/Chips")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Chips(string search)
+        public IActionResult Chips(string search, int count = 10)
         {
             ViewData["CurrentFilter"] = search;
             var chips = _chipService.GetChips();
@@ -515,7 +515,7 @@ namespace Timataka.Web.Controllers
                 var searchToUpper = search.ToUpper();
                 chips = chips.Where(u => u.Number.ToString().ToUpper().Contains(searchToUpper));
             }
-            return View(chips);
+            return View(chips.OrderBy(x => x.Number).Take(count));
         }
     }
 }
