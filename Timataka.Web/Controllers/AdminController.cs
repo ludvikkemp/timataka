@@ -400,7 +400,7 @@ namespace Timataka.Web.Controllers
             ViewData["CurrentFilter"] = search;
             var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
             competition.Wait();
-            var usersDto = _adminService.GetUsers().Take(10);
+            var usersDto = _adminService.GetUsers();
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
@@ -424,10 +424,10 @@ namespace Timataka.Web.Controllers
 
             var personnelDto = new PersonnelDto()
             {
-                AssignedRoles = assignedRoles,
+                AssignedRoles = assignedRoles.OrderBy(x => x.FirstName),
                 Competition = competition.Result,
                 Roles = roles,
-                Users = newUsersDto
+                Users = newUsersDto.OrderBy(x => x.FirstName).Take(10)
             };
 
             return View(personnelDto);
