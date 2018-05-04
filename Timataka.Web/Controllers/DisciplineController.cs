@@ -19,8 +19,9 @@ namespace Timataka.Web.Controllers
         private readonly IDisciplineService _disciplineService;
         private readonly ISportService _sportService;
 
-        public DisciplineController(IDisciplineService disciplineService, 
-                                    ISportService sportService)
+        public DisciplineController(
+            IDisciplineService disciplineService, 
+            ISportService sportService)
         {
             _disciplineService = disciplineService;
             _sportService = sportService;
