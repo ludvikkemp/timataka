@@ -45,12 +45,12 @@
                 <input type="hidden" asp-for="OldChipCode" />
                 <div class="form-group">
                     <label asp-for="Bib" class="control-label"></label>
-                    <input asp-for="Bib" class="form-control" />
+                    <input asp-for="Bib" class="form-control" onfocus="this.select()" autofocus/>
                     <span asp-validation-for="Bib" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="ChipNumber" class="control-label"></label>
-                    <input asp-for="ChipNumber" class="form-control" />
+                    <input asp-for="ChipNumber" class="form-control" onfocus="this.select()"/>
                     <span asp-validation-for="ChipNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group">

@@ -14,7 +14,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
+                    <input asp-for="Name" class="form-control" autofocus/>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -30,9 +30,9 @@
                 <div class="form-group">
                     <label asp-for="Gender"></label>
                     <select name="Gender" class="form-control">
+                        <option value="2" id="">All</option>
                         <option value="0" id="">Female</option>
                         <option value="1" id="">Male</option>
-                        <option value="2" id="">All</option>
                     </select>
                 </div>
                 <div class="form-group">

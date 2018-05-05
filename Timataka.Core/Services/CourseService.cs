@@ -22,9 +22,17 @@ namespace Timataka.Core.Services
             _disciplineRepo = disciplineRepo;
         }
 
-        public IEnumerable<CourseViewModelDropDownList> GetCourseDropDown()
+        public IEnumerable<CourseViewModelDropDownList> GetCourseDropDown(int? disciplineId = null)
         {
-            var courses = _repo.Get();
+            var courses = (from c in _repo.Get()
+                           where c.Deleted == false
+                          select c).ToList();
+            if (disciplineId != null)
+            {
+                courses = (from c in courses
+                           where c.DisciplineId == disciplineId
+                           select c).ToList();
+            }
             var dropDownList = courses.Select(course => new CourseViewModelDropDownList
                 {
                     Id = course.Id,

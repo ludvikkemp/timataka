@@ -14,6 +14,8 @@ using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.DeviceViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.ContestantViewModels;
+using Timataka.Core.Models.ViewModels.CourseViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Timataka.Web.Controllers
 {
@@ -62,12 +64,20 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create")]
-        public IActionResult Create(int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> Create(int competitionInstanceId, int competitionId)
         {   
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
             ViewBag.Courses = _courseService.GetCourseDropDown();
             ViewBag.InstanceId = competitionInstanceId;
-            return View();
+            var instance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var model = new EventViewModel
+            {
+                DateFrom = instance.DateFrom,
+                DateTo = instance.DateTo,
+                Laps = 1,
+                Splits = 1
+            };
+            return View(model);
         }
 
         //POST: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create
@@ -79,7 +89,6 @@ namespace Timataka.Web.Controllers
         {
             ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
             ViewBag.InstanceId = model.CompetitionInstanceId;
-            //var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid && model.Name != null)
             {
                 try
@@ -88,7 +97,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    //Todo: return some error view
+                    return Json(e.Message);
                 }
                 return RedirectToAction("CompetitionInstance","Admin", new { competitionId, competitionInstanceId });
             }
@@ -101,13 +110,13 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Edit/{eventId}")]
         public async Task<IActionResult> Edit(int competitionId, int competitionInstanceId, int eventId)
         {
-            ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
-            ViewBag.Courses = _courseService.GetCourseDropDown();
             var model = await _eventService.GetEventViewModelByIdAsync(eventId);
             if (model == null)
             {
                 return NotFound();
             }
+            ViewBag.Disciplines = _disciplineService.GetAllDisciplines();
+            ViewBag.Courses = _courseService.GetCourseDropDown(model.DisciplineId);
             return View(model);
         }
 
@@ -165,6 +174,13 @@ namespace Timataka.Web.Controllers
         {
             await _eventService.RemoveAsync(model.Id);
             return RedirectToAction("CompetitionInstance", "Admin", new { competitionId, competitionInstanceId });
+        }
+
+        public JsonResult GetCoursesDropDown(int disciplineId)
+        {
+            List<CourseViewModelDropDownList> courses = _courseService.GetCourseDropDown(disciplineId).ToList();
+            ViewBag.Courses = courses;
+            return Json(new SelectList(courses, "Id", "Name"));
         }
 
         #endregion
