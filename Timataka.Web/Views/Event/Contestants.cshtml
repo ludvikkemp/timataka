@@ -129,7 +129,14 @@
                                                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                            asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                                                            asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-                                                           class="btn btn-warning-outline btn-sm">Edit Contestant</a>
+                                                           class="btn btn-warning-outline btn-sm">Edit</a>
+                                                        
+                                                        <a asp-controller="Event" asp-action="RemoveContestant"
+                                                           asp-route-userId="@item.Id"
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                           class="btn btn-danger-outline btn-sm">Remove</a>
                                                     </td>
                                                 </tr>
 

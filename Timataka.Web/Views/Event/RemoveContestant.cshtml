@@ -12,7 +12,7 @@
         <h4>from @ViewBag.Event.Name</h4>
         <hr />
 
-        
+
         <form asp-action="RemoveContestant"
               asp-route-heatId="@Model.HeatId"
               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
@@ -20,14 +20,14 @@
               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">
             <input type="hidden" asp-for="HeatId" value="@Model.HeatId" />
             <input type="hidden" asp-for="UserId" value="@Model.UserId" />
-            
-            <input type="submit" value="Remove" class="btn btn-danger-outline btn-sm" /> 
-            
-            <a asp-controller="CompetitionInstance" 
-               asp-action="EditContestant" 
-               asp-route-userId="@ViewContext.RouteData.Values["userId"]"
+
+            <input type="submit" value="Remove" class="btn btn-danger-outline btn-sm" />
+
+            <a asp-controller="Event"
+               asp-action="Contestants"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                class="btn btn-secondary-outline btn-sm">Back to List</a>
         </form>
     </div>
