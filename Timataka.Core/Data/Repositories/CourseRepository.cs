@@ -80,6 +80,8 @@ namespace Timataka.Core.Data.Repositories
         public IEnumerable<CourseViewModel> GetCourseViewModels()
         {
             var results = (from c in _db.Courses
+                           where c.Deleted == false
+                           orderby c.Name
                 select new CourseViewModel
                 {
                     Name = c.Name,

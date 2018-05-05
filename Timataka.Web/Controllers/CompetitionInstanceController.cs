@@ -64,12 +64,19 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Create")]
-        public IActionResult Create(int competitionId)
+        public async Task<IActionResult> Create(int competitionId)
         {
             ViewBag.CompId = competitionId;
             ViewBag.CompetitionIds = _competitionService.GetAllCompetitions();
             ViewBag.Nations = _accountService.GetNationsListItems();
-            return View();
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var model = new CompetitionsInstanceViewModel
+            {
+                DateFrom = DateTime.Now.Date,
+                DateTo = DateTime.Now.Date,
+                Name = competition.Name + " " + DateTime.Now.Year.ToString()                
+            };
+            return View(model);
         }
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Create

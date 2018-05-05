@@ -13,12 +13,15 @@ namespace Timataka.Web.Controllers
     {
         private readonly ICourseService _courseService;
         private readonly IDisciplineService _disciplineService;
+        private readonly IEventService _eventService;
 
         public CourseController(ICourseService courseService,
-                                IDisciplineService disciplineService)
+                                IDisciplineService disciplineService,
+                                IEventService eventService)
         {
             _courseService = courseService;
             _disciplineService = disciplineService;
+            _eventService = eventService;
         }
 
         //GET: /Admin/Course/Create
@@ -62,6 +65,13 @@ namespace Timataka.Web.Controllers
             {
                 return NotFound();
             }
+            var exists = (from e in _eventService.GetAllEvents()
+                          where e.CourseId == courseId
+                          select e).Count();
+            if (exists > 0)
+            {
+                return Json("An event is using this course and therefore edit not allowed. Please go back and create a new course");
+            }
             return View(model);
         }
 
@@ -104,12 +114,20 @@ namespace Timataka.Web.Controllers
         //GET: /Admin/Course/Delete{courseId}
         [HttpGet]
         [Authorize(Roles = "Admin")]
+        [Route("/Admin/Course/Delete/{courseId}")]
         public IActionResult Delete(int courseId)
         {
             var model = _courseService.GetCourseViewModelById(courseId);
             if (model == null)
             {
                 return NotFound();
+            }
+            var exists = (from e in _eventService.GetAllEvents()
+                          where e.CourseId == courseId
+                          select e).Count();
+            if (exists > 0)
+            {
+                return Json("An event is using this course and therefore delete not allowed.");
             }
             return View(model);
         }

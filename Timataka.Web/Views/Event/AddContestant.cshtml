@@ -39,14 +39,14 @@
                             <td>
                                 <div class="form-group">
                                     <label asp-for="@Model[i].Bib" class="control-label"></label>
-                                    <input asp-for="@Model[i].Bib" class="form-control" />
+                                    <input asp-for="@Model[i].Bib" class="form-control" onfocus="this.select()"/>
                                     <span asp-validation-for="@Model[i].Bib" class="text-danger"></span>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
                                     <label asp-for="@Model[i].ChipNumber" class="control-label"></label>
-                                    <input asp-for="@Model[i].ChipNumber" class="form-control" />
+                                    <input asp-for="@Model[i].ChipNumber" class="form-control" onfocus="this.select()"/>
                                     <span asp-validation-for="@Model[i].ChipNumber" class="text-danger"></span>
                                 </div>
                             </td>
