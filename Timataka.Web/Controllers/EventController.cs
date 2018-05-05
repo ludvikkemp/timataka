@@ -45,7 +45,7 @@ namespace Timataka.Web.Controllers
             _heatService = heatService;
         }
 
-        #region Event
+        #region EVENT
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create
         [HttpGet]
@@ -158,7 +158,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Devices
+        #region DEVICES
 
         [HttpGet]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Devices")]
@@ -205,7 +205,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Contestants
+        #region CONTESTANTS
 
         [HttpGet]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Contestants")]
