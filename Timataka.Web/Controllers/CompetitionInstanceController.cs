@@ -661,7 +661,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    return Json(e.Message);
                 }
 
                 //Remove all chips in heat entries for this user in the heat
