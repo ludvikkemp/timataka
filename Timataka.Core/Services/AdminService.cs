@@ -52,7 +52,7 @@ namespace Timataka.Core.Services
                 user.Email = model.Email;
                 user.NationalityId = model.NationalityId;
 
-                IdentityResult result = await _userManager.UpdateAsync(user);
+                var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
                     return true;

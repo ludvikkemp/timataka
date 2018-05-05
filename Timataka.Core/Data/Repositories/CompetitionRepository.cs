@@ -233,7 +233,7 @@ namespace Timataka.Core.Data.Repositories
                                EventId = e.Id,
                                EventName = e.Name,
                                Heats = (from h in _context.Heats
-                                        where h.EventId == e.Id
+                                        where h.EventId == e.Id && h.Deleted == false
                                         select new SelectListItem { Value = h.Id.ToString(), Text = h.HeatNumber.ToString() }).ToList(),
                                UserId = userId
                            }).ToList();

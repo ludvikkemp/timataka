@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Timataka.Core.Data.Repositories;
+using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
 using Timataka.Core.Services;
 using Timataka.Core.Models.Entities;
@@ -27,6 +29,9 @@ namespace Timataka.Web.Controllers
         private readonly IAdminService _adminService;
         private readonly IChipService _chipService;
         private readonly IHeatService _heatService;
+        private readonly IResultService _resultService;
+        private readonly IMemoryCache _cache;
+        private readonly IAccountService _accountService;
 
         public EventController(IEventService eventService,
             IDisciplineService disciplineService,
@@ -35,7 +40,10 @@ namespace Timataka.Web.Controllers
             ICompetitionService competitionService,
             IAdminService adminService,
             IChipService chipService,
-            IHeatService heatService)
+            IHeatService heatService,
+            IResultService resultService,
+            IAccountService accountService,
+            IMemoryCache cache)
         {
             _disciplineService = disciplineService;
             _eventService = eventService;
@@ -45,9 +53,12 @@ namespace Timataka.Web.Controllers
             _adminService = adminService;
             _chipService = chipService;
             _heatService = heatService;
+            _resultService = resultService;
+            _cache = cache;
+            _accountService = accountService;
         }
 
-        #region Event
+        #region EVENT
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Create
         [HttpGet]
@@ -145,6 +156,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Delete/{eventId}")]
         public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int eventId)
         {
+            ViewBag.Contestants = _competitionService.GetContestantsInCompetitionInstanceAndEvent(competitionInstanceId, eventId);
             var entity = await _eventService.GetEventByIdAsync(eventId);
             if (entity == null)
             {
@@ -173,7 +185,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Devices
+        #region DEVICES
 
         [HttpGet]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Devices")]
@@ -220,7 +232,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Contestants
+        #region CONTESTANTS
 
         [HttpGet]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Contestants")]
@@ -335,7 +347,243 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/EditContestantInEvent/{userId}")]
+        public async Task<IActionResult> EditContestantInEvent(string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            var user = await _adminService.GetUserByIdAsync(userId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+            var competiton = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var _event = await _eventService.GetEventByIdAsync(eventId);
+            var heats = _heatService.GetHeatsForEvent(eventId);
+            var dto = _competitionService.GetEditContestantChipHeatResultDtoFor(userId, eventId, competitionInstanceId);
+            var nationName = _adminService.GetNationalityById((int)user.Nationality);
+            var model = new EditContestantInEventDto
+            {
+                CompetitionName = competiton.Name,
+                CompetitionInstanceName = competitionInstance.Name,
+                EventName = _event.Name,
+                UserName = user.Username,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
+                NationId = user.Nationality,
+                Nationality = nationName,
+                Phone = user.Phone,
+                HeatNumber = dto.HeatNumber,
+                Bib = dto.Bib,
+                ChipNumber = dto.ChipNumber,
+                HeatId = dto.HeatId,
+                OldHeatId = dto.HeatId,
+                ContestantInHeatModified = dto.ContestantInHeatModified,
+                Notes = dto.Notes,
+                Status = dto.Status,
+                Team = dto.Team,
+                HeatsInEvent = heats,
+                OldChipCode = dto.ChipCode
+            };
+            return View(model);
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/EditContestantInEvent/{userId}")]
+        public async Task<IActionResult> EditContestantInEvent(EditContestantInEventDto model, string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get The Chip Contestants in About To Be Connected To
+                var chip = await _chipService.GetChipByNumberAsync(model.ChipNumber);
+                if (chip == null && model.ChipNumber != 0)
+                {
+                    return Json("Chip with this Number does not exist");
+                }
+
+                // Get oldChipInHeat To Remove
+                var oldChipInHeat = _chipService.GetChipInHeatByCodeUserIdAndHeatId(model.OldChipCode, userId, model.OldHeatId);
+                if (oldChipInHeat != null)
+                {
+                    var chipSuccess = _chipService.RemoveChipInHeat(oldChipInHeat);
+                    if (!chipSuccess)
+                    {
+                        return Json("chipInHeatToRemove not successfully removed");
+                    }
+                }
+
+                if (model.ChipNumber != 0)
+                {
+                    // Edit Fields in Contestants New Chip
+                    chip.LastCompetitionInstanceId = competitionInstanceId;
+                    chip.LastUserId = userId;
+                    chip.LastSeen = DateTime.Now;
+                    var chipEdit = await _chipService.EditChipAsync(chip);
+                    if (chipEdit != true)
+                    {
+                        return Json("Edit Chip Failed");
+                    }
+
+                    // Create New ChipInHeat
+                    var newChipInHeat = new ChipInHeat
+                    {
+                        UserId = userId,
+                        ChipCode = chip.Code,
+                        HeatId = model.HeatId,
+                        Valid = true
+                    };
+
+                    // Assigning New ChipInHeat To User
+                    var assignChipInHeat = _chipService.AssignChipToUserInHeat(newChipInHeat);
+                    if (!assignChipInHeat)
+                    {
+                        return Json("Assingning New ChipInHeat To User Not Successful");
+                    }
+                }
+
+                // Get ContestantInHeat To Remove
+                var contestantInHeat = _heatService.GetContestantsInHeatByUserIdAndHeatId(userId, model.OldHeatId);
+                if (contestantInHeat == null)
+                {
+                    return Json("contestantInHeat does not match this userId and heatId");
+                }
+
+                // Get Old Results to keep track of data before it is deleted
+                var oldResult = _resultService.GetResult(userId, model.OldHeatId);
+                if (oldResult == null)
+                {
+                    return Json("Result does not match this userId and heatId");
+                }
+
+                // Removes ContestantInHeat and Result
+                await _heatService.RemoveAsyncContestantInHeat(contestantInHeat);
+
+                // Create New ContestantIn Heat To Replace The Old One
+                // New Result Will Be Created Automatically
+                var newContestantInHeat = new ContestantInHeat
+                {
+                    HeatId = model.HeatId,
+                    UserId = userId,
+                    Bib = model.Bib,
+                    Team = model.Team,
+                    Modified = DateTime.Now
+                };
+
+                // Save newContestantInHeat In Database
+                await _heatService.AddAsyncContestantInHeat(newContestantInHeat);
+
+                // Get The New Result To Update Its Data
+                var newResult = _resultService.GetResult(userId, newContestantInHeat.HeatId);
+                if (newResult == null)
+                {
+                    return Json("newResult was not created which means newContestantInHeat was not created");
+                }
+
+                // Edit Field That Came From The Model
+                newResult.Modified = DateTime.Now;
+                newResult.HeatId = model.HeatId;
+                newResult.Status = model.Status;
+                newResult.Notes = model.Notes;
+                newResult.UserId = userId;
+
+                // Edit Fields That Came From The Old Result
+                newResult.Name = oldResult.Name;
+                newResult.Club = oldResult.Club;
+                newResult.Country = oldResult.Country;
+                newResult.Created = oldResult.Created;
+                newResult.Gender = oldResult.Gender;
+                newResult.FinalTime = oldResult.FinalTime;
+                newResult.Nationality = oldResult.Nationality;
+
+                // Save newResult In Database
+                await _resultService.EditAsync(newResult);
+
+                return RedirectToAction("Contestants", "Event", new { competitionId, competitionInstanceId, eventId });
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/EditUserInfo/{userId}")]
+        public async Task<IActionResult> EditUserInfo(string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            if (userId == null)
+            {
+                return new BadRequestObjectResult(null);
+            }
+
+            var user = await _adminService.GetUserByIdAsync(userId);
+            var userDto = _adminService.GetUserByUsername(user.Username);
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            ViewBag.Nationalities = _accountService.GetNationalityListItems();
+
+            if (userDto == null)
+            {
+                return new BadRequestResult();
+            }
+
+            return View(userDto);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/EditUserInfo/{userId}")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditUserInfo(string userId, int competitionInstanceId, int competitionId, int eventId, UserDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _adminService.UpdateUser(model);
+                if (result)
+                {
+                    _cache.Remove("listOfUsers");
+                    return RedirectToAction("EditContestantInEvent", "Event", new { competitionId, competitionInstanceId, userId, eventId });
+                }
+            }
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/RemoveContestant/{userId}")]
+        public async Task<IActionResult> RemoveContestant(string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            var dto = _competitionService.GetEditContestantChipHeatResultDtoFor(userId, eventId, competitionInstanceId);
+            var model = _heatService.GetContestantInHeatById(dto.HeatId, userId);
+            ViewBag.Contestant = await _adminService.GetUserByIdAsync(userId);
+            ViewBag.Event = await _eventService.GetEventByIdAsync(eventId);
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/RemoveContestant/{userId}")]
+        public async Task<IActionResult> RemoveContestant(ContestantInHeat model, string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var entity = _heatService.GetContestantInHeatById(model.HeatId, model.UserId);
+                    await _heatService.RemoveAsyncContestantInHeat(entity);
+                }
+                catch (Exception e)
+                {
+                    return new BadRequestResult();
+                }
+
+                //Remove all chips in heat entries for this user in the heat
+                var chipInHeat = _chipService.GetChipsInHeatsForUserInHeat(model.UserId, model.HeatId);
+                foreach (var item in chipInHeat)
+                {
+                    _chipService.RemoveChipInHeat(item);
+                }
+                return RedirectToAction("Contestants", "Event", new { eventId, competitionId, competitionInstanceId });
+            }
+            return View(model);
+        }
         #endregion
     }
 }

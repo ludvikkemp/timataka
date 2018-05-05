@@ -1,4 +1,4 @@
-﻿@model Timataka.Core.Models.ViewModels.ContestantViewModels.SelectContestantViewModel
+﻿@model Timataka.Core.Models.ViewModels.HeatViewModels.SelectContestantViewModel2
 
 @{
     Layout = "_AdminLayout";
@@ -54,28 +54,28 @@
             <nav class="text-right">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a asp-controller="CompetitionInstance"
+                        <a asp-controller="Heat"
                            asp-action="SelectContestant"
                            asp-route-count="10"
                            asp-route-search="@ViewData["currentFilter"]"
                            class="page-link">10</a>
                     </li>
                     <li class="page-item">
-                        <a asp-controller="CompetitionInstance"
+                        <a asp-controller="Heat"
                            asp-action="SelectContestant"
                            asp-route-count="25"
                            asp-route-search="@ViewData["currentFilter"]"
                            class="page-link">25</a>
                     </li>
                     <li class="page-item">
-                        <a asp-controller="CompetitionInstance"
+                        <a asp-controller="Heat"
                            asp-action="SelectContestant"
                            asp-route-count="50"
                            asp-route-search="@ViewData["currentFilter"]"
                            class="page-link">50</a>
                     </li>
                     <li class="page-item">
-                        <a asp-controller="CompetitionInstance"
+                        <a asp-controller="Heat"
                            asp-action="SelectContestant"
                            asp-route-count="100"
                            asp-route-search="@ViewData["currentFilter"]"
@@ -109,9 +109,9 @@
                                             {
 
                                             <tr>
-                                                <td>@item.FirstName @item.Middlename @item.LastName</td>
+                                                <td>@item.FirstName @item.LastName</td>
                                                 <td>@item.Ssn</td>
-                                                <td>@item.Username</td>
+                                                <td>@item.UserName</td>
                                                 <td>@item.Gender</td>
                                                 <td>
                                                     <a asp-action="AddContestant"
@@ -119,7 +119,7 @@
                                                        asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                                                        asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                                                        asp-route-userId="@item.Id"
-                                                       class="btn btn-success-outline btn-sm">Select Contestant</a>
+                                                       class="btn btn-success-outline btn-sm">Add to Heat</a>
                                                 </td>
                                             </tr>
 

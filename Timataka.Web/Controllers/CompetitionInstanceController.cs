@@ -58,7 +58,7 @@ namespace Timataka.Web.Controllers
             _chipService = chipService;
         }
 
-        #region CompetitionInstance
+        #region COMPETITION INSTANCE
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Create
         [HttpGet]
@@ -157,13 +157,14 @@ namespace Timataka.Web.Controllers
             {
                 return NotFound();
             }
-
+            var nonDeletedEvents = _eventService.GetNonDeletedEventsByCompetitionInstanceId((int)competitionInstanceId);
             var c = await _competitionService.GetCompetitionInstanceByIdAsync((int)competitionInstanceId);
             if (c == null)
             {
                 return NotFound();
             }
 
+            ViewBag.NonDeletedEvents = nonDeletedEvents;
             return View(c);
         }
 
@@ -183,7 +184,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Devices
+        #region DEVICES
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -244,7 +245,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Markers
+        #region MARKERS
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -290,7 +291,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Contestants
+        #region CONTESTANTS
 
 
 
@@ -633,6 +634,47 @@ namespace Timataka.Web.Controllers
             ViewBag.Nations = _accountService.GetNationsListItems();
             return View(model);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/RemoveContestant/{userId}/Event/{eventId}")]
+        public async Task<IActionResult> RemoveContestant(string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            var dto = _competitionService.GetEditContestantChipHeatResultDtoFor(userId, eventId, competitionInstanceId);
+            var model = _heatService.GetContestantInHeatById(dto.HeatId, userId);
+            ViewBag.Contestant = await _adminService.GetUserByIdAsync(userId);
+            ViewBag.Event = await _eventService.GetEventByIdAsync(eventId);
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/RemoveContestant/{userId}/Event/{eventId}")]
+        public async Task<IActionResult> RemoveContestant(ContestantInHeat model, string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var entity = _heatService.GetContestantInHeatById(model.HeatId, model.UserId);
+                    await _heatService.RemoveAsyncContestantInHeat(entity);
+                }
+                catch (Exception e)
+                {
+                    return new BadRequestResult();
+                }
+
+                //Remove all chips in heat entries for this user in the heat
+                var chipInHeat = _chipService.GetChipsInHeatsForUserInHeat(model.UserId, model.HeatId);
+                foreach (var item in chipInHeat)
+                {
+                    _chipService.RemoveChipInHeat(item);
+                }
+                return RedirectToAction("Contestants", "CompetitionInstance", new { eventId, competitionId, competitionInstanceId });
+            }
+            return View(model);
+        }
+
         #endregion
 
 

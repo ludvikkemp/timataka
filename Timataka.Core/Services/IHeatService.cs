@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
@@ -24,6 +25,7 @@ namespace Timataka.Core.Services
         IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id);
         ContestantInHeat GetContestantInHeatById(int heatId, string userId);
         Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId);
+        IEnumerable<ApplicationUser> GetUsersNotInAnyHeatUnderEvent(int eventId);
 
         void EditContestantInHeat(ContestantInHeat h);
         Task EditAsyncContestantInHeat(ContestantInHeat h);

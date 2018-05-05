@@ -119,6 +119,7 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
             var entity = await _heatService.GetHeatByIdAsync(heatId);
+            ViewBag.NumberOfContestantsInHeat = _heatService.GetContestantsInHeat(heatId).Count();
             if (entity == null)
             {
                 return NotFound();
@@ -147,7 +148,8 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> SelectContestant(string search, int heatId, int eventId, int competitionInstanceId, int competitionId, int count = 10)
         {
             ViewData["CurrentFilter"] = search;
-            var users = _adminService.GetUsers();
+            var users = _heatService.GetUsersNotInAnyHeatUnderEvent(eventId);
+
             var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
             var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
             var _event = await _eventService.GetEventByIdAsync(eventId);
@@ -156,12 +158,12 @@ namespace Timataka.Web.Controllers
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
-                users = users.Where(u => u.Username.ToUpper().Contains(searchToUpper)
+                users = users.Where(u => u.UserName.ToUpper().Contains(searchToUpper)
                                          || u.FirstName.ToUpper().Contains(searchToUpper)
                                          || u.LastName.ToUpper().Contains(searchToUpper));
             }
 
-            var model = new SelectContestantViewModel
+            var model = new SelectContestantViewModel2
             {
                 Users = users.OrderBy(x => x.FirstName).Take(count),
                 CompetitionName = competition.Name,
@@ -179,6 +181,8 @@ namespace Timataka.Web.Controllers
         {
             var user = await _adminService.GetUserByIdAsync(userId);
             ViewBag.UserName = user.FirstName + " " + user.LastName;
+            var heat = await _heatService.GetHeatByIdAsync(heatId);
+            ViewBag.HeatId = heat.HeatNumber;
             return View(); 
         }
 
@@ -188,7 +192,14 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddContestant(AddContestantToHeatViewModel model, int heatId, int eventId, int competitionId, int competitionInstanceId, string userId)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+            {
+                var user = await _adminService.GetUserByIdAsync(userId);
+                ViewBag.UserName = user.FirstName + " " + user.LastName;
+                var heat = await _heatService.GetHeatByIdAsync(heatId);
+                ViewBag.HeatId = heat.HeatNumber;
+                return View(model);
+            }
 
             var entitiy = new ContestantInHeat
             {

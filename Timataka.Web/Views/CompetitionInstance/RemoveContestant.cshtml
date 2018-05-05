@@ -7,35 +7,27 @@
 
 <section class="content">
 
-    <h3>Are you sure you want to remove this?</h3>
+    <h3>Are you sure you want to remove @ViewBag.Contestant.FirstName @ViewBag.Contestant.LastName?</h3>
     <div>
-        <h4>Contestant</h4>
+        <h4>from @ViewBag.Event.Name</h4>
         <hr />
-        <dl>
-            <dt>
-                Name
-            </dt>
-            <dd>
-                @ViewBag.Contestant.FirstName @ViewBag.Contestant.LastName
-            </dd>
-        </dl>
+
         
         <form asp-action="RemoveContestant"
-               asp-route-heatId="@Model.HeatId"
-               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">
+              asp-route-heatId="@Model.HeatId"
+              asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+              asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+              asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">
             <input type="hidden" asp-for="HeatId" value="@Model.HeatId" />
             <input type="hidden" asp-for="UserId" value="@Model.UserId" />
             
             <input type="submit" value="Remove" class="btn btn-danger-outline btn-sm" /> 
             
-            <a asp-controller="Admin" 
-               asp-action="Heat" 
-               asp-route-heatId="@Model.HeatId"
+            <a asp-controller="CompetitionInstance" 
+               asp-action="EditContestant" 
+               asp-route-userId="@ViewContext.RouteData.Values["userId"]"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                class="btn btn-secondary-outline btn-sm">Back to List</a>
         </form>
     </div>
