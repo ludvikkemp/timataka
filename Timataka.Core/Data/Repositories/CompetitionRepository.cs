@@ -121,7 +121,7 @@ namespace Timataka.Core.Data.Repositories
             return model;
         }
 
-        //CompetitionInstance
+        #region CompetitionInstance
 
         public void InsertInstance(CompetitionInstance c)
         {
@@ -322,38 +322,6 @@ namespace Timataka.Core.Data.Repositories
             return r;
         }
 
-
-        // Eldri útgáfa, virkar ekki ef chip er null
-        public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor2(string userId, int eventId, int competitionInstanceId)
-        {
-
-            var results = (from e in _context.Events
-                           join h in _context.Heats on e.Id equals h.EventId
-                           join contestant in _context.ContestantsInHeats on h.Id equals contestant.HeatId
-                           join u in _context.Users on userId equals u.Id
-                           join r in _context.Results on u.Id equals r.UserId
-                           join chips in _context.ChipsInHeats on h.Id equals chips.HeatId into x
-                               from z in x.DefaultIfEmpty()
-                           join c in _context.Chips on z.ChipCode equals c.Code into y
-                               from s in y.DefaultIfEmpty()
-                               where e.Id == eventId && contestant.UserId == userId && (z.UserId == userId || z.UserId == null) && r.HeatId == h.Id
-                               select new EditContestantChipHeatResultDto
-                               {
-                                   HeatId = h.Id,
-                                   ChipCode = z == null ? "" : z.ChipCode,
-                                   ChipNumber = s == null ? 0 : s.Number,
-                                   Bib = contestant.Bib,
-                                   HeatNumber = h.HeatNumber,
-                                   ResultModified = r.Modified,
-                                   ContestantInHeatModified = contestant.Modified,
-                                   Notes = r.Notes,
-                                   Status = r.Status,
-                                   Team = contestant.Team
-                               }).Distinct().FirstOrDefault();
-
-            return results;
-        }
-
         public EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId)
         {
             var chipCode = "";
@@ -425,7 +393,20 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
-        //ManagesCompetition
+        public int GetNumberOfContestantsInInstance(int id)
+        {
+            var r = (from e in _context.Events
+                     where e.CompetitionInstanceId == id
+                     join h in _context.Heats on e.Id equals h.EventId
+                     join c in _context.ContestantsInHeats on h.Id equals c.HeatId
+                     join u in _context.Users on c.UserId equals u.Id
+                     select u).Count();
+            return r;
+        }
+
+        #endregion
+
+        #region ManagesCompetition
 
         public void AddRole(ManagesCompetition m)
         {
@@ -498,5 +479,8 @@ namespace Timataka.Core.Data.Repositories
             return m;
         }
 
+        #endregion
+
     }
 }
+

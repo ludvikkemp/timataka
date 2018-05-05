@@ -20,17 +20,58 @@
                     <div class="">
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link active show" data-toggle="tab" href="#athletics">Hlaup</a>
+                                <a class="nav-link active show" data-toggle="tab" href="#all">Allt</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#cycling">Hjólreiðar</a>
+                                <a class="nav-link" data-toggle="tab" href="#athletics">Hlaup</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#other-sports">Aðrar Íþróttir</a>
+                                <a class="nav-link" data-toggle="tab" href="#cycling">Hjól</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#other-sports">Annað</a>
                             </li>
                         </ul>
                         <div id="myTabContent" class="tab-content">
-                            <div class="tab-pane fade active show" id="athletics">
+                            <div class="tab-pane fade active show" id="all">
+                                <div class="card-body">
+                                    <h4 class="card-title" style="text-align: center;">Síðustu Úrslit</h4>
+                                    <div>
+                                        <table style="width: 100%">
+                                            @foreach (var item in Model.LatestResults)
+                    {
+                        <tr>
+                            <th>
+                                <a asp-controller="Home" asp-action="Instance"
+                                   asp-route-competitionId="@item.CompetitionId"
+                                   asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.CompetitionName </span></a>
+                            </th>
+                            <th><span style="float: right;">@item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                        </tr>
+}
+
+
+                                        </table>
+                                    </div>
+                                    <h4 class="card-title" style="text-align: center;margin-top:12px;">Næstu Viðburðir</h4>
+                                    <div>
+                                        <table style="width: 100%">
+                                            @foreach (var item in Model.UpcomingEvents)
+                    {
+                        <tr>
+                            <th>
+                                <a asp-controller="Home" asp-action="Instance"
+                                   asp-route-competitionId="@item.CompetitionId"
+                                   asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.CompetitionName </span></a>
+                            </th>
+                            <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                        </tr>
+}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="athletics">
                                 <div class="card-body">
                                     <h4 class="card-title" style="text-align: center;">Síðustu Úrslit</h4>
 
@@ -38,16 +79,16 @@
                                     <div>
                                         <table style="width: 100%">
                                             @foreach (var item in Model.LatestAthleticsResults)
-                                            {
-                                                <tr>
-                                                    <th>
-                                                        <a asp-controller="Home" asp-action="Instance"
-                                                           asp-route-competitionId="@item.CompetitionId"
-                                                           asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
-                                                    </th>
-                                                    <th><span style="float: right;">@item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
-                                                </tr>
-                                            }
+                    {
+                        <tr>
+                            <th>
+                                <a asp-controller="Home" asp-action="Instance"
+                                   asp-route-competitionId="@item.CompetitionId"
+                                   asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.CompetitionName </span></a>
+                            </th>
+                            <th><span style="float: right;">@item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                        </tr>
+}
 
 
                                         </table>
@@ -58,16 +99,16 @@
                                     <div>
                                         <table style="width: 100%">
                                             @foreach (var item in Model.UpcomingAthleticsEvents)
-                                            {
-                                                <tr>
-                                                    <th>
-                                                        <a asp-controller="Home" asp-action="Instance"
-                                                           asp-route-competitionId="@item.CompetitionId"
-                                                           asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
-                                                    </th>
-                                                    <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
-                                                </tr>
-                                            }
+                    {
+                        <tr>
+                            <th>
+                                <a asp-controller="Home" asp-action="Instance"
+                                   asp-route-competitionId="@item.CompetitionId"
+                                   asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.CompetitionName </span></a>
+                            </th>
+                            <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                        </tr>
+}
 
 
                                         </table>
@@ -81,16 +122,16 @@
                                     <div>
                                         <table style="width: 100%">
                                             @foreach (var item in Model.LatestCyclingResults)
-                                            {
-                                                <tr>
-                                                    <th>
-                                                        <a asp-controller="Home" asp-action="Instance"
-                                                           asp-route-competitionId="@item.CompetitionId"
-                                                           asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
-                                                    </th>
-                                                    <th><span style="float: right;">@item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
-                                                </tr>
-                                            }
+                    {
+                        <tr>
+                            <th>
+                                <a asp-controller="Home" asp-action="Instance"
+                                   asp-route-competitionId="@item.CompetitionId"
+                                   asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.CompetitionName </span></a>
+                            </th>
+                            <th><span style="float: right;">@item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                        </tr>
+}
 
 
                                         </table>
@@ -103,16 +144,16 @@
                                     <div>
                                         <table style="width: 100%">
                                             @foreach (var item in Model.UpcomingCyclingEvents)
-                                            {
-                                                <tr>
-                                                    <th>
-                                                        <a asp-controller="Home" asp-action="Instance"
-                                                           asp-route-competitionId="@item.CompetitionId"
-                                                           asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
-                                                    </th>
-                                                    <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
-                                                </tr>
-                                            }
+                    {
+                        <tr>
+                            <th>
+                                <a asp-controller="Home" asp-action="Instance"
+                                   asp-route-competitionId="@item.CompetitionId"
+                                   asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.CompetitionName </span></a>
+                            </th>
+                            <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                        </tr>
+}
 
 
                                         </table>
@@ -127,16 +168,16 @@
                                     <div>
                                         <table style="width: 100%">
                                             @foreach (var item in Model.LatestOtherResults)
-                                            {
-                                                <tr>
-                                                    <th>
-                                                        <a asp-controller="Home" asp-action="Instance"
-                                                           asp-route-competitionId="@item.CompetitionId"
-                                                           asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
-                                                    </th>
-                                                    <th><span style="float: right;">@item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
-                                                </tr>
-                                            }
+                    {
+                        <tr>
+                            <th>
+                                <a asp-controller="Home" asp-action="Instance"
+                                   asp-route-competitionId="@item.CompetitionId"
+                                   asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.CompetitionName </span></a>
+                            </th>
+                            <th><span style="float: right;">@item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                        </tr>
+}
 
 
                                         </table>
@@ -145,20 +186,22 @@
                                     <div>
                                         <table style="width: 100%">
                                             @foreach (var item in Model.UpcomingOtherEvents)
-                                            {
-                                                <tr>
-                                                    <th>
-                                                        <a asp-controller="Home" asp-action="Instance"
-                                                           asp-route-competitionId="@item.CompetitionId"
-                                                           asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.Name </span></a>
-                                                    </th>
-                                                    <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
-                                                </tr>
-                                            }
+                    {
+                        <tr>
+                            <th>
+                                <a asp-controller="Home" asp-action="Instance"
+                                   asp-route-competitionId="@item.CompetitionId"
+                                   asp-route-instanceId="@item.CompetitionInstanceId"><span>@item.CompetitionName </span></a>
+                            </th>
+                            <th><span style="float: right;">@item.Date.ToString("dd. MMM hh:mm", CultureInfo.CreateSpecificCulture("is-IS"))</span></th>
+                        </tr>
+}
                                         </table>
                                     </div>
                                 </div>
                             </div>
+
+
 
                         </div>
 

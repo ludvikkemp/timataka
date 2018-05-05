@@ -11,6 +11,8 @@ using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
+using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
+using Timataka.Core.Models.Dto.ResultsDTO;
 
 namespace Timataka.Web.Controllers
 {
@@ -23,6 +25,7 @@ namespace Timataka.Web.Controllers
         private readonly ICategoryService _categoryService;
         private const int AthleticsId = 1;
         private const int CyclingId = 2;
+        private const int OTHER = 0;
 
 
         public HomeController(
@@ -48,7 +51,9 @@ namespace Timataka.Web.Controllers
                 LatestCyclingResults = _competitionService.GetLatestResults(CyclingId, true),
                 UpcomingCyclingEvents = _competitionService.GetUpcomingEvents(CyclingId, true),
                 LatestOtherResults = _competitionService.GetLatestResults(0, true),
-                UpcomingOtherEvents = _competitionService.GetUpcomingEvents(0, true)
+                UpcomingOtherEvents = _competitionService.GetUpcomingEvents(0, true),
+                LatestResults = _competitionService.GetLatestResults(null, true),
+                UpcomingEvents = _competitionService.GetUpcomingEvents(null, true)
             };
 
             return View(model);
@@ -59,15 +64,22 @@ namespace Timataka.Web.Controllers
         public IActionResult Results(string search)
         {
             ViewData["CurrentFilter"] = search;
-            var competitions = _competitionService.GetAllCompetitions();
+            var all = _competitionService.GetLatestResults(null,false);
+            var athletics = _competitionService.GetLatestResults(AthleticsId, false);
+            var cycling = _competitionService.GetLatestResults(CyclingId, false);
+            var other = _competitionService.GetLatestResults(0, false);
 
             if (!String.IsNullOrEmpty(search))
             {
                 var searchToUpper = search.ToUpper();
-                competitions = competitions.Where(u => u.Name.ToUpper().Contains(searchToUpper));
+                all = all.Where(u => u.CompetitionInstanceName.ToUpper().Contains(searchToUpper));
+                athletics = athletics.Where(u => u.CompetitionInstanceName.ToUpper().Contains(searchToUpper));
+                cycling = cycling.Where(u => u.CompetitionInstanceName.ToUpper().Contains(searchToUpper));
+                other = other.Where(u => u.CompetitionInstanceName.ToUpper().Contains(searchToUpper));
             }
+            var model = new ResultsDTO { All = all, Athletics = athletics, Cycling = cycling, Other = other };
 
-            return View(competitions);
+            return View(model);
         }
 
         [HttpGet]
