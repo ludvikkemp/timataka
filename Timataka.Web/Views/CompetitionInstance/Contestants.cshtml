@@ -122,27 +122,40 @@
                                                     </td>
                                                     <td>@item.Gender</td>
                                                     <td>
-                                                        @foreach (var e in item.EventList)
-                                                        {
-                                                            if (item.EventList.Last() != e)
-                                                            {
-                                                                <a asp-controller="CompetitionInstance" asp-action="EditContestantInEvent"
-                                                                   asp-route-userId="@item.Id"
-                                                                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                                                                   asp-route-eventId="@e.Id"
-                                                                   class="btn btn-warning-outline btn-sm">@e.Name</a>
-                                                            }
-                                                            else
-                                                            {
-                                                                <a asp-controller="CompetitionInstance" asp-action="EditContestantInEvent"
-                                                                   asp-route-userId="@item.Id"
-                                                                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                                                                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-                                                                   asp-route-eventId="@e.Id"
-                                                                   class="btn btn-warning-outline btn-sm">@e.Name</a>
-                                                            }
-                                                        }
+                                                       
+
+                                                            <ul style="list-style: none; margin: 0; padding: 0;">
+                                                                
+                                                                <li>
+                                                                    <a class="btn btn-warning-outline btn-sm dropdown-toggle" 
+                                                                       data-toggle="dropdown" href="#" 
+                                                                       role="button" aria-haspopup="true" 
+                                                                       aria-expanded="false">
+                                                                        Events
+                                                                    </a>
+                                                                    <div class="dropdown-menu profile-dropdown-menu p-3" aria-labelledby="dropdownMenu1">
+                                                                        @foreach (var e in item.EventList)
+                                                                        {
+                                                            
+                                                                            
+                                                                            <a asp-controller="CompetitionInstance" asp-action="EditContestantInEvent"
+                                                                               asp-route-userId="@item.Id"
+                                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                                               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                                               asp-route-eventId="@e.Id"
+                                                                               class="btn btn-warning-outline btn-sm"
+                                                                               style="display: block;">@e.Name</a>
+                                                            
+                                                            
+                                                            
+                                                                
+                                                            
+                                                                        }
+                                                                        
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+
                                                     </td>
                                                 </tr>
 
