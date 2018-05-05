@@ -110,7 +110,11 @@
                 </div>
             </div>
         </div>
-    
+    <a asp-controller="CompetitionInstance"
+       asp-action="Contestants"
+       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+       class="btn btn-secondary-outline btn-sm">Back to Contestants</a>
 </section>
 
 @section Scripts {

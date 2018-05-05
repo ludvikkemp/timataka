@@ -124,7 +124,7 @@
                                                     <td>@item.Name</td>
                                                     <td>@item.Gender</td>
                                                     <td>
-                                                        <a asp-controller="CompetitionInstance" asp-action="EditContestantInEvent"
+                                                        <a asp-controller="Event" asp-action="EditContestantInEvent"
                                                            asp-route-userId="@item.Id"
                                                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                            asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
