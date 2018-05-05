@@ -92,7 +92,7 @@
                                                 {
                                                     <tr>
                                                         <td>
-                                                            <a asp-action="" asp-route-id="" asp-route-userId="@user.Id">@user.FirstName @user.Middlename @user.LastName</a>
+                                                            @user.FirstName @user.Middlename @user.LastName
                                                             
                                                         </td>
                                                         <td>@user.Username</td>
@@ -101,7 +101,6 @@
                                                         <td>@user.Gender</td>
                                                         <td>
                                                             <a asp-action="EditUser" asp-route-id="" asp-route-username="@user.Username" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                            <button type="button" class="btn btn-danger-outline btn-sm">Delete</button>
 
                                                         </td>
                                                     </tr>

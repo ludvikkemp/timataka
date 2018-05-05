@@ -16,7 +16,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-7 pt-2">
             <a asp-controller="Competition" asp-action="Create" class="btn btn-success btn-sm rounded-s"> Create New </a>
         </div>
         <div class="col-md-5">
@@ -64,7 +64,7 @@
                                                 <td>
                                                     <a asp-controller="Competition" asp-action="Edit" asp-route-competitionId="@comp.Id" class="btn btn-warning-outline btn-sm">Edit</a>
                                                     <a asp-controller="Competition" asp-action="Details" asp-route-competitionId="@comp.Id" class="btn btn-success-outline btn-sm">Details</a>
-                                                    <a asp-controller="Competition" asp-action="Delete" asp-route-competitionId="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                    <!--<a asp-controller="Competition" asp-action="Delete" asp-route-competitionId="@comp.Id" class="btn btn-danger-outline btn-sm">Delete</a>-->
                                                 </td>
                                             </tr>
                                                 }

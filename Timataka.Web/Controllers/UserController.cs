@@ -9,6 +9,7 @@ using Timataka.Core.Services;
 using Timataka.Core.Models.Dto.UserDTO;
 using Microsoft.AspNetCore.Authorization;
 using Timataka.Core.Models.Dto.AdminDTO;
+using Timataka.Core.Models.ViewModels.EventViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -47,12 +48,12 @@ namespace Timataka.Web.Controllers
         {
             ViewData["CurrentFilter"] = search;
             var instances = _competitionService.GetAllCompetitionInstances(Status.OpenForRegistration) ;
-
+            
             if(!String.IsNullOrEmpty(search))
             {
                 instances = instances.Where(x => x.Name.ToUpper().Contains(search.ToUpper()));
             }
-
+            
             instances = instances.OrderByDescending(x => x.DateFrom);
 
             return View(instances);
@@ -64,7 +65,15 @@ namespace Timataka.Web.Controllers
         public IActionResult Events(int competitionInstanceId)
         {
             var events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
-            ViewBag.userId = _userManager.GetUserAsync(User).Result.Id;
+            var user = _userManager.GetUserAsync(User).Result;
+            ViewBag.userId = user.Id;
+
+            events = events.Where(e => (e.Categories.Where(c => (c.Gender.ToString().ToLower() == user.Gender.ToLower()) || 
+                                                               (c.Gender.ToString().ToLower() == "all")).Count() > 0) &&
+                                       (e.Categories.Where(c => (c.AgeFrom <= (DateTime.Now.Year - user.DateOfBirth.Year)) &&
+                                                               (c.AgeTo >= (DateTime.Now.Year - user.DateOfBirth.Year))).Count() > 0));
+            
+
 
             events = events.OrderByDescending(x => x.DateFrom);
             return View(events);
@@ -173,6 +182,10 @@ namespace Timataka.Web.Controllers
                 instances = instances.Where(u => u.Name.ToUpper().Contains(searchToUpper));
             }
 
+            instances = instances.Where(x => (x.Status.ToString().ToLower() == "ongoing") ||
+                                             (x.Status.ToString().ToLower() == "finished") ||
+                                             (x.Status.ToString().ToLower() == "closed"));
+            
             instances = instances.OrderByDescending(x => x.DateFrom);
 
             return View(instances);

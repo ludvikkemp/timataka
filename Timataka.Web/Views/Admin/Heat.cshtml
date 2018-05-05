@@ -33,16 +33,21 @@
     </div>
 
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-7 pt-2">
+            <!--
+    <a asp-controller="Heat"
+       asp-action="AddContestant"
+       asp-route-heatId="@Model.Heat.Id"
+       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-success btn-sm rounded-s">Add Contestant</a>
+    -->
             <a asp-controller="Heat"
-               asp-action="AddContestant"
+               asp-action="SelectContestant"
                asp-route-heatId="@Model.Heat.Id"
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-success btn-sm rounded-s">Add Contestant</a>
-            <a asp-controller="Admin"
-               asp-action="Event"
-               asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s">Heats</a>
+               asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-success btn-sm rounded-s">Add Contestants</a>
             <a asp-controller="Heat"
                asp-action="Markers"
                asp-route-heatId="@Model.Heat.Id" class="btn btn-primary btn-sm rounded-s">Markers</a>
@@ -91,10 +96,31 @@
                                                         @item.Ssn
                                                     </td>
                                                     <td>
-                                                        <a asp-controller="CompetitionInstance" asp-action="EditContestantInEvent" asp-route-userId="@item.UserId"  asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                        <a asp-controller="Heat" asp-action="DetailsContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-success-outline btn-sm">Details</a>
-                                                        <a asp-controller="Heat" asp-action="RemoveContestant" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-danger-outline btn-sm">Delete</a>
-                                                        <a asp-controller="Heat" asp-action="Results" asp-route-userId="@item.UserId" asp-route-heatId="@item.HeatId" asp-route-eventId="@ViewContext.RouteData.Values["eventId"]" asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]" asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-success-outline btn-sm">Results</a>
+                                                        <a asp-controller="CompetitionInstance"
+                                                           asp-action="EditContestantInEvent"
+                                                           asp-route-userId="@item.UserId"
+                                                           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                           class="btn btn-warning-outline btn-sm">Edit</a>
+
+                                                        <a asp-controller="Heat"
+                                                           asp-action="Results"
+                                                           asp-route-userId="@item.UserId"
+                                                           asp-route-heatId="@item.HeatId"
+                                                           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                           class="btn btn-success-outline btn-sm">Results</a>
+
+                                                        <a asp-controller="Heat"
+                                                           asp-action="RemoveContestant"
+                                                           asp-route-userId="@item.UserId"
+                                                           asp-route-heatId="@item.HeatId"
+                                                           asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+                                                           asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                           asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                                                           class="btn btn-danger-outline btn-sm">Remove</a>
                                                     </td>
                                                 </tr>
 
@@ -110,6 +136,13 @@
             </div>
         </div>
     </div>
-
+    <div>
+        <a asp-controller="Admin"
+           asp-action="Event"
+           asp-route-competitionId="@Model.Competition.Id"
+           asp-route-competitionInstanceId="@Model.CompetitionInstance.Id"
+           asp-route-eventId="@Model.Event.Id"
+           class="btn btn-secondary-outline btn-sm">Back to Heats</a>
+    </div>
 </section>
 

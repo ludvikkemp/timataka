@@ -6,7 +6,6 @@
 }
 
 <section class="content">
-    <h2>Delete</h2>
 
     <h3>Are you sure you want to remove this?</h3>
     <div>
@@ -20,7 +19,7 @@
                 @ViewBag.Contestant.FirstName @ViewBag.Contestant.LastName
             </dd>
         </dl>
-
+        
         <form asp-action="RemoveContestant"
                asp-route-heatId="@Model.HeatId"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
@@ -28,13 +27,16 @@
                asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">
             <input type="hidden" asp-for="HeatId" value="@Model.HeatId" />
             <input type="hidden" asp-for="UserId" value="@Model.UserId" />
-            <input type="submit" value="Delete" class="btn btn-primary" /> |
+            
+            <input type="submit" value="Remove" class="btn btn-danger-outline btn-sm" /> 
+            
             <a asp-controller="Admin" 
                asp-action="Heat" 
                asp-route-heatId="@Model.HeatId"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
-               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]">Back to List</a>
+               asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
+               class="btn btn-secondary-outline btn-sm">Back to List</a>
         </form>
     </div>
 </section>

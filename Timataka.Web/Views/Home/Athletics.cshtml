@@ -46,7 +46,7 @@
                                                     <a asp-controller="Home"
                                                        asp-action="Instance"
                                                        asp-route-competitionId="@comp.CompetitionId"
-                                                       asp-route-instanceId="@comp.CompetitionInstanceId">@comp.Name</a>
+                                                       asp-route-instanceId="@comp.CompetitionInstanceId">@comp.CompetitionInstanceName</a>
                                                 </td>
                                                 <td>
                                                     @comp.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))
@@ -89,7 +89,7 @@
                                                         <a asp-controller="Home"
                                                            asp-action="Instance"
                                                            asp-route-competitionId="@comp.CompetitionId"
-                                                           asp-route-instanceId="@comp.CompetitionInstanceId">@comp.Name</a>
+                                                           asp-route-instanceId="@comp.CompetitionInstanceId">@comp.CompetitionInstanceName</a>
                                                     </td>
                                                     <td>
                                                         @comp.Date.ToString("dd MMMM yyyy kl: hh:mm ", CultureInfo.CreateSpecificCulture("is-IS"))

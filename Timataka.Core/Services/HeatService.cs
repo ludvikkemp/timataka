@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
+using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
@@ -128,6 +129,11 @@ namespace Timataka.Core.Services
                 heatNumber++;
             }
 
+        }
+
+        public IEnumerable<ApplicationUser> GetUsersNotInAnyHeatUnderEvent(int eventId)
+        {
+            return _repo.GetUsersNotInAnyHeatUnderEvent(eventId);
         }
 
         public async Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId)

@@ -9,7 +9,7 @@ namespace Timataka.Core.Services
 {
     public interface ICourseService
     {
-        IEnumerable<CourseViewModelDropDownList> GetCourseDropDown();
+        IEnumerable<CourseViewModelDropDownList> GetCourseDropDown(int? disciplineId = null);
         Task<bool> CourseExistsAsync(string modelName);
         Task AddAsync(CourseViewModel model);
         IEnumerable<Course> GetListOfCourses();

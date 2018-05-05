@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
+using Timataka.Core.Models.Dto.Contestant;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.ContestantViewModels;
@@ -57,18 +58,25 @@ namespace Timataka.Web.Controllers
             _chipService = chipService;
         }
 
-        #region CompetitionInstance
+        #region COMPETITION INSTANCE
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Create
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/Create")]
-        public IActionResult Create(int competitionId)
+        public async Task<IActionResult> Create(int competitionId)
         {
             ViewBag.CompId = competitionId;
             ViewBag.CompetitionIds = _competitionService.GetAllCompetitions();
             ViewBag.Nations = _accountService.GetNationsListItems();
-            return View();
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var model = new CompetitionsInstanceViewModel
+            {
+                DateFrom = DateTime.Now.Date,
+                DateTo = DateTime.Now.Date,
+                Name = competition.Name + " " + DateTime.Now.Year.ToString()                
+            };
+            return View(model);
         }
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Create
@@ -86,7 +94,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    return Json(e.Message);
                 }
                 return RedirectToAction("Competition","Admin", new { @competitionId = model.CompetitionId });
             }
@@ -149,13 +157,14 @@ namespace Timataka.Web.Controllers
             {
                 return NotFound();
             }
-
+            var nonDeletedEvents = _eventService.GetNonDeletedEventsByCompetitionInstanceId((int)competitionInstanceId);
             var c = await _competitionService.GetCompetitionInstanceByIdAsync((int)competitionInstanceId);
             if (c == null)
             {
                 return NotFound();
             }
 
+            ViewBag.NonDeletedEvents = nonDeletedEvents;
             return View(c);
         }
 
@@ -175,7 +184,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Devices
+        #region DEVICES
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -236,7 +245,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Markers
+        #region MARKERS
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -282,14 +291,14 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Contestants
+        #region CONTESTANTS
 
 
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Contestants")]
-        public async Task<IActionResult> Contestants(string search, int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> Contestants(string search, int competitionInstanceId, int competitionId, int count = 10)
         {
             ViewData["CurrentFilter"] = search;
             var contestants = _competitionService.GetContestantsInCompetitionInstance(competitionInstanceId);
@@ -306,7 +315,7 @@ namespace Timataka.Web.Controllers
             {
                 Competition = competition,
                 CompetitionInstance = competitionInstance,
-                Contestants = contestants
+                Contestants = contestants.OrderBy(x => x.Name).Take(count)
             };
             return View(model);
         }
@@ -314,33 +323,52 @@ namespace Timataka.Web.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/SelectContestant")]
-        public IActionResult SelectContestant(int competitionInstanceId, int competitionId)
+        public async Task<IActionResult> SelectContestant(string search, int competitionInstanceId, int competitionId, int count = 10)
         {
-            var model = _adminService.GetUsers();
+            ViewData["CurrentFilter"] = search;
+            var users = _adminService.GetUsers();
+            var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
+            var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                users = users.Where(u => u.Username.ToUpper().Contains(searchToUpper)
+                                                     || u.FirstName.ToUpper().Contains(searchToUpper)
+                                                     || u.LastName.ToUpper().Contains(searchToUpper));
+            }
+
+            var model = new SelectContestantViewModel
+            {
+                Users = users.OrderBy(x => x.FirstName).Take(count),
+                CompetitionName = competition.Name,
+                CompetitionInstanceName = competitionInstance.Name
+            };
             return View(model);
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AddContestant/{userId}")]
-        public IActionResult AddContestant(int competitionInstanceId, int competitionId, string userId)
+        public async Task<IActionResult> AddContestant(int competitionInstanceId, int competitionId, string userId)
         {
-            var model = _competitionService.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
-            
-            return View(model);
+            var models = _competitionService.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
+            var user = await _adminService.GetUserByIdAsync(userId);
+            ViewBag.UserName = user.FirstName + " " + user.MiddleName + " " + user.LastName;
+            return View(models);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/AddContestant/{userId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddContestant(IEnumerable<AddContestantViewModel> model, int competitionInstanceId, int competitionId, string userId)
+        public async Task<IActionResult> AddContestant(List<AddContestantViewModel> model, int competitionInstanceId, int competitionId, string userId)
         {
             if (ModelState.IsValid)
             {
                 foreach(var item in model)
                 {
-                    if (item.Flag)
+                    if (item.Add)
                     {    
                         var contestantInHeat = new ContestantInHeat
                         {
@@ -355,6 +383,10 @@ namespace Timataka.Web.Controllers
                         if(item.ChipNumber > 0)
                         {
                             var chip = await _chipService.GetChipByNumberAsync(item.ChipNumber);
+                            if (chip == null)
+                            {
+                                return Json("Chipnumber Does Not Exist");
+                            }
                             var chipinHeat = new ChipInHeat
                             {
                                 ChipCode = chip.Code,
@@ -369,7 +401,8 @@ namespace Timataka.Web.Controllers
 
                 return RedirectToAction("Contestants", "CompetitionInstance", new { @competitionId = competitionId, @competitionInstanceId = competitionInstanceId });
             }
-
+            var user = await _adminService.GetUserByIdAsync(userId);
+            ViewBag.UserName = user.FirstName + " " + user.MiddleName + " " + user.LastName;
             return View(model);
         }
 
@@ -601,6 +634,47 @@ namespace Timataka.Web.Controllers
             ViewBag.Nations = _accountService.GetNationsListItems();
             return View(model);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/RemoveContestant/{userId}/Event/{eventId}")]
+        public async Task<IActionResult> RemoveContestant(string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            var dto = _competitionService.GetEditContestantChipHeatResultDtoFor(userId, eventId, competitionInstanceId);
+            var model = _heatService.GetContestantInHeatById(dto.HeatId, userId);
+            ViewBag.Contestant = await _adminService.GetUserByIdAsync(userId);
+            ViewBag.Event = await _eventService.GetEventByIdAsync(eventId);
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/RemoveContestant/{userId}/Event/{eventId}")]
+        public async Task<IActionResult> RemoveContestant(ContestantInHeat model, string userId, int competitionInstanceId, int competitionId, int eventId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var entity = _heatService.GetContestantInHeatById(model.HeatId, model.UserId);
+                    await _heatService.RemoveAsyncContestantInHeat(entity);
+                }
+                catch (Exception e)
+                {
+                    return Json(e.Message);
+                }
+
+                //Remove all chips in heat entries for this user in the heat
+                var chipInHeat = _chipService.GetChipsInHeatsForUserInHeat(model.UserId, model.HeatId);
+                foreach (var item in chipInHeat)
+                {
+                    _chipService.RemoveChipInHeat(item);
+                }
+                return RedirectToAction("Contestants", "CompetitionInstance", new { eventId, competitionId, competitionInstanceId });
+            }
+            return View(model);
+        }
+
         #endregion
 
 

@@ -14,7 +14,7 @@ namespace Timataka.Core.Models.ViewModels.DisciplineViewModels
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "SportId")]
+        [Display(Name = "Sport")]
         public string SportId { get; set; }
     }
 }

@@ -12,10 +12,13 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
         [Required]
         public string Name { get; set; }
         [Url]
+        [Display(Name="Web Page")]
         public string WebPage { get; set; }
         [EmailAddress]
+        [Display(Name = "E-mail")]
         public string Email { get; set; }
         [Phone]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
         public string Description { get; set; }
         public string Sponsor { get; set; }

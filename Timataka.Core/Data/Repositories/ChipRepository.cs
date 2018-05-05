@@ -126,7 +126,7 @@ namespace Timataka.Core.Data.Repositories
                             Code = c.Code,
                             LastCompetitionInstanceName = i == null ? "" : i.Name,
                             LastSeen = c.LastSeen,
-                            LastUserName = u == null ? "" : u.FirstName + " " + u.MiddleName + " " + u.LastName,
+                            LastUserName = u == null ? "" : u.FirstName + " " + u.LastName,
                             LastUserSsn = u == null ? "" : u.Ssn,
                             Number = c.Number
                          }).ToList();

@@ -59,6 +59,8 @@ namespace Timataka.Core.Data.Repositories
 
         IEnumerable<Heat> GetHeatsInCompetitionInstance(int id);
 
+        int GetNumberOfContestantsInInstance(int id);
+
         //ManagesCompetition
 
         void AddRole(ManagesCompetition m);

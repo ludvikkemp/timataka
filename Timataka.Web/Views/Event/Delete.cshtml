@@ -7,28 +7,53 @@
 
 <section class="content">
     <h2>Delete</h2>
+    @if (@ViewBag.Contestants.Count != 0)
+    {
+        <h3>Event has to be empty to be deleted!</h3>
+        <div>
+            <h4>Number of contestants in Event: @ViewBag.Contestants.Count </h4>
+            <hr />
+            <dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+            </dl>
 
-    <h3>Are you sure you want to delete this?</h3>
-    <div>
-        <h4>Event</h4>
-        <hr />
-        <dl>
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-        </dl>
-
-        <form asp-action="Delete">
-            <input type="hidden" asp-for="Id" value="@Model.Id"/>
-            <input type="submit" value="Delete" class="btn btn-danger-outline btn-sm" /> 
-            <a asp-controller="Admin" 
-               asp-action="CompetitionInstance" 
+            <a asp-controller="Admin"
+               asp-action="CompetitionInstance"
                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
                class="btn btn-secondary-outline btn-sm">Back to List</a>
-        </form>
-    </div>
+        </div>
+    }
+    else
+    {
+        <h3>Are you sure you want to delete this?</h3>
+        <div>
+            <h4>Event</h4>
+            <hr />
+            <dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" value="@Model.Id" />
+                <input type="submit" value="Delete" class="btn btn-danger-outline btn-sm" />
+                <a asp-controller="Admin"
+                   asp-action="CompetitionInstance"
+                   asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                   asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+                   class="btn btn-secondary-outline btn-sm">Back to List</a>
+            </form>
+        </div>
+    }
+
 </section>

@@ -1,4 +1,5 @@
-﻿@model Timataka.Core.Models.ViewModels.EventViewModels.AddContestantToEventViewModel
+﻿@using Timataka.Core.Models.ViewModels.ContestantViewModels
+@model Timataka.Core.Models.ViewModels.ContestantViewModels.AddContestantToHeatViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -7,32 +8,29 @@
 
 <section class="content">
 
-    <h4>Add Contestant In Heat </h4>
+    <h4>Add @ViewBag.UserName to Heat @ViewBag.HeatId </h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
             <form asp-action="AddContestant">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="ContestantInEvent.HeatId" value="@ViewBag.heatId" />
+                <input type="hidden" asp-for="UserId" value="@ViewContext.RouteData.Values["userId"]" />
+                <input type="hidden" asp-for="Modified" value="@DateTime.Now" />
+                <input type="hidden" asp-for="HeatId" value="@ViewContext.RouteData.Values["heatId"]" />
                 <div class="form-group">
-                    <label asp-for="ContestantInEvent.Bib" class="control-label"></label>
-                    <input asp-for="ContestantInEvent.Bib" class="form-control" />
-                    <span asp-validation-for="ContestantInEvent.Bib" class="text-danger"></span>
+                    <label asp-for="Bib" class="control-label"></label>
+                    <input asp-for="Bib" class="form-control" onfocus="this.select()" autofocus />
+                    <span asp-validation-for="Bib" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="ContestantInEvent.Team" class="control-label"></label>
-                    <input asp-for="ContestantInEvent.Team" class="form-control" />
-                    <span asp-validation-for="ContestantInEvent.Team" class="text-danger"></span>
+                    <label asp-for="ChipNumber"></label>
+                    <input asp-for="ChipNumber" value="0" class="form-control" onfocus="this.select()"/>
+                    <span asp-validation-for="ChipNumber" class="text-danger"></span>
                 </div>
-                <input type="hidden" asp-for="ContestantInEvent.Modified" value="@DateTime.Now" />
                 <div class="form-group">
-                    <label asp-for="UserId"></label>
-                    <select asp-for="UserId" name="UserId" class="form-control">
-                        @foreach (var item in ViewBag.users)
-            {
-                <option value="@item.Value" Id="@item.Value">@item.Text</option>
-}
-                    </select>
+                    <label asp-for="Team" class="control-label"></label>
+                    <input asp-for="Team" class="form-control" />
+                    <span asp-validation-for="Team" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Add Contestant" class="btn btn-primary" />

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.HeatViewModels;
 
@@ -111,6 +112,18 @@ namespace Timataka.Core.Data.Repositories
                                    UserId = u.Id
                                }).ToList();
             return contestants;
+        }
+
+        public IEnumerable<ApplicationUser> GetUsersNotInAnyHeatUnderEvent(int eventId)
+        {
+            var allUsers = _db.Users.ToList();
+            var contestantsInHeat = (from u in _db.Users
+                                       join c in _db.ContestantsInHeats on u.Id equals c.UserId
+                                       join h in _db.Heats on c.HeatId equals h.Id
+                                       where h.EventId == eventId
+                                       select u).ToList();
+            var results = allUsers.Except(contestantsInHeat);
+            return results;
         }
 
         public ContestantInHeat GetContestantInHeatByUserId(string userId, int heatId)

@@ -12,22 +12,22 @@
     <div class="row">
         <div class="col-md-4">
             <form asp-action="Create"
-                 asp-controller="Event"
-                 asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-                 asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">
+                  asp-controller="Event"
+                  asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                  asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="CompetitionInstanceId" value="@ViewContext.RouteData.Values["competitionInstanceId"]" />
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
+                    <input asp-for="Name" class="form-control" autofocus/>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Gender" class="control-label"></label>
                     <select name="Gender" class="form-control">
+                        <option value="2">All</option>
                         <option value="0">Female</option>
                         <option value="1">Male</option>
-                        <option value="2">Both</option>
                     </select>
                     <span asp-validation-for="Gender" class="text-danger"></span>
                 </div>
@@ -43,34 +43,23 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Laps" class="control-label"></label>
-                    <input asp-for="Laps" class="form-control" />
+                    <input asp-for="Laps" class="form-control" onfocus="this.select()"/>
                     <span asp-validation-for="Laps" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Splits" class="control-label"></label>
-                    <input asp-for="Splits" class="form-control" />
+                    <input asp-for="Splits" class="form-control" onfocus="this.select()"/>
                     <span asp-validation-for="Splits" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="DistanceOffset" class="control-label"></label>
-                    <input asp-for="DistanceOffset" class="form-control" />
+                    <input asp-for="DistanceOffset" class="form-control" onfocus="this.select()"/>
                     <span asp-validation-for="DistanceOffset" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="StartInterval" class="control-label"></label>
-                    <input asp-for="StartInterval" class="form-control" />
+                    <input asp-for="StartInterval" class="form-control" onfocus="this.select()"/>
                     <span asp-validation-for="StartInterval" class="text-danger"></span>
-                </div>
-                
-                <div class="form-group">
-                    <label asp-for="CourseId"></label>
-                    <select name="CourseId" class="form-control">
-                        @foreach (var item in ViewBag.Courses)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
-                    </select>
-                    <span asp-validation-for="CourseId" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -83,14 +72,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="DisciplineId"></label>
-                    <select name="DisciplineId" class="form-control">
-                        @foreach (var item in ViewBag.Disciplines)
-                        {
-                        <option value="@item.Id">@item.Name</option>
-                        }
-                    </select>
+                    <label asp-for="DisciplineId">Discipline</label>
+                    <select asp-for="DisciplineId" class="form-control"
+                            asp-items="@(new SelectList(@ViewBag.Disciplines, "Id", "Name"))"></select>
                     <span asp-validation-for="DisciplineId" class="text-danger"></span>
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CourseId">Course</label>
+                    <select class="form-control" id="CourseId" name="CourseId" asp-for="CourseId"
+                            asp-items="@(new SelectList(@ViewBag.Courses, "Id", "Name"))"></select>
+                    <span asp-validation-for="CourseId" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -111,4 +103,21 @@
 </section>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#DisciplineId').change(function () {
+                var url = '@Url.Content("~/")' + "Event/GetCoursesDropDown";
+                var ddlsource = "#DisciplineId";
+                $.getJSON(url, { DisciplineId: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $("#CourseId").empty();
+                    $.each(data, function (i, device) {
+                        items = items + "<option value='" + device.value + "'>" + device.text + "</option>";
+                    });
+                    $('#CourseId').html(items);
+                });
+            });
+        });
+    </script>
 }
