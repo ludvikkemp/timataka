@@ -58,7 +58,7 @@ namespace Timataka.Web.Controllers
             _chipService = chipService;
         }
 
-        #region CompetitionInstance
+        #region COMPETITION INSTANCE
 
         //GET: /Admin/Competition/{competitionId}/CompetitionInstance/Create
         [HttpGet]
@@ -150,13 +150,14 @@ namespace Timataka.Web.Controllers
             {
                 return NotFound();
             }
-
+            var nonDeletedEvents = _eventService.GetNonDeletedEventsByCompetitionInstanceId((int)competitionInstanceId);
             var c = await _competitionService.GetCompetitionInstanceByIdAsync((int)competitionInstanceId);
             if (c == null)
             {
                 return NotFound();
             }
 
+            ViewBag.NonDeletedEvents = nonDeletedEvents;
             return View(c);
         }
 
@@ -176,7 +177,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Devices
+        #region DEVICES
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -237,7 +238,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Markers
+        #region MARKERS
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -283,7 +284,7 @@ namespace Timataka.Web.Controllers
 
         #endregion
 
-        #region Contestants
+        #region CONTESTANTS
 
 
 

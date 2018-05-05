@@ -199,5 +199,13 @@ namespace Timataka.Core.Services
         {
             return _repo.GetEventByInstanceAndContestantId(competitionInstanceId, userId);
         }
+
+        public IEnumerable<Event> GetNonDeletedEventsByCompetitionInstanceId(int competitionInstanceId)
+        {
+            var events = (from e in _repo.Get()
+                where competitionInstanceId == e.CompetitionInstanceId && e.Deleted == false
+                select e).ToList();
+            return events;
+        }
     }
 }
