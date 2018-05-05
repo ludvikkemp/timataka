@@ -62,7 +62,9 @@ namespace Timataka.Web.Controllers
             var model = new EventViewModel
             {
                 DateFrom = instance.DateFrom,
-                DateTo = instance.DateTo
+                DateTo = instance.DateTo,
+                Laps = 1,
+                Splits = 1
             };
             return View(model);
         }

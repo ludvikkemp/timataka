@@ -26,7 +26,7 @@ namespace Timataka.Core.Models.ViewModels.ContestantViewModels
 
         // Chip Data
         [Required]
-        [Display(Name = "ChipNumber (0 equals no chip)")]
+        [Display(Name = "ChipNumber (0 = no chip)")]
         [Range(0, int.MaxValue, ErrorMessage = "ChipNumber must be a positive number")]
         public int ChipNumber { get; set; }
     }

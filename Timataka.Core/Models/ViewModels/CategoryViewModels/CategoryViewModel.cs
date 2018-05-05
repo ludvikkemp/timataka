@@ -18,8 +18,11 @@ namespace Timataka.Core.Models.ViewModels.CategoryViewModels
         [Display(Name = "Country")]
         public int? CountryId { get; set; }
         public string CountryName { get; set; }
-
+        [Display(Name = "Age From")]
+        [Range(0, 1000)]
         public int AgeFrom { get; set; }
+        [Display(Name = "Age To")]
+        [Range(0, 1000)]
         public int AgeTo { get; set; }
         public Gender Gender { get; set; }
     }
