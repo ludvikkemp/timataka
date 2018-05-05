@@ -119,6 +119,7 @@ namespace Timataka.Web.Controllers
         public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
             var entity = await _heatService.GetHeatByIdAsync(heatId);
+            ViewBag.NumberOfContestantsInHeat = _heatService.GetContestantsInHeat(heatId).Count();
             if (entity == null)
             {
                 return NotFound();

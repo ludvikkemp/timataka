@@ -136,6 +136,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/Delete/{eventId}")]
         public async Task<IActionResult> Delete(int competitionId, int competitionInstanceId, int eventId)
         {
+            ViewBag.Contestants = _competitionService.GetContestantsInCompetitionInstanceAndEvent(competitionInstanceId, eventId);
             var entity = await _eventService.GetEventByIdAsync(eventId);
             if (entity == null)
             {
