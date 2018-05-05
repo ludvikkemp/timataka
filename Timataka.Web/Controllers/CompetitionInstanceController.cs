@@ -94,7 +94,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    return Json(e.Message);
                 }
                 return RedirectToAction("Competition","Admin", new { @competitionId = model.CompetitionId });
             }

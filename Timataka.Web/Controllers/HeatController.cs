@@ -72,7 +72,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    //Todo: return some error view
+                    return Json(e.Message);
                 }
                 return RedirectToAction("Event", "Admin", new { competitionId, competitionInstanceId, eventId });
             }
@@ -266,7 +266,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    return Json(e.Message);
                 }
                 return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
             }
@@ -300,7 +300,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    return Json(e.Message);
                 }
                 //Remove all chips in heat entries for this user in the heat
                 var chipInHeat = _chipService.GetChipsInHeatsForUserInHeat(model.UserId, heatId);
