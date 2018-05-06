@@ -12,6 +12,7 @@ namespace Timataka.Core.Services
 {
     public interface ICompetitionService
     {
+        // *** COMPETITION *** //
         Task<Competition> AddAsync(CompetitionsViewModel c);
         Task<Competition> EditAsync(Competition c, CompetitionsViewModel m);
         Task<int> RemoveAsync(int competitionId);
@@ -20,7 +21,7 @@ namespace Timataka.Core.Services
         CompetitionsViewModel GetCompetitionViewModelById(int id);
         Task<bool> CompetitionExistsAsync(string modelName);
 
-        //CompetitionInstance
+        // *** COMPETITION INSTANCE *** //
         Task<CompetitionInstance> AddInstanceAsync(CompetitionsInstanceViewModel model);
         Task<CompetitionInstance> EditInstanceAsync(CompetitionInstance c, CompetitionsInstanceViewModel model);
         Task<int> RemoveInstanceAsync(int competitionInstanceId);
@@ -34,13 +35,11 @@ namespace Timataka.Core.Services
         EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId);
         IEnumerable<LatestResultsDTO> GetLatestResults(int? sportId, bool takeFive);
         IEnumerable<LatestResultsDTO> GetUpcomingEvents(int? sportId, bool takeFive);
-
         IEnumerable<Heat> GetHeatsInCompetitionInstance(int competitionInstanceId);
         IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId);
         List<AddContestantViewModel> GetAddContestantViewModelByCompetitionInstanceId(int competitionInstanceId, string userId);
 
-
-        //ManagesCompetition
+        // *** MANAGES COMPETITION *** //
         Task<ManagesCompetition> AddRole(ManagesCompetition m);
         Task<ManagesCompetition> EditRole(ManagesCompetition m);
         Task RemoveRole(ManagesCompetition m);
