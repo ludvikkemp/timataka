@@ -7,6 +7,9 @@ namespace Timataka.Core.Models.ViewModels.HomeViewModels
 {
     public class HomePageViewModel
     {
+        public IEnumerable<LatestResultsDTO> LatestResults { get; set; }
+        public IEnumerable<LatestResultsDTO> UpcomingEvents { get; set; }
+
         public IEnumerable<LatestResultsDTO> LatestAthleticsResults { get; set; }
         public IEnumerable<LatestResultsDTO> UpcomingAthleticsEvents { get; set; }
 

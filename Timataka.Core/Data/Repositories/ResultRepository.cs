@@ -351,23 +351,10 @@ namespace Timataka.Core.Data.Repositories
         public IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId)
         {
             var chipsInHeat = (from c in _db.ChipsInHeats
-                               join h in _db.Heats on c.HeatId equals h.Id
-                               join chips in _db.Chips on c.ChipCode equals chips.Code
-                               join i in _db.CompetitionInstances on chips.LastCompetitionInstanceId equals i.Id
-                               join u in _db.Users on chips.LastUserId equals u.Id
                                select new ChipInHeatViewModel
                                {
-                                   LastUserId = u.Id,
-                                   LastCompetitionInstanceId = i.Id,
-                                   Active = chips.Active,
-                                   ChipCode = chips.Code,
-                                   LastCompetitionInstanceName = i.Name,
-                                   LastSeen = chips.LastSeen,
-                                   LastUserName = u.FirstName + " " + u.MiddleName + " " + u.LastName,
-                                   LastUserSsn = u.Ssn,
-                                   Number = chips.Number,
-                                   HeatId = h.Id,
-                                   HeatNumber = h.HeatNumber,
+                                   ChipCode = c.ChipCode,
+                                   HeatId = c.HeatId,
                                    Valid = c.Valid,
                                    UserId = c.UserId
                                }).ToList();

@@ -72,7 +72,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    //Todo: return some error view
+                    return Json(e.Message);
                 }
                 return RedirectToAction("Event", "Admin", new { competitionId, competitionInstanceId, eventId });
             }
@@ -277,7 +277,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    return Json(e.Message);
                 }
                 return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
             }
@@ -311,7 +311,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    return Json(e.Message);
                 }
                 //Remove all chips in heat entries for this user in the heat
                 var chipInHeat = _chipService.GetChipsInHeatsForUserInHeat(model.UserId, heatId);
@@ -361,6 +361,7 @@ namespace Timataka.Web.Controllers
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers")]
         public async Task<IActionResult> Markers(int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
+            await _markerService.GetMarkersFromTimingDb(competitionInstanceId);
             var assignedMarkers = _markerService.GetMarkersForHeat(heatId);
             var markerList = _markerService.GetUnAssignedMarkersForHeat(heatId, competitionInstanceId);
             var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);

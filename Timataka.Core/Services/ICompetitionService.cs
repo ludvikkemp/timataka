@@ -32,8 +32,8 @@ namespace Timataka.Core.Services
         IEnumerable<ContestantsInCompetitionViewModel> GetContestantsInCompetitionInstanceAndEvent(int competitionInstanceId, int eventId);
         IEnumerable<Heat> GetHeatsForUserInCompetition(string userId, int competitionInstanceId);
         EditContestantChipHeatResultDto GetEditContestantChipHeatResultDtoFor(string userId, int eventId, int competitionInstanceId);
-        IEnumerable<LatestResultsDTO> GetLatestResults(int sportId, bool takeFive);
-        IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId, bool takeFive);
+        IEnumerable<LatestResultsDTO> GetLatestResults(int? sportId, bool takeFive);
+        IEnumerable<LatestResultsDTO> GetUpcomingEvents(int? sportId, bool takeFive);
 
         IEnumerable<Heat> GetHeatsInCompetitionInstance(int competitionInstanceId);
         IEnumerable<MyCompetitionsViewModel> GetAllCompetitionInstancesForUser(string userId);
@@ -49,7 +49,6 @@ namespace Timataka.Core.Services
         IEnumerable<ManagesCompetition> GetAllRolesForUser(string id);
         Role GetRole(string userId, int competitionId);
 
-        //ChipInHeat
 
        
     }

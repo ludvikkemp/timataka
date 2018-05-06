@@ -41,5 +41,6 @@ namespace Timataka.Core.Models.ViewModels.EventViewModels
         public string DisciplineName { get; set; }
         public Boolean Deleted { get; set; }
         public IEnumerable<Category> Categories { get; set; }
+        public int NumberOfContestants { get; set; }
     }
 }

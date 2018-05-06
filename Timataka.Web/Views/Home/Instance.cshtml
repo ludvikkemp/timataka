@@ -45,9 +45,7 @@
 
                                                 <thead>
                                                 <tr>
-                                                    <th>Flokkar</th>
-                                                    <th>Aldursbil</th>
-                                                    <th>Kyn</th>
+                                                    <th>Flokkur</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -62,30 +60,6 @@
                                                                asp-route-eventId="@e.Id"
                                                                asp-route-categoryId="@item.Id">@item.Name</a>
                                                         </td>
-                                                        <td>
-                                                            @item.AgeFrom - @item.AgeTo
-                                                        </td>
-
-                                                        @if (item.Gender == Gender.Male)
-                                                        {
-                                                            <td>
-                                                                KK
-                                                            </td>
-                                                        }
-                                                        @if (item.Gender == Gender.Female)
-                                                        {
-                                                            <td>
-                                                                KVK
-                                                            </td>
-                                                        }
-                                                        @if (item.Gender == Gender.All)
-                                                        {
-                                                            <td>
-                                                                Öll
-                                                            </td>
-                                                        }
-
-
                                                     </tr>
                                                     
                                                 }
@@ -105,6 +79,15 @@
             </div>
         }
     }
+    <section>
+        <div>
+            <a asp-controller="Home"
+                asp-action="Results"
+                class="btn btn-secondary-outline btn-sm">Til baka</a>
+        </div>
 
+    </section>
+
+           
 </section>
 

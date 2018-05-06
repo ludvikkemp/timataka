@@ -19,13 +19,13 @@
         <div class="col-md-12">
             <form asp-action="Competition" method="get">
                 <div class="input-group" style="margin-bottom:10px;">
-                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Leita eftir mótseintaki...">
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Leita eftir keppni...">
                 </div>
             </form>
         </div>
-        
+
     </div>
-    
+
 
 
     <div class="row">
@@ -39,8 +39,8 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Mótseintak</th>
-                                                <th>Dags.</th>
+                                                <th>Keppni</th>
+                                                <th>Dagsetning</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -70,6 +70,11 @@
         </div>
     </div>
 
+    <div>
+        <a asp-controller="Home"
+           asp-action="Results"
+           class="btn btn-secondary-outline btn-sm">Öll úrslit</a>
+    </div>
 
 </section>
 

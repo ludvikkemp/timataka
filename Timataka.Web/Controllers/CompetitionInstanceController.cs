@@ -94,7 +94,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    return Json(e.Message);
                 }
                 return RedirectToAction("Competition","Admin", new { @competitionId = model.CompetitionId });
             }
@@ -252,6 +252,7 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Markers")]
         public async Task<IActionResult> Markers(int competitionId, int competitionInstanceId)
         {
+            await _markerService.GetMarkersFromTimingDb(competitionInstanceId);
             var markers = _markerService.GetMarkersForCompetitionInstance(competitionInstanceId);
             var competitionInstance = await _competitionService.GetCompetitionInstanceByIdAsync(competitionInstanceId);
             var competiton = await _competitionService.GetCompetitionByIdAsync(competitionId);
@@ -661,7 +662,7 @@ namespace Timataka.Web.Controllers
                 }
                 catch (Exception e)
                 {
-                    return new BadRequestResult();
+                    return Json(e.Message);
                 }
 
                 //Remove all chips in heat entries for this user in the heat

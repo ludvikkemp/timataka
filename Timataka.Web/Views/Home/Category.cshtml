@@ -41,53 +41,53 @@
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>BIB</th>
-                                            <th>Nafn</th>
-                                            <th>Fæðingarár</th>
-                                            <th>Félag</th>
-                                            <th>Land</th>
-                                            <th>Byssutími (Flögutími)</th>
-                                        </tr>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>BIB</th>
+                                                <th>Nafn</th>
+                                                <th>Fæðingarár</th>
+                                                <th>Félag</th>
+                                                <th>Land</th>
+                                                <th>Byssutími (Flögutími)</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        @{int i = 1;}
-                                        @foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @{if (item.GunTime != "" && item.Status == 0)
-                                                        {
-                                                           @i
+                                            @{int i = 1;}
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @{if (item.GunTime != "" && item.Status == 0)
+                                                            {
+                                                                @i
+                                                            }
                                                         }
-                                                      }
-                                                </td>
-                                                <td>
-                                                    @item.Bib
-                                                </td>
-                                                <td>
-                                                    @item.Name
-                                                </td>
-                                                <td>
-                                                    @item.DateOfBirth.Year
-                                                </td>
-                                                <td>
-                                                    @item.Club
-                                                </td>
-                                                <td>
-                                                    @item.Country
-                                                </td>
-                                                <td>
-                                                    @{if (item.RawGunTime > 0 && item.Status == 0)
-                                                        {@item.GunTime @(" (" + item.ChipTime + ")")}
-                                                      else if(item.Status != 0)
+                                                    </td>
+                                                    <td>
+                                                        @item.Bib
+                                                    </td>
+                                                    <td>
+                                                        @item.Name
+                                                    </td>
+                                                    <td>
+                                                        @item.DateOfBirth.Year
+                                                    </td>
+                                                    <td>
+                                                        @item.Club
+                                                    </td>
+                                                    <td>
+                                                        @item.Country
+                                                    </td>
+                                                    <td>
+                                                        @{if (item.RawGunTime > 0 && item.Status == 0)
+                                                            {@item.GunTime @(" (" + item.ChipTime + ")")}
+                                                        else if (item.Status != 0)
                                                         {@item.Status};
-                                                    }
-                                                </td>
-                                            </tr>
-                                            i++;
-                                        }
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                i++;
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -99,7 +99,16 @@
             </div>
         </div>
     </div>
-
+    <section>
+        <div>
+            <a asp-controller="Home"
+               asp-action="instance"
+               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+               asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]"
+               class="btn btn-secondary-outline btn-sm">Til baka</a>
+        </div>
+    </section>
+    
 
 </section>
 

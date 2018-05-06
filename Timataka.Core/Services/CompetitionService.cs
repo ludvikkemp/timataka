@@ -272,10 +272,10 @@ namespace Timataka.Core.Services
         /// </summary>
         /// <param name="sportId" topFive="topFive"></param>
         /// <returns></returns>
-        public IEnumerable<LatestResultsDTO> GetLatestResults(int sportId, bool topFive)
+        public IEnumerable<LatestResultsDTO> GetLatestResults(int? sportId, bool topFive)
         {
             IEnumerable<LatestResultsDTO> result;
-            if (sportId == 0) // All Sports
+            if (sportId == 0) // Other sports than T&F and Cycling
             {
                 result = (
                     from i in _repo.GetInstances()
@@ -291,8 +291,30 @@ namespace Timataka.Core.Services
                         CompetitionInstanceId = i.Id,
                         CompetitionId = c.Id,
                         Date = i.DateFrom,
-                        Name = c.Name,
+                        CompetitionName = c.Name,
+                        CompetitionInstanceName = i.Name,
                         Live = IsLive(i.Status)
+                    }).ToList();
+            }
+            else if(sportId == null)
+            {
+                result = (
+                    from i in _repo.GetInstances()
+                    where i.Status == Status.Ongoing || i.Status == Status.Finished || i.Status == Status.Closed
+                    where i.Deleted == false
+                    join c in _repo.Get() on i.CompetitionId equals c.Id
+                    where (from e in _repo.GetEventsForInstance(i.Id)
+                           select e).Any()
+                    orderby i.DateFrom descending
+                    select new LatestResultsDTO
+                    {
+                        CompetitionInstanceId = i.Id,
+                        CompetitionId = c.Id,
+                        Date = i.DateFrom,
+                        CompetitionName = c.Name,
+                        CompetitionInstanceName = i.Name,
+                        Live = IsLive(i.Status),
+                        NumberOfContestants = GetNumberOfContestantsInInstance(i.Id)
                     }).ToList();
             }
             else
@@ -311,8 +333,10 @@ namespace Timataka.Core.Services
                         CompetitionInstanceId = i.Id,
                         CompetitionId = c.Id,
                         Date = i.DateFrom,
-                        Name = c.Name,
-                        Live = IsLive(i.Status)
+                        CompetitionName = c.Name,
+                        CompetitionInstanceName = i.Name,
+                        Live = IsLive(i.Status),
+                        NumberOfContestants = GetNumberOfContestantsInInstance(i.Id)
                     }).ToList();
             }
 
@@ -326,7 +350,7 @@ namespace Timataka.Core.Services
             return false;
         }
 
-        public IEnumerable<LatestResultsDTO> GetUpcomingEvents(int sportId, bool topFive)
+        public IEnumerable<LatestResultsDTO> GetUpcomingEvents(int? sportId, bool topFive)
         {
             IEnumerable<LatestResultsDTO> result;
             if (sportId == 0)
@@ -345,7 +369,28 @@ namespace Timataka.Core.Services
                         CompetitionInstanceId = i.Id,
                         CompetitionId = c.Id,
                         Date = i.DateFrom,
-                        Name = c.Name,
+                        CompetitionName = c.Name,
+                        CompetitionInstanceName = i.Name,
+                        Live = IsLive(i.Status)
+                    }).ToList();
+            }
+            else if(sportId == null)
+            {
+                result = (
+                    from i in _repo.GetInstances()
+                    where i.Status == Status.Pending || i.Status == Status.OpenForRegistration
+                    where i.Deleted == false
+                    join c in _repo.Get() on i.CompetitionId equals c.Id
+                    where (from e in _repo.GetEventsForInstance(i.Id)
+                           select e).Any()
+                    orderby i.DateFrom ascending
+                    select new LatestResultsDTO
+                    {
+                        CompetitionInstanceId = i.Id,
+                        CompetitionId = c.Id,
+                        Date = i.DateFrom,
+                        CompetitionName = c.Name,
+                        CompetitionInstanceName = i.Name,
                         Live = IsLive(i.Status)
                     }).ToList();
             }
@@ -365,7 +410,8 @@ namespace Timataka.Core.Services
                         CompetitionInstanceId = i.Id,
                         CompetitionId = c.Id,
                         Date = i.DateFrom,
-                        Name = c.Name,
+                        CompetitionName = c.Name,
+                        CompetitionInstanceName = i.Name,
                         Live = IsLive(i.Status)
                     }).ToList();
             }
@@ -386,6 +432,11 @@ namespace Timataka.Core.Services
         public List<AddContestantViewModel> GetAddContestantViewModelByCompetitionInstanceId(int competitionInstanceId, string userId)
         {
             return _repo.GetAddContestantViewModelByCompetitionInstanceId(competitionInstanceId, userId);
+        }
+
+        public int GetNumberOfContestantsInInstance(int id)
+        {
+            return _repo.GetNumberOfContestantsInInstance(id);
         }
 
         #endregion
