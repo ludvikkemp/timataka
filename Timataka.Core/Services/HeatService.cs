@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
-using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
@@ -30,12 +26,21 @@ namespace Timataka.Core.Services
             //For unit tests
         }
 
-        /// <summary>
-        /// Add heat to a event. If no heat exists for that event
-        /// a heat with HeatNumber = 0 is created.
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <returns></returns>
+        public async Task ReorderHeatsAsync(int eventId)
+        {
+            var heats = GetHeatsForEvent(eventId);
+            var heatNumber = 0;
+            foreach (var item in heats)
+            {
+                item.HeatNumber = heatNumber;
+                await EditAsync(item);
+                heatNumber++;
+            }
+
+        }
+
+
+        // *** ADD *** //
         public async Task<Heat> AddAsync(int eventId)
         {
             IEnumerable<Heat> heats = GetHeatsForEvent(eventId);
@@ -61,21 +66,50 @@ namespace Timataka.Core.Services
             return heat;
         }
 
-        /// <summary>
-        /// Function to edit a heat
-        /// </summary>
-        /// <param name="h"></param>
-        /// <returns>Edited heat</returns>
+        public void AddContestantInHeat(ContestantInHeat h)
+        {
+            _repo.InsertContestantInHeat(h);
+            var result = new CreateResultViewModel
+            {
+                UserId = h.UserId,
+                HeatId = h.HeatId,
+            };
+            _resultService.AddAsync(result);
+        }
+
+        public async Task AddAsyncContestantInHeat(ContestantInHeat h)
+        {
+            await _repo.InsertAsyncContestantInHeat(h);
+            var result = new CreateResultViewModel
+            {
+                UserId = h.UserId,
+                HeatId = h.HeatId,
+            };
+            await _resultService.AddAsync(result);
+        }
+
+
+        // *** EDIT *** //
         public async Task<Heat> EditAsync(Heat h)
         {
             await _repo.EditAsync(h);
             return h;
         }
 
-        /// <summary>
-        /// Function to get all heats
-        /// </summary>
-        /// <returns>List of all heats</returns>
+        public void EditContestantInHeat(ContestantInHeat h)
+        {
+            _repo.EditContestantInHeat(h);
+            //TODO: Update result for contestant
+        }
+
+        public async Task EditAsyncContestantInHeat(ContestantInHeat h)
+        {
+            await _repo.EditAsyncContestantInHeat(h);
+            //TODO: Update result for contestant
+        }
+
+
+        // *** GET *** //
         public IEnumerable<Heat> GetAllHeats()
         {
             var heats = _repo.Get();
@@ -106,38 +140,13 @@ namespace Timataka.Core.Services
             return heatsInEvent;
         }
 
-        public async Task<int> RemoveAsync(int heatId)
-        {
-            var heat = await GetHeatByIdAsync(heatId);
-            await _repo.RemoveAsync(heat);
-            return heatId;
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="eventId"></param>
-        public async Task ReorderHeatsAsync(int eventId)
-        {
-            IEnumerable<Heat> heats = GetHeatsForEvent(eventId);
-            int heatNumber = 0;
-            foreach (var item in heats)
-            {
-                item.HeatNumber = heatNumber;
-                await EditAsync(item);
-                heatNumber++;
-            }
-
-        }
-
         public IEnumerable<ApplicationUser> GetUsersNotInAnyHeatUnderEvent(int eventId)
         {
             return _repo.GetUsersNotInAnyHeatUnderEvent(eventId);
         }
 
         public async Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId)
-        {         
+        {
             var x = GetContestantInHeatById(heatId, userId);
             var h = await GetHeatByIdAsync(heatId);
             var r = _resultService.GetResult(userId, heatId);
@@ -158,7 +167,7 @@ namespace Timataka.Core.Services
                 EventName = "",
                 HeatsInEvent = GetHeatsForEvent(h.EventId)
             };
-            
+
             return result;
 
         }
@@ -179,16 +188,18 @@ namespace Timataka.Core.Services
             return _repo.GetContestantInHeatById(heatId, userId);
         }
 
-        public void EditContestantInHeat(ContestantInHeat h)
+        public ContestantInHeat GetContestantsInHeatByUserIdAndHeatId(string userId, int heatId)
         {
-            _repo.EditContestantInHeat(h);
-            //TODO: Update result for contestant
+            return _repo.GetContestantInHeatByUserId(userId, heatId);
         }
 
-        public async Task EditAsyncContestantInHeat(ContestantInHeat h)
+
+        // *** REMOVE *** //
+        public async Task<int> RemoveAsync(int heatId)
         {
-            await _repo.EditAsyncContestantInHeat(h);
-            //TODO: Update result for contestant
+            var heat = await GetHeatByIdAsync(heatId);
+            await _repo.RemoveAsync(heat);
+            return heatId;
         }
 
         public void RemoveContestantInHeat(ContestantInHeat h)
@@ -197,6 +208,7 @@ namespace Timataka.Core.Services
             _resultService.RemoveAsync(r);
             _repo.RemoveContestantInHeat(h);
         }
+
         public async Task RemoveAsyncContestantInHeat(ContestantInHeat h)
         {
             var r = _resultService.GetResult(h.UserId, h.HeatId);
@@ -204,30 +216,5 @@ namespace Timataka.Core.Services
             await _repo.RemoveAsyncContestantInHeat(h);
         }
 
-        public void AddContestantInHeat(ContestantInHeat h)
-        {
-            _repo.InsertContestantInHeat(h);
-            var result = new CreateResultViewModel
-            {
-                UserId = h.UserId,
-                HeatId = h.HeatId,
-            };
-            _resultService.AddAsync(result);
-        }
-        public async Task AddAsyncContestantInHeat(ContestantInHeat h)
-        {
-            await _repo.InsertAsyncContestantInHeat(h);
-            var result = new CreateResultViewModel
-            {
-                UserId = h.UserId,
-                HeatId = h.HeatId,
-            };
-            await _resultService.AddAsync(result);
-        }
-
-        public ContestantInHeat GetContestantsInHeatByUserIdAndHeatId(string userId, int heatId)
-        {
-            return _repo.GetContestantInHeatByUserId(userId, heatId);
-        }
     }
 }

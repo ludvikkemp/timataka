@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Timataka.Core.Models.ViewModels.DisciplineViewModels;
 
 namespace Timataka.Core.Services
