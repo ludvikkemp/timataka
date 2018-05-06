@@ -361,6 +361,7 @@ namespace Timataka.Web.Controllers
         [Route("Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/Heat/{heatId}/Markers")]
         public async Task<IActionResult> Markers(int competitionId, int competitionInstanceId, int eventId, int heatId)
         {
+            await _markerService.GetMarkersFromTimingDb(competitionInstanceId);
             var assignedMarkers = _markerService.GetMarkersForHeat(heatId);
             var markerList = _markerService.GetUnAssignedMarkersForHeat(heatId, competitionInstanceId);
             var competition = await _competitionService.GetCompetitionByIdAsync(competitionId);
