@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
-using Timataka.Core.Data;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
@@ -36,29 +29,29 @@ namespace Timataka.Core.Services
             return _repo.GetUserByUsername(username);
         }
 
+        /// <summary>
+        /// Function to update User.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>True if operation is successful, false otherwise</returns>
         public async Task<bool> UpdateUser(UserDto model)
         {
             var user = await _userManager.FindByNameAsync(model.Username);
-            if (user != null)
-            {
-                user.FirstName = model.FirstName;
-                user.MiddleName = model.Middlename;
-                user.LastName = model.LastName;
-                user.CountryId = model.CountryId;
-                user.DateOfBirth = model.DateOfBirth;
-                user.Gender = model.Gender;
-                user.Phone = model.Phone;
-                user.Ssn = model.Ssn;
-                user.Email = model.Email;
-                user.NationalityId = model.NationalityId;
+            if (user == null) return false;
 
-                var result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded)
-                {
-                    return true;
-                }
-            }
-            return false;
+            user.FirstName = model.FirstName;
+            user.MiddleName = model.Middlename;
+            user.LastName = model.LastName;
+            user.CountryId = model.CountryId;
+            user.DateOfBirth = model.DateOfBirth;
+            user.Gender = model.Gender;
+            user.Phone = model.Phone;
+            user.Ssn = model.Ssn;
+            user.Email = model.Email;
+            user.NationalityId = model.NationalityId;
+
+            var result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
         }
 
         public object GetRoles()
@@ -83,20 +76,17 @@ namespace Timataka.Core.Services
 
         public IEnumerable<UserViewModel> GetAdminUsers()
         {
-            var admins = _repo.GetAdminUsers();
-            return admins;
+            return _repo.GetAdminUsers();
         }
 
         public IEnumerable<UserViewModel> GetNonAdminUsers()
         {
-            var nonAdmins = _repo.GetNonAdminUsers();
-            return nonAdmins;
+            return _repo.GetNonAdminUsers();
         }
 
         public async Task<UserViewModel> GetUserByIdAsync(string userId)
         {
-            UserViewModel user = await _repo.GetUserByIdAsync(userId);
-            return user;
+            return await _repo.GetUserByIdAsync(userId);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Entities;
@@ -12,7 +11,7 @@ namespace Timataka.Core.Data.Repositories
     public class CategoryRepository : ICategoryRepository
     {
         private readonly ApplicationDbContext _db;
-        private bool _disposed = false;
+        private bool _disposed;
 
         public CategoryRepository(ApplicationDbContext db)
         {
@@ -76,6 +75,27 @@ namespace Timataka.Core.Data.Repositories
             return _db.Categories.SingleOrDefaultAsync(x => x.Name == cName);
         }
 
+        public IEnumerable<CategoryViewModel> GetListOfCategoriesForEvent(int eventId)
+        {
+            var categories = (from c in _db.Categories
+                join e in _db.Events on c.EventId equals e.Id
+                join country in _db.Countries on c.CountryId equals country.Id into cc
+                from country in cc.DefaultIfEmpty()
+                where c.EventId == eventId
+                select new CategoryViewModel
+                {
+                    EventId = e.Id,
+                    Id = c.Id,
+                    AgeFrom = c.AgeFrom,
+                    AgeTo = c.AgeTo,
+                    CountryId = c.CountryId.GetValueOrDefault(0),
+                    CountryName = country.Name ?? "All",
+                    Name = c.Name,
+                    EventName = e.Name,
+                    Gender = c.Gender
+                }).ToList();
+            return categories;
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -96,27 +116,6 @@ namespace Timataka.Core.Data.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<CategoryViewModel> GetListOfCategoriesForEvent(int eventId)
-        {
-            var categories = (from c in _db.Categories
-                               join e in _db.Events on c.EventId equals e.Id
-                               join country in _db.Countries on c.CountryId equals country.Id into cc
-                               from country in cc.DefaultIfEmpty()
-                               where c.EventId == eventId
-                               select new CategoryViewModel
-                               {
-                                   EventId = e.Id,
-                                   Id = c.Id,
-                                   AgeFrom = c.AgeFrom,
-                                   AgeTo = c.AgeTo,
-                                   CountryId = c.CountryId.GetValueOrDefault(0),
-                                   CountryName = country.Name ?? "All",
-                                   Name = c.Name,
-                                   EventName = e.Name,
-                                   Gender = c.Gender
-                               }).ToList();
-            return categories;
-        }
     }
 
 }

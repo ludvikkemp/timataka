@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.ChipViewModels;
@@ -11,7 +10,7 @@ namespace Timataka.Core.Data.Repositories
 {
     public class ChipRepository : IChipRepository
     {
-        private bool _disposed = false;
+        private bool _disposed;
         private readonly ApplicationDbContext _db;
 
         public ChipRepository(ApplicationDbContext db)
@@ -19,6 +18,7 @@ namespace Timataka.Core.Data.Repositories
             _db = db;
         }
 
+        // *** ADD & ASSIGN *** //
         public Chip Add(Chip c)
         {
             _db.Chips.Add(c);
@@ -35,46 +35,48 @@ namespace Timataka.Core.Data.Repositories
 
         public bool AssignChipToUserInHeat(ChipInHeat c)
         {
-            bool result = _db.ChipsInHeats.Add(c) != null;
+            var result = _db.ChipsInHeats.Add(c) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> AssignChipToUserInHeatAsync(ChipInHeat c)
         {
-            bool result = await _db.ChipsInHeats.AddAsync(c) != null;
+            var result = await _db.ChipsInHeats.AddAsync(c) != null;
             await _db.SaveChangesAsync();
             return result;
         }
 
+        // *** EDIT *** //
         public bool EditChip(Chip c)
         {
-            bool result = _db.Chips.Update(c) != null;
+            var result = _db.Chips.Update(c) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> EditChipAsync(Chip c)
         {
-            bool result = _db.Chips.Update(c) != null;
+            var result = _db.Chips.Update(c) != null;
             await _db.SaveChangesAsync();
             return result;
         }
 
         public bool EditChipInHeat(ChipInHeat c)
         {
-            bool result = _db.ChipsInHeats.Update(c) != null;
+            var result = _db.ChipsInHeats.Update(c) != null;
             _db.SaveChanges();
             return result;
         }
 
         public async Task<bool> EditChipInHeatAsync(ChipInHeat c)
         {
-            bool result = _db.ChipsInHeats.Update(c) != null;
+            var result = _db.ChipsInHeats.Update(c) != null;
             await _db.SaveChangesAsync();
             return result;
         }
 
+        // *** GET *** //
         public Chip GetChipByCode(string code)
         {
             return (from c in _db.Chips
@@ -89,7 +91,6 @@ namespace Timataka.Core.Data.Repositories
                                 select c).SingleOrDefaultAsync();
             return result;
         }
-
 
         public IEnumerable<Chip> Get()
         {
@@ -138,7 +139,6 @@ namespace Timataka.Core.Data.Repositories
             return _db.ChipsInHeats.ToList();
         }
 
-
         public IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId)
         {
             var chipsInHeat = (from c in _db.ChipsInHeats
@@ -174,7 +174,18 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
+        public ChipInHeat GetChipInHeatByCodeUserIdHeatId(string modelOldChipCode, string userId, int modelOldHeatId)
+        {
+            var result = (from cih in _db.ChipsInHeats
+                where cih.ChipCode == modelOldChipCode &&
+                      cih.UserId == userId && cih.HeatId ==
+                      modelOldHeatId
+                select cih).FirstOrDefault();
 
+            return result;
+        }
+
+        // *** REMOVE *** //
         public bool RemoveChip(Chip c)
         {
             bool result = _db.Chips.Remove(c) != null;
@@ -203,17 +214,8 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
-        public ChipInHeat GetChipInHeatByCodeUserIdHeatId(string modelOldChipCode, string userId, int modelOldHeatId)
-        {
-            var result = (from cih in _db.ChipsInHeats
-                where cih.ChipCode == modelOldChipCode &&
-                      cih.UserId == userId && cih.HeatId ==
-                      modelOldHeatId
-                select cih).FirstOrDefault();
-
-            return result;
-        }
-
+        
+        // *** AUTO DISPOSE *** //
         protected virtual void Dispose(bool disposing)
         {
             if (!this._disposed)

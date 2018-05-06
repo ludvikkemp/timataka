@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
-using Timataka.Core.Models.Dto.HeatDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.ContestantViewModels;
@@ -17,7 +15,7 @@ namespace Timataka.Core.Data.Repositories
 {
     public class CompetitionRepository : ICompetitionRepository
     {
-        private bool _disposed = false;
+        private bool _disposed;
         private readonly ApplicationDbContext _context;
 
         public CompetitionRepository(ApplicationDbContext context)
@@ -25,24 +23,7 @@ namespace Timataka.Core.Data.Repositories
             _context = context;
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-
-            this._disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+       
 
         public void Insert(Competition c)
         {
@@ -498,5 +479,23 @@ namespace Timataka.Core.Data.Repositories
             return m;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+
+            this._disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

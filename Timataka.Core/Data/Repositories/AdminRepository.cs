@@ -12,8 +12,8 @@ namespace Timataka.Core.Data.Repositories
 {
     public class AdminRepository : IAdminRepository
     {
-        private bool _disposed = false;
         private readonly ApplicationDbContext _db;
+        private bool _disposed;
 
         public AdminRepository(ApplicationDbContext db)
         {
