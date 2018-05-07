@@ -197,6 +197,13 @@ namespace Timataka.Web.Controllers
                          (category.Gender.ToString().ToLower() == r.Gender.ToLower() || category.Gender.ToString().ToLower() == "all")
                          select r).ToList();
 
+            if (category.CountryId != null)
+            {
+                model = (from m in model
+                          where category.CountryName.Equals(m.Country)
+                          select m).ToList();
+            }
+
             return View(model);
         }
 
