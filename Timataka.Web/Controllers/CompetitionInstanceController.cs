@@ -381,12 +381,13 @@ namespace Timataka.Web.Controllers
                         };
                         await _heatService.AddAsyncContestantInHeat(contestantInHeat);
 
-                        if(item.ChipNumber > 0)
+                        if (item.ChipNumber > 0)
                         {
                             var chip = await _chipService.GetChipByNumberAsync(item.ChipNumber);
                             if (chip == null)
                             {
-                                return Json("Chipnumber Does Not Exist");
+                                await _heatService.RemoveAsyncContestantInHeat(contestantInHeat);
+                                return Json("There exists no chip with the chip number " + item.ChipNumber);
                             }
                             var chipinHeat = new ChipInHeat
                             {
@@ -395,8 +396,17 @@ namespace Timataka.Web.Controllers
                                 UserId = item.UserId,
                                 Valid = true
                             };
-                            await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
+                            try
+                            {
+                                await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
+                            }
+                            catch(Exception e)
+                            {
+                                await _heatService.RemoveAsyncContestantInHeat(contestantInHeat);
+                                return Json(e.Message);
+                            }
                         }
+                        
                     }
                 }
 

@@ -359,6 +359,7 @@ namespace Timataka.Core.Services
                     from i in _repo.GetInstances()
                     where i.Status == Status.Pending || i.Status == Status.OpenForRegistration
                     where i.Deleted == false
+                    where i.DateFrom.Date > DateTime.Now.Date
                     join c in _repo.Get() on i.CompetitionId equals c.Id
                     where (from e in _repo.GetEventsForInstance(i.Id)
                         where e.SportId != 1 && e.SportId != 2
@@ -380,6 +381,7 @@ namespace Timataka.Core.Services
                     from i in _repo.GetInstances()
                     where i.Status == Status.Pending || i.Status == Status.OpenForRegistration
                     where i.Deleted == false
+                    where i.DateFrom.Date > DateTime.Now.Date
                     join c in _repo.Get() on i.CompetitionId equals c.Id
                     where (from e in _repo.GetEventsForInstance(i.Id)
                            select e).Any()
@@ -400,6 +402,7 @@ namespace Timataka.Core.Services
                     from i in _repo.GetInstances()
                     where i.Status == Status.Pending || i.Status == Status.OpenForRegistration
                     where i.Deleted == false
+                    where i.DateFrom.Date > DateTime.Now.Date
                     join c in _repo.Get() on i.CompetitionId equals c.Id
                     where (from e in _repo.GetEventsForInstance(i.Id)
                            where e.SportId == sportId

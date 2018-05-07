@@ -38,5 +38,6 @@ namespace Timataka.Core.Data.Repositories
         Boolean RemoveChipInHeat(ChipInHeat c);
         Task<Boolean> RemoveChipInHeatAsync(ChipInHeat c);
         ChipInHeat GetChipInHeatByCodeUserIdHeatId(string modelOldChipCode, string userId, int modelOldHeatId);
+        Task<int> GetInstanceIdForHeat(int heatId);
     }
 }
