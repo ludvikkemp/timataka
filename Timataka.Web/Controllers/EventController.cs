@@ -571,27 +571,24 @@ namespace Timataka.Web.Controllers
         [Route("/Admin/Competition/{competitionId}/CompetitionInstance/{competitionInstanceId}/Event/{eventId}/RemoveContestant/{userId}")]
         public async Task<IActionResult> RemoveContestant(ContestantInHeat model, string userId, int competitionInstanceId, int competitionId, int eventId)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+            try
             {
-                try
-                {
-                    var entity = _heatService.GetContestantInHeatById(model.HeatId, model.UserId);
-                    await _heatService.RemoveAsyncContestantInHeat(entity);
-                }
-                catch (Exception e)
-                {
-                    return Json(e.Message);
-                }
-
-                //Remove all chips in heat entries for this user in the heat
-                var chipInHeat = _chipService.GetChipsInHeatsForUserInHeat(model.UserId, model.HeatId);
-                foreach (var item in chipInHeat)
-                {
-                    _chipService.RemoveChipInHeat(item);
-                }
-                return RedirectToAction("Contestants", "Event", new { eventId, competitionId, competitionInstanceId });
+                var entity = _heatService.GetContestantInHeatById(model.HeatId, model.UserId);
+                await _heatService.RemoveAsyncContestantInHeat(entity);
             }
-            return View(model);
+            catch (Exception e)
+            {
+                return Json(e.Message);
+            }
+
+            //Remove all chips in heat entries for this user in the heat
+            var chipInHeat = _chipService.GetChipsInHeatsForUserInHeat(model.UserId, model.HeatId);
+            foreach (var item in chipInHeat)
+            {
+                _chipService.RemoveChipInHeat(item);
+            }
+            return RedirectToAction("Contestants", "Event", new { eventId, competitionId, competitionInstanceId });
         }
         #endregion
     }

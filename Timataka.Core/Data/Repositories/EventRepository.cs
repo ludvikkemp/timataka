@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Remotion.Linq.Parsing.Structure.IntermediateModel;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 
@@ -14,31 +11,13 @@ namespace Timataka.Core.Data.Repositories
     public class EventRepository : IEventRepository
     {
         private readonly ApplicationDbContext _context;
-        private bool _disposed = false;
+        private bool _disposed;
 
         public EventRepository(ApplicationDbContext context)
         {
             _context = context;
         }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-
-            this._disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
+        
         public async Task<Event> InsertAsync(Event entity)
         {
             var results = await _context.Events.AddAsync(entity);
@@ -175,37 +154,56 @@ namespace Timataka.Core.Data.Repositories
 
         public IEnumerable<EventViewModel> GetEventsOpenForRegistrationForUserInCompetitionInstance(int competitionInstanceId, string userId)
         {
-            var events = (  from e in _context.Events
-                            join d in _context.Disciplines on e.DisciplineId equals d.Id
-                            where e.CompetitionInstanceId == competitionInstanceId
-                            where ((from cih in _context.ContestantsInHeats
-                                   where cih.UserId == userId
-                                   join h in _context.Heats on cih.HeatId equals h.Id
-                                   join ev in _context.Events on h.EventId equals ev.Id
-                                   where ev.Id == e.Id
-                                   select cih).Count()) <= 0
-                            select new EventViewModel
-                            {
-                                ActiveChip = e.ActiveChip,
-                                CompetitionInstanceId = e.CompetitionInstanceId,
-                                CourseId = e.CourseId,
-                                DateFrom = e.DateFrom,
-                                DateTo = e.DateTo,
-                                DisciplineId = e.DisciplineId,
-                                DisciplineName = d.Name,
-                                DistanceOffset = e.DistanceOffset,
-                                Gender = e.Gender,
-                                Id = e.Id,
-                                Laps = e.Laps,
-                                Name = e.Name,
-                                Splits = e.Splits,
-                                StartInterval = e.StartInterval,
-                                Deleted = e.Deleted,
-                                Categories = (from c in _context.Categories
-                                              where c.EventId == e.Id
-                                              select c).ToList()
-                            }).ToList();
+            var events = (from e in _context.Events
+                          join d in _context.Disciplines on e.DisciplineId equals d.Id
+                          where e.CompetitionInstanceId == competitionInstanceId
+                          where ((from cih in _context.ContestantsInHeats
+                                  where cih.UserId == userId
+                                  join h in _context.Heats on cih.HeatId equals h.Id
+                                  join ev in _context.Events on h.EventId equals ev.Id
+                                  where ev.Id == e.Id
+                                  select cih).Count()) <= 0
+                          select new EventViewModel
+                          {
+                              ActiveChip = e.ActiveChip,
+                              CompetitionInstanceId = e.CompetitionInstanceId,
+                              CourseId = e.CourseId,
+                              DateFrom = e.DateFrom,
+                              DateTo = e.DateTo,
+                              DisciplineId = e.DisciplineId,
+                              DisciplineName = d.Name,
+                              DistanceOffset = e.DistanceOffset,
+                              Gender = e.Gender,
+                              Id = e.Id,
+                              Laps = e.Laps,
+                              Name = e.Name,
+                              Splits = e.Splits,
+                              StartInterval = e.StartInterval,
+                              Deleted = e.Deleted,
+                              Categories = (from c in _context.Categories
+                                            where c.EventId == e.Id
+                                            select c).ToList()
+                          }).ToList();
             return events;
+
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+
+            this._disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

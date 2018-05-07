@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Timataka.Core.Models.Dto.AdminDTO;
 using Timataka.Core.Models.Entities;
 
 namespace Timataka.Core.Data.Repositories
@@ -11,7 +8,7 @@ namespace Timataka.Core.Data.Repositories
     public class AccountRepository : IAccountRepository
     {
         private readonly ApplicationDbContext _db;
-        private bool _disposed = false;
+        private bool _disposed;
 
         public AccountRepository(ApplicationDbContext db)
         {

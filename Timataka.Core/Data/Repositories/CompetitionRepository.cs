@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Timataka.Core.Models.Dto.CompetitionInstanceDTO;
-using Timataka.Core.Models.Dto.HeatDTO;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.ContestantViewModels;
@@ -17,7 +15,7 @@ namespace Timataka.Core.Data.Repositories
 {
     public class CompetitionRepository : ICompetitionRepository
     {
-        private bool _disposed = false;
+        private bool _disposed;
         private readonly ApplicationDbContext _context;
 
         public CompetitionRepository(ApplicationDbContext context)
@@ -25,25 +23,9 @@ namespace Timataka.Core.Data.Repositories
             _context = context;
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
+        #region COMPETITION
 
-            this._disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
+        // *** INSERT *** //
         public void Insert(Competition c)
         {
             _context.Competitions.Add(c);
@@ -56,6 +38,7 @@ namespace Timataka.Core.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        // *** GET *** //
         public IEnumerable<Competition> Get()
         {
             return _context.Competitions.ToList();
@@ -69,34 +52,6 @@ namespace Timataka.Core.Data.Repositories
         public Task<Competition> GetByIdAsync(int id)
         {
             return _context.Competitions.SingleOrDefaultAsync(x => x.Id == id);
-        }
-
-        public void Edit(Competition c)
-        {
-            _context.Competitions.Update(c);
-            _context.SaveChanges();
-        }
-
-        public async Task EditAsync(Competition c)
-        {
-            _context.Competitions.Update(c);
-            await _context.SaveChangesAsync();
-        }
-
-        public void Remove(Competition c)
-        {
-            //TODO:Mark as removed, not delete compleatly
-            c.Deleted = true;
-            _context.Competitions.Update(c);
-            _context.SaveChanges();
-        }
-
-        public async Task RemoveAsync(Competition c)
-        {
-            //TODO:Mark as removed, not delete compleatly
-            c.Deleted = true;
-            _context.Competitions.Update(c);
-            await _context.SaveChangesAsync();
         }
 
         public Task<Competition> GetCompetitionByNameAsync(string cName)
@@ -121,8 +76,41 @@ namespace Timataka.Core.Data.Repositories
             return model;
         }
 
-        #region CompetitionInstance
+        // *** EDIT *** //
+        public void Edit(Competition c)
+        {
+            _context.Competitions.Update(c);
+            _context.SaveChanges();
+        }
 
+        public async Task EditAsync(Competition c)
+        {
+            _context.Competitions.Update(c);
+            await _context.SaveChangesAsync();
+        }
+
+        // *** REMOVE *** //
+        public void Remove(Competition c)
+        {
+            //TODO:Mark as removed, not delete compleatly
+            c.Deleted = true;
+            _context.Competitions.Update(c);
+            _context.SaveChanges();
+        }
+
+        public async Task RemoveAsync(Competition c)
+        {
+            //TODO:Mark as removed, not delete compleatly
+            c.Deleted = true;
+            _context.Competitions.Update(c);
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region COMPETITION INSTANCE
+
+        // *** INSERT *** //
         public void InsertInstance(CompetitionInstance c)
         {
             _context.CompetitionInstances.Add(c);
@@ -135,6 +123,41 @@ namespace Timataka.Core.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+
+        // *** EDIT *** //
+        public void EditInstance(CompetitionInstance c)
+        {
+            _context.CompetitionInstances.Update(c);
+            _context.SaveChanges();
+        }
+
+        public async Task EditInstanceAsync(CompetitionInstance c)
+        {
+            _context.CompetitionInstances.Update(c);
+            await _context.SaveChangesAsync();
+        }
+
+
+        
+
+
+        // *** REMOVE ***//
+        public void RemoveInstance(CompetitionInstance c)
+        {
+            c.Deleted = true;
+            _context.CompetitionInstances.Update(c);
+            _context.SaveChanges();
+        }
+
+        public async Task RemoveInstanceAsync(CompetitionInstance c)
+        {
+            c.Deleted = true;
+            _context.CompetitionInstances.Update(c);
+            await _context.SaveChangesAsync();
+        }
+
+
+        // *** GET *** //
         public IEnumerable<CompetitionInstance> GetInstances()
         {
             return _context.CompetitionInstances.ToList();
@@ -175,32 +198,6 @@ namespace Timataka.Core.Data.Repositories
                 }).SingleOrDefault();
 
             return model;
-        }
-
-        public void EditInstance(CompetitionInstance c)
-        {
-            _context.CompetitionInstances.Update(c);
-            _context.SaveChanges();
-        }
-
-        public async Task EditInstanceAsync(CompetitionInstance c)
-        {
-            _context.CompetitionInstances.Update(c);
-            await _context.SaveChangesAsync();
-        }
-
-        public void RemoveInstance(CompetitionInstance c)
-        {
-            c.Deleted = true;
-            _context.CompetitionInstances.Update(c);
-            _context.SaveChanges();
-        }
-
-        public async Task RemoveInstanceAsync(CompetitionInstance c)
-        {
-            c.Deleted = true;
-            _context.CompetitionInstances.Update(c);
-            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<ContestantsInCompetitionViewModel> GetAllContestantsInCompetitionInstance(int id)
@@ -378,11 +375,6 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
-        /// <summary>
-        /// Return list of heats in an instance
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public IEnumerable<Heat> GetHeatsInCompetitionInstance(int id)
         {
             var result = (from i in _context.CompetitionInstances
@@ -406,7 +398,7 @@ namespace Timataka.Core.Data.Repositories
 
         #endregion
 
-        #region ManagesCompetition
+        #region MANAGES COMPETITION
 
         public void AddRole(ManagesCompetition m)
         {
@@ -477,6 +469,26 @@ namespace Timataka.Core.Data.Repositories
                     where x.UserId.Equals(id)
                     select x;
             return m;
+        }
+
+        
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+
+            this._disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

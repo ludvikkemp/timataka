@@ -10,15 +10,18 @@ namespace Timataka.Core.Services
 {
     public interface IEventService
     {
+        // *** ADD, EDIT & REMOVE *** ///
         Task<Event> AddAsync(EventViewModel e);
+        Task<Event> EditAsync(Event e);
+        Task<int> EditEventViewModelAsync(EventViewModel model);
+        Task<int> RemoveAsync(int eventId);
+
+        // *** GET *** //
         Task<Event> GetEventByIdAsync(int eventId);
         Event GetEventById(int eventId);
-        Task<Event> EditAsync(Event e);
-        Task<int> RemoveAsync(int EventId);
         IEnumerable<Event> GetAllEvents();
         IEnumerable<EventViewModel> GetEventsByCompetitionInstanceId(int id);
         Task<EventViewModel> GetEventViewModelByIdAsync(int eventId);
-        Task<int> EditEventViewModelAsync(EventViewModel model);
         IEnumerable<EventDropDownListViewModel> GetEventDropDownList();
         IEnumerable<EventHeatViewModel> GetEventHeatListForCompetitionInstance(int id);
         IEnumerable<Event> GetEventsByCompetitionInstanceIdAndUserId(int competitionInstanceId, string userId);

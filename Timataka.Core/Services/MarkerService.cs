@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
@@ -17,14 +16,22 @@ namespace Timataka.Core.Services
         private readonly IEventService _eventService;
 
         public MarkerService(IMarkerRepository repo,
-                             IHeatService heatService,
-                             IEventService eventService)
+            IHeatService heatService,
+            IEventService eventService)
         {
             _repo = repo;
             _heatService = heatService;
             _eventService = eventService;
         }
 
+        public Boolean IsAssigned(int markerId, int heatId)
+        {
+            return (from x in _repo.GetMarkersInHeats()
+                where x.MarkerId == markerId && x.HeatId == heatId
+                select x).Any();
+        }
+
+        // *** ADD *** //
         public async Task<Marker> AddAsync(Marker m)
         {
             return await _repo.AddAsync(m);
@@ -32,19 +39,17 @@ namespace Timataka.Core.Services
 
         public async Task<Boolean> AssignMarkerToHeatAsync(AssignMarkerToHeatViewModel model)
         {
-            MarkerInHeat m = new MarkerInHeat { MarkerId = model.MarkerId, HeatId = model.HeatId };
-            if(await _repo.AddMarkerInHeatAsync(m) != null)
-            {
-                return true;
-            }
-            return false;
+            var m = new MarkerInHeat { MarkerId = model.MarkerId, HeatId = model.HeatId };
+            return await _repo.AddMarkerInHeatAsync(m) != null;
         }
 
+        // *** EDIT *** //
         public async Task<bool> EditAsync(Marker m)
         {
             return await _repo.EditAsync(m);
         }
 
+        // *** GET *** //
         public async Task<Marker> GetMarkerByIdAsync(int id)
         {
             return await _repo.GetByIdAsync(id);
@@ -87,46 +92,28 @@ namespace Timataka.Core.Services
             return result;
         }
 
-        public async Task<Boolean> RemoveAsync(Marker m)
-        {
-            return await _repo.RemoveAsync(m);
-        }
-
-        public Boolean IsAssigned(int markerId, int heatId)
-        {
-            return (from x in _repo.GetMarkersInHeats()
-                    where x.MarkerId == markerId && x.HeatId == heatId
-                    select x).Any();
-        }
-
         public IEnumerable<EventHeatViewModel> GetEventHeatListForMarker(int markerId, int competitionInstanceId)
         {
             var heatList = _eventService.GetEventHeatListForCompetitionInstance(competitionInstanceId);
             var r = (from x in heatList
-                     where IsAssigned(markerId, x.HeatId) == false
-                     select x).ToList();
+                where IsAssigned(markerId, x.HeatId) == false
+                select x).ToList();
             return r;
-        }
-
-        public async Task<Boolean> UnassignMarkerAsync(AssignMarkerToHeatViewModel model)
-        {
-            var result = await _repo.RemoveMarkerInHeatAsync(new MarkerInHeat { HeatId = model.HeatId, MarkerId = model.MarkerId });
-            return result;
         }
 
         public IEnumerable<Marker> GetUnAssignedMarkersForHeat(int heatId, int competitionInstanceId)
         {
             var markerList = (from m in GetMarkersForCompetitionInstance(competitionInstanceId)
-                             where IsAssigned(m.Id, heatId) == false
-                             select m).ToList();
+                where IsAssigned(m.Id, heatId) == false
+                select m).ToList();
             return markerList;
         }
 
         public async Task GetMarkersFromTimingDb(int competitionInstanceId)
         {
             var results = (from m in _repo.GetMarkersFromTimingDb()
-                            where m.CompetitionInstanceId == competitionInstanceId
-                            select m).ToList();
+                where m.CompetitionInstanceId == competitionInstanceId
+                select m).ToList();
             foreach (var item in results)
             {
                 if ((from m in GetMarkersForCompetitionInstance(competitionInstanceId)
@@ -137,5 +124,20 @@ namespace Timataka.Core.Services
                 }
             }
         }
+
+
+        // *** REMOVE & UNASSIGN *** //
+        public async Task<Boolean> RemoveAsync(Marker m)
+        {
+            return await _repo.RemoveAsync(m);
+        }
+        
+        public async Task<Boolean> UnassignMarkerAsync(AssignMarkerToHeatViewModel model)
+        {
+            var result = await _repo.RemoveMarkerInHeatAsync(new MarkerInHeat { HeatId = model.HeatId, MarkerId = model.MarkerId });
+            return result;
+        }
+
+       
     }
 }

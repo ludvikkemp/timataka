@@ -20,12 +20,13 @@ namespace Timataka.Core.Services
         Task<Heat> GetHeatByIdAsync(int id);
         Task ReorderHeatsAsync(int eventId);
         
-        //Contestants In Heat
+        // *** CONTESTANTS IN HEATS *** //
         IEnumerable<ContestantInHeatViewModel> GetContestantsInHeat(int id);
         IEnumerable<ApplicationUser> GetApplicationUsersInHeat(int id);
         ContestantInHeat GetContestantInHeatById(int heatId, string userId);
         Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId);
         IEnumerable<ApplicationUser> GetUsersNotInAnyHeatUnderEvent(int eventId);
+        ContestantInHeat GetContestantsInHeatByUserIdAndHeatId(string userId, int heatId);
 
         void EditContestantInHeat(ContestantInHeat h);
         Task EditAsyncContestantInHeat(ContestantInHeat h);
@@ -35,6 +36,5 @@ namespace Timataka.Core.Services
 
         void AddContestantInHeat(ContestantInHeat h);
         Task AddAsyncContestantInHeat(ContestantInHeat h);
-        ContestantInHeat GetContestantsInHeatByUserIdAndHeatId(string userId, int heatId);
     }
 }

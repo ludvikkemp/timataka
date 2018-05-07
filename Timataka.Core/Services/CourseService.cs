@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Timataka.Core.Data;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
-using Timataka.Core.Models.ViewModels.ClubViewModels;
 using Timataka.Core.Models.ViewModels.CourseViewModels;
 
 namespace Timataka.Core.Services

@@ -11,13 +11,14 @@ namespace Timataka.Core.Data.Repositories
     public class ClubRepository : IClubRepository
     {
         private readonly ApplicationDbContext _db;
-        private bool _disposed = false;
+        private bool _disposed;
 
         public ClubRepository(ApplicationDbContext db)
         {
             _db = db;
         }
 
+        // *** INSERT *** //
         public void Insert(Club c)
         {
             _db.Clubs.Add(c);
@@ -30,6 +31,7 @@ namespace Timataka.Core.Data.Repositories
             await _db.SaveChangesAsync();
         }
 
+        // *** GET *** //
         public IEnumerable<Club> Get()
         {
             return _db.Clubs.ToList();
@@ -45,6 +47,12 @@ namespace Timataka.Core.Data.Repositories
             return _db.Clubs.SingleOrDefaultAsync(x => x.Id == id);
         }
 
+        public Task<Club> GetClubByNameAsync(string cName)
+        {
+            return _db.Clubs.SingleOrDefaultAsync(x => x.Name == cName);
+        }
+
+        // *** EDIT *** //
         public void Edit(Club c)
         {
             _db.Clubs.Update(c);
@@ -57,6 +65,7 @@ namespace Timataka.Core.Data.Repositories
             await _db.SaveChangesAsync();
         }
 
+        // *** REMOVE *** //
         public void Remove(Club c)
         {
             c.Deleted = true;
@@ -71,12 +80,8 @@ namespace Timataka.Core.Data.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public Task<Club> GetClubByNameAsync(string cName)
-        {
-            return _db.Clubs.SingleOrDefaultAsync(x => x.Name == cName);
-        }
 
-
+        // *** AUTO DISPOSE *** //
         protected virtual void Dispose(bool disposing)
         {
             if (!this._disposed)
