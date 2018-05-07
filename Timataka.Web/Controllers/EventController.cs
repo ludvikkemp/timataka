@@ -411,10 +411,10 @@ namespace Timataka.Web.Controllers
                 }
 
                 // Get oldChipInHeat To Remove
-                var oldChipInHeat = _chipService.GetChipInHeatByCodeUserIdAndHeatId(model.OldChipCode, userId, model.OldHeatId);
+                var oldChipInHeat = await _chipService.GetChipInHeatByCodeUserIdAndHeatId(model.OldChipCode, userId, model.OldHeatId);
                 if (oldChipInHeat != null)
                 {
-                    var chipSuccess = _chipService.RemoveChipInHeat(oldChipInHeat);
+                    var chipSuccess = await _chipService.RemoveChipInHeatAsync(oldChipInHeat);
                     if (!chipSuccess)
                     {
                         return Json("chipInHeatToRemove not successfully removed");
@@ -443,22 +443,22 @@ namespace Timataka.Web.Controllers
                     };
 
                     // Assigning New ChipInHeat To User
-                    var assignChipInHeat = _chipService.AssignChipToUserInHeat(newChipInHeat);
-                    if (!assignChipInHeat)
+                    var assignChipInHeat = await _chipService.AssignChipToUserInHeatAsync(newChipInHeat);
+                    if (assignChipInHeat == null)
                     {
                         return Json("Assingning New ChipInHeat To User Not Successful");
                     }
                 }
 
                 // Get ContestantInHeat To Remove
-                var contestantInHeat = _heatService.GetContestantsInHeatByUserIdAndHeatId(userId, model.OldHeatId);
+                var contestantInHeat = await _heatService.GetContestantsInHeatByUserIdAndHeatIdAsync(userId, model.OldHeatId);
                 if (contestantInHeat == null)
                 {
                     return Json("contestantInHeat does not match this userId and heatId");
                 }
 
                 // Get Old Results to keep track of data before it is deleted
-                var oldResult = _resultService.GetResult(userId, model.OldHeatId);
+                var oldResult = await _resultService.GetResultAsync(userId, model.OldHeatId);
                 if (oldResult == null)
                 {
                     return Json("Result does not match this userId and heatId");
@@ -482,7 +482,7 @@ namespace Timataka.Web.Controllers
                 await _heatService.AddAsyncContestantInHeat(newContestantInHeat);
 
                 // Get The New Result To Update Its Data
-                var newResult = _resultService.GetResult(userId, newContestantInHeat.HeatId);
+                var newResult = await _resultService.GetResultAsync(userId, newContestantInHeat.HeatId);
                 if (newResult == null)
                 {
                     return Json("newResult was not created which means newContestantInHeat was not created");

@@ -148,5 +148,10 @@ namespace Timataka.Core.Services
                 }
             }
         }
+
+        public async Task<Result> GetResultAsync(string userId, int modelOldHeatId)
+        {
+            return await _repo.GetByUserIdAndHeatIdAsync(userId, modelOldHeatId);
+        }
     }
 }

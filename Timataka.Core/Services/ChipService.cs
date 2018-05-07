@@ -163,14 +163,19 @@ namespace Timataka.Core.Services
             return _repo.RemoveChipInHeat(c);
         }
 
+        public async Task<bool> RemoveChipInHeatAsync(ChipInHeat c)
+        {
+            return await _repo.RemoveChipInHeatAsync(c);
+        }
+
         public async Task<Chip> GetChipByNumberAsync(int modelNumber)
         {
             return await _repo.GetChipByNumberAsync(modelNumber);
         }
 
-        public ChipInHeat GetChipInHeatByCodeUserIdAndHeatId(string modelOldChipCode, string userId, int modelOldHeatId)
+        public async Task<ChipInHeat> GetChipInHeatByCodeUserIdAndHeatId(string modelOldChipCode, string userId, int modelOldHeatId)
         {
-            return _repo.GetChipInHeatByCodeUserIdHeatId(modelOldChipCode, userId, modelOldHeatId);
+            return await _repo.GetChipInHeatByCodeUserIdHeatId(modelOldChipCode, userId, modelOldHeatId);
         }
 
         public async Task<bool> MarkInvalid(ChipInHeat c)
