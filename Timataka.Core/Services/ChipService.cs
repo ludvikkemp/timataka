@@ -57,7 +57,7 @@ namespace Timataka.Core.Services
             {
                 var heat = await _heatService.GetHeatByIdAsync(c.HeatId);
                 var thisEvent = _eventService.GetEventById(heat.EventId);
-                throw new Exception("Failed to assign chip " + c.ChipCode + " in heat " + heat.HeatNumber + " in " + thisEvent.Name + ". Please use another chip." + "\\n" + e.Message);
+                throw new Exception("Failed to assign chip " + c.ChipCode + " in heat " + heat.HeatNumber + " in " + thisEvent.Name + ". Please use another chip." + " " + e.Message);
             }
             await UpdateChipStory(c);
             var result = GetChipInHeatByCodeAndUserId(c.ChipCode, c.UserId, c.HeatId);

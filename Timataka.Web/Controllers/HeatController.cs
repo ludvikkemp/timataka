@@ -201,7 +201,7 @@ namespace Timataka.Web.Controllers
                 return View(model);
             }
 
-            var entitiy = new ContestantInHeat
+            var entity = new ContestantInHeat
             {
                 Bib = model.Bib,
                 HeatId = heatId,
@@ -209,14 +209,15 @@ namespace Timataka.Web.Controllers
                 Team = model.Team,
                 UserId = model.UserId
             };
-            await _heatService.AddAsyncContestantInHeat(entitiy);
+            await _heatService.AddAsyncContestantInHeat(entity);
 
             if (model.ChipNumber > 0)
             {
                 var chip = await _chipService.GetChipByNumberAsync(model.ChipNumber);
                 if (chip == null)
                 {
-                    return Json("Chipnumber Does Not Exist");
+                    await _heatService.RemoveAsyncContestantInHeat(entity);
+                    return Json("There exists no chip with the chip number " + model.ChipNumber);
                 }
                 var chipinHeat = new ChipInHeat
                 {
@@ -225,7 +226,15 @@ namespace Timataka.Web.Controllers
                     UserId = model.UserId,
                     Valid = true
                 };
-                await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
+                try
+                {
+                    await _chipService.AssignChipToUserInHeatAsync(chipinHeat);
+                }
+                catch (Exception e)
+                {
+                    await _heatService.RemoveAsyncContestantInHeat(entity);
+                    return Json(e.Message);
+                }
             }
             return RedirectToAction("Heat", "Admin", new { heatId, eventId, competitionId, competitionInstanceId });
         }
