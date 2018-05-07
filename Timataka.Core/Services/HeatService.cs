@@ -188,9 +188,9 @@ namespace Timataka.Core.Services
             return _repo.GetContestantInHeatById(heatId, userId);
         }
 
-        public ContestantInHeat GetContestantsInHeatByUserIdAndHeatId(string userId, int heatId)
+        public async Task<ContestantInHeat> GetContestantsInHeatByUserIdAndHeatIdAsync(string userId, int heatId)
         {
-            return _repo.GetContestantInHeatByUserId(userId, heatId);
+            return await _repo.GetContestantInHeatByUserIdAsync(userId, heatId);
         }
 
 

@@ -21,7 +21,6 @@ namespace Timataka.Core.Services
         void GetTimes(int competitionInstanceId);
 
 
-
-
+        Task<Result> GetResultAsync(string userId, int modelOldHeatId);
     }
 }
