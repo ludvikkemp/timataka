@@ -54,8 +54,17 @@
                                                 <tr>
                                                     <td>@item.Name</td>
                                                     <td>
-                                                        <a class="btn btn-warning-outline btn-sm" asp-controller="Discipline" asp-action="Edit" asp-route-disciplineId="@item.Id" asp-route-sportId="@item.SportId">Edit</a>
-                                                        <a class="btn btn-success-outline btn-sm" asp-controller="Discipline" asp-action="Details" asp-route-disciplineId="@item.Id" asp-route-sportId="@item.SportId">Details</a>
+                                                        <a class="btn btn-warning-outline btn-sm" 
+                                                           asp-controller="Discipline" 
+                                                           asp-action="Edit" 
+                                                           asp-route-disciplineId="@item.Id" 
+                                                           asp-route-sportId="@item.SportId">Edit</a>
+
+                                                        <a class="btn btn-success-outline btn-sm" 
+                                                           asp-controller="Discipline" 
+                                                           asp-action="Details" 
+                                                           asp-route-disciplineId="@item.Id" 
+                                                           asp-route-sportId="@item.SportId">Details</a>
                                                         <!--<a class="btn btn-danger-outline btn-sm" asp-controller="Discipline" asp-action="Delete" asp-route-disciplineId="item.Id" asp-route-sportId="item.SportId">Delete</a>-->
                                                     </td>
                                                 </tr>
