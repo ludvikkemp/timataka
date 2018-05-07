@@ -48,12 +48,8 @@ namespace Timataka.Web.Controllers
         {
             if (ModelState.IsValid && model.Name != null)
             {
-                //var exists = await _categoryService.CategoryExistsAsync(model.Name);
-                //if (!exists)
-                //{
-                    await _categoryService.AddAsync(model);
-                    return RedirectToAction("Categories", "Admin", new { competitionId = competitionId, competitionInstanceId = competitionInstanceId, eventId = eventId});
-                //}
+                await _categoryService.AddAsync(model);
+                return RedirectToAction("Categories", "Admin", new {  competitionId,  competitionInstanceId, eventId});
             }
             return View(model);
         }
