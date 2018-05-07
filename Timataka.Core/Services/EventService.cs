@@ -170,6 +170,11 @@ namespace Timataka.Core.Services
             return events;
         }
 
+        public IEnumerable<EventViewModel> GetEventsOpenForRegistrationForUserInCompetitionInstance(int competitionInstanceId, string userId)
+        {
+            return _repo.GetEventsOpenForRegistrationForUserInCompetitionInstance(competitionInstanceId, userId);
+        }
+
         public Event GetEventById(int eventId)
         {
             return _repo.GetById(eventId);

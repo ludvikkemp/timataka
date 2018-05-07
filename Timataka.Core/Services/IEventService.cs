@@ -23,5 +23,6 @@ namespace Timataka.Core.Services
         IEnumerable<EventHeatViewModel> GetEventHeatListForCompetitionInstance(int id);
         IEnumerable<Event> GetEventsByCompetitionInstanceIdAndUserId(int competitionInstanceId, string userId);
         IEnumerable<Event> GetNonDeletedEventsByCompetitionInstanceId(int competitionInstanceId);
+        IEnumerable<EventViewModel> GetEventsOpenForRegistrationForUserInCompetitionInstance(int competitionInstanceId, string userId);
     }
 }

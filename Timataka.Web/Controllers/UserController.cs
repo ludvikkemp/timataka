@@ -64,8 +64,8 @@ namespace Timataka.Web.Controllers
         [Authorize(Roles = "User")]
         public IActionResult Events(int competitionInstanceId)
         {
-            var events = _eventService.GetEventsByCompetitionInstanceId(competitionInstanceId);
             var user = _userManager.GetUserAsync(User).Result;
+            var events = _eventService.GetEventsOpenForRegistrationForUserInCompetitionInstance(competitionInstanceId, user.Id);
             ViewBag.userId = user.Id;
 
             events = events.Where(e => (e.Categories.Where(c => (c.Gender.ToString().ToLower() == user.Gender.ToLower()) || 

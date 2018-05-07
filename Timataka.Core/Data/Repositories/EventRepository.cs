@@ -172,5 +172,40 @@ namespace Timataka.Core.Data.Repositories
         {
             return _context.Events.SingleOrDefault(x => x.Id == id);
         }
+
+        public IEnumerable<EventViewModel> GetEventsOpenForRegistrationForUserInCompetitionInstance(int competitionInstanceId, string userId)
+        {
+            var events = (  from e in _context.Events
+                            join d in _context.Disciplines on e.DisciplineId equals d.Id
+                            where e.CompetitionInstanceId == competitionInstanceId
+                            where ((from cih in _context.ContestantsInHeats
+                                   where cih.UserId == userId
+                                   join h in _context.Heats on cih.HeatId equals h.Id
+                                   join ev in _context.Events on h.EventId equals ev.Id
+                                   where ev.Id == e.Id
+                                   select cih).Count()) <= 0
+                            select new EventViewModel
+                            {
+                                ActiveChip = e.ActiveChip,
+                                CompetitionInstanceId = e.CompetitionInstanceId,
+                                CourseId = e.CourseId,
+                                DateFrom = e.DateFrom,
+                                DateTo = e.DateTo,
+                                DisciplineId = e.DisciplineId,
+                                DisciplineName = d.Name,
+                                DistanceOffset = e.DistanceOffset,
+                                Gender = e.Gender,
+                                Id = e.Id,
+                                Laps = e.Laps,
+                                Name = e.Name,
+                                Splits = e.Splits,
+                                StartInterval = e.StartInterval,
+                                Deleted = e.Deleted,
+                                Categories = (from c in _context.Categories
+                                              where c.EventId == e.Id
+                                              select c).ToList()
+                            }).ToList();
+            return events;
+        }
     }
 }
