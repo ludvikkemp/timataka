@@ -32,20 +32,37 @@ namespace Timataka.Core.Services
 
         public bool AssignChipToUserInHeat(ChipInHeat c)
         {
-            return _repo.AssignChipToUserInHeat(c);
+            var result = true;
+            try
+            {
+                result = _repo.AssignChipToUserInHeat(c);
+            }
+            catch (Exception e)
+            {
+                var heat = _heatService.GetHeatByIdAsync(c.HeatId).Result;
+                var thisEvent = _eventService.GetEventById(heat.EventId);
+                throw new Exception("Failed to assign chip in heat" + heat.HeatNumber + " in " + thisEvent.Name + ". Please use another chip." + "\r\n" + e.Message);
+            }
+            UpdateChipStory(c);
+            return result;
         }
 
         public async Task<ChipInHeatViewModel> AssignChipToUserInHeatAsync(ChipInHeat c)
         {
-            if (await _repo.AssignChipToUserInHeatAsync(c))
+            try
             {
-                var result = GetChipInHeatByCodeAndUserId(c.ChipCode, c.UserId, c.HeatId);
-                return result;
+                await _repo.AssignChipToUserInHeatAsync(c);
             }
-            else
+            catch(Exception e)
             {
-                throw new Exception("Failed");
+                var heat = await _heatService.GetHeatByIdAsync(c.HeatId);
+                var thisEvent = _eventService.GetEventById(heat.EventId);
+                throw new Exception("Failed to assign chip " + c.ChipCode + " in heat " + heat.HeatNumber + " in " + thisEvent.Name + ". Please use another chip." + "\\n" + e.Message);
             }
+            await UpdateChipStory(c);
+            var result = GetChipInHeatByCodeAndUserId(c.ChipCode, c.UserId, c.HeatId);
+            return result;
+
         }
 
         public async Task<bool> EditChipAsync(Chip c)
@@ -170,7 +187,7 @@ namespace Timataka.Core.Services
         public async Task<bool> UpdateChipStory(ChipInHeat c)
         {
             Chip chip = await GetChipByCodeAsync(c.ChipCode);
-            chip.LastCompetitionInstanceId = c.Heat.Event.CompetitionInstanceId;
+            chip.LastCompetitionInstanceId = await _repo.GetInstanceIdForHeat(c.HeatId);
             chip.LastSeen = DateTime.Now;
             chip.LastUserId = c.UserId;
             return await _repo.EditChipAsync(chip);

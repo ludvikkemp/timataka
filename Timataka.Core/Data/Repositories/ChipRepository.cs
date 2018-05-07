@@ -42,9 +42,16 @@ namespace Timataka.Core.Data.Repositories
 
         public async Task<bool> AssignChipToUserInHeatAsync(ChipInHeat c)
         {
-            bool result = await _db.ChipsInHeats.AddAsync(c) != null;
+            var exists = (from cih in _db.ChipsInHeats
+                          where cih.ChipCode == c.ChipCode && cih.HeatId == c.HeatId
+                          select cih).SingleOrDefault();
+            if(exists != null)
+            {
+                throw new Exception("Chip already assigned to a contestant in this heat.");
+            }
+            await _db.ChipsInHeats.AddAsync(c);
             await _db.SaveChangesAsync();
-            return result;
+            return true;
         }
 
         public bool EditChip(Chip c)
@@ -233,6 +240,13 @@ namespace Timataka.Core.Data.Repositories
             GC.SuppressFinalize(this);
         }
 
-
+        public Task<int> GetInstanceIdForHeat(int heatId)
+        {
+            return (from h in _db.Heats
+                    where h.Id == heatId
+                    join e in _db.Events on h.EventId equals e.Id
+                    join i in _db.CompetitionInstances on e.CompetitionInstanceId equals i.Id
+                    select i.Id).SingleOrDefaultAsync();
+        }
     }
 }
