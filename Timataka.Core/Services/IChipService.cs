@@ -30,11 +30,12 @@ namespace Timataka.Core.Services
         IEnumerable<ChipInHeat> GetChipsInCompetitionInstanceForUser(int competitionInstanceId, string userId);
         ChipInHeatViewModel GetChipInHeatByCodeAndUserId(string code, string userId, int heatId);
         Task<Chip> GetChipByNumberAsync(int modelNumber);
-        ChipInHeat GetChipInHeatByCodeUserIdAndHeatId(string modelOldChipCode, string userId, int modelOldHeatId);
+        Task<ChipInHeat> GetChipInHeatByCodeUserIdAndHeatId(string modelOldChipCode, string userId, int modelOldHeatId);
 
         // *** REMOVE *** //
         Task<Boolean> RemoveChipAsync(Chip c);
         Boolean RemoveChipInHeat(ChipInHeat c);
+        Task<Boolean> RemoveChipInHeatAsync(ChipInHeat c);
 
         // *** UPDATE & MARK INVALID *** //
         Task<Boolean> UpdateChipStory(ChipInHeat c);

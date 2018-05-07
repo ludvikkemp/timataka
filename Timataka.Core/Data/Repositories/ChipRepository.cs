@@ -181,13 +181,13 @@ namespace Timataka.Core.Data.Repositories
             return result;
         }
 
-        public ChipInHeat GetChipInHeatByCodeUserIdHeatId(string modelOldChipCode, string userId, int modelOldHeatId)
+        public async Task<ChipInHeat> GetChipInHeatByCodeUserIdHeatId(string modelOldChipCode, string userId, int modelOldHeatId)
         {
-            var result = (from cih in _db.ChipsInHeats
+            var result = await (from cih in _db.ChipsInHeats
                 where cih.ChipCode == modelOldChipCode &&
                       cih.UserId == userId && cih.HeatId ==
                       modelOldHeatId
-                select cih).FirstOrDefault();
+                select cih).FirstOrDefaultAsync();
 
             return result;
         }

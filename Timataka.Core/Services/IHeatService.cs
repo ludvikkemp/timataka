@@ -26,7 +26,7 @@ namespace Timataka.Core.Services
         ContestantInHeat GetContestantInHeatById(int heatId, string userId);
         Task<ContestantInEventViewModel> GetContestantInEventViewModelAsync(string userId, int heatId);
         IEnumerable<ApplicationUser> GetUsersNotInAnyHeatUnderEvent(int eventId);
-        ContestantInHeat GetContestantsInHeatByUserIdAndHeatId(string userId, int heatId);
+        Task<ContestantInHeat> GetContestantsInHeatByUserIdAndHeatIdAsync(string userId, int heatId);
 
         void EditContestantInHeat(ContestantInHeat h);
         Task EditAsyncContestantInHeat(ContestantInHeat h);

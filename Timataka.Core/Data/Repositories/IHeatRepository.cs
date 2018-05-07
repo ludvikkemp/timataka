@@ -39,6 +39,6 @@ namespace Timataka.Core.Data.Repositories
 
         void InsertContestantInHeat(ContestantInHeat h);
         Task InsertAsyncContestantInHeat(ContestantInHeat h);
-        ContestantInHeat GetContestantInHeatByUserId(string userId, int heatId);
+        Task<ContestantInHeat> GetContestantInHeatByUserIdAsync(string userId, int heatId);
     }
 }

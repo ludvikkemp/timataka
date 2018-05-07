@@ -126,11 +126,11 @@ namespace Timataka.Core.Data.Repositories
             return results;
         }
 
-        public ContestantInHeat GetContestantInHeatByUserId(string userId, int heatId)
+        public async Task<ContestantInHeat> GetContestantInHeatByUserIdAsync(string userId, int heatId)
         {
-            var result = (from cih in _db.ContestantsInHeats
+            var result = await (from cih in _db.ContestantsInHeats
                 where cih.UserId == userId && cih.HeatId == heatId
-                select cih).FirstOrDefault();
+                select cih).FirstOrDefaultAsync();
             return result;
         }
 
