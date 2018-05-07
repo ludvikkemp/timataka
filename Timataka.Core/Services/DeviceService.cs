@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Timataka.Core.Data.Repositories;
 using Timataka.Core.Models.Entities;
@@ -81,7 +80,7 @@ namespace Timataka.Core.Services
         /// <returns>True if edit was successfull, false otherwise</returns>
         public async Task<Boolean> EditAsync(Device d)
         {
-            Device oldDevice = await GetDeviceByIdAsync(d.Id);
+            var oldDevice = await GetDeviceByIdAsync(d.Id);
             //Name changes, need to check for other devices with that new name
             if(oldDevice.Name != d.Name)
             {
@@ -102,7 +101,7 @@ namespace Timataka.Core.Services
         /// <returns>True if device exists</returns>
         public Boolean Exists(int id)
         {
-            Boolean r = (from x in _repo.Get()
+            var r = (from x in _repo.Get()
                         where x.Id == id
                         select x).Any();
             return r;
@@ -237,7 +236,7 @@ namespace Timataka.Core.Services
         /// <returns></returns>
         public Boolean NameExists(string name)
         {
-            Boolean d = (from x in GetDevices()
+            var d = (from x in GetDevices()
                      where x.Name == name
                      select x).Any();
             return d;

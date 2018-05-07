@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Timataka.Core.Data.Repositories;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Storage;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 
@@ -14,13 +11,12 @@ namespace Timataka.Core.Services
     {
         private readonly IEventRepository _repo;
         private readonly IHeatService _heatService;
-        private readonly ICompetitionRepository _competitionRepo;
 
-        public EventService(IEventRepository repo, IHeatService heatService, ICompetitionRepository competitionRepo)
+        public EventService(IEventRepository repo, 
+            IHeatService heatService)
         {
             _repo = repo;
             _heatService = heatService;
-            _competitionRepo = competitionRepo;
         }
 
         public EventService()

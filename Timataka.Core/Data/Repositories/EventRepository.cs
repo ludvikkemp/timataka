@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Remotion.Linq.Parsing.Structure.IntermediateModel;
 using Timataka.Core.Models.Entities;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 
@@ -14,31 +11,13 @@ namespace Timataka.Core.Data.Repositories
     public class EventRepository : IEventRepository
     {
         private readonly ApplicationDbContext _context;
-        private bool _disposed = false;
+        private bool _disposed;
 
         public EventRepository(ApplicationDbContext context)
         {
             _context = context;
         }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-
-            this._disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
+        
         public async Task<Event> InsertAsync(Event entity)
         {
             var results = await _context.Events.AddAsync(entity);
@@ -171,6 +150,25 @@ namespace Timataka.Core.Data.Repositories
         public Event GetById(int id)
         {
             return _context.Events.SingleOrDefault(x => x.Id == id);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+
+            this._disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

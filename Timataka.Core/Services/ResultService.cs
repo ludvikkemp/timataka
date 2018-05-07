@@ -14,30 +14,12 @@ namespace Timataka.Core.Services
     public class ResultService : IResultService
     {
         private readonly IResultRepository _repo;
+        private readonly IAdminService _adminService;
 
         public ResultService(IResultRepository repo)
         {
             _repo = repo;
         }
-
-        /// <summary>
-        /// Function to get all results for given event.
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <returns>List of all results</returns>
-        public IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId)
-        {
-            return _repo.GetResultViewModelsForEvent(eventId);
-        }
-
-        public IEnumerable<MyResultsViewModel> GetResultsForUser(string userId)
-        {
-            return _repo.GetResultsForUser(userId);
-        }
-
-
-
-        private readonly IAdminService _adminService;
 
         public ResultService(IResultRepository repo, IAdminService adminService)
         {
@@ -73,11 +55,20 @@ namespace Timataka.Core.Services
             return _repo.GetByUserIdAndHeatId(userId, heatId);
         }
 
+        public IEnumerable<ResultViewModel> GetResultViewModelsForEvent(int eventId)
+        {
+            return _repo.GetResultViewModelsForEvent(eventId);
+        }
+
+        public IEnumerable<MyResultsViewModel> GetResultsForUser(string userId)
+        {
+            return _repo.GetResultsForUser(userId);
+        }
+
         public async Task RemoveAsync(Result r)
         {
             await _repo.RemoveAsync(r);
         }
-
 
         public Boolean Edit(Result r)
         {
@@ -89,7 +80,8 @@ namespace Timataka.Core.Services
             return await _repo.EditAsync(r);
         }
 
-        //TimingDB
+
+        // *** TIMING DATABASE CONNECTION *** //
 
         public void GetTimes(int competitionInstanceId)
         {
