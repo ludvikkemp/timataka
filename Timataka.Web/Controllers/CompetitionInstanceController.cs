@@ -535,11 +535,16 @@ namespace Timataka.Web.Controllers
                     };
 
                     // Assigning New ChipInHeat To User
-                    var assignChipInHeat = await _chipService.AssignChipToUserInHeatAsync(newChipInHeat);
-                    if (assignChipInHeat == null)
+                    try
                     {
-                        return Json("Assingning New ChipInHeat To User Not Successful");
+                        await _chipService.AssignChipToUserInHeatAsync(newChipInHeat);
                     }
+                    catch(Exception e)
+                    {
+                        return Json(e.Message);
+                    }
+                    
+                   
                 }
 
                 // Get ContestantInHeat To Remove
