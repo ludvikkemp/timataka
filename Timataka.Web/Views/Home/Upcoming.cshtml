@@ -1,0 +1,221 @@
+﻿@using System.Globalization
+@model Timataka.Core.Models.Dto.ResultsDTO.ResultsDTO
+
+@{
+    ViewBag.Title = "Upcoming";
+    Layout = "_Layout";
+}
+
+<section class="content" style="margin-top:25px;">
+
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Results" method="get">
+                <div class="input-group" style="margin-bottom:10px" ;>
+                    <input type="text" name="Search" value="" class="form-control boxed rounded-s" placeholder="Leita eftir keppni...">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <section class="content" style="margin-top:20px;">
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active show" data-toggle="tab" href="#all">Allir viðburðir</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#athletics">Hlaup</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#cycling">Hjól</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#other">Annað</a>
+            </li>
+        </ul>
+
+        <div class="row">
+            <div id="myTabContent" class="tab-content" style="width:100%">
+                <div class="col-md-12 tab-pane fade active show" id="all">
+                    <div class="card">
+                        <section class="section">
+                            <div class="col-md-12">
+                                <div class="card" style="margin-top: 15px; margin-bottom: 15px;">
+                                    <section class="example">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keppni</th>
+                                                        <th>Dagsetning</th>
+                                                        <th>Fjöldi keppenda</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.All)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <a asp-controller="Home"
+                                                                   asp-action="Instance"
+                                                                   asp-route-competitionId="@item.CompetitionId"
+                                                                   asp-route-instanceId="@item.CompetitionInstanceId">@item.CompetitionInstanceName</a>
+                                                            </td>
+                                                            <td>
+                                                                @item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))
+                                                            </td>
+                                                            <td>
+                                                                @item.NumberOfContestants
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="col-md-12 tab-pane fade" id="athletics">
+                    <div class="card">
+                        <section class="section">
+                            <div class="col-md-12">
+                                <div class="card" style="margin-top: 15px; margin-bottom: 15px;">
+                                    <section class="example">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keppni</th>
+                                                        <th>Dagsetning</th>
+                                                        <th>Fjöldi keppenda</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.Athletics)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <a asp-controller="Home"
+                                                                   asp-action="Instance"
+                                                                   asp-route-competitionId="@item.CompetitionId"
+                                                                   asp-route-instanceId="@item.CompetitionInstanceId">@item.CompetitionInstanceName</a>
+                                                            </td>
+                                                            <td>
+                                                                @item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))
+                                                            </td>
+                                                            <td>
+                                                                @item.NumberOfContestants
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="col-md-12 tab-pane fade" id="cycling">
+                    <div class="card">
+                        <section class="section">
+                            <div class="col-md-12">
+                                <div class="card" style="margin-top: 15px; margin-bottom: 15px;">
+                                    <section class="example">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keppni</th>
+                                                        <th>Dagsetning</th>
+                                                        <th>Fjöldi keppenda</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.Cycling)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <a asp-controller="Home"
+                                                                   asp-action="Instance"
+                                                                   asp-route-competitionId="@item.CompetitionId"
+                                                                   asp-route-instanceId="@item.CompetitionInstanceId">@item.CompetitionInstanceName</a>
+                                                            </td>
+                                                            <td>
+                                                                @item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))
+                                                            </td>
+                                                            <td>
+                                                                @item.NumberOfContestants
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="col-md-12 tab-pane fade" id="other">
+                    <div class="card">
+                        <section class="section">
+                            <div class="col-md-12">
+                                <div class="card" style="margin-top: 15px; margin-bottom: 15px;">
+                                    <section class="example">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Keppni</th>
+                                                        <th>Dagsetning</th>
+                                                        <th>Fjöldi keppenda</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.Other)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <a asp-controller="Home"
+                                                                   asp-action="Instance"
+                                                                   asp-route-competitionId="@item.CompetitionId"
+                                                                   asp-route-instanceId="@item.CompetitionInstanceId">@item.CompetitionInstanceName</a>
+                                                            </td>
+                                                            <td>
+                                                                @item.Date.ToString("dd. MMM yyyy", CultureInfo.CreateSpecificCulture("is-IS"))
+                                                            </td>
+                                                            <td>
+                                                                @item.NumberOfContestants
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</section>
