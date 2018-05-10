@@ -228,13 +228,15 @@ namespace Timataka.Core.Data.Repositories
                                    UserName = u.FirstName + " " + u.MiddleName + " " + u.LastName,
                                    ChipCode = ch.ChipCode,
                                    Bib = con.Bib,
-                                   DateOfBirth = u.DateOfBirth
+                                   DateOfBirth = u.DateOfBirth,
+                                   RawGunTime = 0,
                                }).Distinct().ToList();
 
             foreach (var result in results)
             {
                 result.Rank = GetRank(result.EventId, result.HeatId, result.UserId);
                 int rawTime = CalculateGuntime(result.HeatId, result.ChipCode);
+                result.RawGunTime = rawTime;
                 TimeSpan finalTime = TimeSpan.FromMilliseconds(rawTime);
                 if (rawTime % 1000 != 0)
                 {

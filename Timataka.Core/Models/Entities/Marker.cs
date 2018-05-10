@@ -19,6 +19,7 @@ namespace Timataka.Core.Models.Entities
 
         public Type Type { get; set; }
         public int Time { get; set; }
+        public DateTime MarkerTime { get; set; }
         public string Location { get; set; }
     }
 }

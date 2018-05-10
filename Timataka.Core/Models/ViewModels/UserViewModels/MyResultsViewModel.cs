@@ -54,5 +54,6 @@ namespace Timataka.Core.Models.ViewModels.UserViewModels
 
         public string ChipCode { get; set; }
         public int Rank { get; set; }
+        public int RawGunTime { get; set; }
     }
 }

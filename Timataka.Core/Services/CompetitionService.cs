@@ -79,7 +79,9 @@ namespace Timataka.Core.Services
         /// <returns>List of all competitions</returns>
         public IEnumerable<Competition> GetAllCompetitions()
         {
-            var competitions = _repo.Get();
+            var competitions = (from c in _repo.Get()
+                                orderby c.Name
+                                select c);
             return competitions;
         }
 
