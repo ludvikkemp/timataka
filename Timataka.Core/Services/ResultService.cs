@@ -60,6 +60,13 @@ namespace Timataka.Core.Services
             return _repo.GetResultViewModelsForEvent(eventId);
         }
 
+        public IEnumerable<StartListViewModel> GetStartListViewModelsForEvent(int eventId)
+        {
+            var model =  _repo.GetStartListViewModelsForEvent(eventId);
+
+            return model;
+        }
+
         public IEnumerable<MyResultsViewModel> GetResultsForUser(string userId)
         {
             return _repo.GetResultsForUser(userId);
@@ -153,5 +160,7 @@ namespace Timataka.Core.Services
         {
             return await _repo.GetByUserIdAndHeatIdAsync(userId, modelOldHeatId);
         }
+
+
     }
 }

@@ -217,6 +217,7 @@ namespace Timataka.Web.Controllers
             return View(model);
         }
 
+
         [HttpGet]
         [Route("User/MyResults")]
         [Authorize(Roles = "User")]

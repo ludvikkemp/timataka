@@ -46,6 +46,8 @@
                                                 <thead>
                                                 <tr>
                                                     <th>Flokkur</th>
+                                                    <th></th>
+                                                    <th></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -54,11 +56,21 @@
 
                                                     <tr>
                                                         <td>
+                                                            @item.Name
+                                                        </td>
+                                                        <td>
                                                             <a asp-controller="Home" asp-action="Category"
                                                                asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                                                                asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]"
                                                                asp-route-eventId="@e.Id"
-                                                               asp-route-categoryId="@item.Id">@item.Name</a>
+                                                               asp-route-categoryId="@item.Id">Úrslit</a>
+                                                        </td>
+                                                        <td>
+                                                            <a asp-controller="Home" asp-action="CategoryStartList"
+                                                               asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
+                                                               asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]"
+                                                               asp-route-eventId="@e.Id"
+                                                               asp-route-categoryId="@item.Id">Ráslisti</a>
                                                         </td>
                                                     </tr>
                                                     

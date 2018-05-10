@@ -273,7 +273,7 @@ namespace Timataka.Web.Controllers
             var compDto = new CompetitionDto
             {
                 Competiton = competition.Result,
-                Instances = competitionInstances
+                Instances = competitionInstances.OrderByDescending(o => o.DateFrom)
             };
             return View(compDto);
         }
@@ -480,6 +480,7 @@ namespace Timataka.Web.Controllers
                 var searchToUpper = search.ToUpper();
                 courses = courses.Where(u => u.Name.ToUpper().Contains(searchToUpper));
             }
+            courses = courses.OrderBy(o => o.Name);
 
             return View(courses);
         }
