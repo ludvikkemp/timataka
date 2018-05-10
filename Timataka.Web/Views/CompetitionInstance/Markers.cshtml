@@ -64,7 +64,7 @@
                                         @foreach (var item in Model.Markers)
                                         {
                                             <tr>
-                                                <td>@item.MarkerTime</td>
+                                                <td>@item.MarkerTime.ToString("dd/MM/yyyy HH:mm:ss")</td>
                                                 <td>@item.Location</td>
                                                 <td>@item.Type</td>
                                                 <td>

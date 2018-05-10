@@ -63,7 +63,7 @@
                                                                asp-route-competitionId="@item.CompetitionId">@item.Name</a>
                                                         </td>
                                                         <td>
-                                                            @item.DateFrom
+                                                            @item.DateFrom.ToString("dd/MM/yyyy")
                                                         </td>
                                                         <td>
                                                             <a asp-controller="CompetitionInstance" 
