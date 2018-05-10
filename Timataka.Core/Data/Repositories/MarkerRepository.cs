@@ -184,7 +184,7 @@ namespace Timataka.Core.Data.Repositories
                               Location = m.Location,
                               Time = m.MilliSecs,
                               Type = (m.Type == "Gunshot" ? Models.Entities.Type.Gun : Models.Entities.Type.Marker),
-                              MarkerTime = m.MarkerTime.ToDateTime()
+                              MarkerTime = m.MarkerTime
                           }).ToList();
             return result;
         }
