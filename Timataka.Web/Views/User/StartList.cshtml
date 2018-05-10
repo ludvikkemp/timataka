@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Timataka.Core.Models.ViewModels.HomeViewModels.StartListViewModel>
+
+@{
+    Layout = "_UserLayout";
+}
+<section class="content">
+    <div class="title-block" style="margin-bottom:15px;">
+
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title">
+                    Start list
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <section class="section">
+                    <div class="col-md-12">
+                        <div class="card" style="margin-top:15px;">
+                            <section class="example">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>BIB</th>
+                                                <th>Name</th>
+                                                <th>Year</th>
+                                                <th>Club</th>
+                                                <th>Country</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.Bib
+                                                    </td>
+                                                    <td>
+                                                        @item.Name
+                                                    </td>
+                                                    <td>
+                                                        @item.DateOfBirth.Year
+                                                    </td>
+                                                    <td>
+                                                        @item.Club
+                                                    </td>
+                                                    <td>
+                                                        @item.Country
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <a asp-controller="User"
+       asp-action="EventsResults"
+       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]"
+       class="btn btn-secondary-outline btn-sm">Back to events</a>
+
+</section>
+

@@ -22,5 +22,6 @@ namespace Timataka.Core.Services
 
 
         Task<Result> GetResultAsync(string userId, int modelOldHeatId);
+        IEnumerable<StartListViewModel> GetStartListViewModelsForEvent(int eventId);
     }
 }

@@ -214,7 +214,7 @@ namespace Timataka.Core.Services
         /// <returns>List of instances for a given competition.</returns>
         public IEnumerable<CompetitionInstance> GetAllInstancesOfCompetition(int id)
         {
-            var instances = _repo.GetInstancesForCompetition(id);
+            var instances = _repo.GetInstancesForCompetition(id).OrderByDescending(o => o.DateFrom);
             return instances;
         }
 

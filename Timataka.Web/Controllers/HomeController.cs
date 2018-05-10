@@ -171,6 +171,27 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
+        [Route("Results/Competition/{competitionId}/Instance/{instanceId}/Event/{eventId}/StartList")]
+        public IActionResult StartList(int competitionId, int instanceId, int eventId)
+        {
+            var eventObj = _eventService.GetEventByIdAsync(eventId);
+            eventObj.Wait();
+            ViewBag.EventName = eventObj.Result.Name;
+
+            var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
+            competition.Wait();
+            ViewBag.CompetitionName = competition.Result.Name;
+
+            var competitionInstance = _competitionService.GetCompetitionInstanceByIdAsync(instanceId);
+            competitionInstance.Wait();
+            ViewBag.CompetitionInstanceName = competitionInstance.Result.Name;
+
+            var models = _resultService.GetStartListViewModelsForEvent(eventId);
+
+            return View(models);
+        }
+
+        [HttpGet]
         [Route("Results/Competition/{competitionId}/Instance/{instanceId}/Event/{eventId}/Category/{categoryId}/Result")]
         public async Task<IActionResult> Category(int competitionId, int instanceId, int eventId, int categoryId)
         {
@@ -202,6 +223,43 @@ namespace Timataka.Web.Controllers
                 model = (from m in model
                           where category.CountryName.Equals(m.Country)
                           select m).ToList();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Route("Results/Competition/{competitionId}/Instance/{instanceId}/Event/{eventId}/CategoryStartList/{categoryId}/Result")]
+        public async Task<IActionResult> CategoryStartList(int competitionId, int instanceId, int eventId, int categoryId)
+        {
+            var eventObj = _eventService.GetEventByIdAsync(eventId);
+            eventObj.Wait();
+            ViewBag.EventName = eventObj.Result.Name;
+
+            var competition = _competitionService.GetCompetitionByIdAsync(competitionId);
+            competition.Wait();
+            ViewBag.CompetitionName = competition.Result.Name;
+
+            var competitionInstance = _competitionService.GetCompetitionInstanceByIdAsync(instanceId);
+            competitionInstance.Wait();
+            ViewBag.CompetitionInstanceName = competitionInstance.Result.Name;
+
+            var models = _resultService.GetStartListViewModelsForEvent(eventId);
+
+            var category = await _categoryService.GetCategoryViewModelById(categoryId);
+            ViewBag.CategoryName = category.Name;
+
+            var model = (from r in models
+                         where category.AgeFrom <= (DateTime.Now.Year - r.DateOfBirth.Year) &&
+                         category.AgeTo >= (DateTime.Now.Year - r.DateOfBirth.Year) &&
+                         (category.Gender.ToString().ToLower() == r.Gender.ToLower() || category.Gender.ToString().ToLower() == "all")
+                         select r).ToList();
+
+            if (category.CountryId != null)
+            {
+                model = (from m in model
+                         where category.CountryName.Equals(m.Country)
+                         select m).ToList();
             }
 
             return View(model);

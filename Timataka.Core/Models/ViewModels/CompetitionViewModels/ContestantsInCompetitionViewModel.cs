@@ -11,6 +11,7 @@ namespace Timataka.Core.Models.ViewModels.CompetitionViewModels
         public string Id { get; set; }
         public string Name { get; set; }
         public string Gender { get; set; }
-        public IEnumerable<EventDropDownListViewModel> EventList { get; set; }
+        public Boolean HasAllChips { get; set; }
+        public IEnumerable<EventForContestantDropDownListViewModel> EventList { get; set; }
     }
 }
