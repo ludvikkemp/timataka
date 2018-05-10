@@ -10,13 +10,15 @@ namespace Timataka.Core.Models.ViewModels.AccountViewModels
     {
         [Required]
         [EmailAddress]
+        [Display(Name = "Veffang")]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "Lykilorð")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Muna eftir mér?")]
         public bool RememberMe { get; set; }
     }
 }
