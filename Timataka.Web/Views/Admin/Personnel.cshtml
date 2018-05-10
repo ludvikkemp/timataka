@@ -44,10 +44,10 @@
                                             @foreach (var item in Model.AssignedRoles)
                                             {
                                             <tr>
-                                                <td>@item.FirstName @item.MiddleName @item.LastName</td>
-                                                <td>@item.Ssn</td>
-                                                <td>@item.Role</td>
-                                                <td>
+                                                <td style="width: 25%">@item.FirstName @item.MiddleName @item.LastName</td>
+                                                <td style="width: 25%">@item.Ssn</td>
+                                                <td >@item.Role</td>
+                                                <td style="width: 25%">
                                                     <a asp-controller="Competition"
                                                        asp-action="EditManager"
                                                        asp-route-competitionId="@item.CompetitionId"
@@ -111,10 +111,10 @@
                                             {
                                                 
                                                 <tr>
-                                                    <td>@user.FirstName @user.Middlename @user.LastName</td>
-                                                    <td>@user.Username</td>
-                                                    <td>@user.Ssn</td>
-                                                    <td>
+                                                    <td style="width: 25%">@user.FirstName @user.Middlename @user.LastName</td>
+                                                    <td style="width: 25%">@user.Username</td>
+                                                    <td style="width: 25%">@user.Ssn</td>
+                                                    <td style="width: 25%">
                                                         <a asp-action="AddRole" 
                                                            asp-controller="Competition" 
                                                            asp-route-competitionId="@Model.Competition.Id" 

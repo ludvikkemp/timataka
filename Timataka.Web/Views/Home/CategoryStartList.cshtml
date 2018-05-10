@@ -1,8 +1,9 @@
-﻿@model IEnumerable<Timataka.Core.Models.ViewModels.HomeViewModels.ResultViewModel>
+﻿@model IEnumerable<Timataka.Core.Models.ViewModels.HomeViewModels.StartListViewModel>
 
 @{
     Layout = "_Layout";
 }
+
 <section class="content">
     <div class="title-block" style="margin:10px;">
 
@@ -19,7 +20,7 @@
                            asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
                            asp-route-instanceId="@ViewContext.RouteData.Values["instanceId"]">@ViewBag.CompetitionInstanceName</a> /
 
-                        @ViewBag.EventName - Úrslit
+                        @ViewBag.EventName - Ráslisti
 
                     </span>
                 </h4>
@@ -42,27 +43,17 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
                                                 <th>BIB</th>
                                                 <th>Nafn</th>
                                                 <th>Fæðingarár</th>
                                                 <th>Félag</th>
                                                 <th>Land</th>
-                                                <th>Byssutími (Flögutími)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @{int i = 1;}
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
-                                                    <td>
-                                                        @{if (item.GunTime != "" && item.Status == 0)
-                                                            {
-                                                                @i
-                                                            }
-                                                        }
-                                                    </td>
                                                     <td>
                                                         @item.Bib
                                                     </td>
@@ -78,15 +69,7 @@
                                                     <td>
                                                         @item.Country
                                                     </td>
-                                                    <td>
-                                                        @{if (item.RawGunTime > 0 && item.Status == 0)
-                                                            {@item.GunTime @(" (" + item.ChipTime + ")")}
-                                                        else if (item.Status != 0)
-                                                        {@item.Status};
-                                                        }
-                                                    </td>
                                                 </tr>
-                                                i++;
                                             }
                                         </tbody>
                                     </table>
@@ -108,7 +91,6 @@
                class="btn btn-secondary-outline btn-sm">Til baka</a>
         </div>
     </section>
-    
 
 </section>
 

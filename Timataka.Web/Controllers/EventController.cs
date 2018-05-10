@@ -16,6 +16,7 @@ using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.CourseViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Timataka.Core.Models.ViewModels.CategoryViewModels;
 
 namespace Timataka.Web.Controllers
 {
@@ -32,6 +33,7 @@ namespace Timataka.Web.Controllers
         private readonly IResultService _resultService;
         private readonly IMemoryCache _cache;
         private readonly IAccountService _accountService;
+        private readonly ICategoryService _categoryService;
 
         public EventController(IEventService eventService,
             IDisciplineService disciplineService,
@@ -43,7 +45,8 @@ namespace Timataka.Web.Controllers
             IHeatService heatService,
             IResultService resultService,
             IAccountService accountService,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            ICategoryService categoryService)
         {
             _disciplineService = disciplineService;
             _eventService = eventService;
@@ -56,6 +59,7 @@ namespace Timataka.Web.Controllers
             _resultService = resultService;
             _cache = cache;
             _accountService = accountService;
+            _categoryService = categoryService;
         }
 
         #region EVENT
@@ -93,7 +97,18 @@ namespace Timataka.Web.Controllers
             {
                 try
                 {
-                    var task = await _eventService.AddAsync(model);
+                    var _event = await _eventService.AddAsync(model);
+                    // Create a Overall Category automatically
+                    var overall = new CategoryViewModel
+                    {
+                        Name = "Overall",
+                        AgeFrom = 0,
+                        AgeTo = 99,
+                        CountryId = 0,
+                        EventId = _event.Id,
+                        Gender = Gender.All
+                    };
+                    await _categoryService.AddAsync(overall);
                 }
                 catch (Exception e)
                 {

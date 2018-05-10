@@ -185,6 +185,30 @@ namespace Timataka.Core.Data.Repositories
 
         }
 
+        public IEnumerable<StartListViewModel> GetStartListViewModelsForEvent(int eventId)
+        {
+            var model = (from r in _db.Results
+                         join c in _db.ContestantsInHeats on r.UserId equals c.UserId
+                         join h in _db.Heats on r.HeatId equals h.Id                         
+                         join user in _db.Users on c.UserId equals user.Id
+                         where h.EventId == eventId && h.Id == h.Id && c.HeatId == h.Id
+                         select new StartListViewModel
+                         {
+                             Bib = c.Bib,
+                             Club = r.Club,
+                             Country = r.Country,
+                             DateOfBirth = user.DateOfBirth,
+                             Gender = r.Gender,
+                             HeatId = r.HeatId,
+                             HeatNumber = h.HeatNumber,
+                             Name = r.Name,
+                             Nationality = r.Nationality,
+                             Notes = r.Notes,
+                             UserId = r.UserId
+                         }).ToList();
+            return model.OrderBy(o => o.Name);
+        }
+
         public IEnumerable<MyResultsViewModel> GetResultsForUser(string userId)
         {
             var results = (from r in _db.Results
@@ -408,7 +432,6 @@ namespace Timataka.Core.Data.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
 
     }
 }

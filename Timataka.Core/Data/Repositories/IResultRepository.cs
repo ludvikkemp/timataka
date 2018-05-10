@@ -40,6 +40,6 @@ namespace Timataka.Core.Data.Repositories
         IEnumerable<ChipInHeatViewModel> GetChipsInHeat(int heatId);
         Time GetTime(int heatId, string chipCode, int timeNumber);
         Boolean Remove(int heatId, string chipCode, int timeNumber);
-        
+        IEnumerable<StartListViewModel> GetStartListViewModelsForEvent(int eventId);
     }
 }

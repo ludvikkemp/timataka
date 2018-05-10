@@ -14,6 +14,7 @@ using Timataka.Core.Models.ViewModels.MarkerViewModels;
 using Timataka.Core.Models.ViewModels.EventViewModels;
 using Timataka.Core.Models.ViewModels.CompetitionViewModels;
 using Timataka.Core.Models.ViewModels;
+using Timataka.Core.Models.ViewModels.CategoryViewModels;
 using Timataka.Core.Models.ViewModels.ContestantViewModels;
 using Timataka.Core.Models.ViewModels.HomeViewModels;
 
@@ -28,6 +29,7 @@ namespace Timataka.Web.Controllers
         private readonly ICompetitionService _competitionService;
         private readonly IEventService _eventService;
         private readonly IResultService _resultService;
+        
 
         public HeatController(IHeatService heatService,
             IAdminService adminService,

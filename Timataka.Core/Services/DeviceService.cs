@@ -149,7 +149,9 @@ namespace Timataka.Core.Services
         /// <returns>List of all devices</returns>
         public IEnumerable<Device> GetDevices()
         {
-            return _repo.Get();
+            return (from d in _repo.Get()
+                    orderby d.Name
+                    select d).ToList();
         }
 
         /// <summary>

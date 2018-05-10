@@ -212,13 +212,50 @@ namespace Timataka.Core.Data.Repositories
                          Id = u.Id,
                          Name = u.FirstName + " " + u.LastName,
                          Gender = u.Gender,
+                         HasAllChips = false,
                          EventList = null
                      }).Distinct().ToList();
             foreach (var item in r)
             {
-                item.EventList = GetEventListForContestatnt(item.Id, id);
+                item.HasAllChips = HasAllChips(item.Id, id);
+                item.EventList = GetEventListForContestant(item.Id, id);
             }
             return r;
+        }
+
+        public bool HasAllChips(string userId, int competitionInstanceId)
+        {
+            var countChips = (from h in _context.Heats
+                              join e in _context.Events on h.EventId equals e.Id
+                              where e.CompetitionInstanceId == competitionInstanceId
+                              join cih in _context.ChipsInHeats on h.Id equals cih.HeatId
+                              where cih.UserId == userId && cih.Valid == true
+                              select cih.HeatId).Distinct().Count();
+            var countEvents = (from h in _context.Heats
+                               join e in _context.Events on h.EventId equals e.Id
+                               where e.CompetitionInstanceId == competitionInstanceId
+                               join cih in _context.ContestantsInHeats on h.Id equals cih.HeatId
+                               where cih.UserId == userId
+                               select cih.HeatId).Distinct().Count();
+            if (countChips == countEvents)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool HasChip(string userId, int eventId)
+        {
+            var countChips = (from h in _context.Heats
+                              where h.EventId == eventId
+                              join cih in _context.ChipsInHeats on h.Id equals cih.HeatId
+                              where cih.UserId == userId && cih.Valid == true
+                              select cih).Count();
+            if (countChips > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public List<AddContestantViewModel> GetAddContestantViewModelByCompetitionInstanceId(int competitionInstanceId, string userId)
@@ -291,7 +328,7 @@ namespace Timataka.Core.Data.Repositories
             return r;
         }
 
-        public IEnumerable<EventDropDownListViewModel> GetEventListForContestatnt(string userId, int competitionInstanceId)
+        public IEnumerable<EventForContestantDropDownListViewModel> GetEventListForContestant(string userId, int competitionInstanceId)
         {
             var r = (from e in _context.Events
                      where e.CompetitionInstanceId == competitionInstanceId
@@ -299,11 +336,17 @@ namespace Timataka.Core.Data.Repositories
                      join c in _context.ContestantsInHeats on h.Id equals c.HeatId
                      join u in _context.Users on c.UserId equals u.Id
                      where u.Id == userId
-                     select new EventDropDownListViewModel
+                     select new EventForContestantDropDownListViewModel
                      {
                          Id = e.Id,
-                         Name = e.Name
+                         Name = e.Name,
+                         HasChip = false
                      }).ToList();
+
+            foreach(var item in r)
+            {
+                item.HasChip = HasChip(userId, item.Id);
+            }
             return r;
         }
 

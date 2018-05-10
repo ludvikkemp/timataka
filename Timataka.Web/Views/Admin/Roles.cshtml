@@ -39,10 +39,10 @@
                                             
                                             <tr>
                                                 
-                                                    <td>@item.FirstName @item.LastName</td>
-                                                    <td>@item.Username</td>
-                                                    <td>@item.Role</td>
-                                                    <th>
+                                                    <td style="width: 25%">@item.FirstName @item.LastName</td>
+                                                    <td style="width: 25%">@item.Username</td>
+                                                    <td style="width: 25%">@item.Role</td>
+                                                    <th style="width: 25%">
                                                         <a asp-action="RemoveRole" asp-route-id="@item.Id" class="btn btn-danger-outline btn-sm">Remove</a>
                                                     </th>
                                             </tr>
@@ -95,10 +95,10 @@
                                         @foreach (var item in Model.Users)
                                         {
                                             <tr>
-                                                    <td>@item.FirstName @item.LastName</td>
-                                                    <td>@item.Username</td>
-                                                    <td>@item.Role</td>
-                                                    <th>
+                                                    <td style="width: 25%">@item.FirstName @item.LastName</td>
+                                                    <td style="width: 25%">@item.Username</td>
+                                                    <td style="width: 25%">@item.Role</td>
+                                                    <th style="width: 25%">
                                                         <a asp-action="AddRole" asp-route-id="@item.Id" class="btn btn-success-outline btn-sm">Assign</a>
                                                     </th>
                                             </tr>

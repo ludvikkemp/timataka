@@ -34,14 +34,6 @@
 
     <div class="row">
         <div class="col-md-7 pt-2">
-            <!--
-    <a asp-controller="Heat"
-       asp-action="AddContestant"
-       asp-route-heatId="@Model.Heat.Id"
-       asp-route-eventId="@ViewContext.RouteData.Values["eventId"]"
-       asp-route-competitionId="@ViewContext.RouteData.Values["competitionId"]"
-       asp-route-competitionInstanceId="@ViewContext.RouteData.Values["competitionInstanceId"]" class="btn btn-success btn-sm rounded-s">Add Contestant</a>
-    -->
             <a asp-controller="Heat"
                asp-action="SelectContestant"
                asp-route-heatId="@Model.Heat.Id"
@@ -77,7 +69,8 @@
                                         <thead>
                                             <tr>
                                                 <th>BIB</th>
-                                                <th>Contestants</th>
+                                                <th>Name</th>
+                                                <th>Chips</th>
                                                 <th>SSN</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -91,6 +84,12 @@
                                                     </td>
                                                     <td>
                                                         @item.Name
+                                                    </td>
+                                                    <td>
+                                                        @foreach(var chip in item.Chips)
+                                                        {
+                                                            @chip.Code <br />
+                                                        }
                                                     </td>
                                                     <td>
                                                         @item.Ssn

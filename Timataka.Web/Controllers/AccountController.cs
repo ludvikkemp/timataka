@@ -222,6 +222,69 @@ namespace Timataka.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterIs(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            ViewBag.Nationalities = _accountService.GetNationalityListItems();
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterIs(IcelandicRegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    MiddleName = model.MiddleName,
+                    LastName = model.LastName,
+                    Ssn = model.Ssn,
+                    Gender = model.Gender == "other" ? model.OtherGender.ToLower() : model.Gender.ToLower(),
+                    Phone = model.Phone,
+                    CountryId = model.CountryId,
+                    DateOfBirth = model.DateOfBirth,
+                    NationalityId = model.NationId,
+                    Deleted = false
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    await _userManager.AddToRoleAsync(user, "User");
+                    _logger.LogInformation("User created a new account with password.");
+
+                    var user2 = await _userManager.GetUserAsync(User);
+                    if (user2 == null)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _cache.Remove("listOfUsers");
+                        return RedirectToLocal(returnUrl);
+                    }
+                    _cache.Remove("listOfUsers");
+                    return RedirectToAction("Users", "Admin");
+                }
+                AddErrors(result);
+            }
+            // If we got this far, something failed, redisplay form
+            ViewBag.Nations = _accountService.GetNationsListItems();
+            ViewBag.Nationalities = _accountService.GetNationalityListItems();
+            return View(model);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]

@@ -109,8 +109,17 @@ namespace Timataka.Core.Data.Repositories
                                    Phone = u.Phone,
                                    Ssn = u.Ssn,
                                    Team = c.Team,
-                                   UserId = u.Id
+                                   UserId = u.Id,
+                                   Chips = null,
                                }).ToList();
+            foreach (var item in contestants)
+            {
+                item.Chips = (from cih in _db.ChipsInHeats
+                              join c in _db.Chips on cih.ChipCode equals c.Code
+                              where cih.UserId == item.UserId && cih.HeatId == item.HeatId
+                              where cih.Valid == true
+                              select c).ToList();
+            }
             return contestants;
         }
 
