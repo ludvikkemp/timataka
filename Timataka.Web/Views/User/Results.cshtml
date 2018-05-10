@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Timataka.Core.Models.Entities.CompetitionInstance>
+﻿@using System.Globalization
+@model IEnumerable<Timataka.Core.Models.Entities.CompetitionInstance>
 
 @{
     Layout = "_UserLayout";
@@ -27,7 +28,7 @@
                 </div>
             </form>
         </div>
-        
+
     </div>
 
     <div class="row">
@@ -52,10 +53,10 @@
                                                 {
                                                     <tr>
                                                         <td>
-                                                            <a asp-controller="User" asp-action="EventsResults" asp-route-competitionInstanceId="@item.Id" >@item.Name</a>
+                                                            <a asp-controller="User" asp-action="EventsResults" asp-route-competitionInstanceId="@item.Id">@item.Name</a>
                                                         </td>
                                                         <td>
-                                                            @item.DateFrom
+                                                            @item.DateFrom.ToString("dd. MMM yyyy kl: HH:mm", CultureInfo.CreateSpecificCulture("is-IS"))
                                                         </td>
                                                     </tr>
                                                 }
