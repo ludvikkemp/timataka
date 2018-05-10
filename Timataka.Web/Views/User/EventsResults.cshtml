@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Timataka.Core.Models.ViewModels.EventViewModels.EventViewModel>
+﻿@using System.Globalization
+@model IEnumerable<Timataka.Core.Models.ViewModels.EventViewModels.EventViewModel>
 
 @{
     Layout = "_UserLayout";
@@ -63,7 +64,7 @@
                                                                asp-route-eventId="@item.Id">@item.Name</a>
                                                         </td>
                                                         <td>
-                                                            @item.DateFrom
+                                                            @item.DateFrom.ToString("dd. MMM yyyy kl: HH:mm", CultureInfo.CreateSpecificCulture("is-IS"))
                                                         </td>
                                                         <td>
                                                             @item.Gender
