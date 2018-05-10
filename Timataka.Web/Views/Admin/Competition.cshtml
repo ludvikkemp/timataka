@@ -57,15 +57,32 @@
                                                 {
                                                     <tr>
                                                         <td>
-                                                            <a asp-controller="Admin" asp-action="CompetitionInstance" asp-route-competitionInstanceId="@item.Id" asp-route-competitionId="@item.CompetitionId">@item.Name</a>
+                                                            <a asp-controller="Admin" 
+                                                               asp-action="CompetitionInstance" 
+                                                               asp-route-competitionInstanceId="@item.Id" 
+                                                               asp-route-competitionId="@item.CompetitionId">@item.Name</a>
                                                         </td>
                                                         <td>
                                                             @item.DateFrom
                                                         </td>
                                                         <td>
-                                                            <a asp-controller="CompetitionInstance" asp-action="Edit" asp-route-competitionInstanceId="@item.Id" asp-route-competitionId="@item.CompetitionId" class="btn btn-warning-outline btn-sm">Edit</a>
-                                                            <a asp-controller="CompetitionInstance" asp-action="Details" asp-route-competitionInstanceId="@item.Id" asp-route-competitionId="@item.CompetitionId" class="btn btn-success-outline btn-sm">Details</a>
-                                                            <a asp-controller="CompetitionInstance" asp-action="Delete" asp-route-competitionInstanceId="@item.Id" asp-route-competitionId="@item.CompetitionId" class="btn btn-danger-outline btn-sm">Delete</a>
+                                                            <a asp-controller="CompetitionInstance" 
+                                                               asp-action="Edit" 
+                                                               asp-route-competitionInstanceId="@item.Id" 
+                                                               asp-route-competitionId="@item.CompetitionId" 
+                                                               class="btn btn-warning-outline btn-sm">Edit</a>
+
+                                                            <a asp-controller="CompetitionInstance" 
+                                                               asp-action="Details" 
+                                                               asp-route-competitionInstanceId="@item.Id" 
+                                                               asp-route-competitionId="@item.CompetitionId" 
+                                                               class="btn btn-success-outline btn-sm">Details</a>
+
+                                                            <a asp-controller="CompetitionInstance" 
+                                                               asp-action="Delete" 
+                                                               asp-route-competitionInstanceId="@item.Id" 
+                                                               asp-route-competitionId="@item.CompetitionId" 
+                                                               class="btn btn-danger-outline btn-sm">Delete</a>
                                                         </td>
                                                     </tr>
                                                 }
