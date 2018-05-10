@@ -43,7 +43,7 @@ namespace Timataka.Core.Services
         // *** ADD *** //
         public async Task<Heat> AddAsync(int eventId)
         {
-            IEnumerable<Heat> heats = GetHeatsForEvent(eventId);
+            var heats = GetHeatsForEvent(eventId);
             int nextHeatNumber;
             if(heats.Count() == 0)
             {
@@ -55,7 +55,7 @@ namespace Timataka.Core.Services
                 nextHeatNumber = heats.Last().HeatNumber + 1;
             }
             
-            Heat heat = new Heat
+            var heat = new Heat
             {
                 HeatNumber = nextHeatNumber,
                 EventId = eventId,

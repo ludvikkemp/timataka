@@ -35,7 +35,7 @@ namespace Timataka.Core.Services
                     Name = course.Name
                 })
                 .ToList();
-            return dropDownList;
+            return dropDownList.OrderBy(o => o.Name);
         }
 
         public async Task<bool> CourseExistsAsync(string modelName)
