@@ -83,6 +83,29 @@ namespace Timataka.Web.Controllers
         }
 
         [HttpGet]
+        [Route("Upcoming")]
+        public IActionResult Upcoming(string search)
+        {
+            ViewData["CurrentFilter"] = search;
+            var all = _competitionService.GetUpcomingEvents(null, false);
+            var athletics = _competitionService.GetUpcomingEvents(AthleticsId, false);
+            var cycling = _competitionService.GetUpcomingEvents(CyclingId, false);
+            var other = _competitionService.GetUpcomingEvents(0, false);
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                var searchToUpper = search.ToUpper();
+                all = all.Where(u => u.CompetitionInstanceName.ToUpper().Contains(searchToUpper));
+                athletics = athletics.Where(u => u.CompetitionInstanceName.ToUpper().Contains(searchToUpper));
+                cycling = cycling.Where(u => u.CompetitionInstanceName.ToUpper().Contains(searchToUpper));
+                other = other.Where(u => u.CompetitionInstanceName.ToUpper().Contains(searchToUpper));
+            }
+            var model = new ResultsDTO { All = all, Athletics = athletics, Cycling = cycling, Other = other };
+
+            return View(model);
+        }
+
+        [HttpGet]
         [Route("Results/Competition/{competitionId}")]
         public IActionResult Competition(string search, int competitionId)
         {
