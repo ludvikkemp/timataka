@@ -241,7 +241,14 @@ namespace Timataka.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignDevice(CreateDeviceInEventViewModel model, int competitionInstanceId, int competitionId)
         {
-            await _deviceService.AddDeviceInEventAsync(model.DeviceId, model.EventId);
+            try
+            {
+                await _deviceService.AddDeviceInEventAsync(model.DeviceId, model.EventId);
+            }
+            catch(Exception e)
+            {
+                return Json(e.Message);
+            }
             return RedirectToAction("Devices", model.EventId);
         }
 

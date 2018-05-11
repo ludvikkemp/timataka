@@ -143,8 +143,6 @@ namespace Timataka.Core.Services
         /// <returns>The created instance</returns>
         public async Task<CompetitionInstance> AddInstanceAsync(CompetitionsInstanceViewModel model)
         {
-            // TODO: Villu checka, athuga hvort það sé til núþegar
-
             var newInstance = new CompetitionInstance
             {
                 CompetitionId = model.CompetitionId,
@@ -248,6 +246,12 @@ namespace Timataka.Core.Services
             return _repo.GetAllContestantsInCompetitionInstance(id);
         }
 
+        /// <summary>
+        /// Function to get list of all contestants in competition instance.
+        /// </summary>
+        /// <param name="competitionInstanceId"></param>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         public IEnumerable<ContestantsInCompetitionViewModel> GetContestantsInCompetitionInstanceAndEvent(int competitionInstanceId, int eventId)
         {
             var filteredContestants = (from c in _repo.GetAllContestantsInCompetitionInstance(competitionInstanceId)

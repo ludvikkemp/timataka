@@ -43,7 +43,7 @@ namespace Timataka.Core.Services
                 var thisEvent = _eventService.GetEventById(heat.EventId);
                 throw new Exception("Failed to assign chip in heat" + heat.HeatNumber + " in " + thisEvent.Name + ". Please use another chip." + "\r\n" + e.Message);
             }
-            UpdateChipStory(c);
+            UpdateChipStory(c).Wait();
             return result;
         }
 

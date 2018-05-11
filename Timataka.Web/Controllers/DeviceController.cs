@@ -42,9 +42,9 @@ namespace Timataka.Web.Controllers
                     await _deviceService.AddAsync(model);
                     return RedirectToAction("Devices", "Admin");
                 }
-                catch
+                catch(Exception e)
                 {
-                    //Todo
+                    return Json(e.Message);
                 }
             }
             return View(model);
@@ -69,7 +69,15 @@ namespace Timataka.Web.Controllers
         {
             if(ModelState.IsValid)
             {
-                await _deviceService.EditAsync(model);
+                try
+                {
+                    await _deviceService.EditAsync(model);
+                }
+                catch(Exception e)
+                {
+                    return Json(e.Message);
+                }
+                
                 return RedirectToAction("Devices", "Admin");
             }
             return View(model);
