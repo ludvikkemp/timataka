@@ -35,8 +35,7 @@
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="MiddleName"></label>
-                    <input asp-for="MiddleName" class="form-control" />
+                    <input type="hidden" asp-for="MiddleName" class="form-control" />
                     <span asp-validation-for="MiddleName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -53,8 +52,8 @@
                     <label asp-for="Gender"></label>
                     <select name="Gender" class="form-control" id="gender-select">
                         <option value="other">Annað</option>
-                        <option value="female">Kvennkyn</option>
-                        <option value="male">Karlkyn</option>
+                        <option value="female">Kona</option>
+                        <option value="male">Karl</option>
 
                     </select>
                 </div>
